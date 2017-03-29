@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A8017285-F678-43EE-9D46-9EA2C0D922C5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>cm.mx.catalogo</RootNamespace>
+    <AssemblyName>cm.mx.catalogo</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="cm.mx.dbcore, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Assemblies\cm.mx.dbcore.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\..\..\..\..\..\..\NET\Assemblies\cm.mx\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.1.1.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controller\CatalogoController.cs" />
+    <Compile Include="Enums\CatalogoEnum.cs" />
+    <Compile Include="Model\Activacion.cs" />
+    <Compile Include="Model\Fechapublicacion.cs" />
+    <Compile Include="Model\Map\ActivacionMap.cs" />
+    <Compile Include="Model\Map\FechapublicacionMap.cs" />
+    <Compile Include="Model\Map\NivelUsuarioMap.cs" />
+    <Compile Include="Model\Map\NotificacionMap.cs" />
+    <Compile Include="Model\Map\PromociondetalleMap.cs" />
+    <Compile Include="Model\Map\PromocionMap.cs" />
+    <Compile Include="Model\Map\PromocionmembresiaMap.cs" />
+    <Compile Include="Model\Map\SesionMap.cs" />
+    <Compile Include="Model\Map\SucursalMap.cs" />
+    <Compile Include="Model\Map\TarjetaMap.cs" />
+    <Compile Include="Model\Map\TipomembresiaMap.cs" />
+    <Compile Include="Model\Map\UsuarioMap.cs" />
+    <Compile Include="Model\NivelUsuario.cs" />
+    <Compile Include="Model\Notificacion.cs" />
+    <Compile Include="Model\ObjectVM\PromocionVM.cs" />
+    <Compile Include="Model\Promocion.cs" />
+    <Compile Include="Model\Promociondetalle.cs" />
+    <Compile Include="Model\Promocionmembresia.cs" />
+    <Compile Include="Model\Repository\ActivacionRepository.cs" />
+    <Compile Include="Model\Repository\FechaPublicacionRepository.cs" />
+    <Compile Include="Model\Repository\NivelUsuarioRepository.cs" />
+    <Compile Include="Model\Repository\NotificacionRepository.cs" />
+    <Compile Include="Model\Repository\PromocionRepository.cs" />
+    <Compile Include="Model\Repository\SesionRepository.cs" />
+    <Compile Include="Model\Repository\SucursalRepository.cs" />
+    <Compile Include="Model\Repository\TarjetaRepository.cs" />
+    <Compile Include="Model\Repository\TIpoMembresiaRepository.cs" />
+    <Compile Include="Model\Repository\UsuarioRepository.cs" />
+    <Compile Include="Model\Rules\MembresiaVR.cs" />
+    <Compile Include="Model\Rules\SucursalVR.cs" />
+    <Compile Include="Model\Sesion.cs" />
+    <Compile Include="Model\Sucursal.cs" />
+    <Compile Include="Model\Tarjeta.cs" />
+    <Compile Include="Model\Tipomembresia.cs" />
+    <Compile Include="Model\Usuario.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Funciones.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Catalogo\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
