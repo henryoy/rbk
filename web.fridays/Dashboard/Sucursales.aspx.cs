@@ -50,7 +50,12 @@ public partial class Sucursales : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-
+            ScriptManager.RegisterStartupScript(
+                 this,
+                 this.GetType(),
+                 "StartupScript",
+                 "notification('" + ex.Message + "','error')",
+                 true);
         }
     }
 
@@ -70,21 +75,6 @@ public partial class Sucursales : System.Web.UI.Page
         txtNombre.ReadOnly = read;
 
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "VerPopUp(); initMap();", true);
-    }
-
-    private string FormatoMsj(List<string> mensajes)
-    {
-        string msj = "";
-        mensajes.ForEach(x =>
-        {
-            msj += x + "\nn";
-        });
-
-        if (!string.IsNullOrEmpty(msj))
-        {
-            msj = msj.Remove(msj.Length - 3, 3);
-        }
-        return msj;
     }
 
     protected void btnGuardar_Click(object sender, EventArgs e)
@@ -114,7 +104,7 @@ public partial class Sucursales : System.Web.UI.Page
                   this,
                   this.GetType(),
                   "StartupScript",
-                  "notification('" + FormatoMsj(cCatalogo.Mensajes) + "','error')",
+                  "notification('" + Funciones.FormatoMsj(cCatalogo.Mensajes) + "','error')",
                   true);
             }
         }
@@ -138,7 +128,12 @@ public partial class Sucursales : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-
+            ScriptManager.RegisterStartupScript(
+                 this,
+                 this.GetType(),
+                 "StartupScript",
+                 "notification('" + ex.Message + "','error')",
+                 true);
         }
     }
 
@@ -157,7 +152,12 @@ public partial class Sucursales : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-
+            ScriptManager.RegisterStartupScript(
+                 this,
+                 this.GetType(),
+                 "StartupScript",
+                 "notification('" + ex.Message + "','error')",
+                 true);
         }
     }
 }

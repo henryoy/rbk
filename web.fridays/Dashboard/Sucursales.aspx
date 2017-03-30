@@ -143,8 +143,8 @@
         <ContentTemplate>
             <div id="campaigns" class="semi_bold">
                 <div id="list_name_bar">
-                   <h2><b class="light cat">Sucursales</b></h2>
-                    <!-- dropdown -->                    
+                    <h2><b class="light cat">Sucursales</b></h2>
+                    <!-- dropdown -->
                 </div>
                 <div id="mainWrapper">
                     <div id="box_row_titles">
@@ -184,6 +184,7 @@
             <asp:AsyncPostBackTrigger ControlID="add_subscriber" />
         </Triggers>
     </asp:UpdatePanel>
+
     <!--popup-->
     <div id="popupOverlay" style="opacity: 1; transition: all 0.46s ease; display: none;">
         <div id="popup" style="opacity: 1; transition: all 0.46s ease; transform: scale(1) translateY(-50%);">
@@ -247,7 +248,7 @@
 </asp:Content>
 <asp:Content runat="server" ID="ScriptsJS" ContentPlaceHolderID="ScriptsPages">
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCr483jOUSdhjAnDWjUKiCj9rnEWvLMOFk&libraries=geometr‌​y,places" async defer type="text/javascript"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/js/jquery.min.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/easing.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/jquery.gravatar.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/functions.js") %>" type="text/javascript"></script>
@@ -257,32 +258,34 @@
     <script src="<%= ResolveUrl("~/Scripts/js/autoNumeric-min.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/js/funciones-generales.js") %>" type="text/javascript"></script>
     <script>
-        $(document).ready(function () {
-            //function to check for empty campaigns
-            window.initMap = function () {
-                var lat = $('#<%= txtLatitud.ClientID %>').val(),
-                        lng = $('#<%= txtLongitud.ClientID %>').val(),
-                configuracion;
-                if (lat != '' || lng != '') {
-                    configuracion = {
-                        txtBuscarId: '#<%= txtBuscarMaps.ClientID %>',
-                        txtLatId: '#<%= txtLatitud.ClientID %>',
-                        txtLngId: '#<%= txtLongitud.ClientID %>',
-                        Lat: lat,
-                        Lng: lng,
-                        zoom: 15
+        function pageLoad(sender, args) {
+            $(document).ready(function () {
+                //function to check for empty campaigns
+                window.initMap = function () {
+                    var lat = $('#<%= txtLatitud.ClientID %>').val(),
+                            lng = $('#<%= txtLongitud.ClientID %>').val(),
+                    configuracion;
+                    if (lat != '' || lng != '') {
+                        configuracion = {
+                            txtBuscarId: '#<%= txtBuscarMaps.ClientID %>',
+                            txtLatId: '#<%= txtLatitud.ClientID %>',
+                            txtLngId: '#<%= txtLongitud.ClientID %>',
+                            Lat: lat,
+                            Lng: lng,
+                            zoom: 15
+                        }
                     }
-                }
-                else {
-                    configuracion = {
-                        txtBuscarId: '#<%= txtBuscarMaps.ClientID %>',
-                        txtLatId: '#<%= txtLatitud.ClientID %>',
-                        txtLngId: '#<%= txtLongitud.ClientID %>'
+                    else {
+                        configuracion = {
+                            txtBuscarId: '#<%= txtBuscarMaps.ClientID %>',
+                            txtLatId: '#<%= txtLatitud.ClientID %>',
+                            txtLngId: '#<%= txtLongitud.ClientID %>'
+                        }
                     }
+                    $('#mapaUbicacion').mapaMultimple(configuracion);
                 }
-                $('#mapaUbicacion').mapaMultimple(configuracion);
-            }
-        });
+            });
+        }
     </script>
 </asp:Content>
 

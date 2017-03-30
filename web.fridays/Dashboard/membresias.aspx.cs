@@ -58,13 +58,13 @@ public partial class membresias : System.Web.UI.Page
         txtColor.Text = oMembresia.Color;
         txtDescuento.Text = string.Format("{0:N2}", oMembresia.Porcientodescuento);
         txtNombre.Text = oMembresia.Nombre;
-        txtNumVisitas.Text = oMembresia.Numerodevisitas.ToString();
+        txtVisitasMax.Text = oMembresia.Numerodevisitas.ToString();
         txtColor.ReadOnly = read;
         txtDescuento.ReadOnly = read;
         txtNombre.ReadOnly = read;
-        txtNumVisitas.ReadOnly = read;
+        txtVisitasMax.ReadOnly = read;
         txtColor.CssClass = read ? "regular" : "regular color-picker";
-        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "openDatos();", true);
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "VerPopUp();", true);
     }
 
     protected void btnEditar_Click(object sender, EventArgs e)
@@ -76,7 +76,12 @@ public partial class membresias : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-
+            ScriptManager.RegisterStartupScript(
+                 this,
+                 this.GetType(),
+                 "StartupScript",
+                 "notification('" + ex.Message + "','error')",
+                 true);
         }
     }
 
@@ -89,7 +94,12 @@ public partial class membresias : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-
+            ScriptManager.RegisterStartupScript(
+                 this,
+                 this.GetType(),
+                 "StartupScript",
+                 "notification('" + ex.Message + "','error')",
+                 true);
         }
     }
 
@@ -99,7 +109,7 @@ public partial class membresias : System.Web.UI.Page
         {
             int visitas;
             decimal descuento;
-            int.TryParse(txtNumVisitas.Text.Trim(), out visitas);
+            int.TryParse(txtVisitasMax.Text.Trim(), out visitas);
             decimal.TryParse(txtDescuento.Text, out descuento);
             Tipomembresia oMembresia = new Tipomembresia();
             oMembresia.Color = txtColor.Text;
@@ -116,10 +126,24 @@ public partial class membresias : System.Web.UI.Page
                 CargarMembresias();
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "closePopup(); $('#popupOverlay').hide();", true);
             }
+            else
+            {
+                ScriptManager.RegisterStartupScript(
+                  this,
+                  this.GetType(),
+                  "StartupScript",
+                  "notification('" + Funciones.FormatoMsj(cCatalogo.Mensajes) + "','error')",
+                  true);
+            }
         }
         catch (Exception ex)
         {
-
+            ScriptManager.RegisterStartupScript(
+                 this,
+                 this.GetType(),
+                 "StartupScript",
+                 "notification('" + ex.Message + "','error')",
+                 true);
         }
     }
 
@@ -132,7 +156,12 @@ public partial class membresias : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-
+            ScriptManager.RegisterStartupScript(
+                 this,
+                 this.GetType(),
+                 "StartupScript",
+                 "notification('" + ex.Message + "','error')",
+                 true);
         }
     }
 }
