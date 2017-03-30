@@ -275,7 +275,7 @@ $(document).ready(function() {
 	});
 
 	//side actions
-	/*$(document).on('mouseenter', '.actions div:not(.send, .analytics, .view_invoice)', function(){
+	$(document).on('mouseenter', '.actions div:not(.send, .analytics, .view_invoice)', function(){
 
 		attr = $(this).attr('class');
 		str = attr.replace("active", "").replace("_sub", "");
@@ -293,7 +293,7 @@ $(document).ready(function() {
 		$('.actions div:not(.send, .analytics, .view_invoice)').removeClass('active').text('');
 		$('.actions .send, .actions .analytics, .actions .view_invoice').removeClass('active');
 
-	});*/
+	});
 
 	//closePopup
 	$(document).on('click', '.cancelPop', function(){

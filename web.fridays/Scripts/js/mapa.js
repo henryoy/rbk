@@ -31,11 +31,11 @@
                             infoWindow.setContent('<b>Direcci&oacute;n: </b>' + results[0].formatted_address + '<br/>' + '<b>Latitud:</b> ' + markerLatLng.lat() + '<br/>' + '<b>Longitud:</b> ' + markerLatLng.lng());
                         }
                         else {
-                            console.log('NO EXISTE INFORMACIÓN PARA MOSTRAR');
+                            console.log('No se encontraron resultados');
                         }
                     }
                     else {
-                        console.log('Error: ' + status);
+                        console.log('El geocódigo no tuvo éxito por la siguiente razón: ' + status);
                     }
                 });
                 infoWindow.open(map, marker);
@@ -49,14 +49,14 @@
                     }, function (results, status) {
                         if (status === google.maps.GeocoderStatus.OK) {
                             if (results[0]) {
-                                $(settings.txtBuscarId).val(results[0].formatted_address).trigger('change');;
+                                $(settings.txtBuscarId).val(results[0].formatted_address);
                             }
                             else {
-                                console.log('NO EXISTE INFORMACIÓN PARA MOSTRAR');
+                                console.log('No se encontraron resultados');
                             }
                         }
                         else {
-                            console.log('Error: ' + status);
+                            console.log('El geocódigo no tuvo éxito por la siguiente razón: ' + status);
                         }
                     });
                 }
@@ -68,14 +68,14 @@
                 zoom: settings.zoom,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             },
-            map = new google.maps.Map($(this).get(0), mapaConfiguracion),
+            map = new google.maps.Map($(this).get(0), mapaConfiguracion), // Ojo
             infoWindow = new google.maps.InfoWindow(),
             marker = new google.maps.Marker({
                 icon: '../Images/maps/icon-marker.png',
                 draggable: true,
                 position: latlng,
                 map: map,
-                title: "Arrastre para indicar la ubicación"
+                title: "Ejemplo marcador arrastrable"
             }),
             inputBuscar = $(settings.txtBuscarId).get(0),
             autocomplete = new google.maps.places.Autocomplete(inputBuscar);
@@ -134,7 +134,7 @@
                             lng = results[0].geometry.location.lng(),
                             placeName = results[0].address_components[0].long_name,
                             latlng = new google.maps.LatLng(lat, lng);
-                        $(settings.txtBuscarId).val(results[0].formatted_address).trigger('change');;
+                        $(settings.txtBuscarId).val(results[0].formatted_address);
                     }
                 });
             });
