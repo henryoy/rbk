@@ -96,13 +96,13 @@ public partial class Sucursales : System.Web.UI.Page
             if (cCatalogo.Exito)
             {
                 CargarSucursales();
-                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "closePopup(); $('#popupOverlay').hide();", true);
-                ScriptManager.RegisterStartupScript(
-                this,
-                this.GetType(),
-                "StartupScript",
-                "notification('" + "La operación se realizó con exito" + "','success')",
-                true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "closePopup(); $('#popupOverlay').hide();", true);
+                //ScriptManager.RegisterStartupScript(
+                //this,
+                //this.GetType(),
+                //"StartupScript",
+                //"notification('" + "La operación se realizó con exito" + "','error')",
+                //true);
             }
             else
             {

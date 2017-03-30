@@ -81,7 +81,8 @@
                                 <li><a href="#">ajustes</a></li>
                                 <%--                                <li><a href="#">Firma de email</a></li>
                                 <li><a href="#">Facturación</a></li>--%>
-                                <li><asp:LinkButton runat="server" ID="CerrarSession" OnClick="CerrarSession_Click">Cerrar sesión</asp:LinkButton></li>
+                                <li>
+                                    <asp:LinkButton runat="server" ID="CerrarSession" OnClick="CerrarSession_Click">Cerrar sesión</asp:LinkButton></li>
                             </ul>
                         </li>
                     </ul>
@@ -102,7 +103,7 @@
             console.log(message);
             console.log(type);
             //modify notification
-            $('.popup-notification').text(message);
+            $('.popup-notification').html(message);
             $('.popup-notification').removeClass('error').removeClass('success');
             $('.popup-notification').addClass(type);
 

@@ -20,13 +20,13 @@ public class Funciones
         string msj = "";
         mensajes.ForEach(x =>
         {
-            msj += x + "\nn";
+            msj += x + "&#160;&#160;";
         });
 
-        if (!string.IsNullOrEmpty(msj))
-        {
-            msj = msj.Remove(msj.Length - 3, 3);
-        }
+        //if (!string.IsNullOrEmpty(msj))
+        //{
+        //    msj = msj.Remove(msj.Length - 3, 3);
+        //}
         return msj;
     }
 }
