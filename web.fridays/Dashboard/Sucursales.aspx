@@ -196,28 +196,28 @@
                 <asp:UpdatePanel runat="server" ID="upModal">
                     <ContentTemplate>
                         <li class="clear-fix">
-                            <div class="data_name semi_bold" style="background-image: url(../../img/icons/data_name_name@2x.png)">Nombre:</div>
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_name@2x.png)">Nombre:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" ID="txtNombre" CssClass="regular goFocus" MaxLength="30"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="rfvNombre" ControlToValidate="txtNombre" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
                         <li class="clear-fix">
-                            <div class="data_name semi_bold" style="background-image: url(../../img/icons/data_name_email@2x.png)">Dirección:</div>
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_email@2x.png)">Dirección:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" ID="txtDireccion" CssClass="regular input-direccion" MaxLength="200"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="rfvDireccion" ControlToValidate="txtDireccion" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
                         <li class="clear-fix">
-                            <div class="data_name semi_bold" style="background-image: url(../img/icons/data_name_date@2x.png)">Longitud:</div>
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Longitud:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" ID="txtLongitud" CssClass="regular position" Style="pointer-events: none"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="rfvLongitud" ControlToValidate="txtLongitud" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
                         <li class="clear-fix">
-                            <div class="data_name semi_bold" style="background-image: url(../img/icons/data_name_list@2x.png)">Latitud:</div>
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Latitud:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" ID="txtLatitud" CssClass="regular position" Style="pointer-events: none"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="rfvLatitud" ControlToValidate="txtLatitud" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>

@@ -58,12 +58,13 @@ public partial class membresias : System.Web.UI.Page
         txtColor.Text = oMembresia.Color;
         txtDescuento.Text = string.Format("{0:N2}", oMembresia.Porcientodescuento);
         txtNombre.Text = oMembresia.Nombre;
-        txtVisitasMax.Text = oMembresia.Numerodevisitas.ToString();
-        txtColor.ReadOnly = read;
+        txtVisitasMax.Text = oMembresia.Hasta.ToString();
+        txtVisitasMin.Text = oMembresia.ApartirDe.ToString();
+        txtColor.Enabled = !read;
         txtDescuento.ReadOnly = read;
         txtNombre.ReadOnly = read;
         txtVisitasMax.ReadOnly = read;
-        txtColor.CssClass = read ? "regular" : "regular color-picker";
+        txtVisitasMin.ReadOnly = read;
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "VerPopUp();", true);
     }
 
@@ -107,16 +108,19 @@ public partial class membresias : System.Web.UI.Page
     {
         try
         {
-            int visitas;
+            int min;
+            int max;
             decimal descuento;
-            int.TryParse(txtVisitasMax.Text.Trim(), out visitas);
+            int.TryParse(txtVisitasMin.Text.Trim(), out min);
+            int.TryParse(txtVisitasMax.Text.Trim(), out max);
             decimal.TryParse(txtDescuento.Text, out descuento);
             Tipomembresia oMembresia = new Tipomembresia();
             oMembresia.Color = txtColor.Text;
             oMembresia.Estado = "ALTA";
             oMembresia.Nombre = txtNombre.Text;
             oMembresia.Color = txtColor.Text.Trim();
-            oMembresia.Numerodevisitas = visitas;
+            oMembresia.ApartirDe = min;
+            oMembresia.Hasta = max;
             oMembresia.Porcientodescuento = descuento;
             oMembresia.Membresiaid = MembresiaId;
 

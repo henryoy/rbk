@@ -18,9 +18,16 @@ namespace cm.mx.catalogo.Model.Rules
                 _lsMensajes.Add("Nombre no puede ser vacío.");
                 _exito = false;
             }
-            if (Objeto.Numerodevisitas <= 0)
+
+            if (Objeto.Hasta <= 0)
             {
-                _lsMensajes.Add("Número de visitas no puede ser menor o igual a cero.");
+                _lsMensajes.Add("Hasta no puede ser menor o igual a cero.");
+                _exito = false;
+            }
+
+            if (Objeto.ApartirDe >= Objeto.Hasta)
+            {
+                _lsMensajes.Add("ApartirDe no puede ser mayor o igual a Hasta");
                 _exito = false;
             }
 
@@ -49,9 +56,16 @@ namespace cm.mx.catalogo.Model.Rules
                 _lsMensajes.Add("Nombre no puede ser vacío.");
                 _exito = false;
             }
-            if (Objeto.Numerodevisitas <= 0)
+
+            if (Objeto.Hasta <= 0)
             {
-                _lsMensajes.Add("Número de visitas no puede ser menor o igual a cero.");
+                _lsMensajes.Add("Hasta no puede ser menor o igual a cero.");
+                _exito = false;
+            }
+
+            if (Objeto.ApartirDe >= Objeto.Hasta)
+            {
+                _lsMensajes.Add("ApartirDe no puede ser mayor o igual a Hasta");
                 _exito = false;
             }
 

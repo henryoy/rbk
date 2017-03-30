@@ -33,6 +33,16 @@
             margin-top: -50px;
             color: #f31111 !important;
         }
+
+        #campaigns #row_max {
+            width: 84px;
+            height: 100%;
+            float: left;
+        }
+
+        input[disabled], input[readonly], fieldset[disabled] {
+            cursor: not-allowed;
+        }
     </style>
     <asp:UpdatePanel runat="server" ID="upForm">
         <ContentTemplate>
@@ -48,9 +58,10 @@
                             <div id="row_picture">#</div>
                             <div id="row_color">Color</div>
                             <div id="row_name" class="semi_bold">Nombre</div>
-                            <div id="row_date" class="semi_bold">Visitas </div>
+                            <div id="row_date" class="semi_bold">Apartir De</div>
+                            <div id="row_max" class="semi_bold">Hasta</div>
                             <div id="row_descuento" class="semi_bold">Descuento </div>
-                            <div id="row_tarjeta" class="semi_bold">Tarjeta </div>
+                            <%--<div id="row_tarjeta" class="semi_bold">Tarjeta </div>--%>
                             <asp:LinkButton runat="server" ID="add_subscriber" CssClass="semi_bold agregar" Style="top: -7px" ClientIDMode="Static" OnClick="AddMembresia_Click"></asp:LinkButton>
                         </div>
                     </div>
@@ -68,9 +79,10 @@
                                         </div>
                                     </div>
                                     <div class="row_name"><%# Eval("Nombre") %></div>
-                                    <div class="row_date"><%# Eval("NumeroDeVisitas") %></div>
+                                    <div class="row_date"><%# Eval("ApartirDe") %></div>
+                                    <div class="row_date"><%# Eval("Hasta") %></div>
                                     <div class="row_descuento"><%# Eval("PorcientoDescuento") %>%</div>
-                                    <div class="row_tarjeta">Tarjeta </div>
+                                    <%--<div class="row_tarjeta">Tarjeta </div>--%>
                                     <div class="actions semi_bold">
                                         <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" CommandArgument='<%#Eval("MembresiaId") %>' OnClick="btnEditar_Click">Editar</asp:LinkButton>
                                         <div class="view">
@@ -101,35 +113,35 @@
                 <ContentTemplate>
                     <ul class="data_change clear-fix">
                         <li class="clear-fix">
-                            <div class="data_name semi_bold" style="background-image: url()">Nombre:</div>
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_name@2x.png)">Nombre:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" CssClass="regular goFocus" ID="txtNombre"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="rfvLongitud" ControlToValidate="txtNombre" Display="Dynamic" ErrorMessage="* Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
                         <li class="clear-fix">
-                            <div class="data_name semi_bold" style="background-image: url()">Minimo Visitas:</div>
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Minimo Visitas:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" CssClass="regular entero" ID="txtVisitasMin"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator1" ControlToValidate="txtVisitasMin" Display="Dynamic" ErrorMessage="* Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
                         <li class="clear-fix">
-                            <div class="data_name semi_bold" style="background-image: url()">Máximo Visitas:</div>
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Máximo Visitas:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" CssClass="regular entero" ID="txtVisitasMax"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator3" ControlToValidate="txtVisitasMax" Display="Dynamic" ErrorMessage="* Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
                         <li class="clear-fix">
-                            <div class="data_name semi_bold" style="background-image: url()">Descuento:</div>
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Descuento:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" CssClass="regular decimal" ID="txtDescuento"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator2" ControlToValidate="txtDescuento" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
                         <li class="clear-fix">
-                            <div class="data_name semi_bold" style="background-image: url()">Color:</div>
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_date@2x.png)">Color:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" type="color" CssClass="regular color-picker" ID="txtColor"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator4" ControlToValidate="txtColor" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
@@ -139,6 +151,7 @@
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="btnGuardar" />
+                    <asp:AsyncPostBackTrigger ControlID="rptItems" />
                 </Triggers>
             </asp:UpdatePanel>
             <div class="closePopup"></div>
