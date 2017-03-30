@@ -43,7 +43,17 @@ public partial class Login : System.Web.UI.Page
             }
             if (mensajes.Count > 0)
             {
-                MostrarMensaje();
+                //MostrarMensaje();
+                string mjs = string.Empty;
+
+                
+
+                ScriptManager.RegisterStartupScript(
+                    this,
+                    this.GetType(),
+                    "StartupScript",
+                    "notification('El usuario o la contraseña no existe','error')",
+                    true);
                 return;
             }
 
@@ -58,8 +68,8 @@ public partial class Login : System.Web.UI.Page
                     "StartupScript",
                     "notification('El usuario o la contraseña no existe','error')",
                     true);
-                mensajes.AddRange(cCatalogo.Mensajes);
-                MostrarMensaje();
+                //mensajes.AddRange(cCatalogo.Mensajes);
+                //MostrarMensaje();
                 return;
             }
             else
