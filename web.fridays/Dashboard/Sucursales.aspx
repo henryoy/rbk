@@ -170,7 +170,7 @@
                                     <div class="actions semi_bold">
                                         <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" OnClick="btnEditar_Click" CommandArgument='<%# Eval("SucursalID") %>'>Editar</asp:LinkButton>
                                         <div class="view">
-                                            <asp:LinkButton runat="server" ID="btnVer" CssClass="info" OnClick="btnVer_Click" CommandArgument='<%# Eval("SucursalID") %>'></asp:LinkButton>
+                                            <asp:LinkButton runat="server" ID="btnVer" CssClass="view" OnClick="btnVer_Click" CommandArgument='<%# Eval("SucursalID") %>'></asp:LinkButton>
                                         </div>
                                     </div>
                                 </li>
@@ -182,6 +182,7 @@
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="add_subscriber" />
+            <asp:AsyncPostBackTrigger ControlID="rptItems" />
         </Triggers>
     </asp:UpdatePanel>
 

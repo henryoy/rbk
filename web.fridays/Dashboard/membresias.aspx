@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.master" CodeFile="membresias.aspx.cs" Inherits="membresias" Async="true" %>
 
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
-    <link rel="stylesheet" type="text/css" href="<%= ResolveClientUrl("~/Content/css/color-picker.css") %>" media="screen">
+    <link rel="stylesheet" type="text/css" href="<%= ResolveClientUrl("~/Content/classicTheme/style.css") %>" media="screen">
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <style>
@@ -42,6 +42,41 @@
 
         input[disabled], input[readonly], fieldset[disabled] {
             cursor: not-allowed;
+        }
+
+        /*Ajax Upload*/
+        .ax-clear,
+        .ax-browse-c,
+        .ax-main-title,
+        .ax-upload-all,
+        .ax-upload.ax-button {
+            display: none !important;
+        }
+
+        .ax-remove {
+            width: 25px;
+            height: 25px;
+            background-image: url(../images/delete2.jpg);
+            background-repeat: no-repeat;
+            background-position-x: center;
+            background-position-y: center;
+            border: none;
+        }
+
+        .imgTarjeta:hover {
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        input.color-picker {
+            width: 40px !important;
+            height: 40px !important;
+            padding: 0px;
+            border: none !important;
+        }
+
+        .color-picker:hover {
+            cursor: pointer;
         }
     </style>
     <asp:UpdatePanel runat="server" ID="upForm">
@@ -105,7 +140,8 @@
     <!--popup-->
     <div id="popupOverlay" style="opacity: 1; transition: all 0.46s ease; display: none;">
         <div id="popup" style="opacity: 1; transition: all 0.46s ease; transform: scale(1) translateY(-50%);">
-            <asp:Button runat="server" ID="btnGuardar" CssClass="btnTrue semi_bold" Style="left: 0px; width: 50%;" OnClick="btnGuardar_Click" Text="Aceptar" CausesValidation="true" ValidationGroup="guardar" UseSubmitBehavior="false" />
+            <asp:LinkButton runat="server" ID="btnSave" CssClass="btn-save" OnClick="btnGuardar_Click" CausesValidation="true" ValidationGroup="guardar" UseSubmitBehavior="false" Style="display: none"></asp:LinkButton>
+            <asp:Button runat="server" ID="btnGuardar" CssClass="btnTrue semi_bold" Style="left: 0px; width: 50%;" Text="Aceptar" />
             <input type="button" value="Cancelar" class="btnFalse semi_bold" style="right: 0px; width: 50%;" onclick="closePopup();"><div id="sub_data_info" class="bold">
                 <img src="<%: ResolveUrl("~/Content/img/icons/default.png") %>">Agregar Membresia
             </div>
@@ -147,11 +183,23 @@
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator4" ControlToValidate="txtColor" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
+                        <li class="clear-fix">
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_date@2x.png)">Tarjeta:</div>
+                            <div class="data_value">
+                                <asp:Image runat="server" ID="imgTarjeta" CssClass="imgTarjeta" ToolTip="Click para seleccionar imagen" Height="36" Width="62" ImageUrl="~/Images/icon-gallery.svg" />
+                                <asp:HiddenField runat="server" ID="hfTajeta" ClientIDMode="Static" Value="" />
+                            </div>
+                        </li>
+                        <li class="clear-fix">
+                            <div id="uploader_div">
+                            </div>
+                        </li>
                     </ul>
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="btnGuardar" />
                     <asp:AsyncPostBackTrigger ControlID="rptItems" />
+                    <asp:AsyncPostBackTrigger ControlID="btnSave" />
                 </Triggers>
             </asp:UpdatePanel>
             <div class="closePopup"></div>
@@ -169,6 +217,7 @@
     <%--<script src="<%= ResolveClientUrl("~/Scripts/js/color-picker.min.js") %>" type="text/javascript"></script>--%>
     <script src="<%= ResolveUrl("~/Scripts/js/autoNumeric-min.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/js/funciones-generales.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/js/ajaxupload-min.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
         function pageLoad(sender, args) {
             $(document).ready(function () {
@@ -205,6 +254,68 @@
                     vMin: '0',
                     vMax: '999999999'
                 });
+
+                $('#uploader_div').ajaxupload({
+                    url: '../upload.aspx',
+                    maxFileSize: '1M',
+                    maxFiles: 1,
+                    resizeImage: {
+                        maxWidth: 60,
+                        maxHeight: 42,
+                        quality: 0.5,
+                        scaleMethod: undefined,
+                        format: undefined,
+                        removeExif: false
+                    },
+                    allowExt: ['jpg', 'jpeg', 'bmp', 'png'],
+                    removeOnSuccess: true,
+                    error: function (txt, obj) {
+                        notification(txt, 'error');
+                    },
+                    onSelect: function (files) {
+                        var name = "../uploads/" + files[0].name;
+                        $("#hfTajeta").val(name);
+                    },
+                    finish: function (file) {
+                        GudarDatos();
+                    },
+                    success: function (file_name) {
+                        $(".imgTarjeta").attr("src", "../uploads/" + file_name);
+                    }
+                });
+
+                $(document).on("click", ".imgTarjeta", function (e) {
+                    $(".ax-browse").trigger("click");
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                });
+
+                $(document).on("click", ".btnTrue", function (e) {
+                    var Archivos = $('.ax-file-list li');
+                    var seleccionado = $("#hfTajeta").val();
+                    var procesado = $(".imgTarjeta").attr("src");
+
+                    console.log(seleccionado);
+                    console.log(procesado);
+
+                    if (seleccionado == procesado) {
+                        GudarDatos();
+                    }
+                    else if (Archivos.length == 0) {
+                        notification('Seleccione una imagen', 'error');
+                    }
+                    else {
+                        $(".ax-upload").click();
+                    }
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                });
+
+                window.GudarDatos = function () {
+                    eval($(".btn-save").attr('href'));
+                }
             });
         }
     </script>

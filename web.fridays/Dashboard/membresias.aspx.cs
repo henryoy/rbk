@@ -3,6 +3,8 @@ using cm.mx.catalogo.Model;
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -65,6 +67,8 @@ public partial class membresias : System.Web.UI.Page
         txtNombre.ReadOnly = read;
         txtVisitasMax.ReadOnly = read;
         txtVisitasMin.ReadOnly = read;
+        if (!string.IsNullOrEmpty(oMembresia.UrlImagen)) imgTarjeta.ImageUrl = oMembresia.UrlImagen;
+        else imgTarjeta.ImageUrl = "~/Images/icon-gallery.svg";
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "VerPopUp();", true);
     }
 
@@ -81,7 +85,7 @@ public partial class membresias : System.Web.UI.Page
                  this,
                  this.GetType(),
                  "StartupScript",
-                 "notification('" + ex.Message + "','error')",
+                 "notification('" + ex.Message.Replace("'", "") + "','error')",
                  true);
         }
     }
@@ -123,6 +127,7 @@ public partial class membresias : System.Web.UI.Page
             oMembresia.Hasta = max;
             oMembresia.Porcientodescuento = descuento;
             oMembresia.Membresiaid = MembresiaId;
+            oMembresia.UrlImagen = hfTajeta.Value;
 
             var r = cCatalogo.GuardarMembresia(oMembresia);
             if (cCatalogo.Exito)

@@ -16,6 +16,7 @@ namespace cm.mx.catalogo.Model
         public virtual decimal? Porcientodescuento { get; set; }
         public virtual string Color { get; set; }
         public virtual string Estado { get; set; }
+        public virtual string UrlImagen { get; set; }
         public virtual IList<Promocionmembresia> Promocionmembresia { get; set; }
     }
 }

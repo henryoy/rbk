@@ -33,7 +33,13 @@ namespace cm.mx.catalogo.Model.Rules
 
             if (Objeto.Porcientodescuento <= 0)
             {
-                _lsMensajes.Add("El descuento no puede ser menor o igual que cero.");
+                _lsMensajes.Add("Descuento no puede ser menor o igual que cero.");
+                _exito = false;
+            }
+
+            if (string.IsNullOrEmpty(Objeto.UrlImagen))
+            {
+                _lsMensajes.Add("UrlImagen no puede ser vacío.");
                 _exito = false;
             }
 

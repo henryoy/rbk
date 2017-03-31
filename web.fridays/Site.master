@@ -90,32 +90,32 @@
                 <asp:ContentPlaceHolder runat="server" ID="MainContent"></asp:ContentPlaceHolder>
             </div>
         </div>
+
+        <script src="<%= ResolveUrl("~/Scripts/js/jquery-1.10.1.min.js") %>" type="text/javascript"></script>
+
+        <asp:ContentPlaceHolder runat="server" ID="ScriptsPages" />
+        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
+        <script type="text/javascript">
+
+            function notification(message, type) {
+
+                console.log(message);
+                console.log(type);
+                //modify notification
+                $('.popup-notification').html(message);
+                $('.popup-notification').removeClass('error').removeClass('success');
+                $('.popup-notification').addClass(type);
+
+                $('.popup-notification').slideDown(200);
+
+                setTimeout(function () {
+
+                    $('.popup-notification').slideUp(200);
+
+                }, notificationTime)
+
+            }
+        </script>
     </form>
-
-    <script src="<%= ResolveUrl("~/Scripts/js/jquery-1.10.1.min.js") %>" type="text/javascript"></script>
-
-    <asp:ContentPlaceHolder runat="server" ID="ScriptsPages" />
-    <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
-    <script type="text/javascript">
-
-        function notification(message, type) {
-
-            console.log(message);
-            console.log(type);
-            //modify notification
-            $('.popup-notification').html(message);
-            $('.popup-notification').removeClass('error').removeClass('success');
-            $('.popup-notification').addClass(type);
-
-            $('.popup-notification').slideDown(200);
-
-            setTimeout(function () {
-
-                $('.popup-notification').slideUp(200);
-
-            }, notificationTime)
-
-        }
-    </script>
 </body>
 </html>
