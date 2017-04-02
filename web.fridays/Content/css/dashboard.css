@@ -354,7 +354,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d51d1d', end
 	#campaigns li label { float: left; padding-left: 20px;}
 	#campaigns li label a { margin-top: 23px; }
 
-		label { float: left; width: 35px; height: 100%; }
+		label { float: left; width: 35px; /*height: 100%;*/ }
 		label a { display: block; width: 18px; height: 18px; box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.16); background-color: #FFF; border-radius: 100%; cursor: pointer; }
 		label a.checked { box-shadow: 0px 0px 0px 1px #69c0af; background-color: #69c0af; background-image: url(../img/icons/check.png); background-repeat: no-repeat; background-position: center center; background-size: 9px; }
 

@@ -33,6 +33,21 @@ public partial class Login : System.Web.UI.Page
             string url = string.Empty;
 
             mensajes.Clear();
+            if (string.IsNullOrEmpty(txtEmail.Text.Trim()) && string.IsNullOrEmpty(txtPassword.Text.Trim()))
+            {
+                mensajes.Add("¡El usuario y contraseña esta vacío!");
+                string mjs = string.Empty;
+
+                mjs = Funciones.FormatoMsj(mensajes);
+
+                ScriptManager.RegisterStartupScript(
+                    this,
+                    this.GetType(),
+                    "StartupScript",
+                    "notification('" + mjs + "','error')",
+                    true);
+                return;
+            }
             if (string.IsNullOrEmpty(txtEmail.Text.Trim()))
             {
                 mensajes.Add("¡Usuario invalido!");
@@ -40,21 +55,6 @@ public partial class Login : System.Web.UI.Page
             if (string.IsNullOrEmpty(txtPassword.Text.Trim()))
             {
                 mensajes.Add("¡Contraseña invalida!");
-            }
-            if (mensajes.Count > 0)
-            {
-                //MostrarMensaje();
-                string mjs = string.Empty;
-
-                
-
-                ScriptManager.RegisterStartupScript(
-                    this,
-                    this.GetType(),
-                    "StartupScript",
-                    "notification('El usuario o la contraseña no existe','error')",
-                    true);
-                return;
             }
 
             string urlAcceso = string.Empty;
