@@ -10,8 +10,8 @@ namespace cm.mx.catalogo.Model.Map
             LazyLoad();
             CompositeId().KeyProperty(x => x.Promocionid, "PromocionId")
                          .KeyProperty(x => x.Membresiaid, "MembresiaId");
-            References(x => x.Promocion).Column("PromocionId");
-            References(x => x.Tipomembresia).Column("MembresiaId");
+            References(x => x.Promocion).Column("PromocionId").Not.Insert().Not.Update();
+            References(x => x.Tipomembresia).Column("MembresiaId").Not.Insert().Not.Update();
         }
     }
 }

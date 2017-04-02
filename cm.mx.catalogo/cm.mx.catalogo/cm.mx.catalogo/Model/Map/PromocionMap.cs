@@ -23,8 +23,8 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.Tipocliente).Column("TipoCliente").Not.Nullable();
             Map(x => x.Resumen).Column("Resumen").Not.Nullable();
             HasMany(x => x.Fechapublicacion).KeyColumn("PromocionId");
-            HasMany(x => x.Promociondetalle).KeyColumn("PromocionId").Cascade.All();
-            HasMany(x => x.Promocionmembresia).KeyColumn("PromocionId");
+            HasMany(x => x.Promociondetalle).KeyColumn("PromocionId").Cascade.All().Inverse();
+            HasMany(x => x.Promocionmembresia).KeyColumn("PromocionId").Cascade.All().Inverse();
         }
     }
 }

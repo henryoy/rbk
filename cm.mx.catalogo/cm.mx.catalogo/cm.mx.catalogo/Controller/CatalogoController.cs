@@ -136,6 +136,18 @@ namespace cm.mx.catalogo.Controller
             rPromocion = new PromocionRepository();
             try
             {
+                if (entidad.Promocionid > 0)
+                {                    
+                    entidad.Estado = "ACTIVO";
+                    
+                }
+                else
+                {
+                    entidad.Fechaalta = DateTime.Now;
+                    entidad.Estado = "ACTIVO";
+                    entidad.Usuarioaltaid = 1;
+                    entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
+                }
                 oPromocion = rPromocion.GuardarPromocion(entidad);
                 _exito = true;
             }
@@ -150,7 +162,7 @@ namespace cm.mx.catalogo.Controller
                     innerException = innerException.InnerException;
                 }
                 this.Errores.Add(innerException.Message);
-                throw innerException;
+                //throw innerException;
             }
             return oPromocion;
         }

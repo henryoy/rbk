@@ -26,7 +26,7 @@ namespace cm.mx.catalogo.Model
         {
             _exito = false;
             List<Tarjeta> lsMembresia = new List<Tarjeta>();
-            lsMembresia = _session.QueryOver<Tarjeta>().Where(a => a.Estatus == Enums.Estatus.ALTA.ToString()).List().ToList();
+            lsMembresia = _session.QueryOver<Tarjeta>().Where(a => a.Estatus == "ACTIVO").List().ToList();
             return lsMembresia;
         }
 
