@@ -153,13 +153,18 @@ namespace cm.mx.catalogo.Controller
                     entidad.Usuarioaltaid = 1;
                     entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
                     IsTransaction = PromocionVR.InsertarVR(entidad);
+                    
                 }
 
                 if (IsTransaction)
                 {
                     oPromocion = rPromocion.GuardarPromocion(entidad);
+                    
                     _exito = true;
                 }
+                else  Mensajes.AddRange(PromocionVR.Mensajes);
+
+                
             }
             catch (Exception innerException)
             {
@@ -692,9 +697,9 @@ namespace cm.mx.catalogo.Controller
             return _Count;
         }
 
-        public Promocion GetPromocionAplicable(string Codigo)
+        public List<Promocion> GetAllPromocionAplicable(string Codigo)
         {
-            Promocion oPromocion = new Promocion();
+            List<Promocion> lsPromocion = new List<Promocion>();
 
             try
             {               
@@ -705,17 +710,22 @@ namespace cm.mx.catalogo.Controller
                 {
                     rPromocion = new PromocionRepository();
                     if (oUsuario.VisitaActual > 0) {
-                        rPromocion.GetPromocionAply(oUsuario);
+                      lsPromocion =  rPromocion.GetPromocionAply(oUsuario);
                     }
                 }
 
             }
-            catch (Exception InnerException)
-            {
-
+            catch (Exception innerException)
+            {               
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                this.Errores.Add(innerException.Message);
+                throw innerException;
             }
 
-            return oPromocion;
+            return lsPromocion;
         }
     }
 }

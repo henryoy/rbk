@@ -11,6 +11,7 @@ namespace cm.mx.catalogo.Model.Rules
         private static List<string> _lsMensajes = new List<string>();
         public static List<string> Mensajes { get { return _lsMensajes; } }
         private static bool _exito = true;
+        private static TipoMembresiaRepository rTipomenbrecia;
 
         public static bool InsertarVR(Promocion Objeto)
         {
@@ -27,8 +28,29 @@ namespace cm.mx.catalogo.Model.Rules
             {
                 _lsMensajes.Add("El estado no puede ser vacío.");
                 _exito = false;
-            }           
+            }
+            if (Objeto.Promociondetalle != null)
+            {
+                if (Objeto.Promociondetalle.Count > 0)
+                {
+                    Promociondetalle oPromocionDetalle = Objeto.Promociondetalle.FirstOrDefault();
+                    if (oPromocionDetalle.Condicion == "VISITA")
+                    {
+                        rTipomenbrecia = new TipoMembresiaRepository();
+                        Tipomembresia oTipoMembresia = rTipomenbrecia.Query(f => f.Nombre == Objeto.Tipomembresia).ToList().FirstOrDefault();
+                        if (oTipoMembresia != null)
+                        {
+                            if (oTipoMembresia.NumeroDeVisitas < Convert.ToInt32(oPromocionDetalle.Valor1))
+                            {
+                                _lsMensajes.Add("El valor1 ingresado no puede exceder al número de visitas.");
+                                _exito = false;
 
+                            }
+                        }
+
+                    }
+                }
+            }
             return _exito;
         }
 
@@ -51,8 +73,29 @@ namespace cm.mx.catalogo.Model.Rules
             {
                 _lsMensajes.Add("El estado no puede ser vacío.");
                 _exito = false;
-            }          
+            }
+            if (Objeto.Promociondetalle != null)
+            {
+                if (Objeto.Promociondetalle.Count > 0)
+                {
+                    Promociondetalle oPromocionDetalle = Objeto.Promociondetalle.FirstOrDefault();
+                    if (oPromocionDetalle.Condicion == "VISITA")
+                    {
+                        rTipomenbrecia = new TipoMembresiaRepository();
+                        Tipomembresia oTipoMembresia = rTipomenbrecia.Query(f => f.Nombre == Objeto.Tipomembresia).ToList().FirstOrDefault();
+                        if (oTipoMembresia != null)
+                        {
+                            if (oTipoMembresia.NumeroDeVisitas < Convert.ToInt32(oPromocionDetalle.Valor1))
+                            {
+                                _lsMensajes.Add("El valor1 ingresado no puede exceder al número de visitas.");
+                                _exito = false;
 
+                            }
+                        }
+
+                    }
+                }
+            }
             return _exito;
         }
 
