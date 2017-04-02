@@ -6,7 +6,7 @@ using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using NHibernate.Linq;
 
 namespace cm.mx.catalogo.Model
 {
@@ -164,6 +164,13 @@ namespace cm.mx.catalogo.Model
             this._exito = true;
 
             return lsUsuario;
+        }
+        public Usuario GetUserCodigo(string Codigo)
+        {
+            Usuario oUsuario = new Usuario();
+            oUsuario = _session.Query<Usuario>().Where(f => f.Codigo == Codigo).FirstOrDefault();
+            return oUsuario;
+            
         }
         public override Usuario GetById(int id)
         {

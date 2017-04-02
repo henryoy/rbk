@@ -27,7 +27,7 @@ namespace cm.mx.catalogo.Model
         public virtual void AddMembresia(Promocionmembresia oMembresia)
         {
             Promocionmembresia.Add(oMembresia);
-            oMembresia.Promocion = this;
+            oMembresia.Promocion = this;       
         }
 
         public virtual int Promocionid { get; set; }

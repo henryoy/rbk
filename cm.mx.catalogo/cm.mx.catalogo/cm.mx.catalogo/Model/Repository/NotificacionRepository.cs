@@ -10,7 +10,7 @@ namespace cm.mx.catalogo.Model
         public List<Notificacion> GetAllActivos()
         {
             List<Notificacion> lsNotificacion = new List<Notificacion>();
-            lsNotificacion = _session.QueryOver<Notificacion>().Where(f => f.Estatus == Enums.Estatus.ALTA.ToString() || f.Estatus == Enums.Estatus.INACTIVO.ToString()).List().ToList();
+            lsNotificacion = _session.QueryOver<Notificacion>().Where(f => f.Estatus == Enums.Estatus.ACTIVO.ToString() || f.Estatus == Enums.Estatus.INACTIVO.ToString()).List().ToList();
             return lsNotificacion;
         }
 

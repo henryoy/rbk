@@ -26,7 +26,7 @@ namespace cm.mx.catalogo.Model
         {
             _exito = false;
             List<Tipomembresia> lsMembresia = new List<Tipomembresia>();
-            lsMembresia = _session.QueryOver<Tipomembresia>().Where(a => a.Estado == Enums.Estatus.ALTA.ToString()).List().ToList();
+            lsMembresia = _session.QueryOver<Tipomembresia>().Where(a => a.Estado == Enums.Estatus.ACTIVO.ToString()).List().ToList();
             return lsMembresia;
         }
 

@@ -88,6 +88,7 @@
     <Compile Include="Model\Repository\TIpoMembresiaRepository.cs" />
     <Compile Include="Model\Repository\UsuarioRepository.cs" />
     <Compile Include="Model\Rules\MembresiaVR.cs" />
+    <Compile Include="Model\Rules\PromocionVR.cs" />
     <Compile Include="Model\Rules\SucursalVR.cs" />
     <Compile Include="Model\Sesion.cs" />
     <Compile Include="Model\Sucursal.cs" />

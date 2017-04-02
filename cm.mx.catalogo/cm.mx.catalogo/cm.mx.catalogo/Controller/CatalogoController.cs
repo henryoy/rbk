@@ -136,10 +136,15 @@ namespace cm.mx.catalogo.Controller
             rPromocion = new PromocionRepository();
             try
             {
+                bool IsTransaction = false;
+
                 if (entidad.Promocionid > 0)
-                {                    
+                {
+                    entidad.Fechaalta = DateTime.Now;
+                    entidad.Usuarioaltaid = 1;
+                    entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
                     entidad.Estado = "ACTIVO";
-                    
+                    IsTransaction = PromocionVR.ActualizarVR(entidad);                    
                 }
                 else
                 {
@@ -147,9 +152,14 @@ namespace cm.mx.catalogo.Controller
                     entidad.Estado = "ACTIVO";
                     entidad.Usuarioaltaid = 1;
                     entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
+                    IsTransaction = PromocionVR.InsertarVR(entidad);
                 }
-                oPromocion = rPromocion.GuardarPromocion(entidad);
-                _exito = true;
+
+                if (IsTransaction)
+                {
+                    oPromocion = rPromocion.GuardarPromocion(entidad);
+                    _exito = true;
+                }
             }
             catch (Exception innerException)
             {
@@ -178,6 +188,34 @@ namespace cm.mx.catalogo.Controller
             try
             {
                 lsPromocion = rPromocion.GetAllPromocion();
+                _exito = true;
+            }
+            catch (Exception innerException)
+            {
+                if (rPromocion._session.Transaction.IsActive)
+                {
+                    rPromocion._session.Transaction.Rollback();
+                }
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                this.Errores.Add(innerException.Message);
+                throw innerException;
+            }
+            return lsPromocion;
+        }
+        public List<Promocion> GetAllPromocion(Paginacion oPaginacion)
+        {
+            List<Promocion> lsPromocion = new List<Promocion>();
+            _exito = false;
+            _errores.Clear();
+            _mensaje = string.Empty;
+            _mensajes.Clear();
+            rPromocion = new PromocionRepository();
+            try
+            {
+                lsPromocion = rPromocion.GetAllPromocion(oPaginacion);
                 _exito = true;
             }
             catch (Exception innerException)
@@ -652,6 +690,32 @@ namespace cm.mx.catalogo.Controller
                 throw innerException;
             }
             return _Count;
+        }
+
+        public Promocion GetPromocionAplicable(string Codigo)
+        {
+            Promocion oPromocion = new Promocion();
+
+            try
+            {               
+                Usuario oUsuario = new Usuario();
+                rUsuario = new UsuarioRepository();
+                oUsuario = rUsuario.GetUserCodigo(Codigo);
+                if (oUsuario != null)
+                {
+                    rPromocion = new PromocionRepository();
+                    if (oUsuario.VisitaActual > 0) {
+                        rPromocion.GetPromocionAply(oUsuario);
+                    }
+                }
+
+            }
+            catch (Exception InnerException)
+            {
+
+            }
+
+            return oPromocion;
         }
     }
 }

@@ -7,6 +7,12 @@ namespace cm.mx.catalogo.Model
         public virtual Promocion Promocion { get; set; }
         public virtual Tipomembresia Tipomembresia { get; set; }
 
+        public virtual void AddPromocion(Promocion oPromocion)
+        {
+            oPromocion.AddMembresia(this);
+            this.Promocion = oPromocion;
+        }
+
         #region NHibernate Composite Key Requirements
 
         public override bool Equals(object obj)

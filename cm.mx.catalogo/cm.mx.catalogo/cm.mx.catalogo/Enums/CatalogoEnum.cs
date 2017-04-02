@@ -3,7 +3,7 @@
     // se pretende no eliminar ningun elemento, sino solo dar de baja por seguiridad el sistema
     internal enum Estatus
     {
-        ALTA,//alta en general
+        ACTIVO,//alta en general
         INACTIVO,//inactivo
         BAJA,//Eliminado
     }
