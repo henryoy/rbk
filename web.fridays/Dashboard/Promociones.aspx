@@ -64,13 +64,7 @@
                         <div class="row_fecha"><%# Eval("Vigenciafinal","{0:d}") %></div>
                         <div class="row_membresia"><%# Eval("Tipomembresia") %></div>
                         <div class="actions semi_bold">
-                            <a href="../send/index.php?campaign_id=168761">
-                                <div class="send" name="168761">Ver</div>
-                            </a>
-                            <%--<asp:LinkButton CssClass="delete" runat="server" ID="lnkEliminar" OnClick="lnkEliminar_Click" CommandArgument='<%#Eval("Promocionid")%>'>Eliminar</asp:LinkButton>--%>
-                            <%--<div class="export" name="168761"></div>--%>
-                            <div class="duplicate" name="168761"></div>
-                            <div class="edit" name="168761"></div>
+                            <asp:LinkButton runat="server" ID="lnkVer" OnClick="lnkVer_Click" CssClass="send" CommandArgument='<%# Eval("Promocionid") %>'> VER </asp:LinkButton>                           
                         </div>
                     </li>
                 </ItemTemplate>
@@ -78,6 +72,7 @@
                     </ul>
                 </FooterTemplate>
             </asp:Repeater>
+             <ucPag:ucPaginacion ID="ucPagination" runat="server" contenedorClass="container" RowPaginasClass="pagination" PaginaClass="active"  OnClick="ucPagination_Click"/>
         </div>
     </div>
 </asp:Content>

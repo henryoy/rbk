@@ -20,7 +20,7 @@ public class Funciones
         string msj = "";
         mensajes.ForEach(x =>
         {
-            msj += x + "&#160;&#160;";
+            msj += x.Replace("'","\"") + "&#160;&#160;";
         });
 
         //if (!string.IsNullOrEmpty(msj))

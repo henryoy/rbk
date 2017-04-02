@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.master" CodeFile="Promocion.aspx.cs" Inherits="Dashboard_Promocion" %>
 
-<asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">    
+<asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
     <link rel="stylesheet" type="text/css" href="../Content/css/jquery-ui.css" />
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
@@ -240,7 +240,7 @@
             line-height: 80px;
             text-align: center;
             font-size: 17px;
-            color:#fff;
+            color: #fff;
             margin-left: 25%;
         }
 
@@ -269,7 +269,7 @@
             cursor: pointer;
         }
 
-        #datepicker,#datepicker_init {
+        #datepicker, #datepicker_init {
             -webkit-transition: all 0.3s ease;
             z-index: 9999999999;
             position: relative;
@@ -399,17 +399,17 @@
             <div id="send_view">
                 <div id="send_sidebar">
                     <!-- Form -->
-                    <div id="send_form" data-campaign="171862">
+                    <div id="send_form">
 
                         <h4 class="semi_bold">Título <span class="errorSenderName"></span></h4>
-                        <asp:TextBox runat="server" ID="txtTitulo" placeholder="Título"></asp:TextBox>                        
+                        <asp:TextBox runat="server" ID="txtTitulo" placeholder="Título"></asp:TextBox>
                         <h4 class="semi_bold">Descripción <span class="errorSenderEmailAddress"></span></h4>
-                        <asp:TextBox runat="server" ID="txtDescripcion" placeholder="Descripción" ></asp:TextBox>  
+                        <asp:TextBox runat="server" ID="txtDescripcion" placeholder="Descripción"></asp:TextBox>
                         <h4 class="semi_bold">Tipo tarjeta
 							<span class="errorSenderSubscriberList"></span>
                         </h4>
                         <label id="tipoMembresia">
-                            <asp:DropDownList class="subscriber_lists" runat="server" ID="dpTarjeta"></asp:DropDownList>                   
+                            <asp:DropDownList class="subscriber_lists" runat="server" ID="dpTarjeta"></asp:DropDownList>
                         </label>
                         <h4 class="semi_bold">Tipo Membresia
 							<span class="errorSenderSubscriberList"></span>
@@ -419,24 +419,22 @@
                                 <asp:ListItem Value="VISITA">VISITA</asp:ListItem>
                                 <asp:ListItem Value="EVENTO">EVENTO</asp:ListItem>
                                 <asp:ListItem Value="AMBOS">AMBOS</asp:ListItem>
-                            </asp:DropDownList>                   
+                            </asp:DropDownList>
                         </label>
-                        <h4 class="semi_bold" style="padding-bottom: 24px!important; margin-top: 30px;">
-                            <a href="../account/signature/index.php" target="_blank" style="color: #4a4a4a;">
-                                Include Email Signature
+                        <%--<h4 class="semi_bold" style="padding-bottom: 24px!important; margin-top: 30px;">
+                            <a href="../account/signature/index.php" target="_blank" style="color: #4a4a4a;">Include Email Signature
                             </a>
                             <div class="switch disabled" name="signature_switch" style="right: -1px; top: -4px;">
                                 <div class="switch_thumb active" style="right: 19px;"></div>
                                 <input type="hidden" value="0" name="signature" id="signature">
                             </div>
-                        </h4>
-                        <h4 class="semi_bold" style="padding-bottom: 18px!important; margin-top: 6px;">
-                             Configurar Fecha de promoción					
+                        </h4>--%>
+                        <h4 class="semi_bold" style="padding-bottom: 18px!important; margin-top: 6px;">Configurar Fecha de promoción					
 							<div class="switch disabled" name="schedule_switch" style="right: -1px; top: -4px;">
-                                <div class="switch_thumb active" style="right: 19px;"></div>                                
+                                <div class="switch_thumb active" style="right: 19px;"></div>
                                 <input type="hidden" value="0" name="schedule" id="schedule_campaign">
                             </div>
-                        </h4>                        
+                        </h4>
                         <div class="scheduleCampaignWrapper clear-fix">
                             <div class="scheduleCampaignWrapperLeft">
                                 <!--<input type="text" placeholder="" class="send_schedule_campaign_day_init" value="" readonly="">-->
@@ -448,18 +446,18 @@
                         </div>
                         <div id="datepicker_init" class="ll-skin-melon clear-fix"></div>
                         <div class="scheduleCampaignWrapper clear-fix">
-                            <div class="scheduleCampaignWrapperLeft">                                
+                            <div class="scheduleCampaignWrapperLeft">
                                 <asp:TextBox runat="server" ID="txtFechaFinal" CssClass="send_schedule_campaign_day" ViewStateMode="Enabled"></asp:TextBox>
                             </div>
                             <%--<div class="scheduleCampaignWrapperRight">
                                 <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_time"  />
                             </div>--%>
-                        </div>                        
+                        </div>
                         <div id="datepicker" class="ll-skin-melon clear-fix"></div>
                     </div>
                     <div id="generateChecklist" class="semi_bold">
                         <asp:LinkButton runat="server" ID="lnkGuardarPromocion" CssClass="generateChecklistName" OnClick="lnkGuardarPromocion_Click">Guardar promoción</asp:LinkButton>
-                       <%-- <div class="generateChecklistName">
+                        <%-- <div class="generateChecklistName">
                             Guardar promoción
                         </div>--%>
 
@@ -467,20 +465,64 @@
 
                     </div>
                 </div>
+                <div id="filter_sidebar" class="expanded" style="left: 340px;">
+                    <div id="filter_form">
+                        <h4 class="semi_bold">Sucursales</h4>
+                        <div class="filter_item selected" data-selection-type="country">
+                            <span>TODAS</span>
+                            <div class="filter_amount" style="right: 12px;"></div>
+                        </div>
+                        <h4 class="semi_bold">Valor 1</h4>
+                        <asp:TextBox runat="server" ID="txtValor1"></asp:TextBox> 
+                        
+                        <h4 class="semi_bold">Valor 2</h4>
+                        <asp:TextBox runat="server" ID="txtValor2"></asp:TextBox>                                                    
+                                                
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 </asp:Content>
 
 <asp:Content runat="server" ID="ScriptsJS" ContentPlaceHolderID="ScriptsPages">
-    
+
     <script src="<%= ResolveClientUrl("~/Scripts/js/easing.js") %>" type="text/javascript"></script>
-   <script src="<%= ResolveClientUrl("~/Scripts/js/jquery.color.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/js/jquery.color.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/jquery-ui.min.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/functions.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/custom.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/chartjs/waypoints.min.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
+
+        function ActiveCalendar() {
+
+            the_switch = $("[name='schedule_switch']");
+            switch_thumb = $(this).find('.switch_thumb');
+
+            if ($(switch_thumb).hasClass('active')) {
+
+                $('[name="schedule"]').val('0');
+                $('#datepicker, .scheduleCampaignWrapper').hide();
+
+            }
+
+            else {
+
+                $('[name="schedule"]').val('1');
+                $('.scheduleCampaignWrapper').show();
+
+                setTimeout(function () {
+
+                    $('#send_form').animate({
+                        scrollTop: $('#send_form')[0].scrollHeight - $('#send_form')[0].clientHeight
+                    }, 500);
+
+                }, 50);
+
+            }
+            //$('.scheduleCampaignWrapper').show();
+        }
+
         $(document).ready(function () {
 
             //vars
@@ -502,11 +544,11 @@
 
             }, 1000);
 
-                       
+
 
             $(document).on('click', '.send_schedule_campaign_day', function (e) {
                 e.stopPropagation();
-                
+
                 $('#datepicker').show();
                 $('#send_form .selected').removeClass('selected');
             });
@@ -518,7 +560,7 @@
                 $('#send_form .selected').removeClass('selected');
             });
 
-           
+
             if (getQueryVariable('callback') == 'success') {
 
                 analytics_id = getQueryVariable('id');
@@ -889,7 +931,7 @@
 
         }
 
-       
+
 
         function appendList(el, id, list) {
 
@@ -1389,12 +1431,12 @@
 
         $(function () {
 
-            
+
             $('#datepicker').datepicker({
                 onSelect: function (date) {
 
                     $('.send_schedule_campaign_day').val(date);
-                    $('#datepicker').hide();             
+                    $('#datepicker').hide();
 
                 },
                 selectWeek: true,
@@ -1417,11 +1459,11 @@
             });
         });
 
-        $.expr[':'].textEquals = $.expr.createPseudo(function (arg) {
-            return function (elem) {
-                return $(elem).text().match("^" + arg + "$");
-            };
-        });
+            $.expr[':'].textEquals = $.expr.createPseudo(function (arg) {
+                return function (elem) {
+                    return $(elem).text().match("^" + arg + "$");
+                };
+            });
 
     </script>
 </asp:Content>

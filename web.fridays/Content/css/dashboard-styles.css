@@ -445,6 +445,9 @@
 .popup-notification.error {
     background-color: #ea5a5b;
 }
+.popup-notification.success {
+    background-color: rgb(105, 192, 175);
+}
 
 .popup-notification {
     width: 100%;

@@ -414,8 +414,6 @@ $(document).ready(function () {
 
     });
 
-
-
     $('#account_view input[type="text"], #account_view input[type="password"]').keypress(function () {
 
         $('#update_details').removeClass('button').addClass('button_active');
