@@ -98,8 +98,7 @@ namespace cm.mx.catalogo.Model
            
             List<Promocion> lsPromocion = new List<Promocion>();
             lsPromocion = _session.QueryOver<Promocion>().Where(f => f.Vigenciafinal > DateTime.Now).List().ToList();
-            return new List<Promocion>();
-            //_session.QueryOver<Promocion>().Where(f => f.Promociondetalle.Any(f.Valor1 == visitasActuales));
+            return lsPromocion;
         }
     }
 }

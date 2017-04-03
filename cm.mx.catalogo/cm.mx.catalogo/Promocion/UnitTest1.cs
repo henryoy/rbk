@@ -13,7 +13,9 @@ namespace Promocion
         public void TestMethod1()
         {
             CatalogoController cCatalogo = new CatalogoController();
-            cCatalogo.GetPromocion(1);
+            //cCatalogo.GetPromocion(1);
+            List<cm.mx.catalogo.Model.Promocion> lsPromo = new List<cm.mx.catalogo.Model.Promocion>();
+            lsPromo = cCatalogo.GetAllPromocionAplicable("11");
 
         }
         [TestMethod]

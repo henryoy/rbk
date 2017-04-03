@@ -168,7 +168,12 @@ namespace cm.mx.catalogo.Model
         public Usuario GetUserCodigo(string Codigo)
         {
             Usuario oUsuario = new Usuario();
-            oUsuario = _session.Query<Usuario>().Where(f => f.Codigo == Codigo).FirstOrDefault();
+
+            ICriteria criteria = _session.CreateCriteria<Usuario>();
+            criteria.Add(Restrictions.Eq("Codigo", Codigo));
+
+            oUsuario = criteria.List<Usuario>().FirstOrDefault();
+            //oUsuario = _session.Query<Usuario>().Where(f => f.Codigo == Codigo).FirstOrDefault();
             return oUsuario;
             
         }

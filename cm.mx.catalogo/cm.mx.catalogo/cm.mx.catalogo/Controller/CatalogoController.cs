@@ -52,7 +52,7 @@ namespace cm.mx.catalogo.Controller
             get { return _mensajes; }
         }
         #endregion
-       
+
         #region Repositorios
 
         private PromocionRepository rPromocion;
@@ -144,7 +144,7 @@ namespace cm.mx.catalogo.Controller
                     entidad.Usuarioaltaid = 1;
                     entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
                     entidad.Estado = "ACTIVO";
-                    IsTransaction = PromocionVR.ActualizarVR(entidad);                    
+                    IsTransaction = PromocionVR.ActualizarVR(entidad);
                 }
                 else
                 {
@@ -153,18 +153,18 @@ namespace cm.mx.catalogo.Controller
                     entidad.Usuarioaltaid = 1;
                     entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
                     IsTransaction = PromocionVR.InsertarVR(entidad);
-                    
+
                 }
 
                 if (IsTransaction)
                 {
                     oPromocion = rPromocion.GuardarPromocion(entidad);
-                    
+
                     _exito = true;
                 }
-                else  Mensajes.AddRange(PromocionVR.Mensajes);
+                else Mensajes.AddRange(PromocionVR.Mensajes);
 
-                
+
             }
             catch (Exception innerException)
             {
@@ -566,9 +566,10 @@ namespace cm.mx.catalogo.Controller
             _exito = true;
             Mensajes.Clear();
             Errores.Clear();
-            try {
+            try
+            {
                 lsUsuario = rUsuario.GetAllUserRegisterNow(oPaginacion);
-                _exito = true;            
+                _exito = true;
             }
             catch (Exception innerException)
             {
@@ -702,21 +703,44 @@ namespace cm.mx.catalogo.Controller
             List<Promocion> lsPromocion = new List<Promocion>();
 
             try
-            {               
+            {
+                List<Promocion> _lsPromocion = new List<Promocion>();
                 Usuario oUsuario = new Usuario();
                 rUsuario = new UsuarioRepository();
                 oUsuario = rUsuario.GetUserCodigo(Codigo);
                 if (oUsuario != null)
                 {
                     rPromocion = new PromocionRepository();
-                    if (oUsuario.VisitaActual > 0) {
-                      lsPromocion =  rPromocion.GetPromocionAply(oUsuario);
+                    if (oUsuario.VisitaActual > 0)
+                    {
+                        lsPromocion = rPromocion.GetPromocionAply(oUsuario);
+                        foreach (Promocion oPromocion in lsPromocion)
+                        {
+                            if (oPromocion.Promociondetalle != null && oPromocion.Promociondetalle.Count > 0)
+                            {
+                                foreach (Promociondetalle oPromocionDetalle in oPromocion.Promociondetalle)
+                                {
+                                    if (oPromocionDetalle.Condicion == "VISITA")
+                                    {
+                                        int Valor1 = 0;
+                                        if (!string.IsNullOrEmpty(oPromocionDetalle.Valor1))
+                                        {
+                                            Valor1 = Convert.ToInt32(oPromocionDetalle.Valor1);
+                                        }
+                                        if (oUsuario.VisitaActual >= Valor1)
+                                            _lsPromocion.Add(oPromocion);
+                                    }
+                                    else
+                                        _lsPromocion.Add(oPromocion);
+                                }
+                            }
+                        }
                     }
                 }
 
             }
             catch (Exception innerException)
-            {               
+            {
                 while (innerException.InnerException != null)
                 {
                     innerException = innerException.InnerException;
