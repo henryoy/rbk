@@ -152,6 +152,8 @@ namespace cm.mx.catalogo.Controller
                     entidad.Estado = "ACTIVO";
                     entidad.Usuarioaltaid = 1;
                     entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
+                    entidad.Vigenciainicial = Convert.ToDateTime("1900-01-01");
+                    entidad.Vigenciafinal = Convert.ToDateTime("1900-01-01");
                     IsTransaction = PromocionVR.InsertarVR(entidad);
 
                 }

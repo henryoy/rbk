@@ -40,7 +40,7 @@ namespace cm.mx.catalogo.Model.Rules
                         Tipomembresia oTipoMembresia = rTipomenbrecia.Query(f => f.Nombre == Objeto.Tipomembresia).ToList().FirstOrDefault();
                         if (oTipoMembresia != null)
                         {
-                            if (oTipoMembresia.NumeroDeVisitas < Convert.ToInt32(oPromocionDetalle.Valor1))
+                            if (Convert.ToInt32(oPromocionDetalle.Valor1) < oTipoMembresia.ApartirDe || Convert.ToInt32(oPromocionDetalle.Valor1) > oTipoMembresia.Hasta)
                             {
                                 _lsMensajes.Add("El valor1 ingresado no puede exceder al número de visitas.");
                                 _exito = false;
