@@ -2,9 +2,41 @@
 
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
     <link rel="stylesheet" type="text/css" href="../Content/css/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="<%= ResolveClientUrl("~/Content/classicTheme/style.css") %>" media="screen">
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <style>
+
+        .ui-icon-cenis-calendar {
+            background-image: url(../images/icon/2424_calendar.png);
+        }
+        .ui-icon-cenis {
+            width: 24px;
+            height: 24px; 
+        }
+        
+        .ui-icon-cenis {
+            margin-top:35%;
+            display: block;
+            text-indent: -99999px;
+            overflow: hidden;
+            background-repeat: no-repeat;
+        }
+
+        textarea {
+            box-shadow: 0px 0px 0px 1px #d8d8d8;
+            padding: 0 40px 0 10px;
+            width: 100%;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            line-height: 20px;
+            color: #23282d;
+            font-size: 13px;
+            margin-bottom: 29px;
+            border: 0px;
+            resize: none;
+        }
+
         .back_btn {
             height: 43px;
             position: absolute;
@@ -169,7 +201,7 @@
             color: #5a5a5a;
         }
 
-        #send_view li {
+        /*#send_view li {
             box-shadow: 1px 0 0 rgba(0,0,0,0.12), 0 1px 0 rgba(0,0,0,0.12), -1px 0 0 rgba(0,0,0,0.12);
             height: 45px;
             padding: 0 53px 0 10px;
@@ -189,7 +221,7 @@
             position: relative;
             font-family: Helvetica, Arial, "Lucida Grande", sans-serif !important;
             line-height: 45px;
-        }
+        }*/
 
         .edit_lists_btn {
             position: absolute;
@@ -247,20 +279,21 @@
         .scheduleCampaignWrapper {
             position: relative;
             display: none;
+            margin-bottom:5%;
         }
 
-        /*.scheduleCampaignWrapperLeft {
+        .scheduleCampaignWrapperLeft {
             float: left;
-            width: 60%;
+            width: 90%;
             padding-right: 25px;
             box-sizing: border-box;
             -moz-box-sizing: border-box;
             height: 45px;
-        }*/
+        }
 
         .scheduleCampaignWrapperRight {
             float: left;
-            width: 40%;
+            width: 10%;
             height: 45px;
         }
 
@@ -283,7 +316,7 @@
             display: none;
         }
 
-        .uploadFile {
+        /*.uploadFile {
             position: absolute;
             right: 0px;
             top: 0px;
@@ -314,7 +347,7 @@
             text-align: center;
             line-height: 18px;
             cursor: pointer;
-        }
+        }*/
 
         #selection_form h4 {
             height: 14px;
@@ -348,14 +381,14 @@
             text-transform: uppercase;
         }
 
-        .filter_button {
+        /*.filter_button {
             position: absolute;
             right: 0px;
             top: 0px;
             cursor: pointer;
             font-size: 13px;
             color: #70cce5;
-        }
+        }*/
 
         .viewList {
             right: 0px;
@@ -388,6 +421,42 @@
                 color: #69c0af;
                 background-image: url(../img/icons/arrow_left_hover.png);
             }
+
+        /* AJAX UPLOAD */
+        .ax-clear,
+        .ax-browse-c,
+        .ax-main-title,
+        .ax-upload-all,
+        .ax-upload.ax-button {
+            display: none !important;
+        }
+
+        .ax-remove {
+            margin-top: -10px;
+            width: 25px;
+            height: 25px;
+            background-image: url(../images/delete2.jpg);
+            background-repeat: no-repeat;
+            background-position-x: center;
+            background-position-y: center;
+            border: none;
+        }
+
+        .imgTarjeta:hover {
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        input.color-picker {
+            width: 40px !important;
+            height: 40px !important;
+            padding: 0px;
+            border: none !important;
+        }
+
+        .color-picker:hover {
+            cursor: pointer;
+        }
     </style>
 
     <div id="campaigns" class="disable_selection semi_bold">
@@ -405,6 +474,8 @@
                         <asp:TextBox runat="server" ID="txtTitulo" placeholder="Título"></asp:TextBox>
                         <h4 class="semi_bold">Descripción <span class="errorSenderEmailAddress"></span></h4>
                         <asp:TextBox runat="server" ID="txtDescripcion" placeholder="Descripción"></asp:TextBox>
+                        <h4 class="semi_bold">Términos y/o condiciones <span class="errorSenderEmailAddress"></span></h4>
+                        <asp:TextBox runat="server" TextMode="MultiLine" Rows="6" Columns="40" ID="txtCondiciones" placeholder="..."></asp:TextBox>
                         <h4 class="semi_bold">Tipo tarjeta
 							<span class="errorSenderSubscriberList"></span>
                         </h4>
@@ -418,17 +489,8 @@
                             <asp:DropDownList class="subscriber_lists" runat="server" ID="dpTipoPromocion">
                                 <asp:ListItem Value="VISITA">VISITA</asp:ListItem>
                                 <asp:ListItem Value="EVENTO">EVENTO</asp:ListItem>
-                                <asp:ListItem Value="AMBOS">AMBOS</asp:ListItem>
                             </asp:DropDownList>
                         </label>
-                        <%--<h4 class="semi_bold" style="padding-bottom: 24px!important; margin-top: 30px;">
-                            <a href="../account/signature/index.php" target="_blank" style="color: #4a4a4a;">Include Email Signature
-                            </a>
-                            <div class="switch disabled" name="signature_switch" style="right: -1px; top: -4px;">
-                                <div class="switch_thumb active" style="right: 19px;"></div>
-                                <input type="hidden" value="0" name="signature" id="signature">
-                            </div>
-                        </h4>--%>
                         <h4 class="semi_bold" style="padding-bottom: 18px!important; margin-top: 6px;">Configurar Fecha de promoción					
 							<div class="switch disabled" name="schedule_switch" style="right: -1px; top: -4px;">
                                 <div class="switch_thumb active" style="right: 19px;"></div>
@@ -439,19 +501,21 @@
                             <div class="scheduleCampaignWrapperLeft">
                                 <!--<input type="text" placeholder="" class="send_schedule_campaign_day_init" value="" readonly="">-->
                                 <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_day_init" ViewStateMode="Enabled"></asp:TextBox>
+                                
                             </div>
-                            <%--<div class="scheduleCampaignWrapperRight">
-                                <input type="text" placeholder="" class="send_schedule_campaign_time">
-                            </div>--%>
+                            <div class="scheduleCampaignWrapperRight">
+                                <span class="send_schedule_campaign_day_init ui-icon-cenis ui-icon-cenis-calendar"></span>
+                            </div>
                         </div>
                         <div id="datepicker_init" class="ll-skin-melon clear-fix"></div>
                         <div class="scheduleCampaignWrapper clear-fix">
                             <div class="scheduleCampaignWrapperLeft">
-                                <asp:TextBox runat="server" ID="txtFechaFinal" CssClass="send_schedule_campaign_day" ViewStateMode="Enabled"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="txtFechaFinal" CssClass="send_schedule_campaign_day" ViewStateMode="Enabled"></asp:TextBox>                                
                             </div>
-                            <%--<div class="scheduleCampaignWrapperRight">
-                                <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_time"  />
-                            </div>--%>
+                            <div class="scheduleCampaignWrapperRight">
+                                <span class="send_schedule_campaign_day ui-icon-cenis ui-icon-cenis-calendar"></span>
+                                <%--<asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_time"  />--%>
+                            </div>
                         </div>
                         <div id="datepicker" class="ll-skin-melon clear-fix"></div>
                     </div>
@@ -468,16 +532,24 @@
                 <div id="filter_sidebar" class="expanded" style="left: 340px;">
                     <div id="filter_form">
                         <h4 class="semi_bold">Sucursales</h4>
-                        <div class="filter_item selected" data-selection-type="country">
+                        <asp:DropDownList class="subscriber_lists" runat="server" ID="dpSucursales">
+                        </asp:DropDownList>
+                        <br />
+                        <%--<div class="filter_item selected" data-selection-type="country">
                             <span>TODAS</span>
                             <div class="filter_amount" style="right: 12px;"></div>
+                        </div>--%>
+                        <h4 class="semi_bold" runat="server" id="lblValor1">Valor 1</h4>
+                        <asp:TextBox runat="server" ID="txtValor1" CssClass="entero"></asp:TextBox>
+
+                        <h4 class="semi_bold" runat="server" id="lblValor2">Valor 2</h4>
+                        <asp:TextBox runat="server" ID="txtValor2"></asp:TextBox>
+                        <h4 class="semi_bold" runat="server">Imagen</h4>
+                        <asp:Image runat="server" ID="imgTarjeta" CssClass="imgTarjeta" ToolTip="Click para seleccionar imagen" Height="36" Width="62" ImageUrl="~/Images/icon-gallery.svg" />
+                        <asp:HiddenField runat="server" ID="hfTajeta" ClientIDMode="Static" Value="" />
+
+                        <div id="uploader_div">
                         </div>
-                        <h4 class="semi_bold">Valor 1</h4>
-                        <asp:TextBox runat="server" ID="txtValor1"></asp:TextBox> 
-                        
-                        <h4 class="semi_bold">Valor 2</h4>
-                        <asp:TextBox runat="server" ID="txtValor2"></asp:TextBox>                                                    
-                                                
                     </div>
                 </div>
             </div>
@@ -492,6 +564,89 @@
     <script src="<%= ResolveClientUrl("~/Scripts/js/functions.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/custom.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/chartjs/waypoints.min.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/js/autoNumeric-min.js") %>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/js/ajaxupload-min.js") %>" type="text/javascript"></script>
+    <script type="text/javascript">
+        function pageLoad(sender, args) {
+            $(document).ready(function () {
+
+                $('.decimal').autoNumeric('init', {
+                    aForm: false,
+                    aDec: '.',
+                    vMin: '-999999999.99',
+                    vMax: '999999999.99'
+                });
+
+                $('.entero').autoNumeric('init', {
+                    aForm: false,
+                    vMin: '0',
+                    vMax: '999999999'
+                });
+
+                $('#uploader_div').ajaxupload({
+                    url: '../upload.aspx',
+                    maxFileSize: '1M',
+                    maxFiles: 1,
+                    resizeImage: {
+                        maxWidth: 60,
+                        maxHeight: 42,
+                        quality: 0.5,
+                        scaleMethod: undefined,
+                        format: undefined,
+                        removeExif: false
+                    },
+                    allowExt: ['jpg', 'jpeg', 'bmp', 'png'],
+                    removeOnSuccess: true,
+                    error: function (txt, obj) {
+                        notification(txt, 'error');
+                    },
+                    onSelect: function (files) {
+                        var name = "../uploads/" + files[0].name;
+                        $("#hfTajeta").val(name);
+                    },
+                    finish: function (file) {
+                        GudarDatos();
+                    },
+                    success: function (file_name) {
+                        $(".imgTarjeta").attr("src", "../uploads/" + file_name);
+                    }
+                });
+
+                $(document).on("click", ".imgTarjeta", function (e) {
+                    $(".ax-browse").trigger("click");
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                });
+
+                $(document).on("click", ".btnTrue", function (e) {
+                    var Archivos = $('.ax-file-list li');
+                    var seleccionado = $("#hfTajeta").val();
+                    var procesado = $(".imgTarjeta").attr("src");
+
+                    console.log(seleccionado);
+                    console.log(procesado);
+
+                    if (seleccionado == procesado) {
+                        GudarDatos();
+                    }
+                    else if (Archivos.length == 0) {
+                        notification('Seleccione una imagen', 'error');
+                    }
+                    else {
+                        $(".ax-upload").click();
+                    }
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                });
+
+                window.GudarDatos = function () {
+                    eval($(".btn-save").attr('href'));
+                }
+            });
+        }
+    </script>
     <script type="text/javascript">
 
         function ActiveCalendar() {
@@ -520,7 +675,6 @@
                 }, 50);
 
             }
-            //$('.scheduleCampaignWrapper').show();
         }
 
         $(document).ready(function () {
@@ -548,7 +702,6 @@
 
             $(document).on('click', '.send_schedule_campaign_day', function (e) {
                 e.stopPropagation();
-
                 $('#datepicker').show();
                 $('#send_form .selected').removeClass('selected');
             });
@@ -561,155 +714,11 @@
             });
 
 
-            if (getQueryVariable('callback') == 'success') {
-
-                analytics_id = getQueryVariable('id');
-
-                notificationContent = "Campaign successfully sent!"; notificationColor = "#7ebbad"; notification(); setTimeout(function () { $(location).attr("href", "../analytics/index.php?id=" + analytics_id); }, 3000);
-
-            }
-
-            else if (getQueryVariable('callback') == 'credits') {
-
-
-                amount = getQueryVariable('amount');
-                save = getQueryVariable('save');
-                stripe = getQueryVariable('stripe');
-                headline = 'You need to buy more credits'
-                paragraph = 'It seems you don\'t have enough credits to send out your campaign. You just need ' + amount + ' more.';
-
-                btnTrue = 'Buy ' + amount + ' credits';
-                btnTrueId = 'buy_more_credits';
-
-                openPopup();
-
-            }
-
-            else if (getQueryVariable('callback') == 'lowplan') {
-
-                notificationContent = "You have to many subscribers in order to sent this newsletter. Please upgrade"; notificationColor = "#ea5a5b"; notification(); setTimeout(function () { $(location).attr("href", "../credits/index.php?"); }, 3000);
-
-            }
-
-
-            else if (getQueryVariable('callback') == 'verify') {
-
-                email = getQueryVariable('email');
-                name = getQueryVariable('name');
-                name = decodeURIComponent((name).replace(/\+/g, '%20'));
-                subject = getQueryVariable('subject');
-                subject = decodeURIComponent((subject).replace(/\+/g, '%20'));
-                list = getQueryVariable('list');
-                list = decodeURIComponent((list).replace(/\+/g, '%20'));
-
-                headline = 'Please verify ' + email
-                paragraph = 'Due to security measures, we need to make sure you have control over <span class="brandColor">' + email + '</span>. This is a one time process. Please, check your email.';
-
-                inputField = 'Verification Code';
-                inputFieldId = 'verification_value';
-
-                btnTrue = 'Verify address and send campaign';
-                btnTrueId = 'verify_and_send';
-
-                openPopup();
-
-                subject = decodeURIComponent((subject).replace(/\+/g, '%20'));
-                subject = subject.replace(/\\/g, '');
-                name = decodeURIComponent((name).replace(/\+/g, '%20'));
-                $('#send_from_name').val(name);
-                $('#send_from_email').val(email);
-                $('#send_subject_line').val(subject);
-
-                setTimeout(function () {
-
-                    $('[data-list-name="' + list + '"]').trigger('click');
-
-                }, 250)
-
-
-            }
-
-            else if (getQueryVariable('redirect') == '1') {
-
-                email = getQueryVariable('email');
-                name = getQueryVariable('name');
-                subject = getQueryVariable('subject');
-                list = getQueryVariable('list');
-
-                subject = decodeURIComponent((subject).replace(/\+/g, '%20'));
-                subject = subject.replace(/\\/g, '');
-                list = decodeURIComponent((list).replace(/\+/g, '%20'));
-                name = decodeURIComponent((name).replace(/\+/g, '%20'));
-
-                $('#send_from_name').val(name);
-                $('#send_from_email').val(email);
-                $('#send_subject_line').val(subject);
-
-                setTimeout(function () {
-
-                    $('[data-list-name="' + list + '"]').trigger('click');
-
-                }, 250)
-
-            }
-
-            $(document).on('click', '#verify_and_send', function () {
-
-                if (disableFlag == '1') {
-
-                    return false;
-
-                }
-
-                disableFlag = 1;
-
-                $(this).val('Verifying..')
-
-                verification_code = $('#verification_value').val();
-
-                $.ajax({
-                    type: "POST",
-                    dataType: "html",
-                    url: "../scripts/calls.php?func=verify_address",
-                    data: { verification_code: verification_code }
-                }).done(function (data) {
-
-                    if (data == 0) {
-
-                        closePopup();
-
-                        setTimeout(function () {
-
-                            $('#generateChecklist').trigger('click');
-
-                        }, 500);
-
-                    }
-
-                    else {
-
-                        notificationContent = "Wrong verification code"; notificationColor = "#ea5a5b"; notification();
-                        $('#verify_and_send').val('Verify Email Address');
-
-                    }
-
-                    disableFlag = 0;
-
-                });
-
-            });
-
             $(document).on('click', 'body', function () {
-
                 $('#datepicker').hide();
-
+                $('#datepicker_init').hide();
             });
-
-            $(document).on('click', '#continue_to_analytics', function () {
-
-                $(location).attr('href', '../analytics/campaign/index.php?id=' + campaignId);
-
-            });
+                       
 
             $(document).on('mousedown', '.switch', function () {
 
@@ -792,609 +801,10 @@
 
                 }
 
-            });
-
-            $(document).on('click', '#buy_more_credits', function () {
-
-                $(location).attr('href', '../checkout/index.php?credits=' + creditsShort);
-
-            })
+            });           
 
         });
 
-        function openSelectionSidebar() {
-
-            $('#selection_sidebar').show();
-            $('#selection_sidebar').addClass('expanded');
-            $('#selection_sidebar .selected').removeClass('selected');
-            $('#selection_sidebar').css('left', '340px');
-            $('#selection_sidebar').animate({
-
-                scrollTop: 0
-
-            }, 10);
-
-            setTimeout(function () {
-
-                $('#selection_sidebar').animate({
-
-                    left: '700px'
-
-                }, { duration: 400, easing: 'easeOutBack' });
-
-            }, 10)
-
-        }
-
-        function closeSelectionSidebar() {
-
-            if (!$('#selection_sidebar').hasClass('expanded')) {
-
-                return false;
-
-            }
-
-            $('#selection_sidebar').removeClass('expanded');
-
-            $('#selection_sidebar').animate({
-
-                left: '340px'
-
-            }, { duration: 400, easing: 'easeInBack' });
-
-            setTimeout(function () {
-
-                $('#selection_sidebar').css('left', '-41px');
-
-            }, 420)
-
-        }
-
-        function openFilterSidebar() {
-
-            $('#filter_sidebar').addClass('expanded');
-
-            country_total = $('#send_form .selected').attr('data-total-country');
-            os_total = $('#send_form .selected').attr('data-total-os');
-            browser_total = $('#send_form .selected').attr('data-total-browser');
-            referrer_total = $('#send_form .selected').attr('data-total-referrer');
-            vip_status = parseInt($('#send_form .selected').attr('data-selected-vip'));
-
-            //show number
-            $('#filter_form [data-selection-type="country"] .filter_amount').each(function () {
-
-                el = $(this);
-
-                $(this).text(country_total);
-
-                if (country_total > 0) {
-
-                    $(el).closest('.filter_item').find('span').text('Selected items');
-
-                }
-
-            })
-
-            $('#filter_form [data-selection-type="os"] .filter_amount').each(function () {
-
-                el = $(this);
-
-                $(this).text(os_total);
-
-                if (os_total > 0) {
-
-                    $(el).closest('.filter_item').find('span').text('Selected items');
-
-                }
-
-            })
-
-            $('#filter_form [data-selection-type="browser"] .filter_amount').each(function () {
-
-                el = $(this);
-
-                $(this).text(browser_total);
-
-                if (browser_total > 0) {
-
-                    $(el).closest('.filter_item').find('span').text('Selected items');
-
-                }
-
-            })
-
-            $('#filter_form [data-selection-type="referrer"] .filter_amount').each(function () {
-
-                el = $(this);
-
-                $(this).text(referrer_total);
-
-                if (referrer_total > 0) {
-
-                    $(el).closest('.filter_item').find('span').text('Selected items');
-
-                }
-
-            });
-
-            $('#filter_sidebar select').prop('selectedIndex', vip_status);
-
-            //hack
-            $('.filter_amount').css('right', '11px');
-            $('.filter_amount').css('right', '12px');
-
-            $('#filter_sidebar').animate({
-
-                left: '340px'
-
-            }, { duration: 400, easing: 'easeOutBack' });
-
-        }
-
-
-
-        function appendList(el, id, list) {
-
-            //show edit button
-            $('.edit_lists_btn').show();
-            $('.errorSenderSubscriberList').empty();
-
-            //reset
-            $('#send_sidebar select').prop('selectedIndex', 0);
-
-            $(el).closest('label').append('<li data-id="' + id + '" data-l-name="' + list + '">' + list + '<div class="viewList" style="display: none;"></div></li>');
-            $('#send_sidebar select option[data-list-id="' + id + '"]').remove();
-
-            $('#send_sidebar [data-id="' + id + '"]').trigger('click')
-
-            //if empty
-            count = $('#subscriber_lists_ul li').size();
-
-            if (count > 8) {
-
-                $('#send_sidebar select, .add_list_btn').hide();
-
-                //add shadow hack
-                $('#send_sidebar label li').first().css('box-shadow', '0 0 0 1px rgba(0,0,0,0.12)')
-
-            }
-
-
-        }
-
-        function closeAllSidebars() {
-
-            closeSelectionSidebar();
-            setTimeout(function () {
-
-                closeFilterSidebar();
-
-            }, 420)
-
-        }
-
-        function removeList(id, list) {
-
-            $('#send_sidebar li[data-id="' + id + '"]').remove();
-            $('#send_sidebar .subscriber_lists').append('<option class="light" data-list-id="' + id + '">' + list + '</option>');
-
-            count = $('#subscriber_lists_ul li').size();
-
-            if (count < 1) {
-
-                editableListsOff();
-
-                //hide edit button
-                $('.edit_lists_btn').hide();
-
-
-            }
-
-            if (count > 0) {
-
-                $('#send_sidebar select, .add_list_btn').show();
-
-                //add shadow hack
-                $('#send_sidebar label li').first().css({
-
-                    'box-shadow': '1px 0 0 rgba(0,0,0,0.12), 0 1px 0 rgba(0,0,0,0.12), -1px 0 0 rgba(0,0,0,0.12)'
-
-                });
-
-            }
-
-            closeSelectionSidebar();
-            closeFilterSidebar();
-
-        }
-
-        function resetFilters() {
-
-            $('#filter_sidebar select').prop('selectedIndex', 0);
-
-        }
-
-        function editableListsOn() {
-
-            $('.edit_lists_btn').text('done');
-
-            $('#send_sidebar label li').each(function () {
-
-                el = $(this);
-
-                $(el).prepend('<div class="removeListBtn">-</div>');
-                $(el).css('padding-left', '38px');
-
-            })
-
-        }
-
-        function editableListsOff() {
-
-            $('.edit_lists_btn').text('edit');
-
-            $('.removeListBtn').remove();
-            $('#send_sidebar label li').css('padding-left', '10px');
-
-        }
-
-        function calculateSelection() {
-
-            count = $('#selection_form .selected').size();
-            selection = 'Selected items';
-            selection_type = $('#filter_form .selected').attr('data-selection-type');
-
-            if (window.t) {
-                clearTimeout(window.t);
-                window.t = undefined;
-            }
-
-            if (count < 1) {
-
-                count = '';
-                selection = 'All';
-
-                $('.clear_selection_states').hide();
-
-            }
-
-            else {
-
-                $('.clear_selection_states').show();
-
-            }
-
-            setTimeout(function () {
-                $('#filter_form .selected .filter_amount').css('position', 'absolute')
-            }, 50);
-
-            $('#filter_form .selected .filter_amount').text(count);
-            $('#filter_form .selected span').text(selection);
-
-            window.t = setTimeout(function () {
-
-                str = '';
-
-                if (count == 0) {
-
-                    $('#send_form .selected').attr('data-selected-' + selection_type, '');
-                    $('#send_form .selected').attr('data-total-' + selection_type, count);
-
-                }
-
-                $('#selection_form .selected').each(function () {
-
-                    selected = $(this).text();
-                    str += selected + ';';
-
-                    $('#send_form .selected').attr('data-selected-' + selection_type, str);
-                    $('#send_form .selected').attr('data-total-' + selection_type, count);
-
-                });
-
-            }, 250);
-
-        }
-
-        function restoreFilterSidebar() {
-
-            $('#filter_sidebar .filter_amount').empty();
-            $('#filter_sidebar .filter_item span').text('All');
-            $('#filter_sidebar .filter_item').removeClass('selected');
-
-        }
-
-        function getSelectionList() {
-
-            selection_type = $('#filter_form .selected').attr('data-selection-type');
-            selection_list = $('#send_form .selected').attr('data-l-name');
-
-            $.ajax({
-                type: "POST",
-                dataType: "html",
-                url: "../scripts/calls.php?func=fetch_selection_lists",
-                data: { selection_type: selection_type, selection_list: selection_list }
-            }).done(function (data) {
-
-                $('#selection_form').html(data);
-                restoreSelectionBar();
-
-                //get the count
-                selection_count = $('#selection_form .selection_item').size();
-
-                if (selection_count < 2) {
-
-                    //detect if it reads 'Other';
-                    selection_text = $('#selection_form .selection_item').text();
-
-                    if (selection_text == 'Other') {
-
-                        $('#selection_form .selection_item').after('<div id="embed_form_notification" class="semi_bold">Install our form on your website<br/> to show more filters</div>')
-
-                    }
-
-
-                }
-
-            }).fail(function () {
-
-                setTimeout(function () {
-
-                    getSelectionList();
-
-                }, 1000)
-
-            });
-
-        }
-
-        function sendEmailCampaign() {
-
-            var filter_array = [];
-
-            $('#send_form li[data-id]').each(function () {
-
-                var $this = $(this);
-                var data = {};
-                var country = $(this).attr('data-selected-country');
-                var os = $(this).attr('data-selected-os');
-                var browser = $(this).attr('data-selected-browser');
-                var referrer = $(this).attr('data-selected-referrer');
-                var vip = $(this).attr('data-selected-vip');
-                var list_name = $(this).attr('data-id');
-
-                data.country = country;
-                data.os = os;
-                data.browser = browser;
-                data.referrer = referrer;
-                data.vip = vip;
-                data.list_name = list_name;
-
-                filter_array.push(data);
-
-            });
-
-            campaign_id = $('[data-campaign]').attr('data-campaign');
-            send_from_name = $('#send_from_name').val();
-            send_from_email = $('#send_from_email').val();
-            send_reply_to_email = $('#send_reply_to_email').val();
-            send_subject_line = $('#send_subject_line').val();
-            send_preview_message = $('#send_preview_message').val();
-            signature = $('#signature').val();
-            schedule = $('#schedule_campaign').val();
-            user_given_date = $('#send_schedule_campaign_day').val();
-
-            if (send_from_email == send_reply_to_email) {
-
-                send_reply_to_email = '';
-
-            }
-
-            if (schedule == '0') {
-
-                user_given_date = '';
-                user_given_time = '';
-                user_current_time = '';
-                user_current_date = '';
-
-            }
-
-            $.ajax({
-                type: "POST",
-                dataType: "html",
-                url: "../scripts/calls.php?func=prepare_campaign",
-                data: {
-                    filter_array: filter_array,
-                    campaign_id: campaign_id,
-                    send_from_name: send_from_name,
-                    send_from_email: send_from_email,
-                    send_reply_to_email: send_reply_to_email,
-                    send_subject_line: send_subject_line,
-                    send_preview_message: send_preview_message,
-                    signature: signature,
-                    user_given_date: user_given_date,
-                    user_given_time: user_given_time,
-                    user_current_time: user_current_time,
-                    user_current_date: user_current_date
-
-                }
-            }).done(function (data) {
-
-                sentFlag = 1;
-
-                if (data == 'state_success') {
-
-                    data_state = 'success';
-                    data_headline = 'Nice work! We got it..';
-                    data_message = 'Looks good! We\'re processing your campaign, it\'ll be in your subscribers inboxes any minute, unless you\'ve scheduled it.';
-
-                }
-
-                else if (data == 'state_hold') {
-
-                    data_state = 'hold';
-                    data_headline = 'Great! But we need to review this first..';
-                    data_message = 'We\'ve noticed your campaign holds one or more words that got caught by our spam filter. Don\'t worry, but we\'ll need to review your campaign first.';
-
-                }
-
-                else if (data == 'error_1') {
-
-                    alert('Fetched data is empty. Do not resend. Please, notify our support, as they will make sure this error will never happen again. help@stampready.net. Thank you.');
-                    return false;
-
-                }
-
-                else if (data == 'error_2') {
-
-                    alert('User id is empty. Do not resend. Please, notify our support, as they will make sure this error will never happen again. help@stampready.net. Thank you.');
-                    return false;
-
-                }
-
-                else {
-
-                    console.log('"' + data + '"');
-
-                    data_state = 'error';
-                    data_headline = 'Woops.. Something went wrong';
-                    data_message = 'The browser sent your campaign to us, but we could not establish the connection. Please, check your Sent page to see if your campaign has been sent out, or contact help@stampready.net';
-
-                }
-
-                $('.sendHeader h1, .sendOverviewBottom').fadeOut(400);
-
-                $('.sendHeader').animate({
-
-                    'height': '100%',
-                    'background-color': '#dbdbdb'
-
-                }, { duration: 450, easing: 'easeOutCubic' });
-
-                setTimeout(function () {
-
-                    $('#sendPopup').css({
-
-                        'margin-top': '20px'
-
-                    });
-
-                    $('.sendOverviewTop').animate({
-
-                        'height': '400px'
-
-                    }, 200)
-
-                    setTimeout(function () {
-
-                        $('#sendPopup').css({
-
-                            'margin-top': '0px'
-
-                        });
-
-                        $('.sendHeader').append('<div id="splash"><div id="send_output_icon" class="' + data_state + '"></div><h4 class="semi_bold">' + data_headline + '</h4><p class="regular">' + data_message + '</p><div id="continue_to_analytics" class="semi_bold">View Campaign Analytics</div></div>');
-
-                        setTimeout(function () {
-
-                            $('#splash').addClass('animated');
-
-                            setTimeout(function () {
-
-                                $('#sendPopup').css({
-                                    'transform': 'scale(1.03) translateY(-50%)',
-                                    '-webkit-transform': 'scale(1.03) translateY(-50%)'
-                                });
-
-                                setTimeout(function () {
-
-                                    $('#sendPopup').css({
-                                        'transform': 'scale(1) translateY(-50%)',
-                                        '-webkit-transform': 'scale(1) translateY(-50%)'
-                                    });
-
-                                }, 250)
-
-                            }, 300)
-
-                        }, 100);
-
-
-                    }, 350)
-
-
-                }, 200)
-
-            }).fail(function () {
-
-                setTimeout(function () {
-
-                    sendEmailCampaign();
-
-                }, 2000);
-
-            });
-
-        }
-
-        function restoreSelectionBar() {
-
-            selection_type = $('#filter_form .selected').attr('data-selection-type');
-            selected_data = $('#send_form .selected').attr('data-selected-' + selection_type);
-            i = 0;
-
-            if (selected_data == undefined) {
-
-                return false;
-
-            }
-
-            var match = selected_data.split(';')
-            for (var a in match) {
-
-                if (!match[a] == '') {
-
-                    $('#selection_form .selection_item:textEquals("' + match[a] + '")').addClass('selected');
-                    $('.clear_selection_states').show();
-                    i++;
-
-                }
-
-            }
-
-        }
-
-        function closeSendPopup() {
-
-            if (sentFlag == 1) {
-
-                return false;
-
-            }
-
-            $('#sendPopupOverlay').css({
-                'opacity': '0',
-                'transition': '0.4s all ease',
-            });
-
-            $('#sendPopup').css({
-                'opacity': '0',
-                'transition': '0.4s all ease',
-                'transform': 'scale(0.8) translateY(-50%)'
-            });
-
-            $('.stack').css({
-                'transition': '0.4s all ease',
-                'transform': 'scale(1)'
-            });
-
-            setTimeout(function () {
-
-                $('#sendPopupOverlay').css('display', 'none');
-
-            }, 400);
-
-        }
 
         function showTime() {
 
@@ -1408,26 +818,6 @@
 
         }
 
-        function getResultFilter(array) {
-
-            headline = 'Result';
-            paragraph = '';
-
-            btnTrue = 'Send campaign';
-            btnTrueId = 'adsdasd';
-
-            openPopup();
-
-            for (var i = 0; i < array.length; i++) {
-
-                email = array[i]['email'];
-
-                $('#popup h3').append('<h4>' + email + '</h4>');
-
-
-            }
-
-        }
 
         $(function () {
 

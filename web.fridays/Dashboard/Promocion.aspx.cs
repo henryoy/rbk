@@ -28,6 +28,27 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
     {
         cCatalogo = new CatalogoController();
         List<cm.mx.catalogo.Model.Tipomembresia> lsTipomembresia = new List<cm.mx.catalogo.Model.Tipomembresia>();
+        List<Sucursal> lsSucursal = new List<Sucursal>();
+        lsSucursal = cCatalogo.GetAllSucursales();
+        dpSucursales.Items.Insert(0, new ListItem()
+        {
+            Value = "0",
+            Text = "TODAS"
+        });
+
+        if (lsSucursal.Count > 0)
+        {
+
+            foreach (Sucursal oSucursal in lsSucursal)
+            {
+                dpSucursales.Items.Add(new ListItem()
+                {
+                    Value = Convert.ToString(oSucursal.SucursalID),
+                    Text = oSucursal.Nombre
+                });
+            }
+        }
+
         lsTipomembresia = cCatalogo.GetAllMembresias();
         if (lsTipomembresia.Count > 0)
         {
@@ -56,8 +77,10 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             }
             txtTitulo.Text = oPromocion.Titulo;
             txtDescripcion.Text = oPromocion.Descripcion;
-            txtFechaInicio.Text = oPromocion.Vigenciainicial.ToString("yyyy-MM-dd");;
-            txtFechaFinal.Text = oPromocion.Vigenciafinal.ToString("yyyy-MM-dd");;
+            if (oPromocion.Vigenciainicial.HasValue)
+                txtFechaInicio.Text = oPromocion.Vigenciainicial.Value.ToString("yyyy-MM-dd");
+            if(oPromocion.Vigenciafinal.HasValue)
+                txtFechaFinal.Text = oPromocion.Vigenciafinal.Value.ToString("yyyy-MM-dd"); ;
 
             Page.ClientScript.RegisterStartupScript(
                   this.GetType(),
@@ -78,8 +101,18 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                 }
             }
         }
-        
 
+        if (dpTipoPromocion.SelectedItem == null)
+        {
+            lblValor1.InnerText = "Número de visita";
+        }
+        else if (dpTipoPromocion.SelectedItem.Text == "VISITA")
+        {
+            lblValor1.InnerText = "Número de visita";            
+        }
+
+        lblValor2.Visible = false;
+        txtValor2.Visible = false;
     }
     protected void lnkGuardarPromocion_Click(object sender, EventArgs e)
     {
@@ -103,6 +136,8 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         oPromocion.Resumen = txtDescripcion.Text;
         oPromocion.Tipomembresia = dpTarjeta.SelectedItem.Text;
         oPromocion.Tipocliente = oPromocion.Tipomembresia;
+        oPromocion.TerminosCondiciones = txtCondiciones.Text;
+        oPromocion.ImagenUrl = hfTajeta.Value;
 
         int TarjetaId = Convert.ToInt32(dpTarjeta.SelectedItem.Value);
 
@@ -125,7 +160,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         if (dpTipoPromocion.SelectedItem.Value == "VISITA"  && string.IsNullOrEmpty(txtValor1.Text))
         {
 
-            msj = "El valor 1 no puede ser vacío";
+            msj = "El número de visitas no puede ser vacío";
 
             Page.ClientScript.RegisterStartupScript(
                   this.GetType(),

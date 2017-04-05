@@ -207,24 +207,24 @@
 }
 
     .ax-file-list li {
-        border-top: 1px solid #DDDDDD;
+        /*border-top: 1px solid #DDDDDD;
         height: 80px;
         margin: 0 2px 2px 0;
         padding: 15px 2px 2px;
         position: relative;
         text-align: center;
-        width: 100%;
+        width: 100%;*/
     }
 
         .ax-file-list li:hover {
-            background-color: #EBEBEB;
+            /*background-color: #EBEBEB;
             background: -moz-linear-gradient(center top, #EBEBEB, #BDBDBD);
             background: -ms-linear-gradient(top, #EBEBEB, #BDBDBD);
             background: -webkit-gradient(linear, 0 0, 0 100%, from(#EBEBEB), to(#BDBDBD));
             background: -webkit-linear-gradient(top, #EBEBEB, #BDBDBD);
             background: -o-linear-gradient(top, #EBEBEB, #BDBDBD);
             background: linear-gradient(top, #EBEBEB, #BDBDBD);
-            filter: progid:dximagetransform.microsoft.gradient(startColorstr='#EBEBEB', endColorstr='#BDBDBD', GradientType=0);
+            filter: progid:dximagetransform.microsoft.gradient(startColorstr='#EBEBEB', endColorstr='#BDBDBD', GradientType=0);*/
         }
 
 .ax-edit-fn {
