@@ -69,6 +69,7 @@
     <Compile Include="Model\Map\SesionMap.cs" />
     <Compile Include="Model\Map\SucursalMap.cs" />
     <Compile Include="Model\Map\TarjetaMap.cs" />
+    <Compile Include="Model\Map\TipoInteresMap.cs" />
     <Compile Include="Model\Map\TipomembresiaMap.cs" />
     <Compile Include="Model\Map\UsuarioMap.cs" />
     <Compile Include="Model\NivelUsuario.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Model\Repository\SesionRepository.cs" />
     <Compile Include="Model\Repository\SucursalRepository.cs" />
     <Compile Include="Model\Repository\TarjetaRepository.cs" />
+    <Compile Include="Model\Repository\TipoInteresRepository.cs" />
     <Compile Include="Model\Repository\TIpoMembresiaRepository.cs" />
     <Compile Include="Model\Repository\UsuarioRepository.cs" />
     <Compile Include="Model\Rules\MembresiaVR.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Model\Sesion.cs" />
     <Compile Include="Model\Sucursal.cs" />
     <Compile Include="Model\Tarjeta.cs" />
+    <Compile Include="Model\TipoInteres.cs" />
     <Compile Include="Model\Tipomembresia.cs" />
     <Compile Include="Model\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

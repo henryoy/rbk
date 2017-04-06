@@ -100,9 +100,9 @@ namespace cm.mx.catalogo.Model
 
 
             lsUsuario = this.Query(f => f.Estatus != "INACTIVO").Skip(oPaginacion.Pagina * oPaginacion.Cantidad).Take(oPaginacion.Cantidad).ToList();
-                
+
             this._exito = true;
-            
+
             return lsUsuario;
         }
         public int GetContRegisteDay()
@@ -158,7 +158,7 @@ namespace cm.mx.catalogo.Model
             criteria2.CreateAlias("oTargeta", "Tarjeta");
             criteria2.Add(Restrictions.Eq("Estatus", "ACTIVO"))
                 .Add(Restrictions.Eq("Tarjeta.TarjetaID", 4));
-            
+
             lsUsuario = criteria2.List<Usuario>().Skip(oPaginacion.Pagina * oPaginacion.Cantidad).Take(oPaginacion.Cantidad).ToList();
 
             this._exito = true;
@@ -205,6 +205,21 @@ namespace cm.mx.catalogo.Model
                     Vigencia = DateTime.Now.AddDays(5)
                 };
                 _session.SaveOrUpdate(oNotifiacion);
+                var tm = _session.Query<Tipomembresia>().FirstOrDefault(a => oUsuario.VisitaActual >= a.ApartirDe && oUsuario.VisitaActual <= a.Hasta);
+                if (tm != null && tm.ApartirDe == oUsuario.VisitaActual)
+                {
+                    oNotifiacion = new Notificacion
+                    {
+                        Estatus = Estatus.ACTIVO.ToString(),
+                        FechaRegistro = DateTime.Now,
+                        Mensaje = "Nueva membresia alcanzado",
+                        NotifiacionID = 0,
+                        PromocionID = 0,
+                        UsuarioID = oUsuario.Usuarioid,
+                        Vigencia = DateTime.Now.AddDays(5)
+                    };
+                    _session.SaveOrUpdate(oNotifiacion);
+                }
                 _session.Transaction.Commit();
                 _exito = true;
             }

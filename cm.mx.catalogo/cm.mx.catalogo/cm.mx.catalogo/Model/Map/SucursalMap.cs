@@ -1,6 +1,6 @@
 ﻿using FluentNHibernate.Mapping;
 
-namespace cm.mx.catalogo.Model.Mappings
+namespace cm.mx.catalogo.Model.Map
 {
     public class SucursalMap : ClassMap<Sucursal>
     {

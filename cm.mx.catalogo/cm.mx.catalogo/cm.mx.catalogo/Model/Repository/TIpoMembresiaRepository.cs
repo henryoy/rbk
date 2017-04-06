@@ -52,5 +52,16 @@ namespace cm.mx.catalogo.Model
             _exito = _session.Query<Tipomembresia>().Any(a => a.Membresiaid != MembresiaID && numero >= a.ApartirDe && numero <= a.Hasta);
             return _exito;
         }
+
+        public bool CambioMembresia(int visitas)
+        {
+            _exito = false;
+            var r = _session.Query<Tipomembresia>().FirstOrDefault(a => visitas >= a.ApartirDe && visitas <= a.Hasta);
+            if (r != null)
+            {
+                _exito = visitas == r.ApartirDe;
+            }
+            return _exito;
+        }
     }
 }
