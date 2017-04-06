@@ -72,9 +72,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rUsuario = new UsuarioRepository();
             try
             {
+                rUsuario = new UsuarioRepository();
                 if (rUsuario.Login(correo, contrasena, Enums.TipoUsuario.WEB)) _exito = true;
                 else
                 {
@@ -106,9 +106,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rPromocion = new PromocionRepository();
             try
             {
+                rPromocion = new PromocionRepository();
                 oPromocion = rPromocion.GetById(PromocionId);
                 _exito = true;
             }
@@ -135,9 +135,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rPromocion = new PromocionRepository();
             try
             {
+                rPromocion = new PromocionRepository();
                 bool IsTransaction = false;
 
                 if (entidad.Promocionid > 0)
@@ -193,9 +193,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rPromocion = new PromocionRepository();
             try
             {
+                rPromocion = new PromocionRepository();
                 lsPromocion = rPromocion.GetAllPromocion();
                 _exito = true;
             }
@@ -221,9 +221,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rPromocion = new PromocionRepository();
             try
             {
+                rPromocion = new PromocionRepository();
                 lsPromocion = rPromocion.GetAllPromocion(oPaginacion);
                 _exito = true;
             }
@@ -250,9 +250,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rPromocion = new PromocionRepository();
             try
             {
+                rPromocion = new PromocionRepository();
                 isdelete = rPromocion.EliminarPromocion(PromocionId);
                 _exito = true;
             }
@@ -279,9 +279,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            TipoMembresiaRepository rMembresia = new TipoMembresiaRepository();
             try
             {
+                TipoMembresiaRepository rMembresia = new TipoMembresiaRepository();
                 oMembresia = rMembresia.GetById(MembresiaId);
                 _exito = true;
             }
@@ -308,9 +308,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rMembresia = new TipoMembresiaRepository();
             try
             {
+                rMembresia = new TipoMembresiaRepository();
                 bool IsValid = false;
                 if (entidad.Membresiaid > 0)
                 {
@@ -359,9 +359,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rMembresia = new TipoMembresiaRepository();
             try
             {
+                rMembresia = new TipoMembresiaRepository();
                 lsMembresia = rMembresia.GetAllActivos();
                 _exito = true;
             }
@@ -388,9 +388,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            SucursalRepository rSucursal = new SucursalRepository();
             try
             {
+                SucursalRepository rSucursal = new SucursalRepository();
                 oSucursal = rSucursal.GetById(SucursalId);
                 _exito = true;
             }
@@ -417,9 +417,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rSucursal = new SucursalRepository();
             try
             {
+                rSucursal = new SucursalRepository();
                 bool IsValid = false;
                 if (entidad.SucursalID > 0)
                 {
@@ -461,9 +461,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rSucursal = new SucursalRepository();
             try
             {
+                rSucursal = new SucursalRepository();
                 lsSucursal = rSucursal.GetAllActivos();
                 _exito = true;
             }
@@ -490,9 +490,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            TarjetaRepository rTarjeta = new TarjetaRepository();
             try
             {
+                TarjetaRepository rTarjeta = new TarjetaRepository();
                 oTarjeta = rTarjeta.GetById(TarjetaId);
                 _exito = true;
             }
@@ -519,9 +519,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rTarjeta = new TarjetaRepository();
             try
             {
+                rTarjeta = new TarjetaRepository();
                 oTarjeta = rTarjeta.GuardarTarjeta(entidad);
                 _exito = true;
             }
@@ -548,9 +548,9 @@ namespace cm.mx.catalogo.Controller
             _errores.Clear();
             _mensaje = string.Empty;
             _mensajes.Clear();
-            rTarjeta = new TarjetaRepository();
             try
             {
+                rTarjeta = new TarjetaRepository();
                 lsTarjeta = rTarjeta.GetAllActivos();
                 _exito = true;
             }
@@ -573,12 +573,12 @@ namespace cm.mx.catalogo.Controller
         public List<Usuario> GetAllUsuariosRegistroHoy(Paginacion oPaginacion)
         {
             List<Usuario> lsUsuario = new List<Usuario>();
-            rUsuario = new UsuarioRepository();
             _exito = true;
             Mensajes.Clear();
             Errores.Clear();
             try
             {
+                rUsuario = new UsuarioRepository();
                 lsUsuario = rUsuario.GetAllUserRegisterNow(oPaginacion);
                 _exito = true;
             }
@@ -600,12 +600,12 @@ namespace cm.mx.catalogo.Controller
         public List<Usuario> GetAllUsuariosRegistro(Paginacion oPaginacion)
         {
             List<Usuario> lsUsuario = new List<Usuario>();
-            rUsuario = new UsuarioRepository();
             _exito = true;
             Mensajes.Clear();
             Errores.Clear();
             try
             {
+                rUsuario = new UsuarioRepository();
                 lsUsuario = rUsuario.GetAllUserRegister(oPaginacion);
                 _exito = true;
             }
@@ -628,12 +628,12 @@ namespace cm.mx.catalogo.Controller
         public int GetContRegisteDay()
         {
             int _Count = 0;
-            rUsuario = new UsuarioRepository();
             _exito = true;
             Mensajes.Clear();
             Errores.Clear();
             try
             {
+                rUsuario = new UsuarioRepository();
                 _Count = rUsuario.GetContRegisteDay();
                 _exito = true;
             }
@@ -656,12 +656,12 @@ namespace cm.mx.catalogo.Controller
         public List<Usuario> GetAllUserRegisterVIP(Paginacion oPaginacion)
         {
             List<Usuario> lsUsuario = new List<Usuario>();
-            rUsuario = new UsuarioRepository();
             _exito = true;
             Mensajes.Clear();
             Errores.Clear();
             try
             {
+                rUsuario = new UsuarioRepository();
                 lsUsuario = rUsuario.GetAllUserRegisterVIP(oPaginacion);
                 _exito = true;
             }
@@ -684,12 +684,12 @@ namespace cm.mx.catalogo.Controller
         public int GetContRegisteVIP()
         {
             int _Count = 0;
-            rUsuario = new UsuarioRepository();
             _exito = true;
             Mensajes.Clear();
             Errores.Clear();
             try
             {
+                rUsuario = new UsuarioRepository();
                 _Count = rUsuario.GetContRegisteVIP();
                 _exito = true;
             }
