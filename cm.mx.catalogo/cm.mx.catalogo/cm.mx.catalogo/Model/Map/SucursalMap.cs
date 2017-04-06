@@ -10,6 +10,7 @@ namespace cm.mx.catalogo.Model.Mappings
             Map(x => x.Latitud);
             Map(x => x.Longitud);
             Map(x => x.Nombre);
+            Map(x => x.LinkFacebook);
             Map(x => x.Direccion);
         }
     }

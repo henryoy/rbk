@@ -1,4 +1,5 @@
 ﻿using cm.mx.dbCore.Clases;
+using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,13 @@ namespace cm.mx.catalogo.Model
         public override bool Update(Tipomembresia modificado)
         {
             throw new NotImplementedException();
+        }
+
+        public bool ExisteRegistro(int MembresiaID, int numero)
+        {
+            _exito = false;
+            _exito = _session.Query<Tipomembresia>().Any(a => a.Membresiaid != MembresiaID && numero >= a.ApartirDe && numero <= a.Hasta);
+            return _exito;
         }
     }
 }

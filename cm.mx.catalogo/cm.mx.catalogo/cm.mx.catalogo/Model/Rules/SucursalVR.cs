@@ -36,6 +36,12 @@ namespace cm.mx.catalogo.Model.Rules
                 _exito = false;
             }
 
+            if (string.IsNullOrEmpty(Objeto.LinkFacebook))
+            {
+                _lsMensajes.Add("LikFacebook no puede ser vacio.");
+                _exito = false;
+            }
+
             return _exito;
         }
 

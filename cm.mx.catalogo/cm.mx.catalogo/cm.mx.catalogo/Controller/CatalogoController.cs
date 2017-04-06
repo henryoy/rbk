@@ -4,6 +4,7 @@ using cm.mx.dbCore.Interfaces;
 using cm.mx.dbCore.Tools;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace cm.mx.catalogo.Controller
 {
@@ -61,6 +62,7 @@ namespace cm.mx.catalogo.Controller
         private SucursalRepository rSucursal;
         private TarjetaRepository rTarjeta;
         private UsuarioRepository rUsuario;
+        private NotificacionRepository rNotificacion;
 
         #endregion Repositorios
 
@@ -319,6 +321,13 @@ namespace cm.mx.catalogo.Controller
                 {
                     IsValid = MembresiaVR.InsertarVR(entidad);
                     Mensajes.AddRange(MembresiaVR.Mensajes);
+                }
+
+                TipoMembresiaBR brMembresia = new TipoMembresiaBR();
+                if (!brMembresia.Insertar(entidad))
+                {
+                    IsValid = false;
+                    _mensajes.AddRange(brMembresia.Mensajes);
                 }
 
                 if (IsValid)
@@ -752,6 +761,62 @@ namespace cm.mx.catalogo.Controller
             }
 
             return lsPromocion;
+        }
+
+        public List<Notificacion> GetNotifiaciones(int UsuatioID)
+        {
+            _exito = false;
+            _mensajes = new List<string>();
+            _errores = new List<string>();
+            List<Notificacion> lsNotificaiones = new List<Notificacion>();
+            try
+            {
+                rNotificacion = new NotificacionRepository();
+                lsNotificaiones = rNotificacion.Query(a => a.UsuarioID == UsuatioID).ToList();
+            }
+            catch (Exception ex)
+            {
+                if (rNotificacion._session.Transaction.IsActive)
+                {
+                    rNotificacion._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return lsNotificaiones;
+        }
+
+        public bool RegistroVisita(int UsuarioID)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            try
+            {
+                rUsuario = new UsuarioRepository();
+                _exito = rUsuario.RegistrarVisiata(UsuarioID);
+                if (!_exito)
+                {
+                    _mensajes.AddRange(rUsuario.Mensajes);
+                    _errores.AddRange(rUsuario.Errores);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (rUsuario._session.Transaction.IsActive)
+                {
+                    rUsuario._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return _exito;
         }
     }
 }

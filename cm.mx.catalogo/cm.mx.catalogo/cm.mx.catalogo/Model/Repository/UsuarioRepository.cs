@@ -175,7 +175,40 @@ namespace cm.mx.catalogo.Model
             oUsuario = criteria.List<Usuario>().FirstOrDefault();
             //oUsuario = _session.Query<Usuario>().Where(f => f.Codigo == Codigo).FirstOrDefault();
             return oUsuario;
-            
+
+        }
+        public bool RegistrarVisiata(int UsuarioID)
+        {
+            _exito = false;
+            _session.Clear();
+            var oUsuario = _session.Get<Usuario>(UsuarioID);
+            if (oUsuario == null || oUsuario.Estatus == Estatus.BAJA.ToString() || oUsuario.Estatus == Estatus.INACTIVO.ToString())
+            {
+                _exito = false;
+                _mensajes.Add("Usuario no válido");
+            }
+            else
+            {
+                oUsuario.VisitaActual += 1;
+                oUsuario.VisitaGlobal += 1;
+                if (string.IsNullOrEmpty(oUsuario.Codigo)) oUsuario.Codigo = "";
+                _session.BeginTransaction();
+                _session.SaveOrUpdate(oUsuario);
+                Notificacion oNotifiacion = new Notificacion
+                {
+                    Estatus = Estatus.ACTIVO.ToString(),
+                    FechaRegistro = DateTime.Now,
+                    Mensaje = "Se ha registrado una nueva visita",
+                    NotifiacionID = 0,
+                    PromocionID = 0,
+                    UsuarioID = oUsuario.Usuarioid,
+                    Vigencia = DateTime.Now.AddDays(5)
+                };
+                _session.SaveOrUpdate(oNotifiacion);
+                _session.Transaction.Commit();
+                _exito = true;
+            }
+            return _exito;
         }
         public override Usuario GetById(int id)
         {
