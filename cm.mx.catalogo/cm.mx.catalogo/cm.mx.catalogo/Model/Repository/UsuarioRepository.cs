@@ -244,5 +244,16 @@ namespace cm.mx.catalogo.Model
         {
             throw new NotImplementedException();
         }
+
+        public bool Guardar(Usuario obj)
+        {
+            _exito = false;
+            _session.Clear();
+            _session.BeginTransaction();
+            _session.SaveOrUpdate(obj);
+            _session.Transaction.Commit();
+            _exito = true;
+            return _exito;
+        }
     }
 }

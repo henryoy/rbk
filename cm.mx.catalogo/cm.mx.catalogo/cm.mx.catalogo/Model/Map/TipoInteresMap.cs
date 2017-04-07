@@ -9,6 +9,7 @@ namespace cm.mx.catalogo.Model.Map
             Id(x => x.TipoInteresID);
             Map(x => x.Descripcion);
             Map(x => x.Nombre);
+            HasManyToMany(x => x.Usuarios).Cascade.None().Table("UsuarioTipoInteres").ParentKeyColumn("UsuarioId").ChildKeyColumn("TipoInteresID").ReadOnly();
         }
     }
 }

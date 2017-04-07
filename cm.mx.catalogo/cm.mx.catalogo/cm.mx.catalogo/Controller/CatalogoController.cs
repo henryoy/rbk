@@ -818,5 +818,36 @@ namespace cm.mx.catalogo.Controller
             }
             return _exito;
         }
+
+        //Método de prueba
+        public bool GuardarUsuario(Usuario obj)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            try
+            {
+                rUsuario = new UsuarioRepository();
+                _exito = rUsuario.Guardar(obj);
+                if (!_exito)
+                {
+                    _mensajes.AddRange(rUsuario.Mensajes);
+                    _errores.AddRange(rUsuario.Errores);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (rUsuario._session.Transaction.IsActive)
+                {
+                    rUsuario._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return _exito;
+        }
     }
 }

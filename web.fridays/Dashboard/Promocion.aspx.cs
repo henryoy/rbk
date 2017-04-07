@@ -78,20 +78,20 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             txtTitulo.Text = oPromocion.Titulo;
             txtDescripcion.Text = oPromocion.Descripcion;
             if (oPromocion.Vigenciainicial.HasValue)
-                txtFechaInicio.Text = oPromocion.Vigenciainicial.Value.ToString("yyyy-MM-dd");
-            if(oPromocion.Vigenciafinal.HasValue)
-                txtFechaFinal.Text = oPromocion.Vigenciafinal.Value.ToString("yyyy-MM-dd"); ;
+            txtFechaInicio.Text = oPromocion.Vigenciainicial.ToString("yyyy-MM-dd");
+            if (oPromocion.Vigenciafinal.HasValue)
+            txtFechaFinal.Text = oPromocion.Vigenciafinal.ToString("yyyy-MM-dd"); ;
 
             Page.ClientScript.RegisterStartupScript(
                   this.GetType(),
                   "StartupCalendar",
                   "ActiveCalendar();",
                   true);
-            
+
 
             if (oPromocion.Promociondetalle != null)
             {
-                Promociondetalle oPromocionDetalle =  oPromocion.Promociondetalle.FirstOrDefault();
+                Promociondetalle oPromocionDetalle = oPromocion.Promociondetalle.FirstOrDefault();
                 if (oPromocionDetalle != null)
                 {
 
@@ -108,7 +108,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         }
         else if (dpTipoPromocion.SelectedItem.Text == "VISITA")
         {
-            lblValor1.InnerText = "Número de visita";            
+            lblValor1.InnerText = "Número de visita";
         }
 
         lblValor2.Visible = false;
@@ -130,21 +130,22 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
         Promocion oPromocion = new Promocion();
         cCatalogo = new CatalogoController();
-        oPromocion.Titulo       = txtTitulo.Text;
-        oPromocion.Descripcion  = txtDescripcion.Text;
+        oPromocion.Titulo = txtTitulo.Text;
+        oPromocion.Descripcion = txtDescripcion.Text;
         oPromocion.Promocionid = thePID;
         oPromocion.Resumen = txtDescripcion.Text;
         oPromocion.Tipomembresia = dpTarjeta.SelectedItem.Text;
         oPromocion.Tipocliente = oPromocion.Tipomembresia;
-        oPromocion.TerminosCondiciones = txtCondiciones.Text;
-        oPromocion.ImagenUrl = hfTajeta.Value;
+        //oPromocion.TerminosCondiciones = txtCondiciones.Text;
+        //oPromocion.ImagenUrl = hfTajeta.Value;
 
         int TarjetaId = Convert.ToInt32(dpTarjeta.SelectedItem.Value);
 
         Promociondetalle oPromocionDetalle = new Promociondetalle();
 
-        if (string.IsNullOrEmpty(dpTipoPromocion.SelectedItem.Value)) {
-            
+        if (string.IsNullOrEmpty(dpTipoPromocion.SelectedItem.Value))
+        {
+
             msj = "La condicion de la promoción esta vacia";
 
             Page.ClientScript.RegisterStartupScript(
@@ -157,7 +158,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         oPromocionDetalle.Condicion = dpTipoPromocion.SelectedItem.Value;
         oPromocionDetalle.Todos = true;
 
-        if (dpTipoPromocion.SelectedItem.Value == "VISITA"  && string.IsNullOrEmpty(txtValor1.Text))
+        if (dpTipoPromocion.SelectedItem.Value == "VISITA" && string.IsNullOrEmpty(txtValor1.Text))
         {
 
             msj = "El número de visitas no puede ser vacío";
@@ -178,17 +179,17 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         oPromocion.AddMembresia(new Promocionmembresia()
         {
             Membresiaid = TarjetaId,
-            Promocionid = oPromocion.Promocionid            
+            Promocionid = oPromocion.Promocionid
         });
 
         if (!string.IsNullOrEmpty(txtFechaInicio.Text))
             oPromocion.Vigenciainicial = Convert.ToDateTime(txtFechaInicio.Text);
-        if (!string.IsNullOrEmpty(txtFechaFinal.Text)) 
+        if (!string.IsNullOrEmpty(txtFechaFinal.Text))
             oPromocion.Vigenciafinal = Convert.ToDateTime(txtFechaFinal.Text);
-        
+
         Promocion _oPromocion = cCatalogo.GuardarPromocion(oPromocion);
 
-       
+
 
         if (_oPromocion != null)
         {
@@ -199,7 +200,8 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             Tipo = "success";
             msj = "Se guardo correctamente la promoción";
         }
-        else {
+        else
+        {
             Tipo = "error";
             msj = Funciones.FormatoMsj(cCatalogo.Errores);
             if (cCatalogo.Errores.Count == 0)

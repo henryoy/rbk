@@ -38,7 +38,7 @@ namespace Promocion
             oPromocion.Descuento = 10;
             oPromocion.Tipocliente = "BLACO";
             oPromocion.Resumen = "resumen de promocion";
-            
+
             Promociondetalle oDetalle = new Promociondetalle();
 
             oDetalle.Condicion = "EVENTO";
@@ -54,8 +54,36 @@ namespace Promocion
             if (cCatalogo.Exito)
             {
                 IdGenerate = _oPromocion.Promocionid;
-            }            
+            }
+
+        }
+        [TestMethod]
+        public void TestMethod3()
+        {
+            CatalogoController cCatalogo = new CatalogoController();
+            Usuario oUsuario = new Usuario
+            {
+                Codigo = "",
+                Contrasena = "demo",
+                Email = "demo@demo.com",
+                Estatus = "ACTIVO",
+                FechaAlta = new DateTime(2017, 03, 16, 12, 09, 27),
+                FechaBaja = new DateTime(1900, 01, 01),
+                FechaNacimiento = new DateTime(2006, 04, 16),
+                Imagen = "",
+                Nombre = "jorge",
+                TarjetaID = 4,
+                Tipo = "MOBILE",
+                Usuarioid = 2,
+                VerificacionContrasena = "demo",
+                VisitaActual = 100,
+                VisitaGlobal = 501,
+                oTargeta = new Tarjeta { TarjetaID = 4 }
+            };
             
+            oUsuario.Addinteres(new TipoInteres { TipoInteresID = 2 });
+            oUsuario.Addinteres(new TipoInteres { TipoInteresID = 3 });
+            cCatalogo.GuardarUsuario(oUsuario);
         }
     }
 }
