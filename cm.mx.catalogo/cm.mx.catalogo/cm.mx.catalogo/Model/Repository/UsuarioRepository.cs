@@ -193,7 +193,7 @@ namespace cm.mx.catalogo.Model
                 oUsuario.VisitaGlobal += 1;
                 if (string.IsNullOrEmpty(oUsuario.Codigo)) oUsuario.Codigo = "";
                 _session.BeginTransaction();
-                _session.SaveOrUpdate(oUsuario);
+
                 Notificacion oNotifiacion = new Notificacion
                 {
                     Estatus = Estatus.ACTIVO.ToString(),
@@ -201,10 +201,12 @@ namespace cm.mx.catalogo.Model
                     Mensaje = "Se ha registrado una nueva visita",
                     NotifiacionID = 0,
                     PromocionID = 0,
+                    Tipo = TipoNotificacion.VISITA.ToString(),
                     UsuarioID = oUsuario.Usuarioid,
                     Vigencia = DateTime.Now.AddDays(5)
                 };
-                _session.SaveOrUpdate(oNotifiacion);
+                oUsuario.AddNotifiacion(oNotifiacion);
+                //_session.SaveOrUpdate(oNotifiacion);
                 var tm = _session.Query<Tipomembresia>().FirstOrDefault(a => oUsuario.VisitaActual >= a.ApartirDe && oUsuario.VisitaActual <= a.Hasta);
                 if (tm != null && tm.ApartirDe == oUsuario.VisitaActual)
                 {
@@ -215,11 +217,14 @@ namespace cm.mx.catalogo.Model
                         Mensaje = "Nueva membresia alcanzado",
                         NotifiacionID = 0,
                         PromocionID = 0,
+                        Tipo = TipoNotificacion.VISITA.ToString(),
                         UsuarioID = oUsuario.Usuarioid,
                         Vigencia = DateTime.Now.AddDays(5)
                     };
-                    _session.SaveOrUpdate(oNotifiacion);
+                    //_session.SaveOrUpdate(oNotifiacion);
+                    oUsuario.AddNotifiacion(oNotifiacion);
                 }
+                _session.SaveOrUpdate(oUsuario);
                 _session.Transaction.Commit();
                 _exito = true;
             }

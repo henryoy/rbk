@@ -64,26 +64,36 @@ namespace Promocion
             Usuario oUsuario = new Usuario
             {
                 Codigo = "",
-                Contrasena = "demo",
-                Email = "demo@demo.com",
+                Contrasena = "qwert",
+                Email = "jorge.demo@demo.com",
                 Estatus = "ACTIVO",
-                FechaAlta = new DateTime(2017, 03, 16, 12, 09, 27),
+                FechaAlta = new DateTime(2017, 03, 22, 03, 19, 09),
                 FechaBaja = new DateTime(1900, 01, 01),
-                FechaNacimiento = new DateTime(2006, 04, 16),
+                FechaNacimiento = new DateTime(1979, 03, 22),
                 Imagen = "",
-                Nombre = "jorge",
+                Nombre = "Jorge Pech",
                 TarjetaID = 4,
                 Tipo = "MOBILE",
-                Usuarioid = 2,
-                VerificacionContrasena = "demo",
-                VisitaActual = 100,
-                VisitaGlobal = 501,
+                Usuarioid = 8,
+                VerificacionContrasena = "qwert",
+                VisitaActual = 11,
+                VisitaGlobal = 11,
                 oTargeta = new Tarjeta { TarjetaID = 4 }
             };
-            
-            oUsuario.Addinteres(new TipoInteres { TipoInteresID = 2 });
-            oUsuario.Addinteres(new TipoInteres { TipoInteresID = 3 });
+
+            //oUsuario.Addinteres(new TipoInteres { TipoInteresID = 1 });
+            //oUsuario.Addinteres(new TipoInteres { TipoInteresID = 3 });
             cCatalogo.GuardarUsuario(oUsuario);
+        }
+        [TestMethod]
+        public void TestMethod4()
+        {
+            CatalogoController cCatalogo = new CatalogoController();
+            int usuario = 8;
+            if (cCatalogo.RegistroVisita(usuario))
+            {
+                var lsNot = cCatalogo.GetNotifiaciones(usuario);
+            }
         }
     }
 }

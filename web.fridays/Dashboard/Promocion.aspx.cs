@@ -78,9 +78,9 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             txtTitulo.Text = oPromocion.Titulo;
             txtDescripcion.Text = oPromocion.Descripcion;
             if (oPromocion.Vigenciainicial.HasValue)
-            txtFechaInicio.Text = oPromocion.Vigenciainicial.ToString("yyyy-MM-dd");
+            txtFechaInicio.Text = String.Format("{0:yyyy-MM-dd}", oPromocion.Vigenciainicial);//oPromocion.Vigenciainicial.ToString("yyyy-MM-dd");
             if (oPromocion.Vigenciafinal.HasValue)
-            txtFechaFinal.Text = oPromocion.Vigenciafinal.ToString("yyyy-MM-dd"); ;
+            txtFechaFinal.Text = String.Format("{0:yyyy-MM-dd}", oPromocion.Vigenciafinal);//oPromocion.Vigenciafinal.ToString("yyyy-MM-dd"); ;
 
             Page.ClientScript.RegisterStartupScript(
                   this.GetType(),

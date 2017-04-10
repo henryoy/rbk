@@ -13,4 +13,10 @@
         WEB,
         MOBILE
     }
+
+    internal enum TipoNotificacion
+    {
+        VISITA,
+        PROMOCION
+    }
 }

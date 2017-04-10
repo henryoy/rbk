@@ -33,8 +33,8 @@ namespace cm.mx.catalogo.Model
         public virtual int Promocionid { get; set; }
         public virtual string Titulo { get; set; }
         public virtual string Descripcion { get; set; }
-        public virtual DateTime Vigenciainicial { get; set; }
-        public virtual DateTime Vigenciafinal { get; set; }
+        public virtual DateTime? Vigenciainicial { get; set; }
+        public virtual DateTime? Vigenciafinal { get; set; }
         public virtual DateTime Fechaalta { get; set; }
         public virtual int Usuarioaltaid { get; set; }
         public virtual DateTime Fechabaja { get; set; }
