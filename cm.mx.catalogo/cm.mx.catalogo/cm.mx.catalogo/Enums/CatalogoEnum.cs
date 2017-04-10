@@ -4,6 +4,7 @@
     internal enum Estatus
     {
         ACTIVO,//alta en general
+        PENDIENTE,
         INACTIVO,//inactivo
         BAJA,//Eliminado
     }

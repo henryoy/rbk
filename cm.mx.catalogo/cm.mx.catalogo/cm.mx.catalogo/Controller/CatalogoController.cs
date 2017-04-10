@@ -1,5 +1,7 @@
-﻿using cm.mx.catalogo.Model;
+﻿using cm.mx.catalogo.Enums;
+using cm.mx.catalogo.Model;
 using cm.mx.catalogo.Model.Rules;
+using cm.mx.catalogo.Rules;
 using cm.mx.dbCore.Interfaces;
 using cm.mx.dbCore.Tools;
 using System;
@@ -65,6 +67,145 @@ namespace cm.mx.catalogo.Controller
         private NotificacionRepository rNotificacion;
 
         #endregion Repositorios
+
+        public bool RegistrarUsuario(Usuario oUsuario)
+        {
+            Boolean bResult = false;
+            Mensajes.Clear();
+            Errores.Clear();
+
+            try
+            {
+                if (oUsuario.Usuarioid == 0)
+                {
+                    oUsuario.FechaAlta = DateTime.Now;
+                    oUsuario.Estatus = Estatus.PENDIENTE.ToString();
+                    oUsuario.FechaBaja = new DateTime(1900, 01, 01);
+                    oUsuario.oTarjeta.Membresiaid = 1;
+                }
+
+                UsuarioVR vrUsaurio = new UsuarioVR();
+                if (!vrUsaurio.Insertar(oUsuario))
+                {
+                    bResult = false;
+                    Errores.AddRange(vrUsaurio.Mensajes);
+                }
+                else
+                {
+                    rUsuario = new UsuarioRepository();
+                    var clave = rUsuario.Save(oUsuario);
+                    if (rUsuario.Exito)
+                    {
+                        bResult = true;
+
+                        ConfiguracionRepository rConfig = new ConfiguracionRepository();
+                        Configuracion oConfig = rConfig.GetByClave("URL_ACTIVACION");
+
+                        if (oConfig != null)
+                        {
+                            var baseUrl = oConfig.Valor;
+                            var link = baseUrl + "/Activar.aspx?val1=" + clave + "&val2=" + oUsuario.Usuarioid;
+
+                            if (!rUsuario.EnviarCorreo(new List<string> { oUsuario.Email }, "Activar Cuenta", link, true))
+                            {
+                                List<string> msjs = rUsuario.Mensajes;
+                                Mensajes.AddRange(rUsuario.Errores);
+                            }
+                        }
+                        else
+                        {
+                            Mensajes.Add("No se pudo realizar el registro ya que no se encontró la URL de activcación del usuario");
+                        }
+                    }
+                    else
+                    {
+                        bResult = false;
+                        Errores.AddRange(rUsuario.Errores);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Errores.Add(ex.Message);
+            }
+
+            return bResult;
+        }
+
+        public Usuario getDatosUsuarioByCodigo(string codigo)
+        {
+            Usuario oUsuario = null;
+            rUsuario = new UsuarioRepository();
+
+            try
+            {
+                oUsuario = rUsuario.getByCodigo(codigo);
+                if (oUsuario == null)
+                    Errores.Add("No se encontró un cliente con el codigo de tarjeta '" + codigo + "'");
+
+            }
+            catch (Exception ex)
+            {
+                oUsuario = null;
+                _errores.Add(ex.Message);
+            }
+
+            return oUsuario;
+        }
+
+        public Tipomembresia GetProximoNivel(int visitas, int membresiaActual)
+        {
+            Tipomembresia Resultado = null;
+
+            try
+            {
+                TipoMembresiaRepository rMembresia = new TipoMembresiaRepository();
+                List<Tipomembresia> lMembresias = rMembresia.GetAllActivos();
+                List<Tipomembresia> lProximas = new List<Tipomembresia>();
+
+                foreach (Tipomembresia oMem in lMembresias)
+                {
+
+                    if (oMem.ApartirDe > visitas)
+                    {
+                        lProximas.Add(oMem);
+                    }
+
+                }
+
+                Resultado = lProximas.OrderBy(x => x.ApartirDe).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Errores.Add(ex.Message);
+            }
+
+            return Resultado;
+        }
+
+        public Usuario LoginMovil(string usuario, string password)
+        {
+            UsuarioRepository rUsuario = new UsuarioRepository();
+            ActivacionRepository rAcrivacion = new ActivacionRepository();
+            Usuario oUsuario = null;
+
+            try
+            {
+                oUsuario = rUsuario.LoginMovil(usuario, password);
+
+                if (oUsuario == null)
+                {
+                    Errores.AddRange(rUsuario.Errores);
+                }
+            }
+            catch (Exception ex)
+            {
+                Errores.Add(ex.Message);
+            }
+
+            return oUsuario;
+        }
 
         public bool Login(string correo, string contrasena)
         {

@@ -42,7 +42,7 @@ namespace cm.mx.catalogo.Model
         public virtual int VisitaActual { get; set; }
         public virtual int VisitaGlobal { get; set; }
         public virtual string Codigo { get; set; }
-        public virtual Tarjeta oTargeta { get; set; }
+        public virtual Tipomembresia oTarjeta { get; set; }
         public virtual IList<TipoInteres> Intereses { get; set; }
         public virtual IList<Notificacion> Notificaciones { get; set; }
         //public virtual string Correo { get; set; }
