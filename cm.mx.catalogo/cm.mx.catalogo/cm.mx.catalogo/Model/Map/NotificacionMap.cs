@@ -14,6 +14,7 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.Referencia);
             Map(x => x.Tipo);
             Map(x => x.UsuarioID).Formula("UsuarioID");
+            Map(x => x.UsuarioAlta);
             Map(x => x.Vigencia);
             References(x => x.Usuario).Column("UsuarioID").ForeignKey("UsuarioID");
         }

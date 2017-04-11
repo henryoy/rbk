@@ -95,5 +95,12 @@ namespace Promocion
                 var lsNot = cCatalogo.GetNotifiaciones(usuario);
             }
         }
+
+        [TestMethod]
+        public void TestMethod5()
+        {
+            CatalogoController cCatalogo = new CatalogoController();
+            var ls = cCatalogo.GetNotficaionesByTipo("VISITA");
+        }
     }
 }

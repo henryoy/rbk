@@ -15,7 +15,6 @@ namespace cm.mx.catalogo.Model
 {
     internal class UsuarioRepository : RepositoryBase<Usuario>
     {
-
         public bool EnviarCorreo(List<string> para, string asunto, string mensaje, bool eshtml = false)
         {
             _exito = false;

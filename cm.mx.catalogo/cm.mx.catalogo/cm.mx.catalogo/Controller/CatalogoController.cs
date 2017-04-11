@@ -990,5 +990,30 @@ namespace cm.mx.catalogo.Controller
             }
             return _exito;
         }
+
+        public List<Notificacion> GetNotficaionesByTipo(string tipo)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<Notificacion> lsNotificaciones = new List<Notificacion>();
+            try
+            {
+                rNotificacion = new NotificacionRepository();
+                lsNotificaciones = rNotificacion.GetByTipo(tipo);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                lsNotificaciones = new List<Notificacion>();
+                _exito = false;
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return lsNotificaciones;
+        }
     }
 }

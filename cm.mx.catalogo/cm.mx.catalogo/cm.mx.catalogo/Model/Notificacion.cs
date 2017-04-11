@@ -13,6 +13,7 @@ namespace cm.mx.catalogo.Model
         public virtual string Referencia { get; set; }
         public virtual string Tipo { get; set; }
         public virtual int UsuarioID { get; set; }
+        public virtual int UsuarioAlta { get; set; }
         public virtual DateTime Vigencia { get; set; }
         public virtual Usuario Usuario { get; set; }
     }
