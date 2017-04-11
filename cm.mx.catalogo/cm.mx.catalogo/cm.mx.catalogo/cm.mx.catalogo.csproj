@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,6 +59,8 @@
     <Compile Include="Controller\CatalogoController.cs" />
     <Compile Include="Enums\CatalogoEnum.cs" />
     <Compile Include="Model\Activacion.cs" />
+    <Compile Include="Model\ConfigSMTP.cs" />
+    <Compile Include="Model\Configuracion.cs" />
     <Compile Include="Model\Fechapublicacion.cs" />
     <Compile Include="Model\Map\ActivacionMap.cs" />
     <Compile Include="Model\Map\FechapublicacionMap.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Model\Map\SesionMap.cs" />
     <Compile Include="Model\Map\SucursalMap.cs" />
     <Compile Include="Model\Map\TarjetaMap.cs" />
+    <Compile Include="Model\Map\TipoInteresMap.cs" />
     <Compile Include="Model\Map\TipomembresiaMap.cs" />
     <Compile Include="Model\Map\UsuarioMap.cs" />
     <Compile Include="Model\NivelUsuario.cs" />
@@ -83,6 +87,7 @@
     <Compile Include="Model\Promocionsucursal.cs" />
     <Compile Include="Model\Promocionusuario.cs" />
     <Compile Include="Model\Repository\ActivacionRepository.cs" />
+    <Compile Include="Model\Repository\ConfiguracionRepository.cs" />
     <Compile Include="Model\Repository\FechaPublicacionRepository.cs" />
     <Compile Include="Model\Repository\NivelUsuarioRepository.cs" />
     <Compile Include="Model\Repository\NotificacionRepository.cs" />
@@ -90,14 +95,18 @@
     <Compile Include="Model\Repository\SesionRepository.cs" />
     <Compile Include="Model\Repository\SucursalRepository.cs" />
     <Compile Include="Model\Repository\TarjetaRepository.cs" />
+    <Compile Include="Model\Repository\TipoInteresRepository.cs" />
     <Compile Include="Model\Repository\TIpoMembresiaRepository.cs" />
     <Compile Include="Model\Repository\UsuarioRepository.cs" />
     <Compile Include="Model\Rules\MembresiaVR.cs" />
     <Compile Include="Model\Rules\PromocionVR.cs" />
     <Compile Include="Model\Rules\SucursalVR.cs" />
+    <Compile Include="Model\Rules\TipoMembresiaBR.cs" />
+    <Compile Include="Model\Rules\UsuarioVR.cs" />
     <Compile Include="Model\Sesion.cs" />
     <Compile Include="Model\Sucursal.cs" />
     <Compile Include="Model\Tarjeta.cs" />
+    <Compile Include="Model\TipoInteres.cs" />
     <Compile Include="Model\Tipomembresia.cs" />
     <Compile Include="Model\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -150,7 +150,6 @@
                     <div id="box_row_titles">
                         <!-- Titles of the rows -->
                         <div id="row_titles2">
-                            <div id="row_picture">#</div>
                             <div class="col-name">Nombre</div>
                             <div class="col-name">Dirección</div>
                             <asp:LinkButton runat="server" ID="add_subscriber" CssClass="semi_bold agregar" Style="top: -7px" ClientIDMode="Static" OnClick="AddSucursal_Click"></asp:LinkButton>
@@ -160,18 +159,10 @@
                         <asp:Repeater runat="server" ID="rptItems">
                             <ItemTemplate>
                                 <li data-id="<%# Eval("SucursalID") %>" data-url="#" data-token="IzE0MzYwOTEyMzAzMzA=" data-value="San Francisco">
-                                    <div class="row_picture">
-                                        <label>
-                                            <input type="checkbox"><a></a>
-                                        </label>
-                                    </div>
                                     <div class="row_name"><%# Eval("Nombre") %></div>
                                     <div><%# Eval("Direccion") %></div>
                                     <div class="actions semi_bold">
                                         <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" OnClick="btnEditar_Click" CommandArgument='<%# Eval("SucursalID") %>'>Editar</asp:LinkButton>
-                                        <div class="view">
-                                            <asp:LinkButton runat="server" ID="btnVer" CssClass="view" OnClick="btnVer_Click" CommandArgument='<%# Eval("SucursalID") %>'></asp:LinkButton>
-                                        </div>
                                     </div>
                                 </li>
                             </ItemTemplate>
@@ -208,6 +199,13 @@
                             <div class="data_value">
                                 <asp:TextBox runat="server" ID="txtDireccion" CssClass="regular input-direccion" MaxLength="200"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="rfvDireccion" ControlToValidate="txtDireccion" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
+                            </div>
+                        </li>
+                        <li class="clear-fix">
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Link Facebook:</div>
+                            <div class="data_value">
+                                <asp:TextBox runat="server" ID="txtFacebook" CssClass="regular input-direccion" MaxLength="200"></asp:TextBox>
+                                <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator1" ControlToValidate="txtFacebook" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
                         <li class="clear-fix">

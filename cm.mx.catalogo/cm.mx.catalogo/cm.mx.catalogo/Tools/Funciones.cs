@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -40,6 +41,21 @@ namespace cm.mx.catalogo
                 valido = false;
             }
             return valido;
+        }
+
+        public static object FormatoMensajes(List<string> mensajes)
+        {
+            string mensaje = "";
+            foreach (var m in mensajes)
+            {
+                mensaje += m + "<br/>";
+            }
+            if (!string.IsNullOrEmpty(mensaje))
+            {
+                mensaje = mensaje.Remove(mensaje.Length - 5, 5);
+            }
+
+            return mensaje;
         }
     }
 }

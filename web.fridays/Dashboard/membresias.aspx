@@ -90,7 +90,7 @@
                     <div id="box_row_titles">
                         <!-- Titles of the rows -->
                         <div id="row_titles2">
-                            <div id="row_picture">#</div>
+                            <%--<div id="row_picture">#</div>--%>
                             <div id="row_color">Color</div>
                             <div id="row_name" class="semi_bold">Nombre</div>
                             <div id="row_date" class="semi_bold">Apartir De</div>
@@ -104,11 +104,6 @@
                         <asp:Repeater runat="server" ID="rptItems">
                             <ItemTemplate>
                                 <li data-id="<%# Eval("MembresiaId") %>">
-                                    <div class="row_picture">
-                                        <label>
-                                            <input type="checkbox"><a></a>
-                                        </label>
-                                    </div>
                                     <div class="row_color">
                                         <div <%# "style=\"margin: 10px; width: 50px; height: 50px; background: "+Eval("Color")+";\"" %>>
                                         </div>
@@ -117,13 +112,8 @@
                                     <div class="row_date"><%# Eval("ApartirDe") %></div>
                                     <div class="row_date"><%# Eval("Hasta") %></div>
                                     <div class="row_descuento"><%# Eval("PorcientoDescuento") %>%</div>
-                                    <%--<div class="row_tarjeta">Tarjeta </div>--%>
                                     <div class="actions semi_bold">
                                         <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" CommandArgument='<%#Eval("MembresiaId") %>' OnClick="btnEditar_Click">Editar</asp:LinkButton>
-                                        <div class="view">
-                                            <asp:LinkButton runat="server" ID="btnVer" CssClass="info" OnClick="btnVer_Click" CommandArgument='<%# Eval("MembresiaId") %>'></asp:LinkButton>
-                                            <%--<asp:LinkButton runat="server" ID="btnVer" CssClass="info" OnClick="btnVer_Click" CommandArgument='<%# Eval("MembresiaId") %>'></asp:LinkButton>--%>
-                                        </div>
                                     </div>
                                 </li>
                             </ItemTemplate>
@@ -314,7 +304,8 @@
                 });
 
                 window.GudarDatos = function () {
-                    eval($(".btn-save").attr('href'));
+                    document.getElementById("<%= btnSave.ClientID %>").click();
+                    //eval($(".btn-save").attr('href'));
                 }
             });
         }

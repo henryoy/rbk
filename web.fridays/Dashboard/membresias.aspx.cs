@@ -67,8 +67,16 @@ public partial class membresias : System.Web.UI.Page
         txtNombre.ReadOnly = read;
         txtVisitasMax.ReadOnly = read;
         txtVisitasMin.ReadOnly = read;
-        if (!string.IsNullOrEmpty(oMembresia.UrlImagen)) imgTarjeta.ImageUrl = oMembresia.UrlImagen;
-        else imgTarjeta.ImageUrl = "~/Images/icon-gallery.svg";
+
+        if (string.IsNullOrEmpty(oMembresia.UrlImagen))
+            imgTarjeta.ImageUrl = "~/Images/icon-gallery.svg";
+        else
+        {
+            imgTarjeta.ImageUrl = oMembresia.UrlImagen;
+            hfTajeta.Value = oMembresia.UrlImagen.Replace(" ", "%20");
+        }
+
+
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "VerPopUp();", true);
     }
 
@@ -137,6 +145,7 @@ public partial class membresias : System.Web.UI.Page
             }
             else
             {
+                imgTarjeta.ImageUrl = hfTajeta.Value;
                 ScriptManager.RegisterStartupScript(
                   this,
                   this.GetType(),

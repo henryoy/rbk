@@ -53,7 +53,7 @@
     });
 
     window.VerPopUp = function () {
-        openPopup();
+        //openPopup();
         $("#popupOverlay").show();
     }
 });

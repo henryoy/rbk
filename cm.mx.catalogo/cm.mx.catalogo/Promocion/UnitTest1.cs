@@ -38,7 +38,7 @@ namespace Promocion
             oPromocion.Descuento = 10;
             oPromocion.Tipocliente = "BLACO";
             oPromocion.Resumen = "resumen de promocion";
-            
+
             Promociondetalle oDetalle = new Promociondetalle();
 
             oDetalle.Condicion = "EVENTO";
@@ -54,8 +54,46 @@ namespace Promocion
             if (cCatalogo.Exito)
             {
                 IdGenerate = _oPromocion.Promocionid;
-            }            
-            
+            }
+
+        }
+        [TestMethod]
+        public void TestMethod3()
+        {
+            CatalogoController cCatalogo = new CatalogoController();
+            Usuario oUsuario = new Usuario
+            {
+                Codigo = "",
+                Contrasena = "qwert",
+                Email = "jorge.demo@demo.com",
+                Estatus = "ACTIVO",
+                FechaAlta = new DateTime(2017, 03, 22, 03, 19, 09),
+                FechaBaja = new DateTime(1900, 01, 01),
+                FechaNacimiento = new DateTime(1979, 03, 22),
+                Imagen = "",
+                Nombre = "Jorge Pech",
+                TarjetaID = 4,
+                Tipo = "MOBILE",
+                Usuarioid = 8,
+                VerificacionContrasena = "qwert",
+                VisitaActual = 11,
+                VisitaGlobal = 11,
+                //oTargeta = new Tarjeta { TarjetaID = 4 }
+            };
+
+            //oUsuario.Addinteres(new TipoInteres { TipoInteresID = 1 });
+            //oUsuario.Addinteres(new TipoInteres { TipoInteresID = 3 });
+            cCatalogo.GuardarUsuario(oUsuario);
+        }
+        [TestMethod]
+        public void TestMethod4()
+        {
+            CatalogoController cCatalogo = new CatalogoController();
+            int usuario = 8;
+            if (cCatalogo.RegistroVisita(usuario))
+            {
+                var lsNot = cCatalogo.GetNotifiaciones(usuario);
+            }
         }
     }
 }

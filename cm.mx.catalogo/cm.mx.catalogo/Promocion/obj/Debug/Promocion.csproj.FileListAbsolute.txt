@@ -38,3 +38,17 @@ C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.cata
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\obj\Debug\Promocion.csprojResolveAssemblyReference.cache
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\obj\Debug\Promocion.dll
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\obj\Debug\Promocion.pdb
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\Promocion.dll.config
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\Promocion.dll
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\Promocion.pdb
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\cm.mx.catalogo.dll
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\Iesi.Collections.dll
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\NHibernate.dll
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\cm.mx.catalogo.pdb
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\Iesi.Collections.xml
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\NHibernate.xml
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\bin\Debug\es\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\obj\Debug\Promocion.csprojResolveAssemblyReference.cache
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\obj\Debug\Promocion.dll
+C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\Promocion\obj\Debug\Promocion.pdb

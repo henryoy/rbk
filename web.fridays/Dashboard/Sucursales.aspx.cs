@@ -67,12 +67,14 @@ public partial class Sucursales : System.Web.UI.Page
         txtLatitud.Text = oSucursal.Latitud.Equals(0) ? "" : String.Format("{0:N7}", oSucursal.Latitud);
         txtLongitud.Text = oSucursal.Longitud.Equals(0) ? "" : String.Format("{0:N7}", oSucursal.Longitud);
         txtNombre.Text = oSucursal.Nombre;
+        txtFacebook.Text = oSucursal.LinkFacebook;
         txtBuscarMaps.Text = "";
 
         txtDireccion.ReadOnly = read;
         txtLatitud.ReadOnly = read;
         txtLongitud.ReadOnly = read;
         txtNombre.ReadOnly = read;
+        txtFacebook.ReadOnly = read;
 
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "VerPopUp(); initMap();", true);
     }
@@ -91,6 +93,7 @@ public partial class Sucursales : System.Web.UI.Page
             oSucursal.Latitud = latitud;
             oSucursal.Longitud = longitud;
             oSucursal.SucursalID = SucursalId;
+            oSucursal.LinkFacebook = txtFacebook.Text.Trim();
 
             var r = cCatalogo.GuardarSucursal(oSucursal);
             if (cCatalogo.Exito)

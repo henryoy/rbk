@@ -9,5 +9,6 @@ namespace cm.mx.catalogo.Model
         public virtual int SucursalID { get; set; }
         public virtual string Direccion { get; set; }
         public virtual IList<Promocionsucursal> PromocionSucursal { get; set; }
+        public virtual string LinkFacebook { get; set; }
     }
 }

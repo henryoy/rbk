@@ -116,9 +116,9 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             txtTitulo.Text = oPromocion.Titulo;
             txtDescripcion.Text = oPromocion.Descripcion;
             if (oPromocion.Vigenciainicial.HasValue)
-                txtFechaInicio.Text = oPromocion.Vigenciainicial.Value.ToString("yyyy-MM-dd");
+                txtFechaInicio.Text = String.Format("{0:yyyy-MM-dd}", oPromocion.Vigenciainicial);//oPromocion.Vigenciainicial.ToString("yyyy-MM-dd");
             if (oPromocion.Vigenciafinal.HasValue)
-                txtFechaFinal.Text = oPromocion.Vigenciafinal.Value.ToString("yyyy-MM-dd"); ;
+                txtFechaFinal.Text = String.Format("{0:yyyy-MM-dd}", oPromocion.Vigenciafinal);//oPromocion.Vigenciafinal.ToString("yyyy-MM-dd"); ;
 
             Page.ClientScript.RegisterStartupScript(
                   this.GetType(),
@@ -174,8 +174,8 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         oPromocion.Resumen = txtDescripcion.Text;
         oPromocion.Tipomembresia = dpTarjeta.SelectedItem.Text;
         oPromocion.Tipocliente = oPromocion.Tipomembresia;
-        oPromocion.TerminosCondiciones = txtCondiciones.Text;
-        oPromocion.ImagenUrl = hfTajeta.Value;
+        //oPromocion.TerminosCondiciones = txtCondiciones.Text;
+        //oPromocion.ImagenUrl = hfTajeta.Value;
 
         int TarjetaId = Convert.ToInt32(dpTarjeta.SelectedItem.Value);
 
@@ -225,16 +225,14 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         if (!string.IsNullOrEmpty(txtFechaFinal.Text))
             oPromocion.Vigenciafinal = Convert.ToDateTime(txtFechaFinal.Text);
 
-        foreach( SucursalVM oPromoSucursal in lsSucusalVM)
+        foreach (SucursalVM oPromoSucursal in lsSucusalVM)
         {
             Promocionsucursal _oPromoSucursal = new Promocionsucursal();
             _oPromoSucursal.Sucursalid = oPromoSucursal.SucursalID;
             _oPromoSucursal.Promocionid = oPromocion.Promocionid;
-            
+
             oPromocion.AddSucursal(_oPromoSucursal);
         }
-
-
 
         Promocion _oPromocion = cCatalogo.GuardarPromocion(oPromocion);
 
@@ -305,10 +303,10 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                     Nombre = dpSucursales.SelectedItem.Text,
                     SucursalID = Convert.ToInt32(dpSucursales.SelectedItem.Value)
                 });
-                
+
                 DataTable DBSucursal = (DataTable)ViewState["DBSucursal"];
                 DBSucursal.Rows.Clear();
-                
+
                 foreach (SucursalVM oSucursal in lsSucusalVM)
                 {
                     DataRow row = DBSucursal.NewRow();
@@ -334,7 +332,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                 return;
             }
 
-           
+
         }
     }
 }

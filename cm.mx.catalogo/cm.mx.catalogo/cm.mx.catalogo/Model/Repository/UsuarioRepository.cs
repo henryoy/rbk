@@ -7,11 +7,66 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NHibernate.Linq;
+using System.Net.Mail;
+using System.Text;
+using System.Net;
 
 namespace cm.mx.catalogo.Model
 {
     internal class UsuarioRepository : RepositoryBase<Usuario>
     {
+
+        public bool EnviarCorreo(List<string> para, string asunto, string mensaje, bool eshtml = false)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            try
+            {
+                ConfigSMTP oConfsmtp = new ConfigSMTP
+                {
+                    ConfigSMTPID = 0,
+                    EnableSSl = true,
+                    Host = "smtp.gmail.com",
+                    Password = "Muna/2017",
+                    Port = 587,
+                    UseDefCred = true,
+                    Usuario = "elieupa.desarrollo@gmail.com"
+                };
+
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress(oConfsmtp.Usuario);
+                para.ForEach(a => mail.To.Add(a));
+                mail.Subject = asunto;
+                mail.SubjectEncoding = Encoding.UTF8;
+                mail.Body = mensaje;
+                mail.BodyEncoding = Encoding.UTF8;
+                mail.IsBodyHtml = eshtml;
+                mail.Priority = MailPriority.High;
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = oConfsmtp.Host;
+                smtp.EnableSsl = oConfsmtp.EnableSSl;
+                smtp.UseDefaultCredentials = oConfsmtp.UseDefCred;
+                smtp.Credentials = new NetworkCredential(oConfsmtp.Usuario, oConfsmtp.Password);
+                smtp.Port = oConfsmtp.Port;
+
+                smtp.Send(mail);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                _exito = false;
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _mensajes.Add("Ocurrio un problema al enviar el correo");
+            }
+            return _exito;
+        }
+
         public bool Login(string usuario, string pass)
         {
             _exito = false;
@@ -38,6 +93,27 @@ namespace cm.mx.catalogo.Model
             //}
 
             return _exito;
+        }
+
+        public Usuario LoginMovil(string usuario, string pass)
+        {
+            Usuario oUsuario = null;
+
+            if (!Funciones.ValidarCorreo(usuario)) _errores.Add("Ingrese un correo válido");
+            else
+            {
+                oUsuario = this.Query(f => f.Email == usuario && f.Contrasena == pass).ToList().FirstOrDefault();
+
+                if (oUsuario == null)
+                    _errores.Add("El usuario y/o contraseña es incorrecto");
+            }
+
+            return oUsuario;
+        }
+
+        public Usuario getByCodigo(string codigo)
+        {
+            return _session.Query<Usuario>().Where(x => x.Codigo == codigo).FirstOrDefault();
         }
 
         public bool Login(string usuario, string pass, TipoUsuario tipo)
@@ -100,9 +176,9 @@ namespace cm.mx.catalogo.Model
 
 
             lsUsuario = this.Query(f => f.Estatus != "INACTIVO").Skip(oPaginacion.Pagina * oPaginacion.Cantidad).Take(oPaginacion.Cantidad).ToList();
-                
+
             this._exito = true;
-            
+
             return lsUsuario;
         }
         public int GetContRegisteDay()
@@ -158,7 +234,7 @@ namespace cm.mx.catalogo.Model
             criteria2.CreateAlias("oTargeta", "Tarjeta");
             criteria2.Add(Restrictions.Eq("Estatus", "ACTIVO"))
                 .Add(Restrictions.Eq("Tarjeta.TarjetaID", 4));
-            
+
             lsUsuario = criteria2.List<Usuario>().Skip(oPaginacion.Pagina * oPaginacion.Cantidad).Take(oPaginacion.Cantidad).ToList();
 
             this._exito = true;
@@ -175,7 +251,61 @@ namespace cm.mx.catalogo.Model
             oUsuario = criteria.List<Usuario>().FirstOrDefault();
             //oUsuario = _session.Query<Usuario>().Where(f => f.Codigo == Codigo).FirstOrDefault();
             return oUsuario;
-            
+
+        }
+        public bool RegistrarVisiata(int UsuarioID)
+        {
+            _exito = false;
+            _session.Clear();
+            var oUsuario = _session.Get<Usuario>(UsuarioID);
+            if (oUsuario == null || oUsuario.Estatus == Estatus.BAJA.ToString() || oUsuario.Estatus == Estatus.INACTIVO.ToString())
+            {
+                _exito = false;
+                _mensajes.Add("Usuario no válido");
+            }
+            else
+            {
+                oUsuario.VisitaActual += 1;
+                oUsuario.VisitaGlobal += 1;
+                if (string.IsNullOrEmpty(oUsuario.Codigo)) oUsuario.Codigo = "";
+                _session.BeginTransaction();
+
+                Notificacion oNotifiacion = new Notificacion
+                {
+                    Estatus = Estatus.ACTIVO.ToString(),
+                    FechaRegistro = DateTime.Now,
+                    Mensaje = "Se ha registrado una nueva visita",
+                    NotifiacionID = 0,
+                    PromocionID = 0,
+                    Tipo = TipoNotificacion.VISITA.ToString(),
+                    UsuarioID = oUsuario.Usuarioid,
+                    Vigencia = DateTime.Now.AddDays(5)
+                };
+                oUsuario.AddNotifiacion(oNotifiacion);
+                //_session.SaveOrUpdate(oNotifiacion);
+                var tm = _session.Query<Tipomembresia>().FirstOrDefault(a => oUsuario.VisitaActual >= a.ApartirDe && oUsuario.VisitaActual <= a.Hasta);
+                if (tm != null && tm.ApartirDe == oUsuario.VisitaActual)
+                {
+                    oNotifiacion = new Notificacion
+                    {
+                        Estatus = Estatus.ACTIVO.ToString(),
+                        FechaRegistro = DateTime.Now,
+                        Mensaje = "Nueva membresia alcanzado",
+                        NotifiacionID = 0,
+                        PromocionID = 0,
+                        Tipo = TipoNotificacion.VISITA.ToString(),
+                        UsuarioID = oUsuario.Usuarioid,
+                        Vigencia = DateTime.Now.AddDays(5)
+                    };
+                    //_session.SaveOrUpdate(oNotifiacion);
+                    oUsuario.AddNotifiacion(oNotifiacion);
+                    oUsuario.oTarjeta = tm;
+                }
+                _session.SaveOrUpdate(oUsuario);
+                _session.Transaction.Commit();
+                _exito = true;
+            }
+            return _exito;
         }
         public override Usuario GetById(int id)
         {
@@ -195,6 +325,38 @@ namespace cm.mx.catalogo.Model
         public override bool Update(Usuario modificado)
         {
             throw new NotImplementedException();
+        }
+
+        public bool Guardar(Usuario obj)
+        {
+            _exito = false;
+            _session.Clear();
+            _session.BeginTransaction();
+            _session.SaveOrUpdate(obj);
+            _session.Transaction.Commit();
+            _exito = true;
+            return _exito;
+        }
+
+        public bool ExisteCorreo(string correo)
+        {
+            _exito = false;
+            Mensajes.Clear();
+            Errores.Clear();
+            try
+            {
+                _exito = _session.Query<Usuario>().Any(a => a.Email.Equals(correo));
+            }
+            catch (Exception ex)
+            {
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _mensajes.Add("Ocurrio un problema al realizar la operación solicitada.");
+            }
+            return _exito;
         }
     }
 }
