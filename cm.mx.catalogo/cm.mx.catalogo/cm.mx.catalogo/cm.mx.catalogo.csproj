@@ -66,6 +66,8 @@
     <Compile Include="Model\Map\PromociondetalleMap.cs" />
     <Compile Include="Model\Map\PromocionMap.cs" />
     <Compile Include="Model\Map\PromocionmembresiaMap.cs" />
+    <Compile Include="Model\Map\PromocionsucursalMap.cs" />
+    <Compile Include="Model\Map\PromocionusuarioMap.cs" />
     <Compile Include="Model\Map\SesionMap.cs" />
     <Compile Include="Model\Map\SucursalMap.cs" />
     <Compile Include="Model\Map\TarjetaMap.cs" />
@@ -74,9 +76,12 @@
     <Compile Include="Model\NivelUsuario.cs" />
     <Compile Include="Model\Notificacion.cs" />
     <Compile Include="Model\ObjectVM\PromocionVM.cs" />
+    <Compile Include="Model\ObjectVM\SucursalVM.cs" />
     <Compile Include="Model\Promocion.cs" />
     <Compile Include="Model\Promociondetalle.cs" />
     <Compile Include="Model\Promocionmembresia.cs" />
+    <Compile Include="Model\Promocionsucursal.cs" />
+    <Compile Include="Model\Promocionusuario.cs" />
     <Compile Include="Model\Repository\ActivacionRepository.cs" />
     <Compile Include="Model\Repository\FechaPublicacionRepository.cs" />
     <Compile Include="Model\Repository\NivelUsuarioRepository.cs" />

@@ -1,4 +1,5 @@
-﻿namespace cm.mx.catalogo.Model
+﻿using System.Collections.Generic;
+namespace cm.mx.catalogo.Model
 {
     public class Sucursal
     {
@@ -7,5 +8,6 @@
         public virtual string Nombre { get; set; }
         public virtual int SucursalID { get; set; }
         public virtual string Direccion { get; set; }
+        public virtual IList<Promocionsucursal> PromocionSucursal { get; set; }
     }
 }

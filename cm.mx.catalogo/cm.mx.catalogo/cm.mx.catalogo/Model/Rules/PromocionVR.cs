@@ -24,6 +24,24 @@ namespace cm.mx.catalogo.Model.Rules
                 _exito = false;
             }
 
+            if (!string.IsNullOrEmpty(Objeto.TerminosCondiciones))
+            {
+                if (Objeto.TerminosCondiciones.Length > 500)
+                {
+                    _lsMensajes.Add("Los términos y/o condiciones excede el limite de caracteres permitidos.");
+                    _exito = false;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(Objeto.ImagenUrl))
+            {
+                if (Objeto.ImagenUrl.Length > 350)
+                {
+                    _lsMensajes.Add("La url de la imagen excede el limite de caracteres permitidos.");
+                    _exito = false;
+                }
+            }
+
             if (string.IsNullOrEmpty(Objeto.Estado))
             {
                 _lsMensajes.Add("El estado no puede ser vacío.");
@@ -73,6 +91,23 @@ namespace cm.mx.catalogo.Model.Rules
             {
                 _lsMensajes.Add("El estado no puede ser vacío.");
                 _exito = false;
+            }
+            if (!string.IsNullOrEmpty(Objeto.TerminosCondiciones))
+            {
+                if (Objeto.TerminosCondiciones.Length > 500)
+                {
+                    _lsMensajes.Add("Los términos y/o condiciones excede el limite de caracteres permitidos.");
+                    _exito = false;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(Objeto.ImagenUrl))
+            {
+                if (Objeto.ImagenUrl.Length > 350)
+                {
+                    _lsMensajes.Add("La url de la imagen excede el limite de caracteres permitidos.");
+                    _exito = false;
+                }
             }
             if (Objeto.Promociondetalle != null)
             {

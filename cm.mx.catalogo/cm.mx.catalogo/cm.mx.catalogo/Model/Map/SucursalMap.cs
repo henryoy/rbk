@@ -11,6 +11,7 @@ namespace cm.mx.catalogo.Model.Mappings
             Map(x => x.Longitud);
             Map(x => x.Nombre);
             Map(x => x.Direccion);
+            HasMany(x => x.PromocionSucursal).KeyColumn("SucursalID");
         }
     }
 }

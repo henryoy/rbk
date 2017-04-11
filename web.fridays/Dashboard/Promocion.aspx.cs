@@ -6,19 +6,52 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using cm.mx.catalogo.Controller;
 using cm.mx.catalogo.Model;
+using System.Data;
 
 public partial class Dashboard_Promocion : System.Web.UI.Page
 {
+    private List<SucursalVM> _lsSucursal = new List<SucursalVM>();
+    private List<SucursalVM> lsSucusalVM
+    {
+        get
+        {
+
+            if (ViewState["Sucursal"] != null)
+            {
+                _lsSucursal = ViewState["Sucursal"] as List<SucursalVM>;
+            }
+            return _lsSucursal;
+        }
+        set
+        {
+            ViewState["Sucursal"] = value;
+        }
+    }
     private CatalogoController cCatalogo;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
             int thePID = 0;
+            lsSucusalVM = new List<SucursalVM>();
 
             if (!String.IsNullOrEmpty(Request.QueryString["id"]))
             {
                 thePID = Convert.ToInt32(Request.QueryString["id"]);
+            }
+
+            if (ViewState["DBSucursal"] == null)
+            {
+                DataTable DBSucursal = new DataTable();
+                DBSucursal.Columns.AddRange(new DataColumn[2] { 
+                                    new DataColumn("SucursalID", typeof(int)),
+                                    new DataColumn("Nombre", typeof(string)) 
+                });
+                //DBSucursal.Columns["SucursalID"].AutoIncrement = true;
+                //DBSucursal.Columns["SucursalID"].AutoIncrementSeed = 1;
+                //DBSucursal.Columns["SucursalID"].AutoIncrementStep = 1;
+
+                ViewState["DBSucursal"] = DBSucursal;
             }
 
             Carga(thePID);
@@ -41,11 +74,16 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
             foreach (Sucursal oSucursal in lsSucursal)
             {
-                dpSucursales.Items.Add(new ListItem()
+                ListItem oItem = new ListItem()
                 {
                     Value = Convert.ToString(oSucursal.SucursalID),
-                    Text = oSucursal.Nombre
-                });
+                    Text = oSucursal.Nombre,
+
+                };
+
+                oItem.Attributes.Add("data-list-id", oSucursal.Nombre);
+
+                dpSucursales.Items.Add(oItem);
             }
         }
 
@@ -79,7 +117,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             txtDescripcion.Text = oPromocion.Descripcion;
             if (oPromocion.Vigenciainicial.HasValue)
                 txtFechaInicio.Text = oPromocion.Vigenciainicial.Value.ToString("yyyy-MM-dd");
-            if(oPromocion.Vigenciafinal.HasValue)
+            if (oPromocion.Vigenciafinal.HasValue)
                 txtFechaFinal.Text = oPromocion.Vigenciafinal.Value.ToString("yyyy-MM-dd"); ;
 
             Page.ClientScript.RegisterStartupScript(
@@ -87,11 +125,11 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                   "StartupCalendar",
                   "ActiveCalendar();",
                   true);
-            
+
 
             if (oPromocion.Promociondetalle != null)
             {
-                Promociondetalle oPromocionDetalle =  oPromocion.Promociondetalle.FirstOrDefault();
+                Promociondetalle oPromocionDetalle = oPromocion.Promociondetalle.FirstOrDefault();
                 if (oPromocionDetalle != null)
                 {
 
@@ -108,7 +146,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         }
         else if (dpTipoPromocion.SelectedItem.Text == "VISITA")
         {
-            lblValor1.InnerText = "Número de visita";            
+            lblValor1.InnerText = "Número de visita";
         }
 
         lblValor2.Visible = false;
@@ -130,8 +168,8 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
         Promocion oPromocion = new Promocion();
         cCatalogo = new CatalogoController();
-        oPromocion.Titulo       = txtTitulo.Text;
-        oPromocion.Descripcion  = txtDescripcion.Text;
+        oPromocion.Titulo = txtTitulo.Text;
+        oPromocion.Descripcion = txtDescripcion.Text;
         oPromocion.Promocionid = thePID;
         oPromocion.Resumen = txtDescripcion.Text;
         oPromocion.Tipomembresia = dpTarjeta.SelectedItem.Text;
@@ -143,8 +181,9 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
         Promociondetalle oPromocionDetalle = new Promociondetalle();
 
-        if (string.IsNullOrEmpty(dpTipoPromocion.SelectedItem.Value)) {
-            
+        if (string.IsNullOrEmpty(dpTipoPromocion.SelectedItem.Value))
+        {
+
             msj = "La condicion de la promoción esta vacia";
 
             Page.ClientScript.RegisterStartupScript(
@@ -157,7 +196,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         oPromocionDetalle.Condicion = dpTipoPromocion.SelectedItem.Value;
         oPromocionDetalle.Todos = true;
 
-        if (dpTipoPromocion.SelectedItem.Value == "VISITA"  && string.IsNullOrEmpty(txtValor1.Text))
+        if (dpTipoPromocion.SelectedItem.Value == "VISITA" && string.IsNullOrEmpty(txtValor1.Text))
         {
 
             msj = "El número de visitas no puede ser vacío";
@@ -178,17 +217,28 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         oPromocion.AddMembresia(new Promocionmembresia()
         {
             Membresiaid = TarjetaId,
-            Promocionid = oPromocion.Promocionid            
+            Promocionid = oPromocion.Promocionid
         });
 
         if (!string.IsNullOrEmpty(txtFechaInicio.Text))
             oPromocion.Vigenciainicial = Convert.ToDateTime(txtFechaInicio.Text);
-        if (!string.IsNullOrEmpty(txtFechaFinal.Text)) 
+        if (!string.IsNullOrEmpty(txtFechaFinal.Text))
             oPromocion.Vigenciafinal = Convert.ToDateTime(txtFechaFinal.Text);
-        
+
+        foreach( SucursalVM oPromoSucursal in lsSucusalVM)
+        {
+            Promocionsucursal _oPromoSucursal = new Promocionsucursal();
+            _oPromoSucursal.Sucursalid = oPromoSucursal.SucursalID;
+            _oPromoSucursal.Promocionid = oPromocion.Promocionid;
+            
+            oPromocion.AddSucursal(_oPromoSucursal);
+        }
+
+
+
         Promocion _oPromocion = cCatalogo.GuardarPromocion(oPromocion);
 
-       
+
 
         if (_oPromocion != null)
         {
@@ -199,7 +249,8 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             Tipo = "success";
             msj = "Se guardo correctamente la promoción";
         }
-        else {
+        else
+        {
             Tipo = "error";
             msj = Funciones.FormatoMsj(cCatalogo.Errores);
             if (cCatalogo.Errores.Count == 0)
@@ -213,5 +264,77 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                    "StartupScript",
                    "notification('" + msj + "','" + Tipo + "')",
                    true);
+    }
+    protected void btnEliminarSucursal_Click(object sender, EventArgs e)
+    {
+        foreach (ListItem item in lBSucursal.Items)
+        {
+            if (item.Selected)
+            {
+                var Sucursal = lsSucusalVM.FirstOrDefault(f => f.SucursalID == Convert.ToInt32(item.Value));
+                lsSucusalVM.Remove(Sucursal);
+            }
+        }
+
+        DataTable DBSucursal = (DataTable)ViewState["DBSucursal"];
+        DBSucursal.Rows.Clear();
+
+        foreach (SucursalVM oSucursal in lsSucusalVM)
+        {
+            DataRow row = DBSucursal.NewRow();
+            row["SucursalID"] = oSucursal.SucursalID;
+            row["Nombre"] = oSucursal.Nombre;
+            DBSucursal.Rows.Add(row);
+        }
+
+        ViewState["DBSucursal"] = DBSucursal;
+
+        lBSucursal.DataSource = DBSucursal;
+        lBSucursal.DataTextField = "Nombre";
+        lBSucursal.DataValueField = "SucursalID";
+        lBSucursal.DataBind();
+    }
+    protected void dpSucursales_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (dpSucursales.SelectedItem.Value != "0")
+        {
+            if (!lsSucusalVM.Any(f => f.SucursalID == Convert.ToInt32(dpSucursales.SelectedItem.Value)))
+            {
+                lsSucusalVM.Add(new SucursalVM()
+                {
+                    Nombre = dpSucursales.SelectedItem.Text,
+                    SucursalID = Convert.ToInt32(dpSucursales.SelectedItem.Value)
+                });
+                
+                DataTable DBSucursal = (DataTable)ViewState["DBSucursal"];
+                DBSucursal.Rows.Clear();
+                
+                foreach (SucursalVM oSucursal in lsSucusalVM)
+                {
+                    DataRow row = DBSucursal.NewRow();
+                    row["SucursalID"] = oSucursal.SucursalID;
+                    row["Nombre"] = oSucursal.Nombre;
+                    DBSucursal.Rows.Add(row);
+                }
+
+                ViewState["DBSucursal"] = DBSucursal;
+
+                lBSucursal.DataSource = DBSucursal;
+                lBSucursal.DataTextField = "Nombre";
+                lBSucursal.DataValueField = "SucursalID";
+                lBSucursal.DataBind();
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(
+                   this.GetType(),
+                   "StartupScript",
+                   "notification('La sucursal ha sido agregada recientemente','error')",
+                   true);
+                return;
+            }
+
+           
+        }
     }
 }

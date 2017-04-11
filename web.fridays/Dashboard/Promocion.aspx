@@ -6,17 +6,25 @@
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <style>
+        .generateChecklist {
+                width: 100%;
+                height: 80px;
+                background-color: #69c0af;                
+                color: #FFF;
+            }
+
 
         .ui-icon-cenis-calendar {
             background-image: url(../images/icon/2424_calendar.png);
         }
+
         .ui-icon-cenis {
             width: 24px;
-            height: 24px; 
+            height: 24px;
         }
-        
+
         .ui-icon-cenis {
-            margin-top:35%;
+            margin-top: 35%;
             display: block;
             text-indent: -99999px;
             overflow: hidden;
@@ -279,7 +287,7 @@
         .scheduleCampaignWrapper {
             position: relative;
             display: none;
-            margin-bottom:5%;
+            margin-bottom: 5%;
         }
 
         .scheduleCampaignWrapperLeft {
@@ -465,6 +473,9 @@
             <div class="back_btn semi_bold">Regresar</div>
         </div>
         <div id="mainWrapper">
+            <asp:UpdatePanel runat="server" >
+
+            </asp:UpdatePanel>
             <div id="send_view">
                 <div id="send_sidebar">
                     <!-- Form -->
@@ -501,7 +512,7 @@
                             <div class="scheduleCampaignWrapperLeft">
                                 <!--<input type="text" placeholder="" class="send_schedule_campaign_day_init" value="" readonly="">-->
                                 <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_day_init" ViewStateMode="Enabled"></asp:TextBox>
-                                
+
                             </div>
                             <div class="scheduleCampaignWrapperRight">
                                 <span class="send_schedule_campaign_day_init ui-icon-cenis ui-icon-cenis-calendar"></span>
@@ -510,7 +521,7 @@
                         <div id="datepicker_init" class="ll-skin-melon clear-fix"></div>
                         <div class="scheduleCampaignWrapper clear-fix">
                             <div class="scheduleCampaignWrapperLeft">
-                                <asp:TextBox runat="server" ID="txtFechaFinal" CssClass="send_schedule_campaign_day" ViewStateMode="Enabled"></asp:TextBox>                                
+                                <asp:TextBox runat="server" ID="txtFechaFinal" CssClass="send_schedule_campaign_day" ViewStateMode="Enabled"></asp:TextBox>
                             </div>
                             <div class="scheduleCampaignWrapperRight">
                                 <span class="send_schedule_campaign_day ui-icon-cenis ui-icon-cenis-calendar"></span>
@@ -531,14 +542,7 @@
                 </div>
                 <div id="filter_sidebar" class="expanded" style="left: 340px;">
                     <div id="filter_form">
-                        <h4 class="semi_bold">Sucursales</h4>
-                        <asp:DropDownList class="subscriber_lists" runat="server" ID="dpSucursales">
-                        </asp:DropDownList>
                         <br />
-                        <%--<div class="filter_item selected" data-selection-type="country">
-                            <span>TODAS</span>
-                            <div class="filter_amount" style="right: 12px;"></div>
-                        </div>--%>
                         <h4 class="semi_bold" runat="server" id="lblValor1">Valor 1</h4>
                         <asp:TextBox runat="server" ID="txtValor1" CssClass="entero"></asp:TextBox>
 
@@ -550,6 +554,16 @@
 
                         <div id="uploader_div">
                         </div>
+                        <h4 class="semi_bold">Sucursales </h4>
+                        <label id="subscriber_lists_ul">
+                            <asp:DropDownList class="subscriber_lists" runat="server" ID="dpSucursales" OnSelectedIndexChanged="dpSucursales_SelectedIndexChanged" AutoPostBack="true">
+                            </asp:DropDownList>
+                        </label>
+                        <asp:ListBox ID="lBSucursal" runat="server" SelectionMode="Multiple">
+                            
+                        </asp:ListBox>
+                        <br />
+                        <asp:Button Text="Eliminar sucursal" runat="server" ID="btnEliminarSucursal" CssClass="generateChecklist" OnClick="btnEliminarSucursal_Click" />
                     </div>
                 </div>
             </div>
@@ -718,7 +732,7 @@
                 $('#datepicker').hide();
                 $('#datepicker_init').hide();
             });
-                       
+
 
             $(document).on('mousedown', '.switch', function () {
 
@@ -801,7 +815,7 @@
 
                 }
 
-            });           
+            });
 
         });
 
@@ -818,7 +832,294 @@
 
         }
 
+        //$(document).on('change', '.subscriber_lists', function () {
 
+        //    el = $(this);
+        //    id = $('option:selected', this).attr('data-list-id');
+        //    list = $('option:selected', this).text();
+        //    if (id == 'create_new_list') {
+        //        $('.create_new_list').trigger('click');
+        //        $('#send_sidebar select').prop('selectedIndex', 0);
+        //        return false;
+
+        //    }
+
+        //    //turn editable off
+        //    editableListsOff();
+
+        //    //append list
+        //    appendList(el, id, list);
+        //    openFilterSidebar();
+
+        //});
+        //$(document).on('click', '.edit_lists_btn', function () {
+
+        //    $('#send_form .selected').removeClass('selected');
+        //    resetFilterSidebar();
+        //    resetSelectionSidebar();
+        //    closeAllSidebars();
+
+        //    if ($(".edit_lists_btn:contains('done')").length) {
+
+        //        editableListsOff();
+
+        //    }
+
+        //    else {
+
+        //        editableListsOn();
+
+        //    }
+
+        //});
+        //function editableListsOn() {
+
+        //    $('.edit_lists_btn').text('done');
+
+        //    $('#filter_sidebar label li').each(function () {
+
+        //        el = $(this);
+
+        //        $(el).prepend('<div class="removeListBtn">-</div>');
+        //        $(el).css('padding-left', '38px');
+
+        //    })
+
+        //}
+        //function editableListsOff() {
+
+        //    $('.edit_lists_btn').text('edit');
+
+        //    $('.removeListBtn').remove();
+        //    $('#send_sidebar label li').css('padding-left', '10px');
+
+        //}
+        //function appendList(el, id, list) {
+
+        //    //show edit button
+        //    $('.edit_lists_btn').show();
+        //    $('.errorSenderSubscriberList').empty();
+
+        //    //reset
+        //    $('#filter_sidebar select').prop('selectedIndex', 0);
+
+        //    $(el).closest('label').append('<li data-id="' + id + '" data-l-name="' + list + '">' + list
+        //                                    + '<div class="viewList" style="display: none;"></div>'
+        //                                    + '</li>');
+        //    $('#filter_sidebar select option[data-list-id="' + id + '"]').remove();
+
+        //    $('#filter_sidebar [data-id="' + id + '"]').trigger('click')
+
+        //    //if empty
+        //    count = $('#subscriber_lists_ul li').size();
+
+        //    if (count > 8) {
+
+        //        $('#filter_sidebar select, .add_list_btn').hide();
+
+        //        //add shadow hack
+        //        $('#filter_sidebar label li').first().css('box-shadow', '0 0 0 1px rgba(0,0,0,0.12)')
+
+        //    }
+
+
+        //}
+        //function openFilterSidebar() {
+
+        //    $('#filter_sidebar').addClass('expanded');
+
+        //    country_total = $('#send_form .selected').attr('data-total-country');
+        //    os_total = $('#send_form .selected').attr('data-total-os');
+        //    browser_total = $('#send_form .selected').attr('data-total-browser');
+        //    referrer_total = $('#send_form .selected').attr('data-total-referrer');
+        //    vip_status = parseInt($('#send_form .selected').attr('data-selected-vip'));
+
+        //    //show number
+        //    $('#filter_form [data-selection-type="country"] .filter_amount').each(function () {
+
+        //        el = $(this);
+
+        //        $(this).text(country_total);
+
+        //        if (country_total > 0) {
+
+        //            $(el).closest('.filter_item').find('span').text('Selected items');
+
+        //        }
+
+        //    })
+
+        //    $('#filter_form [data-selection-type="os"] .filter_amount').each(function () {
+
+        //        el = $(this);
+
+        //        $(this).text(os_total);
+
+        //        if (os_total > 0) {
+
+        //            $(el).closest('.filter_item').find('span').text('Selected items');
+
+        //        }
+
+        //    })
+
+        //    $('#filter_form [data-selection-type="browser"] .filter_amount').each(function () {
+
+        //        el = $(this);
+
+        //        $(this).text(browser_total);
+
+        //        if (browser_total > 0) {
+
+        //            $(el).closest('.filter_item').find('span').text('Selected items');
+
+        //        }
+
+        //    })
+
+        //    $('#filter_form [data-selection-type="referrer"] .filter_amount').each(function () {
+
+        //        el = $(this);
+
+        //        $(this).text(referrer_total);
+
+        //        if (referrer_total > 0) {
+
+        //            $(el).closest('.filter_item').find('span').text('Selected items');
+
+        //        }
+
+        //    });
+
+        //    $('#filter_sidebar select').prop('selectedIndex', vip_status);
+
+        //    //hack
+        //    $('.filter_amount').css('right', '11px');
+        //    $('.filter_amount').css('right', '12px');
+
+        //    $('#filter_sidebar').animate({
+
+        //        left: '340px'
+
+        //    }, { duration: 400, easing: 'easeOutBack' });
+
+        //}
+        //function resetFilterSidebar() {
+
+        //    //reset filter sidebar
+        //    $('.filter_amount').empty();
+        //    setTimeout(function () {
+
+        //        $('.filter_amount').css('position', 'absolute');
+
+        //    }, 50);
+        //    $('#filter_sidebar select').prop('selectedIndex', 0);
+        //    $('#filter_sidebar .filter_item span').text('All');
+        //    $('#filter_sidebar .selected').removeClass('selected');
+
+        //}
+        //function resetSelectionSidebar() {
+
+        //    $('#selection_sidebar .selected').removeClass('selected');
+
+        //}
+        //function closeAllSidebars() {
+
+        //    closeSelectionSidebar();
+        //    setTimeout(function () {
+
+        //        closeFilterSidebar();
+
+        //    }, 420)
+
+        //}
+        //function closeFilterSidebar() {
+
+        //    //$('#selection_sidebar').hide();
+        //    //$('#filter_sidebar').removeClass('expanded');
+
+        //    //$('#filter_sidebar').animate({
+
+        //    //    left: '-41px'
+
+        //    //}, { duration: 400, easing: 'easeInBack' });
+
+        //}
+        //function closeSelectionSidebar() {
+
+        //    //if (!$('#selection_sidebar').hasClass('expanded')) {
+
+        //    //    return false;
+
+        //    //}
+
+        //    //$('#selection_sidebar').removeClass('expanded');
+
+        //    //$('#selection_sidebar').animate({
+
+        //    //    left: '340px'
+
+        //    //}, { duration: 400, easing: 'easeInBack' });
+
+        //    //setTimeout(function () {
+
+        //    //    $('#selection_sidebar').css('left', '-41px');
+
+        //    //}, 420)
+
+        //}
+        //$(document).on('click', '.removeListBtn', function (e) {
+
+        //    e.stopPropagation();
+
+        //    //remove list
+        //    id = $(this).closest('li').attr('data-id');
+        //    list = $(this).closest('li').attr('data-l-name');
+
+        //    //resest filter
+        //    resetFilters();
+        //    removeList(id, list);
+
+        //});
+        //function resetFilters() {
+
+        //    $('#filter_sidebar select').prop('selectedIndex', 0);
+
+        //}
+        //function removeList(id, list) {
+
+        //    $('#filter_sidebar li[data-id="' + id + '"]').remove();
+        //    $('#filter_sidebar .subscriber_lists').append('<option class="light" data-list-id="' + id + '">' + list + '</option>');
+
+        //    count = $('#subscriber_lists_ul li').size();
+
+        //    if (count < 1) {
+
+        //        editableListsOff();
+
+        //        //hide edit button
+        //        $('.edit_lists_btn').hide();
+
+
+        //    }
+
+        //    if (count > 0) {
+
+        //        $('#filter_sidebar select, .add_list_btn').show();
+
+        //        //add shadow hack
+        //        $('#filter_sidebar label li').first().css({
+
+        //            'box-shadow': '1px 0 0 rgba(0,0,0,0.12), 0 1px 0 rgba(0,0,0,0.12), -1px 0 0 rgba(0,0,0,0.12)'
+
+        //        });
+
+        //    }
+
+        //    closeSelectionSidebar();
+        //    closeFilterSidebar();
+
+        //}
         $(function () {
 
 

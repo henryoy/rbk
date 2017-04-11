@@ -345,11 +345,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d51d1d', end
 /* My Campaigns */
 #campaigns { margin-left: 250px; height: 100%; padding: 85px 0 0 0; position: relative; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-overflow-scrolling: touch; overflow-y: auto; position: relative;}
 
-	/*#campaigns ul { list-style: none; box-sizing: border-box; -moz-box-sizing: border-box; padding-right: 50px; }*/
-	/*#campaigns ul { box-shadow: 0px 0px 0px 1px #e1e1e1; }*/
-	/*#campaigns li { position: relative; list-style-type: none; background-color: #FFF; height: 65px; line-height: 65px; padding: 0 0 0 0; font-size: 18px; box-shadow: inset 0px -1px 0px #ebebeb; }*/
+	#campaigns ul { list-style: none; box-sizing: border-box; -moz-box-sizing: border-box; padding-right: 50px; }
+	#campaigns ul { box-shadow: 0px 0px 0px 1px #e1e1e1; }
+	#campaigns li { position: relative; list-style-type: none; background-color: #FFF; height: 65px; line-height: 65px; padding: 0 0 0 0; font-size: 18px; box-shadow: inset 0px -1px 0px #ebebeb; }
 	#campaigns li:last-child { box-shadow: none; }
-	#campaigns li:hover { /*background-color: #f7f7f7;*/ }
+	#campaigns li:hover { background-color: #f7f7f7;}
 
 	#campaigns li label { float: left; padding-left: 20px;}
 	#campaigns li label a { margin-top: 23px; }

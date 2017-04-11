@@ -29,7 +29,7 @@ namespace cm.mx.catalogo.Model
             lsMembresia = _session.QueryOver<Sucursal>().List().ToList();
             return lsMembresia;
         }
-
+                       
         public override Sucursal GetById(object id)
         {
             return _session.Get<Sucursal>(id);
