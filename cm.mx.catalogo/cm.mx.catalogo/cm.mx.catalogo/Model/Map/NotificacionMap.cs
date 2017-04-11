@@ -11,6 +11,7 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.FechaRegistro);
             Map(x => x.Mensaje);
             Map(x => x.PromocionID);
+            Map(x => x.Referencia);
             Map(x => x.Tipo);
             Map(x => x.UsuarioID).Formula("UsuarioID");
             Map(x => x.Vigencia);

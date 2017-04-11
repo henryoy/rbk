@@ -299,6 +299,7 @@ namespace cm.mx.catalogo.Model
                     };
                     //_session.SaveOrUpdate(oNotifiacion);
                     oUsuario.AddNotifiacion(oNotifiacion);
+                    oUsuario.oTarjeta = tm;
                 }
                 _session.SaveOrUpdate(oUsuario);
                 _session.Transaction.Commit();

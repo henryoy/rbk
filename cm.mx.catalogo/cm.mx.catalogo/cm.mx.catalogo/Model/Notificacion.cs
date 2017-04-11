@@ -10,6 +10,7 @@ namespace cm.mx.catalogo.Model
         public virtual string Mensaje { get; set; }
         public virtual int NotifiacionID { get; set; }
         public virtual int PromocionID { get; set; }
+        public virtual string Referencia { get; set; }
         public virtual string Tipo { get; set; }
         public virtual int UsuarioID { get; set; }
         public virtual DateTime Vigencia { get; set; }

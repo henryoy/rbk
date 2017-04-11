@@ -78,7 +78,7 @@ namespace Promocion
                 VerificacionContrasena = "qwert",
                 VisitaActual = 11,
                 VisitaGlobal = 11,
-                oTargeta = new Tarjeta { TarjetaID = 4 }
+                //oTargeta = new Tarjeta { TarjetaID = 4 }
             };
 
             //oUsuario.Addinteres(new TipoInteres { TipoInteresID = 1 });
