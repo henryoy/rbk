@@ -252,7 +252,7 @@ namespace cm.mx.catalogo.Model
             return oUsuario;
 
         }
-        public bool RegistrarVisiata(string Usuario, int ClienteID, string Referencia)
+        public bool RegistrarVisiata(string Usuario, int ClienteID, string Referencia, int SucursalId)
         {
             _exito = false;
             _session.Clear();
@@ -283,7 +283,8 @@ namespace cm.mx.catalogo.Model
                     UsuarioID = oUsuario.Usuarioid,
                     Vigencia = DateTime.Now.AddDays(5),
                     UsuarioAlta = emp.Usuarioid,
-                    Referencia = Referencia
+                    Referencia = Referencia,
+                    SucursalId = SucursalId
                 };
                 oUsuario.AddNotifiacion(oNotifiacion);
                 //_session.SaveOrUpdate(oNotifiacion);
@@ -301,7 +302,8 @@ namespace cm.mx.catalogo.Model
                         UsuarioID = oUsuario.Usuarioid,
                         Vigencia = DateTime.Now.AddDays(5),
                         UsuarioAlta = emp.Usuarioid,
-                        Referencia = Referencia
+                        Referencia = Referencia,
+                        SucursalId = SucursalId
                     };
                     //_session.SaveOrUpdate(oNotifiacion);
                     oUsuario.AddNotifiacion(oNotifiacion);

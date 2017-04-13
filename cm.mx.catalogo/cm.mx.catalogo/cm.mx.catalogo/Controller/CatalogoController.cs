@@ -930,7 +930,7 @@ namespace cm.mx.catalogo.Controller
             return lsNotificaiones;
         }
 
-        public bool RegistroVisita(string Usuario, int ClienteID, string Referencia)
+        public bool RegistroVisita(string Usuario, int ClienteID, string Referencia, int SucursalId)
         {
             _exito = false;
             _errores = new List<string>();
@@ -938,7 +938,7 @@ namespace cm.mx.catalogo.Controller
             try
             {
                 rUsuario = new UsuarioRepository();
-                _exito = rUsuario.RegistrarVisiata(Usuario, ClienteID, Referencia);
+                _exito = rUsuario.RegistrarVisiata(Usuario, ClienteID, Referencia, SucursalId);
                 if (!_exito)
                 {
                     _mensajes.AddRange(rUsuario.Mensajes);
