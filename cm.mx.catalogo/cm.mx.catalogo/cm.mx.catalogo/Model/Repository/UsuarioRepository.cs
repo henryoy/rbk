@@ -204,9 +204,9 @@ namespace cm.mx.catalogo.Model
             List<Usuario> lsUsuario = new List<Usuario>();
             int _Count = 0;
             ICriteria criteria = _session.CreateCriteria<Usuario>();
-            criteria.CreateAlias("oTargeta", "Tarjeta");
+            criteria.CreateAlias("oTarjeta", "Tarjeta");
             criteria.Add(Restrictions.Eq("Estatus", "ACTIVO"))
-                .Add(Restrictions.Eq("Tarjeta.TarjetaID", 4));
+                .Add(Restrictions.Eq("Tarjeta.Nombre", "ROJO"));
 
             criteria.SetProjection(Projections.RowCount());
             _Count = (int)criteria.UniqueResult();
@@ -222,18 +222,18 @@ namespace cm.mx.catalogo.Model
                 oPaginacion = new Paginacion();
 
             ICriteria criteria = _session.CreateCriteria<Usuario>();
-            criteria.CreateAlias("oTargeta", "Tarjeta");
+            criteria.CreateAlias("oTarjeta", "Tarjeta");
             criteria.Add(Restrictions.Eq("Estatus", "ACTIVO"))
-                .Add(Restrictions.Eq("Tarjeta.TarjetaID", 4));
+                .Add(Restrictions.Eq("Tarjeta.Nombre", "ROJO"));
 
             criteria.SetProjection(Projections.RowCount());
             int _Count = (int)criteria.UniqueResult();
             oPaginacion.TotalRegistros = _Count;
 
             ICriteria criteria2 = _session.CreateCriteria<Usuario>();
-            criteria2.CreateAlias("oTargeta", "Tarjeta");
+            criteria2.CreateAlias("oTarjeta", "Tarjeta");
             criteria2.Add(Restrictions.Eq("Estatus", "ACTIVO"))
-                .Add(Restrictions.Eq("Tarjeta.TarjetaID", 4));
+                .Add(Restrictions.Eq("Tarjeta.Nombre", "ROJO"));
 
             lsUsuario = criteria2.List<Usuario>().Skip(oPaginacion.Pagina * oPaginacion.Cantidad).Take(oPaginacion.Cantidad).ToList();
 
@@ -357,6 +357,22 @@ namespace cm.mx.catalogo.Model
                 _mensajes.Add("Ocurrio un problema al realizar la operación solicitada.");
             }
             return _exito;
+        }
+
+        public List<Usuario> GetAllUserForVisita(int Visita, string Nivel)
+        {
+            List<Usuario> lsUser = new List<Usuario>();
+            lsUser = _session.CreateCriteria<Usuario>().Add(Restrictions.Ge("VisitaActual", Visita)).List<Usuario>().ToList();
+                //.CreateCriteria("TipoMembresia").Add(Restrictions.Eq("Nombre", Nivel)).List<Usuario>().ToList();
+            return lsUser;
+        }
+        public List<Usuario> GetAllUserForEvento(int Visita, string Nivel)
+        {
+            List<Usuario> lsUser = new List<Usuario>();
+            lsUser = _session.CreateCriteria<Usuario>().Add(Restrictions.Ge("VisitaActual", Visita))
+                .CreateCriteria("TipoMembresia").Add(Restrictions.Eq("Nombre", Nivel)).List<Usuario>().ToList();
+            //lsUser = _session.QueryOver<Usuario>().Where(f => f.VisitaActual >= Visita && f.oTarjeta.Nombre == Nivel).List().ToList();
+            return lsUser;
         }
     }
 }

@@ -5,29 +5,6 @@
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <style>
-        .back_btn {
-            height: 43px;
-            position: absolute;
-            left: 50px;
-            top: 20px;
-            color: #919191;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            background-image: url(../content/img/icons/arrow_left.png);
-            background-position: 1px center;
-            background-repeat: no-repeat;
-            background-color: #FFF;
-            line-height: 43px;
-            padding-left: 15px;
-            padding-right: 20px;
-        }
-
-            .back_btn:hover {
-                color: #69c0af;
-                background-image: url(../content/img/icons/arrow_left_hover.png);
-            }
-
         .Validators {
             float: right !important;
             margin-top: -50px;
@@ -81,45 +58,39 @@
     </style>
     <asp:UpdatePanel runat="server" ID="upForm">
         <ContentTemplate>
-            <div id="campaigns" class="disable_selection semi_bold">
-                <!-- Top Bar -->
-                <div id="list_name_bar">
-                    <h2><b class="light cat">Membresia</b></h2>
-                </div>
-                <div id="mainWrapper">
-                    <div id="box_row_titles">
-                        <!-- Titles of the rows -->
-                        <div id="row_titles2">
-                            <%--<div id="row_picture">#</div>--%>
-                            <div id="row_color">Color</div>
-                            <div id="row_name" class="semi_bold">Nombre</div>
-                            <div id="row_date" class="semi_bold">Apartir De</div>
-                            <div id="row_max" class="semi_bold">Hasta</div>
-                            <div id="row_descuento" class="semi_bold">Descuento </div>
-                            <%--<div id="row_tarjeta" class="semi_bold">Tarjeta </div>--%>
-                            <asp:LinkButton runat="server" ID="add_subscriber" CssClass="semi_bold agregar" Style="top: -7px" ClientIDMode="Static" OnClick="AddMembresia_Click"></asp:LinkButton>
-                        </div>
+            <div id="mainWrapper">
+                <div id="box_row_titles">
+                    <!-- Titles of the rows -->
+                    <div id="row_titles2">
+                        <%--<div id="row_picture">#</div>--%>
+                        <div id="row_color">Color</div>
+                        <div id="row_name" class="semi_bold">Nombre</div>
+                        <div id="row_date" class="semi_bold">Apartir De</div>
+                        <div id="row_max" class="semi_bold">Hasta</div>
+                        <div id="row_descuento" class="semi_bold">Descuento </div>
+                        <%--<div id="row_tarjeta" class="semi_bold">Tarjeta </div>--%>
+                        <asp:LinkButton runat="server" ID="add_subscriber" CssClass="semi_bold agregar" Style="top: -7px" ClientIDMode="Static" OnClick="AddMembresia_Click"></asp:LinkButton>
                     </div>
-                    <ul id="edit-urls-images" class="regular hidden" style="display: block;">
-                        <asp:Repeater runat="server" ID="rptItems">
-                            <ItemTemplate>
-                                <li data-id="<%# Eval("MembresiaId") %>">
-                                    <div class="row_color">
-                                        <div <%# "style=\"margin: 10px; width: 50px; height: 50px; background: "+Eval("Color")+";\"" %>>
-                                        </div>
-                                    </div>
-                                    <div class="row_name"><%# Eval("Nombre") %></div>
-                                    <div class="row_date"><%# Eval("ApartirDe") %></div>
-                                    <div class="row_date"><%# Eval("Hasta") %></div>
-                                    <div class="row_descuento"><%# Eval("PorcientoDescuento") %>%</div>
-                                    <div class="actions semi_bold">
-                                        <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" CommandArgument='<%#Eval("MembresiaId") %>' OnClick="btnEditar_Click">Editar</asp:LinkButton>
-                                    </div>
-                                </li>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </ul>
                 </div>
+                <ul id="edit-urls-images" class="regular hidden" style="display: block;">
+                    <asp:Repeater runat="server" ID="rptItems">
+                        <ItemTemplate>
+                            <li data-id="<%# Eval("MembresiaId") %>">
+                                <div class="row_color">
+                                    <div <%# "style=\"margin: 10px; width: 50px; height: 50px; background: "+Eval("Color")+";\"" %>>
+                                    </div>
+                                </div>
+                                <div class="row_name"><%# Eval("Nombre") %></div>
+                                <div class="row_date"><%# Eval("ApartirDe") %></div>
+                                <div class="row_date"><%# Eval("Hasta") %></div>
+                                <div class="row_descuento"><%# Eval("PorcientoDescuento") %>%</div>
+                                <div class="actions semi_bold">
+                                    <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" CommandArgument='<%#Eval("MembresiaId") %>' OnClick="btnEditar_Click">Editar</asp:LinkButton>
+                                </div>
+                            </li>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </ul>
             </div>
         </ContentTemplate>
         <Triggers>

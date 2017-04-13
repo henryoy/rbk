@@ -3,35 +3,7 @@
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    <style>
-        .back_btn {
-            height: 43px;
-            position: absolute;
-            left: 50px;
-            top: 20px;
-            color: #919191;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            background-image: url(../content/img/icons/arrow_left.png);
-            background-position: 1px center;
-            background-repeat: no-repeat;
-            background-color: #FFF;
-            line-height: 43px;
-            padding-left: 15px;
-            padding-right: 20px;
-        }
 
-            .back_btn:hover {
-                color: #69c0af;
-                background-image: url(../content/img/icons/arrow_left_hover.png);
-            }
-    </style>
-    <div id="campaigns" class="disable_selection semi_bold">
-        <!-- Top Bar -->
-        <div id="list_name_bar">
-            <div class="back_btn semi_bold">Regresar</div>
-        </div>
         <div id="mainWrapper">
             <asp:Repeater ID="rptPromociones" runat="server">
                 <HeaderTemplate>
@@ -74,7 +46,7 @@
             </asp:Repeater>
              <ucPag:ucPaginacion ID="ucPagination" runat="server" contenedorClass="container" RowPaginasClass="pagination" PaginaClass="active"  OnClick="ucPagination_Click"/>
         </div>
-    </div>
+    
 </asp:Content>
 <asp:Content runat="server" ID="ScriptsJS" ContentPlaceHolderID="ScriptsPages">
     <script src="<%= ResolveClientUrl("~/Scripts/js/easing.js") %>" type="text/javascript"></script>

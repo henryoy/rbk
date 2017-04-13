@@ -138,6 +138,37 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                     txtValor2.Text = oPromocionDetalle.Valor2;
                 }
             }
+
+            if (oPromocion.Promocionsucursal != null)
+            {
+                lsSucusalVM = new List<SucursalVM>();
+                foreach(Promocionsucursal opromoSucursal in oPromocion.Promocionsucursal){
+                    SucursalVM oSucursalVM = new SucursalVM();
+                    if (opromoSucursal.Sucursal != null)
+                    {
+                        oSucursalVM.Nombre = opromoSucursal.Sucursal.Nombre;
+                        oSucursalVM.SucursalID = opromoSucursal.Sucursalid;
+                    }
+                }
+
+                DataTable DBSucursal = (DataTable)ViewState["DBSucursal"];
+                DBSucursal.Rows.Clear();
+
+                foreach (SucursalVM oSucursal in lsSucusalVM)
+                {
+                    DataRow row = DBSucursal.NewRow();
+                    row["SucursalID"] = oSucursal.SucursalID;
+                    row["Nombre"] = oSucursal.Nombre;
+                    DBSucursal.Rows.Add(row);
+                }
+
+                ViewState["DBSucursal"] = DBSucursal;
+
+                lBSucursal.DataSource = DBSucursal;
+                lBSucursal.DataTextField = "Nombre";
+                lBSucursal.DataValueField = "SucursalID";
+                lBSucursal.DataBind();
+            }
         }
 
         if (dpTipoPromocion.SelectedItem == null)

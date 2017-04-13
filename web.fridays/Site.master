@@ -13,6 +13,30 @@
         <script src="<%: ResolveUrl("~/Scripts/modernizr-2.6.2.js") %>"></script>
     </asp:PlaceHolder>
     <meta name="viewport" content="width=device-width" />
+        <style>
+        .back_btn {
+            height: 43px;
+            position: absolute;
+            left: 50px;
+            top: 20px;
+            color: #919191;
+            font-size: 12px;
+            text-transform: uppercase;
+            cursor: pointer;
+            background-image: url(../content/img/icons/arrow_left.png);
+            background-position: 1px center;
+            background-repeat: no-repeat;
+            background-color: #FFF;
+            line-height: 43px;
+            padding-left: 15px;
+            padding-right: 20px;
+        }
+
+            .back_btn:hover {
+                color: #69c0af;
+                background-image: url(../content/img/icons/arrow_left_hover.png);
+            }
+    </style>
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
 </head>
 <body>
@@ -87,7 +111,59 @@
                         </li>
                     </ul>
                 </div>
-                <asp:ContentPlaceHolder runat="server" ID="MainContent"></asp:ContentPlaceHolder>
+                <div id="campaigns" class="disable_selection semi_bold">
+                    <!-- Top Bar -->
+                    <div id="list_name_bar">
+                        <div class="back_btn semi_bold">Regresar</div>
+                        <div id="action" class="semi_bold">
+
+                            <!-- options -->
+                            <h3 style="width: 117px;">visitas (12)
+                    <img src="<%= ResolveClientUrl("~/Content/img/icons/arrow_down.png") %>"></h3>
+
+                            <!-- Dropdown -->
+                            <div id="menu_drop_down" style="height: 400px; overflow-y: scroll; overflow-x: hidden;">
+                                <div>
+                                    <asp:LinkButton runat="server">
+                                <span>Eliseo Euan</span>
+                                <span>Fridays - Mesa balcon 2456</span>
+                                <span> 2017-03-22 , 12:30 AM</span>
+                                    </asp:LinkButton>
+                                </div>
+                                <div>
+                                    <asp:LinkButton runat="server">
+                                <span>Santa Gertrudis</span>
+                                <span>Fridays - Mesa balcon 2456</span>
+                                <span> 2017-03-22 , 12:30 AM</span>
+                                    </asp:LinkButton>
+                                </div>
+                                <div>
+                                    <asp:LinkButton runat="server">
+                                <span>Santiago Espinosa</span>
+                                <span>Fridays - Mesa balcon 2456</span>
+                                <span> 2017-03-22 , 12:30 AM</span>
+                                    </asp:LinkButton>
+                                </div>
+                                <div>
+                                    <asp:LinkButton runat="server">
+                                <span>Big Mom Katatkury</span>
+                                <span>Fridays - Mesa balcon 2456</span>
+                                <span> 2017-03-22 , 12:30 AM</span>
+                                    </asp:LinkButton>
+                                </div>
+                                <div>
+                                    <asp:LinkButton runat="server">
+                                <span>San luis potosi</span>
+                                <span>Fridays - Mesa balcon 2456</span>
+                                <span> 2017-03-22 , 12:30 AM</span>
+                                    </asp:LinkButton>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <asp:ContentPlaceHolder runat="server" ID="MainContent"></asp:ContentPlaceHolder>
+                </div>
             </div>
         </div>
 

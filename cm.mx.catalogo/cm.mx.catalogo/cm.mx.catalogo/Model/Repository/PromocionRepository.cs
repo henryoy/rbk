@@ -58,7 +58,7 @@ namespace cm.mx.catalogo.Model
             _session.Transaction.Begin();
             _session.SaveOrUpdate(oPromocion);
             _session.Transaction.Commit();
-            _exito = false;
+            _exito = true;
             return oPromocion;
         }
 

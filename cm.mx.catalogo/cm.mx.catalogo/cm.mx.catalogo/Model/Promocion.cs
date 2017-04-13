@@ -10,8 +10,9 @@ namespace cm.mx.catalogo.Model
             Fechapublicacion = new List<Fechapublicacion>();
             Promociondetalle = new List<Promociondetalle>();
             Promocionmembresia = new List<Promocionmembresia>();
-            Promocionusuario = new List<Promocionusuario>();
+            Promocionusuario = new List<PromocionUsuario>();
             Promocionsucursal = new List<Promocionsucursal>();
+            Promocionnotificacion = new List<Promocionnotificacion>();
         }
 
         public virtual void AddDetalle(Promociondetalle oDetalle)
@@ -32,7 +33,7 @@ namespace cm.mx.catalogo.Model
             oMembresia.Promocion = this;       
         }
 
-        public virtual void AddPromoUsuario(Promocionusuario oPromocionUsuario)
+        public virtual void AddPromoUsuario(PromocionUsuario oPromocionUsuario)
         {
             oPromocionUsuario.Promocion = this;
             Promocionusuario.Add(oPromocionUsuario);
@@ -61,7 +62,8 @@ namespace cm.mx.catalogo.Model
         public virtual IList<Fechapublicacion> Fechapublicacion { get; set; }
         public virtual IList<Promociondetalle> Promociondetalle { get; set; }
         public virtual IList<Promocionmembresia> Promocionmembresia { get; set; }
-        public virtual IList<Promocionusuario> Promocionusuario { get; set; }
+        public virtual IList<PromocionUsuario> Promocionusuario { get; set; }
         public virtual IList<Promocionsucursal> Promocionsucursal { get; set; }
+        public virtual IList<Promocionnotificacion> Promocionnotificacion { get; set; }
     }
 }

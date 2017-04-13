@@ -4,14 +4,8 @@
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    <div id="analytics" class="disable_selection">
-        <div id="list_name_bar">
-            <h2><font class="light cat">Tablero</font></h2>
-            <div id="action" class="semi_bold" style="width: 160px;">
-                <h3 style="text-align: center;"><a href="new_campaign/index.php"><font><font>Nueva campaña</font></font></a></h3>
-            </div>
-        </div>
-        <div id="mainWrapper">
+    <div id="" class="disable_selection">
+        <div  id="mainWrapper" class="analytics credits-row-titles" style="padding-top: 26px;">
             <div class="analytics_reports_wrapper clear-fix">
                 <!-- Line chart -->
                 <div id="canvas_linechart_wrapper2">
@@ -158,8 +152,6 @@
             </div>
         </div>
     </div>
-
-
 </asp:Content>
 <asp:Content runat="server" ID="ScriptsJS" ContentPlaceHolderID="ScriptsPages">
     <script src="<%= ResolveClientUrl("~/Scripts/js/easing.js") %>" type="text/javascript"></script>

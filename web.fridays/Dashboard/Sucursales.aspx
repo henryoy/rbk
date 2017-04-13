@@ -4,29 +4,6 @@
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <style>
-        .back_btn {
-            height: 43px;
-            position: absolute;
-            left: 50px;
-            top: 20px;
-            color: #919191;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            background-image: url(../content/img/icons/arrow_left.png);
-            background-position: 1px center;
-            background-repeat: no-repeat;
-            background-color: #FFF;
-            line-height: 43px;
-            padding-left: 15px;
-            padding-right: 20px;
-        }
-
-            .back_btn:hover {
-                color: #69c0af;
-                background-image: url(../content/img/icons/arrow_left_hover.png);
-            }
-
         .col-name {
             width: 35%;
             height: 100%;
@@ -42,7 +19,6 @@
             line-height: 1.4;
             font: 13px Helvetica,arial,freesans,clean,sans-serif;
         }
-
 
         a {
             color: #4183C4;
@@ -141,35 +117,31 @@
     </div>--%>
     <asp:UpdatePanel runat="server" ID="upForm">
         <ContentTemplate>
-            <div id="campaigns" class="semi_bold">
-                <div id="list_name_bar">
-                    <h2><b class="light cat">Sucursales</b></h2>
-                    <!-- dropdown -->
-                </div>
-                <div id="mainWrapper">
-                    <div id="box_row_titles">
-                        <!-- Titles of the rows -->
-                        <div id="row_titles2">
-                            <div class="col-name">Nombre</div>
-                            <div class="col-name">Dirección</div>
-                            <asp:LinkButton runat="server" ID="add_subscriber" CssClass="semi_bold agregar" Style="top: -7px" ClientIDMode="Static" OnClick="AddSucursal_Click"></asp:LinkButton>
-                        </div>
+
+            <div id="mainWrapper">
+                <div id="box_row_titles">
+                    <!-- Titles of the rows -->
+                    <div id="row_titles2">
+                        <div class="col-name">Nombre</div>
+                        <div class="col-name">Dirección</div>
+                        <asp:LinkButton runat="server" ID="add_subscriber" CssClass="semi_bold agregar" Style="top: -7px" ClientIDMode="Static" OnClick="AddSucursal_Click"></asp:LinkButton>
                     </div>
-                    <ul id="edit-urls-images" class="regular hidden" style="display: block;">
-                        <asp:Repeater runat="server" ID="rptItems">
-                            <ItemTemplate>
-                                <li data-id="<%# Eval("SucursalID") %>" data-url="#" data-token="IzE0MzYwOTEyMzAzMzA=" data-value="San Francisco">
-                                    <div class="row_name"><%# Eval("Nombre") %></div>
-                                    <div><%# Eval("Direccion") %></div>
-                                    <div class="actions semi_bold">
-                                        <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" OnClick="btnEditar_Click" CommandArgument='<%# Eval("SucursalID") %>'>Editar</asp:LinkButton>
-                                    </div>
-                                </li>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </ul>
                 </div>
+                <ul id="edit-urls-images" class="regular hidden" style="display: block;">
+                    <asp:Repeater runat="server" ID="rptItems">
+                        <ItemTemplate>
+                            <li data-id="<%# Eval("SucursalID") %>" data-url="#" data-token="IzE0MzYwOTEyMzAzMzA=" data-value="San Francisco">
+                                <div class="row_name"><%# Eval("Nombre") %></div>
+                                <div><%# Eval("Direccion") %></div>
+                                <div class="actions semi_bold">
+                                    <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" OnClick="btnEditar_Click" CommandArgument='<%# Eval("SucursalID") %>'>Editar</asp:LinkButton>
+                                </div>
+                            </li>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </ul>
             </div>
+
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="add_subscriber" />

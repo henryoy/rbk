@@ -7,6 +7,7 @@ using cm.mx.dbCore.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace cm.mx.catalogo.Controller
 {
@@ -59,6 +60,7 @@ namespace cm.mx.catalogo.Controller
         #region Repositorios
 
         private PromocionRepository rPromocion;
+        private PromocionUsuarioRepository rPromoUser;
 
         private TipoMembresiaRepository rMembresia;
         private SucursalRepository rSucursal;
@@ -304,7 +306,11 @@ namespace cm.mx.catalogo.Controller
                 if (IsTransaction)
                 {
                     oPromocion = rPromocion.GuardarPromocion(entidad);
-
+                    if (oPromocion.Promocionid > 0)
+                    {
+                        var task = this.CrearNotificacion(oPromocion.Promocionid);
+                        //task.Start();
+                    }
                     _exito = true;
                 }
                 else Mensajes.AddRange(PromocionVR.Mensajes);
@@ -989,6 +995,127 @@ namespace cm.mx.catalogo.Controller
                 }
             }
             return _exito;
+        }
+        public async Task CrearNotificacion(int PromocionId)
+        {
+            Promocion oPromocion = this.GetPromocion(PromocionId);
+            Notificacion oNotificacion = new Notificacion();
+
+            oNotificacion.Estatus = "ACTIVO";
+            oNotificacion.FechaRegistro = DateTime.Now;
+            oNotificacion.Mensaje = oPromocion.Descripcion;
+            oNotificacion.NotifiacionID = 0;
+            oNotificacion.PromocionID = oPromocion.Promocionid;
+            oNotificacion.Referencia = "";
+            oNotificacion.Tipo = "PROMOCION";
+            oNotificacion.Usuario = new Usuario() { Usuarioid = 1 };
+            oNotificacion.UsuarioID = 1;
+            oNotificacion.Vigencia = DateTime.Now;
+
+            rNotificacion = new NotificacionRepository();
+
+            Notificacion _oNotificacion = rNotificacion.GuardarNotificacion(oNotificacion);
+            bool _isContinue = false;
+            if (_oNotificacion != null && oNotificacion.NotifiacionID > 0)
+            {
+                _isContinue = true;
+            }
+            List<Usuario> lsUsuario = new List<Usuario>();
+            lsUsuario = this.GetAllUserPromocion(oPromocion.Promocionid);
+            if (_isContinue)
+            {
+                rPromoUser = new PromocionUsuarioRepository();
+                foreach (Usuario oUser in lsUsuario)
+                {
+                    this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
+                }
+                
+                //await Task.Run(() => Parallel.ForEach(lsUsuario, oUser => {
+                //    this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
+                //}));
+
+            }
+
+        }
+
+        public bool GuardarUsuarioPromocion(Promocion oPromocion, Usuario oUser, PromocionUsuarioRepository rPromoUser)
+        {
+            
+            _exito = false;
+
+            try
+            {
+                PromocionUsuario oPromocionUser = new PromocionUsuario();
+                oPromocionUser.PromocionId = oPromocion.Promocionid;
+                oPromocionUser.UsuarioId = oUser.Usuarioid;
+                oPromocionUser.Estatus = "ACTIVA";
+                oPromocionUser.FechaAlta = DateTime.Now;
+                oPromocionUser.FechaAplicada = Convert.ToDateTime("1900-01-01");
+
+                rPromoUser.GuardarPromocioUsuario(oPromocionUser);
+                _exito = true;
+            }
+            catch (Exception innerException)
+            {
+                if (rPromoUser._session.Transaction.IsActive)
+                {
+                    rPromoUser._session.Transaction.Rollback();
+                }
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                this.Errores.Add(innerException.Message);
+            }
+            return _exito;
+        }
+
+        public List<Usuario> GetAllUserPromocion(int PromocionId)
+        {
+            List<Usuario> lsUser = new List<Usuario>();
+
+            try
+            {
+                rUsuario = new UsuarioRepository();
+                Promocion oPromocion = this.GetPromocion(PromocionId);
+                if (oPromocion != null && oPromocion.Promocionid > 0)
+                {
+                    if (oPromocion.Promociondetalle != null)
+                    {
+                        Promociondetalle oPromoDetalle = new Promociondetalle();
+                        oPromoDetalle = oPromocion.Promociondetalle.FirstOrDefault();
+                        if (oPromoDetalle != null && oPromoDetalle.Promociondetalleid > 0)
+                        {
+                            switch (oPromoDetalle.Condicion.ToUpper())
+                            {
+                                case "VISITA":
+                                    int vVisita = 0;
+                                    string vNivel = string.Empty;
+                                    vNivel = oPromocion.Tipomembresia;
+                                    vVisita = Convert.ToInt32(oPromoDetalle.Valor1);
+                                    lsUser = rUsuario.GetAllUserForVisita(vVisita, vNivel);
+                                    break;
+                                case "EVENTO":
+                                    int eVisita = Convert.ToInt32(oPromoDetalle.Valor1);
+                                    string eNivel = oPromocion.Tipomembresia;
+                                    lsUser = rUsuario.GetAllUserForVisita(eVisita, eNivel);
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception innerException)
+            {
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                this.Errores.Add(innerException.Message);
+            }
+
+            return lsUser;
         }
     }
 }

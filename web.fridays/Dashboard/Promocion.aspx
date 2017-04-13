@@ -7,11 +7,11 @@
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <style>
         .generateChecklist {
-                width: 100%;
-                height: 80px;
-                background-color: #69c0af;                
-                color: #FFF;
-            }
+            width: 100%;
+            height: 80px;
+            background-color: #69c0af;
+            color: #FFF;
+        }
 
 
         .ui-icon-cenis-calendar {
@@ -45,28 +45,6 @@
             resize: none;
         }
 
-        .back_btn {
-            height: 43px;
-            position: absolute;
-            left: 50px;
-            top: 20px;
-            color: #919191;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            background-image: url(../content/img/icons/arrow_left.png);
-            background-position: 1px center;
-            background-repeat: no-repeat;
-            background-color: #FFF;
-            line-height: 43px;
-            padding-left: 15px;
-            padding-right: 20px;
-        }
-
-            .back_btn:hover {
-                color: #69c0af;
-                background-image: url(../content/img/icons/arrow_left_hover.png);
-            }
 
         body {
             background-color: #757575 !important;
@@ -405,30 +383,6 @@
             width: 32px;
         }
 
-        .back_btn {
-            height: 43px;
-            position: absolute;
-            left: 38px;
-            top: 27px;
-            color: #919191;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            background-image: url(../img/icons/arrow_left.png);
-            background-position: 1px center;
-            background-repeat: no-repeat;
-            background-color: transparent;
-            line-height: 46px;
-            padding-left: 15px;
-            padding-right: 20px;
-            z-index: 99999;
-            display: none;
-        }
-
-            .back_btn:hover {
-                color: #69c0af;
-                background-image: url(../img/icons/arrow_left_hover.png);
-            }
 
         /* AJAX UPLOAD */
         .ax-clear,
@@ -467,107 +421,98 @@
         }
     </style>
 
-    <div id="campaigns" class="disable_selection semi_bold">
-        <!-- Top Bar -->
-        <div id="list_name_bar">
-            <div class="back_btn semi_bold">Regresar</div>
-        </div>
-        <div id="mainWrapper">
-            <asp:UpdatePanel runat="server" >
+    <div id="mainWrapper" style="padding-top: 26px;">
+        <div id="send_view">
+            <div id="send_sidebar">
+                <!-- Form -->
+                <div id="send_form">
 
-            </asp:UpdatePanel>
-            <div id="send_view">
-                <div id="send_sidebar">
-                    <!-- Form -->
-                    <div id="send_form">
-
-                        <h4 class="semi_bold">Título <span class="errorSenderName"></span></h4>
-                        <asp:TextBox runat="server" ID="txtTitulo" placeholder="Título"></asp:TextBox>
-                        <h4 class="semi_bold">Descripción <span class="errorSenderEmailAddress"></span></h4>
-                        <asp:TextBox runat="server" ID="txtDescripcion" placeholder="Descripción"></asp:TextBox>
-                        <h4 class="semi_bold">Términos y/o condiciones <span class="errorSenderEmailAddress"></span></h4>
-                        <asp:TextBox runat="server" TextMode="MultiLine" Rows="6" Columns="40" ID="txtCondiciones" placeholder="..."></asp:TextBox>
-                        <h4 class="semi_bold">Tipo tarjeta
+                    <h4 class="semi_bold">Título <span class="errorSenderName"></span></h4>
+                    <asp:TextBox runat="server" ID="txtTitulo" placeholder="Título"></asp:TextBox>
+                    <h4 class="semi_bold">Descripción <span class="errorSenderEmailAddress"></span></h4>
+                    <asp:TextBox runat="server" ID="txtDescripcion" placeholder="Descripción"></asp:TextBox>
+                    <h4 class="semi_bold">Términos y/o condiciones <span class="errorSenderEmailAddress"></span></h4>
+                    <asp:TextBox runat="server" TextMode="MultiLine" Rows="6" Columns="40" ID="txtCondiciones" placeholder="..."></asp:TextBox>
+                    <h4 class="semi_bold">Tipo tarjeta
 							<span class="errorSenderSubscriberList"></span>
-                        </h4>
-                        <label id="tipoMembresia">
-                            <asp:DropDownList class="subscriber_lists" runat="server" ID="dpTarjeta"></asp:DropDownList>
-                        </label>
-                        <h4 class="semi_bold">Tipo Membresia
+                    </h4>
+                    <label id="tipoMembresia">
+                        <asp:DropDownList class="subscriber_lists" runat="server" ID="dpTarjeta"></asp:DropDownList>
+                    </label>
+                    <h4 class="semi_bold">Tipo Membresia
 							<span class="errorSenderSubscriberList"></span>
-                        </h4>
-                        <label id="tipoPromocion">
-                            <asp:DropDownList class="subscriber_lists" runat="server" ID="dpTipoPromocion">
-                                <asp:ListItem Value="VISITA">VISITA</asp:ListItem>
-                                <asp:ListItem Value="EVENTO">EVENTO</asp:ListItem>
-                            </asp:DropDownList>
-                        </label>
-                        <h4 class="semi_bold" style="padding-bottom: 18px!important; margin-top: 6px;">Configurar Fecha de promoción					
+                    </h4>
+                    <label id="tipoPromocion">
+                        <asp:DropDownList class="subscriber_lists" runat="server" ID="dpTipoPromocion">
+                            <asp:ListItem Value="VISITA">VISITA</asp:ListItem>
+                            <asp:ListItem Value="EVENTO">EVENTO</asp:ListItem>
+                        </asp:DropDownList>
+                    </label>
+                    <h4 class="semi_bold" style="padding-bottom: 18px!important; margin-top: 6px;">Configurar Fecha de promoción					
 							<div class="switch disabled" name="schedule_switch" style="right: -1px; top: -4px;">
                                 <div class="switch_thumb active" style="right: 19px;"></div>
                                 <input type="hidden" value="0" name="schedule" id="schedule_campaign">
                             </div>
-                        </h4>
-                        <div class="scheduleCampaignWrapper clear-fix">
-                            <div class="scheduleCampaignWrapperLeft">
-                                <!--<input type="text" placeholder="" class="send_schedule_campaign_day_init" value="" readonly="">-->
-                                <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_day_init" ViewStateMode="Enabled"></asp:TextBox>
+                    </h4>
+                    <div class="scheduleCampaignWrapper clear-fix">
+                        <div class="scheduleCampaignWrapperLeft">
+                            <!--<input type="text" placeholder="" class="send_schedule_campaign_day_init" value="" readonly="">-->
+                            <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_day_init" ViewStateMode="Enabled"></asp:TextBox>
 
-                            </div>
-                            <div class="scheduleCampaignWrapperRight">
-                                <span class="send_schedule_campaign_day_init ui-icon-cenis ui-icon-cenis-calendar"></span>
-                            </div>
                         </div>
-                        <div id="datepicker_init" class="ll-skin-melon clear-fix"></div>
-                        <div class="scheduleCampaignWrapper clear-fix">
-                            <div class="scheduleCampaignWrapperLeft">
-                                <asp:TextBox runat="server" ID="txtFechaFinal" CssClass="send_schedule_campaign_day" ViewStateMode="Enabled"></asp:TextBox>
-                            </div>
-                            <div class="scheduleCampaignWrapperRight">
-                                <span class="send_schedule_campaign_day ui-icon-cenis ui-icon-cenis-calendar"></span>
-                                <%--<asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_time"  />--%>
-                            </div>
+                        <div class="scheduleCampaignWrapperRight">
+                            <span class="send_schedule_campaign_day_init ui-icon-cenis ui-icon-cenis-calendar"></span>
                         </div>
-                        <div id="datepicker" class="ll-skin-melon clear-fix"></div>
                     </div>
-                    <div id="generateChecklist" class="semi_bold">
-                        <asp:LinkButton runat="server" ID="lnkGuardarPromocion" CssClass="generateChecklistName" OnClick="lnkGuardarPromocion_Click">Guardar promoción</asp:LinkButton>
-                        <%-- <div class="generateChecklistName">
+                    <div id="datepicker_init" class="ll-skin-melon clear-fix"></div>
+                    <div class="scheduleCampaignWrapper clear-fix">
+                        <div class="scheduleCampaignWrapperLeft">
+                            <asp:TextBox runat="server" ID="txtFechaFinal" CssClass="send_schedule_campaign_day" ViewStateMode="Enabled"></asp:TextBox>
+                        </div>
+                        <div class="scheduleCampaignWrapperRight">
+                            <span class="send_schedule_campaign_day ui-icon-cenis ui-icon-cenis-calendar"></span>
+                            <%--<asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_time"  />--%>
+                        </div>
+                    </div>
+                    <div id="datepicker" class="ll-skin-melon clear-fix"></div>
+                </div>
+                <div id="generateChecklist" class="semi_bold">
+                    <asp:LinkButton runat="server" ID="lnkGuardarPromocion" CssClass="generateChecklistName" OnClick="lnkGuardarPromocion_Click">Guardar promoción</asp:LinkButton>
+                    <%-- <div class="generateChecklistName">
                             Guardar promoción
                         </div>--%>
 
-                        <!-- test -->
+                    <!-- test -->
 
-                    </div>
                 </div>
-                <div id="filter_sidebar" class="expanded" style="left: 340px;">
-                    <div id="filter_form">
-                        <br />
-                        <h4 class="semi_bold" runat="server" id="lblValor1">Valor 1</h4>
-                        <asp:TextBox runat="server" ID="txtValor1" CssClass="entero"></asp:TextBox>
+            </div>
+            <div id="filter_sidebar" class="expanded" style="left: 340px;">
+                <div id="filter_form">
+                    <br />
+                    <h4 class="semi_bold" runat="server" id="lblValor1">Valor 1</h4>
+                    <asp:TextBox runat="server" ID="txtValor1" CssClass="entero"></asp:TextBox>
 
-                        <h4 class="semi_bold" runat="server" id="lblValor2">Valor 2</h4>
-                        <asp:TextBox runat="server" ID="txtValor2"></asp:TextBox>
-                        <h4 class="semi_bold" runat="server">Imagen</h4>
-                        <asp:Image runat="server" ID="imgTarjeta" CssClass="imgTarjeta" ToolTip="Click para seleccionar imagen" Height="36" Width="62" ImageUrl="~/Images/icon-gallery.svg" />
-                        <asp:HiddenField runat="server" ID="hfTajeta" ClientIDMode="Static" Value="" />
+                    <h4 class="semi_bold" runat="server" id="lblValor2">Valor 2</h4>
+                    <asp:TextBox runat="server" ID="txtValor2"></asp:TextBox>
+                    <h4 class="semi_bold" runat="server">Imagen</h4>
+                    <asp:Image runat="server" ID="imgTarjeta" CssClass="imgTarjeta" ToolTip="Click para seleccionar imagen" Height="36" Width="62" ImageUrl="~/Images/icon-gallery.svg" />
+                    <asp:HiddenField runat="server" ID="hfTajeta" ClientIDMode="Static" Value="" />
 
-                        <div id="uploader_div">
-                        </div>
-                        <h4 class="semi_bold">Sucursales </h4>
-                        <label id="subscriber_lists_ul">
-                            <asp:DropDownList class="subscriber_lists" runat="server" ID="dpSucursales" OnSelectedIndexChanged="dpSucursales_SelectedIndexChanged" AutoPostBack="true">
-                            </asp:DropDownList>
-                        </label>
-                        <asp:ListBox ID="lBSucursal" runat="server" SelectionMode="Multiple">
-                            
-                        </asp:ListBox>
-                        <br />
-                        <asp:Button Text="Eliminar sucursal" runat="server" ID="btnEliminarSucursal" CssClass="generateChecklist" OnClick="btnEliminarSucursal_Click" />
+                    <div id="uploader_div">
                     </div>
+                    <h4 class="semi_bold">Sucursales </h4>
+                    <label id="subscriber_lists_ul">
+                        <asp:DropDownList class="subscriber_lists" runat="server" ID="dpSucursales" OnSelectedIndexChanged="dpSucursales_SelectedIndexChanged" AutoPostBack="true">
+                        </asp:DropDownList>
+                    </label>
+                    <asp:ListBox ID="lBSucursal" runat="server" SelectionMode="Multiple"></asp:ListBox>
+                    <br />
+                    <asp:Button Text="Eliminar sucursal" runat="server" ID="btnEliminarSucursal" CssClass="generateChecklist" OnClick="btnEliminarSucursal_Click" />
                 </div>
             </div>
         </div>
+    </div>
+
 </asp:Content>
 
 <asp:Content runat="server" ID="ScriptsJS" ContentPlaceHolderID="ScriptsPages">
