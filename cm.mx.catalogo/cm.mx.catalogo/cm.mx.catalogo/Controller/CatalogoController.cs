@@ -1167,5 +1167,56 @@ namespace cm.mx.catalogo.Controller
             }
             return ls;
         }
+
+        public bool GuardarRerenciaNotifiacion(int NotifiacionId, string Folio)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            try
+            {
+                rNotificacion = new NotificacionRepository();
+                var oNotifiacion = rNotificacion.GetById(NotifiacionId);
+                oNotifiacion.FolioNota = Folio;
+                var not = rNotificacion.GuardarNotificacion(oNotifiacion);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rNotificacion._session.Transaction.IsActive) rNotificacion._session.Transaction.Rollback();
+                _exito = false;
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return _exito;
+        }
+
+        public Notificacion GetNotificacion(int NotifiacionId)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            Notificacion oNotif = null;
+            try
+            {
+                rNotificacion = new NotificacionRepository();
+                oNotif = rNotificacion.GetById(NotifiacionId);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rNotificacion._session.Transaction.IsActive) rNotificacion._session.Transaction.Rollback();
+                _exito = false;
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return oNotif;
+        }
     }
 }

@@ -5,10 +5,26 @@
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
+    <style>
+        
+.submit-btn {
+    width: 40%;
+    height: 80px;
+    line-height: 80px;
+    position: absolute;
+    right:0;
+    color: #FFF;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 16px;
+}
+    </style>
     <div id="mainWrapper" class="credits-row-titles" style="padding-top: 26px;">
         <div id="plans-info" class="empty_campaigns credits-info">
             <div class="left">
-                <h1>Enrique rosado: <b class="semi_bold" style="font-weight: normal;">Blanco</b></h1>
+                <h1 runat="server" id="hNombreUser">Enrique rosado: </h1>
+                <b class="semi_bold" style="font-weight: normal;" runat="server" id="bTarjeta">Blanco</b>
                 <%--<p>You can use the calculator on the right in case you need more. <font class="extra-for-small">A <a href="../plans/index.php" class="semi_bold brandColor">Plan</a> will suit you better if you plan to send regularly.</font></p>--%>
             </div>
             <div class="right">
@@ -25,6 +41,7 @@
                     </div>
                 </div>
                 <div class="clear-fix">&nbsp;</div>
+                <asp:LinkButton runat="server" ID="lnkActualizarNot" CssClass="submit-btn brandBgColor brandBgColorHover font-semibold confirm-login" OnClick="lnkActualizarNot_Click">Asignar Folio</asp:LinkButton>
             </div>
         </div>
 

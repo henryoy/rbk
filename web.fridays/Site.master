@@ -119,46 +119,12 @@
                         <div id="action" class="semi_bold">
 
                             <!-- options -->
-                            <h3 style="width: 117px;">visitas (12)
+                            <h3 style="width: 117px;">Visita<span id="count" style="color:#FFF">0</span>
                     <img src="<%= ResolveClientUrl("~/Content/img/icons/arrow_down.png") %>"></h3>
 
                             <!-- Dropdown -->
                             <div id="menu_drop_down" style="height: 400px; overflow-y: scroll; overflow-x: hidden;">
-                                <div>
-                                    <asp:LinkButton runat="server">
-                                <span>Eliseo Euan</span>
-                                <span>Fridays - Mesa balcon 2456</span>
-                                <span> 2017-03-22 , 12:30 AM</span>
-                                    </asp:LinkButton>
-                                </div>
-                                <div>
-                                    <asp:LinkButton runat="server">
-                                <span>Santa Gertrudis</span>
-                                <span>Fridays - Mesa balcon 2456</span>
-                                <span> 2017-03-22 , 12:30 AM</span>
-                                    </asp:LinkButton>
-                                </div>
-                                <div>
-                                    <asp:LinkButton runat="server">
-                                <span>Santiago Espinosa</span>
-                                <span>Fridays - Mesa balcon 2456</span>
-                                <span> 2017-03-22 , 12:30 AM</span>
-                                    </asp:LinkButton>
-                                </div>
-                                <div>
-                                    <asp:LinkButton runat="server">
-                                <span>Big Mom Katatkury</span>
-                                <span>Fridays - Mesa balcon 2456</span>
-                                <span> 2017-03-22 , 12:30 AM</span>
-                                    </asp:LinkButton>
-                                </div>
-                                <div>
-                                    <asp:LinkButton runat="server">
-                                <span>San luis potosi</span>
-                                <span>Fridays - Mesa balcon 2456</span>
-                                <span> 2017-03-22 , 12:30 AM</span>
-                                    </asp:LinkButton>
-                                </div>
+                                
                             </div>
 
                         </div>
@@ -195,22 +161,23 @@
             function getData() {
                 var $tbl = $('#menu_drop_down');
                 $.ajax({
-                    url: '../index.aspx/GetData',
+                    url: '<%= ResolveUrl("~/index.aspx/GetData") %>',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     type: "POST",
                     success: function (data) {
-                        console.log(data);
+
                         if (data.d.length > 0) {
                             var newdata = data.d;
                             $tbl.empty();
-                            
+                            $("#count").text(data.d.length);
                             var rows = [];
                             for (var i = 0; i < newdata.length; i++) {
-                                rows.push('<div><a href="#">' +
+                                
+                                rows.push('<div><a href="/Dashboard/Notificacion/AsignarVenta?id=' + newdata[i].NotifiacionID + '">' +
+                                            '<span>' + newdata[i].Usuario.Nombre + '</span>' +
                                             '<span>' + newdata[i].Referencia + '</span>' +
-                                            '<span>' + newdata[i].Referencia + '</span>' +
-                                            '<span>' + newdata[i].Referencia + '</span>' +
+                                            '<span>' + newdata[i].FechaRegistro + '</span>' +
                                                 '</a>' +
                                             '</div>');                                
                             }

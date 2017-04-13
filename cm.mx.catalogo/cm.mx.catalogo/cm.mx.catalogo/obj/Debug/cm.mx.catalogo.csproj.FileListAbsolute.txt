@@ -36,14 +36,6 @@ C:\NET\cenis\Proyectos\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm
 C:\NET\cenis\Proyectos\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
 C:\NET\cenis\Proyectos\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.dbcore.pdb
 C:\NET\cenis\Proyectos\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.pdb
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.dll
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.dll
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.xml
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.xml
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.dll
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
 C:\Users\Jorge R\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll
 C:\Users\Jorge R\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.pdb
 C:\Users\Jorge R\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.dll
@@ -61,4 +53,11 @@ C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin
 C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.xml
 C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.dll
 C:\Users\EEuan\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache
+C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll
+C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.pdb
+C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.dll
+C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.dll
+C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.xml
+C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.xml
+C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.dll
+C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
