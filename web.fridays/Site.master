@@ -87,6 +87,9 @@
                         </li>
                     </ul>
                 </div>
+                <div style="float: right;">
+                    <table id="tbl"></table>
+                </div>
                 <asp:ContentPlaceHolder runat="server" ID="MainContent"></asp:ContentPlaceHolder>
             </div>
         </div>
@@ -95,46 +98,44 @@
         <script src="<%= ResolveUrl("~/Scripts/jquery.signalR-2.2.1.js") %>" type="text/javascript"></script>
         <script src="/signalr/hubs"></script>
         <asp:ContentPlaceHolder runat="server" ID="ScriptsPages" />
-        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
         <script type="text/javascript">
-            //$(function () {
-            //    // Proxy created on the fly
-            //    var job = $.connection.myHub;
+            $(function () {
 
-            //    // Declare a function on the job hub so the server can invoke it
-            //    job.client.displayStatus = function () {
-            //        getData();
-            //    };
+                // Proxy created on the fly
+                var job = $.connection.myHub;
 
-            //    // Start the connection
-            //    $.connection.hub.start();
-            //    getData();
-            //});
+                // Declare a function on the job hub so the server can invoke it
+                job.client.displayStatus = function () {
+                    getData();
+                };
 
-            //function getData() {
-            //    //var $tbl = $('#tbl');
-            //    var host = window.location;
-            //    //alert(host);
-            //    $.ajax({
-            //        url: host + '/GetData',
-            //        contentType: "application/json; charset=utf-8",
-            //        dataType: "json",
-            //        type: "POST",
-            //        success: function (data) {
-            //            if (data.d.length > 0) {
-            //                console.log()
-            //                //var newdata = data.d;
-            //                //$tbl.empty();
-            //                //$tbl.append(' <tr><th>ID</th><th>Name</th></tr>');
-            //                //var rows = [];
-            //                //for (var i = 0; i < newdata.length; i++) {
-            //                //    rows.push(' <tr><td>' + newdata[i].Usuario + '</td><td>' + newdata[i].Nombre + '</td></tr>');
-            //                //}
-            //                //$tbl.append(rows.join(''));
-            //            }
-            //        }
-            //    });
-            //}
+                // Start the connection
+                $.connection.hub.start();
+                getData();
+            });
+
+            function getData() {
+                var $tbl = $('#tbl');
+                $.ajax({
+                    url: '../index.aspx/GetData',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: "POST",
+                    success: function (data) {
+                        console.log(data);
+                        if (data.d.length > 0) {
+                            var newdata = data.d;
+                            $tbl.empty();
+                            $tbl.append(' <tr><th>Usuario</th><th>Mensaje</th></tr>');
+                            var rows = [];
+                            for (var i = 0; i < newdata.length; i++) {
+                                rows.push(' <tr><td>' + newdata[i].UsuarioID + '</td><td>' + newdata[i].Mensaje + '</td></tr>');
+                            }
+                            $tbl.append(rows.join(''));
+                        }
+                    }
+                });
+            }
 
             function notification(message, type) {
 
