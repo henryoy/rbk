@@ -1015,5 +1015,30 @@ namespace cm.mx.catalogo.Controller
             }
             return lsNotificaciones;
         }
+
+        public List<Usuario> GetUsuariosMemb(int visitas, string nivel)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<Usuario> ls = new List<Usuario>();
+            try
+            {
+                rUsuario = new UsuarioRepository();
+                ls = rUsuario.GetTipoMemb(visitas, nivel);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                ls = new List<Usuario>();
+                _exito = false;
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return ls;
+        }
     }
 }

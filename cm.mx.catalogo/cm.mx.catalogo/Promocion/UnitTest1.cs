@@ -100,7 +100,8 @@ namespace Promocion
         public void TestMethod5()
         {
             CatalogoController cCatalogo = new CatalogoController();
-            var ls = cCatalogo.GetNotficaionesByTipo("VISITA");
+            //var ls = cCatalogo.GetNotficaionesByTipo("VISITA");
+            var ls = cCatalogo.GetUsuariosMemb(31, "Gray");
         }
     }
 }

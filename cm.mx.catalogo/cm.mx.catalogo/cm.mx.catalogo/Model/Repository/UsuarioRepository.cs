@@ -366,5 +366,12 @@ namespace cm.mx.catalogo.Model
             }
             return _exito;
         }
+
+        public List<Usuario> GetTipoMemb(int cant, string nivel)
+        {
+            List<Usuario> ls = new List<Usuario>();
+            ls = _session.CreateCriteria<Usuario>().Add(Restrictions.Ge("VisitaActual", cant)).CreateCriteria("oTarjeta").Add(Restrictions.Eq("Nombre", nivel)).List<Usuario>().Distinct().ToList();
+            return ls;
+        }
     }
 }

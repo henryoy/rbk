@@ -9,6 +9,7 @@ namespace cm.mx.catalogo.Model.Map
             Id(x => x.NotifiacionID);
             Map(x => x.Estatus);
             Map(x => x.FechaRegistro);
+            Map(x => x.FolioNota);
             Map(x => x.Mensaje);
             Map(x => x.PromocionID);
             Map(x => x.Referencia);

@@ -17,5 +17,6 @@ namespace cm.mx.catalogo.Model
         public virtual int UsuarioAlta { get; set; }
         public virtual DateTime Vigencia { get; set; }
         public virtual Usuario Usuario { get; set; }
+        public virtual string FolioNota { get; set; }
     }
 }
