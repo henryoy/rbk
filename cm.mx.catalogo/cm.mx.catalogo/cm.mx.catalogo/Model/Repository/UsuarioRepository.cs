@@ -252,11 +252,11 @@ namespace cm.mx.catalogo.Model
             return oUsuario;
 
         }
-        public bool RegistrarVisiata(int UsuarioID)
+        public bool RegistrarVisiata(string Usuario, int ClienteID, string Referencia)
         {
             _exito = false;
             _session.Clear();
-            var oUsuario = _session.Get<Usuario>(UsuarioID);
+            var oUsuario = _session.Get<Usuario>(ClienteID);
             if (oUsuario == null || oUsuario.Estatus == Estatus.BAJA.ToString() || oUsuario.Estatus == Estatus.INACTIVO.ToString())
             {
                 _exito = false;
@@ -266,8 +266,11 @@ namespace cm.mx.catalogo.Model
             {
                 oUsuario.VisitaActual += 1;
                 oUsuario.VisitaGlobal += 1;
+
                 if (string.IsNullOrEmpty(oUsuario.Codigo)) oUsuario.Codigo = "";
                 _session.BeginTransaction();
+                var emp = _session.CreateCriteria<Usuario>().Add(Restrictions.Eq("Email", Usuario).IgnoreCase()).List<Usuario>().FirstOrDefault();
+                if (emp == null) emp = new Usuario();
 
                 Notificacion oNotifiacion = new Notificacion
                 {
@@ -278,7 +281,9 @@ namespace cm.mx.catalogo.Model
                     PromocionID = 0,
                     Tipo = TipoNotificacion.VISITA.ToString(),
                     UsuarioID = oUsuario.Usuarioid,
-                    Vigencia = DateTime.Now.AddDays(5)
+                    Vigencia = DateTime.Now.AddDays(5),
+                    UsuarioAlta = emp.Usuarioid,
+                    Referencia = Referencia
                 };
                 oUsuario.AddNotifiacion(oNotifiacion);
                 //_session.SaveOrUpdate(oNotifiacion);
@@ -294,7 +299,9 @@ namespace cm.mx.catalogo.Model
                         PromocionID = 0,
                         Tipo = TipoNotificacion.VISITA.ToString(),
                         UsuarioID = oUsuario.Usuarioid,
-                        Vigencia = DateTime.Now.AddDays(5)
+                        Vigencia = DateTime.Now.AddDays(5),
+                        UsuarioAlta = emp.Usuarioid,
+                        Referencia = Referencia
                     };
                     //_session.SaveOrUpdate(oNotifiacion);
                     oUsuario.AddNotifiacion(oNotifiacion);

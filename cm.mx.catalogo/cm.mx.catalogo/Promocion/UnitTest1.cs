@@ -90,7 +90,7 @@ namespace Promocion
         {
             CatalogoController cCatalogo = new CatalogoController();
             int usuario = 8;
-            if (cCatalogo.RegistroVisita(usuario))
+            if (cCatalogo.RegistroVisita("alvaro.carcano@rop.mx", 8, "Refrencia de visita"))
             {
                 var lsNot = cCatalogo.GetNotifiaciones(usuario);
             }
