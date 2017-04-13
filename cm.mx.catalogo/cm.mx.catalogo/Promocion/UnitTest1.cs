@@ -90,10 +90,18 @@ namespace Promocion
         {
             CatalogoController cCatalogo = new CatalogoController();
             int usuario = 8;
-            if (cCatalogo.RegistroVisita(usuario))
+            if (cCatalogo.RegistroVisita("alvaro.carcano@rop.mx", 8, "Refrencia de visita", 3))
             {
                 var lsNot = cCatalogo.GetNotifiaciones(usuario);
             }
+        }
+
+        [TestMethod]
+        public void TestMethod5()
+        {
+            CatalogoController cCatalogo = new CatalogoController();
+            //var ls = cCatalogo.GetNotficaionesByTipo("VISITA");
+            var ls = cCatalogo.GetUsuariosMemb(31, "Gray");
         }
     }
 }

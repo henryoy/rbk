@@ -1,16 +1,31 @@
-﻿using System;
+﻿using cm.mx.catalogo.Controller;
+using cm.mx.catalogo.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Data;
 
 public partial class SiteMaster : MasterPage
 {
     private const string AntiXsrfTokenKey = "__AntiXsrfToken";
     private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
     private string _antiXsrfTokenValue;
+    CatalogoController _cCat;
+    CatalogoController cCatalogo
+    {
+        get
+        {
+            if (_cCat == null) _cCat = new CatalogoController();
+            return _cCat;
+        }
+    }
 
     protected void Page_Init(object sender, EventArgs e)
     {

@@ -442,6 +442,4 @@
 
     </script>
 </asp:Content>
-<asp:Content ID="Content4" ContentPlaceHolderID="FeaturedContent" runat="Server">
-</asp:Content>
 

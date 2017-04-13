@@ -25,9 +25,9 @@ namespace cm.mx.catalogo.Model
         public List<Sucursal> GetAllActivos()
         {
             _exito = false;
-            List<Sucursal> lsMembresia = new List<Sucursal>();
-            lsMembresia = _session.QueryOver<Sucursal>().List().ToList();
-            return lsMembresia;
+            List<Sucursal> ls = new List<Sucursal>();
+            ls = _session.QueryOver<Sucursal>().List().ToList();
+            return ls;
         }
                        
         public override Sucursal GetById(object id)

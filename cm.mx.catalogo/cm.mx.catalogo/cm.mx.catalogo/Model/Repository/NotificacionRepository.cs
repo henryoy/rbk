@@ -1,4 +1,5 @@
 ﻿using cm.mx.dbCore.Clases;
+using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,18 @@ namespace cm.mx.catalogo.Model
         public override bool Update(Notificacion modificado)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Notificacion> GetByTipo(string tipo)
+        {
+            _exito = false;
+            List<Notificacion> lsNotificaion = new List<Notificacion>();
+            var r = _session.CreateCriteria<Notificacion>().Add(Restrictions.Eq("Tipo", tipo).IgnoreCase()).List<Notificacion>();
+            if (r.Count() > 0)
+            {
+                lsNotificaion = r.ToList();
+            }
+            return lsNotificaion;
         }
     }
 }

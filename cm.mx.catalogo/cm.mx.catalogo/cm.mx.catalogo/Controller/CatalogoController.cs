@@ -936,7 +936,7 @@ namespace cm.mx.catalogo.Controller
             return lsNotificaiones;
         }
 
-        public bool RegistroVisita(int UsuarioID)
+        public bool RegistroVisita(string Usuario, int ClienteID, string Referencia, int SucursalId)
         {
             _exito = false;
             _errores = new List<string>();
@@ -944,7 +944,7 @@ namespace cm.mx.catalogo.Controller
             try
             {
                 rUsuario = new UsuarioRepository();
-                _exito = rUsuario.RegistrarVisiata(UsuarioID);
+                _exito = rUsuario.RegistrarVisiata(Usuario, ClienteID, Referencia, SucursalId);
                 if (!_exito)
                 {
                     _mensajes.AddRange(rUsuario.Mensajes);
@@ -996,6 +996,7 @@ namespace cm.mx.catalogo.Controller
             }
             return _exito;
         }
+
         public async Task CrearNotificacion(int PromocionId)
         {
             Promocion oPromocion = this.GetPromocion(PromocionId);
@@ -1029,7 +1030,7 @@ namespace cm.mx.catalogo.Controller
                 {
                     this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
                 }
-                
+
                 //await Task.Run(() => Parallel.ForEach(lsUsuario, oUser => {
                 //    this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
                 //}));
@@ -1040,7 +1041,7 @@ namespace cm.mx.catalogo.Controller
 
         public bool GuardarUsuarioPromocion(Promocion oPromocion, Usuario oUser, PromocionUsuarioRepository rPromoUser)
         {
-            
+
             _exito = false;
 
             try
@@ -1116,6 +1117,55 @@ namespace cm.mx.catalogo.Controller
             }
 
             return lsUser;
+        }
+        public List<Notificacion> GetNotficaionesByTipo(string tipo)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<Notificacion> lsNotificaciones = new List<Notificacion>();
+            try
+            {
+                rNotificacion = new NotificacionRepository();
+                lsNotificaciones = rNotificacion.GetByTipo(tipo);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                lsNotificaciones = new List<Notificacion>();
+                _exito = false;
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return lsNotificaciones;
+        }
+
+        public List<Usuario> GetUsuariosMemb(int visitas, string nivel)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<Usuario> ls = new List<Usuario>();
+            try
+            {
+                rUsuario = new UsuarioRepository();
+                ls = rUsuario.GetTipoMemb(visitas, nivel);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                ls = new List<Usuario>();
+                _exito = false;
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return ls;
         }
     }
 }

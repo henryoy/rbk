@@ -15,7 +15,6 @@ namespace cm.mx.catalogo.Model
 {
     internal class UsuarioRepository : RepositoryBase<Usuario>
     {
-
         public bool EnviarCorreo(List<string> para, string asunto, string mensaje, bool eshtml = false)
         {
             _exito = false;
@@ -253,11 +252,11 @@ namespace cm.mx.catalogo.Model
             return oUsuario;
 
         }
-        public bool RegistrarVisiata(int UsuarioID)
+        public bool RegistrarVisiata(string Usuario, int ClienteID, string Referencia, int SucursalId)
         {
             _exito = false;
             _session.Clear();
-            var oUsuario = _session.Get<Usuario>(UsuarioID);
+            var oUsuario = _session.Get<Usuario>(ClienteID);
             if (oUsuario == null || oUsuario.Estatus == Estatus.BAJA.ToString() || oUsuario.Estatus == Estatus.INACTIVO.ToString())
             {
                 _exito = false;
@@ -267,8 +266,11 @@ namespace cm.mx.catalogo.Model
             {
                 oUsuario.VisitaActual += 1;
                 oUsuario.VisitaGlobal += 1;
+
                 if (string.IsNullOrEmpty(oUsuario.Codigo)) oUsuario.Codigo = "";
                 _session.BeginTransaction();
+                var emp = _session.CreateCriteria<Usuario>().Add(Restrictions.Eq("Email", Usuario).IgnoreCase()).List<Usuario>().FirstOrDefault();
+                if (emp == null) emp = new Usuario();
 
                 Notificacion oNotifiacion = new Notificacion
                 {
@@ -279,7 +281,10 @@ namespace cm.mx.catalogo.Model
                     PromocionID = 0,
                     Tipo = TipoNotificacion.VISITA.ToString(),
                     UsuarioID = oUsuario.Usuarioid,
-                    Vigencia = DateTime.Now.AddDays(5)
+                    Vigencia = DateTime.Now.AddDays(5),
+                    UsuarioAlta = emp.Usuarioid,
+                    Referencia = Referencia,
+                    SucursalId = SucursalId
                 };
                 oUsuario.AddNotifiacion(oNotifiacion);
                 //_session.SaveOrUpdate(oNotifiacion);
@@ -295,7 +300,10 @@ namespace cm.mx.catalogo.Model
                         PromocionID = 0,
                         Tipo = TipoNotificacion.VISITA.ToString(),
                         UsuarioID = oUsuario.Usuarioid,
-                        Vigencia = DateTime.Now.AddDays(5)
+                        Vigencia = DateTime.Now.AddDays(5),
+                        UsuarioAlta = emp.Usuarioid,
+                        Referencia = Referencia,
+                        SucursalId = SucursalId
                     };
                     //_session.SaveOrUpdate(oNotifiacion);
                     oUsuario.AddNotifiacion(oNotifiacion);
@@ -373,6 +381,13 @@ namespace cm.mx.catalogo.Model
                 .CreateCriteria("TipoMembresia").Add(Restrictions.Eq("Nombre", Nivel)).List<Usuario>().ToList();
             //lsUser = _session.QueryOver<Usuario>().Where(f => f.VisitaActual >= Visita && f.oTarjeta.Nombre == Nivel).List().ToList();
             return lsUser;
+        }
+        public List<Usuario> GetTipoMemb(int cant, string nivel)
+        {
+            List<Usuario> ls = new List<Usuario>();
+            ls = _session.CreateCriteria<Usuario>().Add(Restrictions.Ge("VisitaActual", cant)).CreateCriteria("oTarjeta").Add(Restrictions.Eq("Nombre", nivel)).List<Usuario>().Distinct().ToList();
+            return ls;
+
         }
     }
 }
