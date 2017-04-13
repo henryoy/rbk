@@ -13,7 +13,7 @@
         <script src="<%: ResolveUrl("~/Scripts/modernizr-2.6.2.js") %>"></script>
     </asp:PlaceHolder>
     <meta name="viewport" content="width=device-width" />
-        <style>
+    <style>
         .back_btn {
             height: 43px;
             position: absolute;
@@ -119,19 +119,18 @@
                         <div id="action" class="semi_bold">
 
                             <!-- options -->
-                            <h3 style="width: 117px;">Visita<span id="count" style="color:#FFF">0</span>
-                    <img src="<%= ResolveClientUrl("~/Content/img/icons/arrow_down.png") %>"></h3>
+                            <h3 style="width: 117px;">Visita<span id="count" style="color: #FFF">0</span>
+                                <img src="<%= ResolveClientUrl("~/Content/img/icons/arrow_down.png") %>"></h3>
 
                             <!-- Dropdown -->
                             <div id="menu_drop_down" style="height: 400px; overflow-y: scroll; overflow-x: hidden;">
-                                
                             </div>
 
                         </div>
                     </div>
                     <div style="float: right;">
-                    <table id="tbl"></table>
-                </div>
+                        <table id="tbl"></table>
+                    </div>
                     <asp:ContentPlaceHolder runat="server" ID="MainContent"></asp:ContentPlaceHolder>
                 </div>
 
@@ -173,13 +172,13 @@
                             $("#count").text(data.d.length);
                             var rows = [];
                             for (var i = 0; i < newdata.length; i++) {
-                                
+                                var d = new Date(parseInt(newdata[i].FechaRegistro.replace("/Date(", "").replace(")/", ""), 10));
                                 rows.push('<div><a href="/Dashboard/Notificacion/AsignarVenta?id=' + newdata[i].NotifiacionID + '">' +
                                             '<span>' + newdata[i].Usuario.Nombre + '</span>' +
                                             '<span>' + newdata[i].Referencia + '</span>' +
-                                            '<span>' + newdata[i].FechaRegistro + '</span>' +
+                                            '<span>' + d.format("dd/MM/yyyy HH:mm") + '</span>' +
                                                 '</a>' +
-                                            '</div>');                                
+                                            '</div>');
                             }
                             $tbl.append(rows.join(''));
                         }
