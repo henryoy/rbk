@@ -24,10 +24,10 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.Resumen).Column("Resumen").Not.Nullable();
             Map(x => x.TerminosCondiciones).Column("TerminosCondiciones").Nullable();
             Map(x => x.ImagenUrl).Column("ImagenUrl").Nullable();
-            HasMany(x => x.Fechapublicacion).KeyColumn("PromocionId").Cascade.None(); 
+            HasMany(x => x.Fechapublicacion).KeyColumn("PromocionId").Cascade.None();
             HasMany(x => x.Promociondetalle).KeyColumn("PromocionId").Cascade.All().Inverse();
             HasMany(x => x.Promocionmembresia).KeyColumn("PromocionId").Cascade.All().Inverse();
-            HasMany(x => x.PromocionRedimir).KeyColumn("PromocionId").Cascade.None();
+            HasMany(x => x.PromocionRedimir).KeyColumn("PromocionId").Cascade.None().ReadOnly();
             //HasMany(x => x.Promocionusuario).KeyColumn("PromocionId").Cascade.None().ReadOnly();
             HasMany(x => x.Promocionsucursal).KeyColumn("PromocionId").Cascade.All().Inverse();
             HasMany(x => x.Promocionnotificacion).KeyColumn("PromocionId").Cascade.All().Inverse();

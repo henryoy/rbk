@@ -40,7 +40,7 @@ namespace cm.mx.catalogo.Model
             if (oPaginacion == null)
                 oPaginacion = new Paginacion();
 
-            ICriteria criteria = _session.CreateCriteria<Promocionredimir>();            
+            ICriteria criteria = _session.CreateCriteria<Promocionredimir>();
             criteria.SetProjection(Projections.RowCount());
             int _Count = (int)criteria.UniqueResult();
             oPaginacion.TotalRegistros = _Count;
@@ -56,6 +56,7 @@ namespace cm.mx.catalogo.Model
         public bool Guardar(Promocionredimir oPromocion)
         {
             _exito = false;
+            _session.Clear();
             _session.BeginTransaction();
             _session.SaveOrUpdate(oPromocion);
             _session.Transaction.Commit();
@@ -71,11 +72,13 @@ namespace cm.mx.catalogo.Model
                 .Add(Restrictions.Eq("Usuario.Usuarioid", UsuarioId))
                 .Add(Restrictions.Eq("Promocion.Promocionid", PromocionId)).List<Promocionredimir>().ToList().FirstOrDefault();
 
-            if(oPromo != null){
-                if(oPromo.PromocionRedimirId > 0){
+            if (oPromo != null)
+            {
+                if (oPromo.PromocionRedimirId > 0)
+                {
                     _exito = true;
                 }
-            }   
+            }
 
             return _exito;
         }

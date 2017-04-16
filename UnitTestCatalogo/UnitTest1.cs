@@ -47,7 +47,7 @@ namespace UnitTestCatalogo
             oRedimirPromo.UsuarioId = 2;
             oRedimirPromo.UsuarioRedimioId = 1;
             oRedimirPromo.SucursalId = 0;
-            oRedimirPromo.PromocionId = 1;
+            oRedimirPromo.PromocionId = 22;
             
             bool isExito = false;
             //string Usuario = "hency.oy@gmail.com";
