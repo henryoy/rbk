@@ -13,6 +13,7 @@ namespace cm.mx.catalogo.Model
             Promocionusuario = new List<PromocionUsuario>();
             Promocionsucursal = new List<Promocionsucursal>();
             Promocionnotificacion = new List<Promocionnotificacion>();
+            PromocionRedimir = new List<Promocionredimir>();
         }
 
         public virtual void AddDetalle(Promociondetalle oDetalle)
@@ -65,5 +66,6 @@ namespace cm.mx.catalogo.Model
         public virtual IList<PromocionUsuario> Promocionusuario { get; set; }
         public virtual IList<Promocionsucursal> Promocionsucursal { get; set; }
         public virtual IList<Promocionnotificacion> Promocionnotificacion { get; set; }
+        public virtual IList<Promocionredimir> PromocionRedimir { get; set; }
     }
 }

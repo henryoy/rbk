@@ -71,6 +71,7 @@
     <Compile Include="Model\Map\PromocionMap.cs" />
     <Compile Include="Model\Map\PromocionmembresiaMap.cs" />
     <Compile Include="Model\Map\PromocionnotificacionMap.cs" />
+    <Compile Include="Model\Map\PromocionredimirMap.cs" />
     <Compile Include="Model\Map\PromocionsucursalMap.cs" />
     <Compile Include="Model\Map\PromocionusuarioMap.cs" />
     <Compile Include="Model\Map\SesionMap.cs" />
@@ -82,11 +83,13 @@
     <Compile Include="Model\NivelUsuario.cs" />
     <Compile Include="Model\Notificacion.cs" />
     <Compile Include="Model\ObjectVM\PromocionVM.cs" />
+    <Compile Include="Model\ObjectVM\RedimirPromocionVM.cs" />
     <Compile Include="Model\ObjectVM\SucursalVM.cs" />
     <Compile Include="Model\Promocion.cs" />
     <Compile Include="Model\Promociondetalle.cs" />
     <Compile Include="Model\Promocionmembresia.cs" />
     <Compile Include="Model\Promocionnotificacion.cs" />
+    <Compile Include="Model\Promocionredimir.cs" />
     <Compile Include="Model\Promocionsucursal.cs" />
     <Compile Include="Model\Promocionusuario.cs" />
     <Compile Include="Model\Repository\ActivacionRepository.cs" />
@@ -94,6 +97,7 @@
     <Compile Include="Model\Repository\FechaPublicacionRepository.cs" />
     <Compile Include="Model\Repository\NivelUsuarioRepository.cs" />
     <Compile Include="Model\Repository\NotificacionRepository.cs" />
+    <Compile Include="Model\Repository\PromocionRedimirRepository.cs" />
     <Compile Include="Model\Repository\PromocionRepository.cs" />
     <Compile Include="Model\Repository\PromocionUsuarioRepository.cs" />
     <Compile Include="Model\Repository\SesionRepository.cs" />

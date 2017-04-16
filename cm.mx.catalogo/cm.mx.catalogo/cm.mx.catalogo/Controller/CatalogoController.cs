@@ -67,6 +67,7 @@ namespace cm.mx.catalogo.Controller
         private TarjetaRepository rTarjeta;
         private UsuarioRepository rUsuario;
         private NotificacionRepository rNotificacion;
+        private PromocionRedimirRepository rPromocionRedimir;
 
         #endregion Repositorios
 
@@ -1329,10 +1330,63 @@ namespace cm.mx.catalogo.Controller
                     innerException = innerException.InnerException;
                 }
                 this.Errores.Add(innerException.Message);
-                throw innerException;
             }
 
             return lsPromocion;
+        }
+        public bool RedimirPromocion(RedimirPromocionVM oRedimirPromo)
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            bool isExiste = false;
+            bool IsSave = false;
+            rPromocionRedimir = new PromocionRedimirRepository();
+            try
+            {
+                Promocionredimir oPromocionRedimir = new Promocionredimir();                
+                oPromocionRedimir.PromocionRedimirId = oRedimirPromo.PromocionRedimirId;
+                oPromocionRedimir.UsuarioRedimioId = oRedimirPromo.UsuarioRedimioId;
+                oPromocionRedimir.FechaRedimir = DateTime.Now;
+                oPromocionRedimir.Promocion = new Promocion()
+                {
+                    Promocionid = oRedimirPromo.PromocionId
+                };
+
+                oPromocionRedimir.Usuario = new Usuario()
+                {
+                    Usuarioid = oRedimirPromo.UsuarioId
+                };
+
+                isExiste = rPromocionRedimir.PromocionIsRedimida(oRedimirPromo.UsuarioId,oRedimirPromo.PromocionId);
+
+                if (!isExiste)
+                {
+                    IsSave = rPromocionRedimir.Guardar(oPromocionRedimir);
+                }
+                else
+                {
+                    _mensajes.Add("La promoción ha sido redimida");
+                }
+
+                _exito = true;
+                
+            }
+            catch (Exception innerException)
+            {
+                if (rPromocionRedimir._session.Transaction.IsActive)
+                {
+                    rPromocionRedimir._session.Transaction.Rollback();
+                }
+
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                this.Errores.Add(innerException.Message);
+            }
+
+            return IsSave;
         }
     }
 }

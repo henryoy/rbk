@@ -13,5 +13,3 @@ C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\UnitTestCatalogo\bin\Debu
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\UnitTestCatalogo\bin\Debug\Iesi.Collections.xml
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\UnitTestCatalogo\obj\Debug\UnitTestCatalogo.dll
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\UnitTestCatalogo\obj\Debug\UnitTestCatalogo.pdb
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\UnitTestCatalogo\bin\Debug\UnitTestCatalogo.dll.CodeAnalysisLog.xml
-C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\UnitTestCatalogo\bin\Debug\UnitTestCatalogo.dll.lastcodeanalysissucceeded
