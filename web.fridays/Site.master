@@ -138,9 +138,9 @@
         </div>
 
         <script src="<%= ResolveUrl("~/Scripts/js/jquery-1.10.1.min.js") %>" type="text/javascript"></script>
+        <asp:ContentPlaceHolder runat="server" ID="ScriptsPages" />
         <script src="<%= ResolveUrl("~/Scripts/jquery.signalR-2.2.1.js") %>" type="text/javascript"></script>
         <script src="/signalr/hubs"></script>
-        <asp:ContentPlaceHolder runat="server" ID="ScriptsPages" />
         <script type="text/javascript">
             $(function () {
 
@@ -169,7 +169,7 @@
                         if (data.d.length > 0) {
                             var newdata = data.d;
                             $tbl.empty();
-                            $("#count").text(data.d.length);
+                            $("#count").text(newdata.length);
                             var rows = [];
                             for (var i = 0; i < newdata.length; i++) {
                                 var d = new Date(parseInt(newdata[i].FechaRegistro.replace("/Date(", "").replace(")/", ""), 10));

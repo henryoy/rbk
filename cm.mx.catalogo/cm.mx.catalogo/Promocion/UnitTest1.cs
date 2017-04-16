@@ -103,5 +103,13 @@ namespace Promocion
             //var ls = cCatalogo.GetNotficaionesByTipo("VISITA");
             var ls = cCatalogo.GetUsuariosMemb(31, "Gray");
         }
+
+        [TestMethod]
+        public void TestMethod6()
+        {
+            UtileriaController cUtileria = new UtileriaController();
+            //var ls = cCatalogo.GetNotficaionesByTipo("VISITA");
+            var folio = cUtileria.GenerarFolio(1);
+        }
     }
 }
