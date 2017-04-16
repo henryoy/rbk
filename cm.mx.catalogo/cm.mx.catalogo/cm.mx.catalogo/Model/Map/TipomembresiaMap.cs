@@ -17,7 +17,7 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.Color).Column("Color").Not.Nullable();
             Map(x => x.Estado).Column("Estado").Not.Nullable();
             Map(x => x.UrlImagen).Column("UrlImagen").Not.Nullable();
-            HasMany(x => x.Promocionmembresia).KeyColumn("MembresiaId");
+            HasMany(x => x.Promocionmembresia).KeyColumn("MembresiaId").Cascade.None();
         }
     }
 }

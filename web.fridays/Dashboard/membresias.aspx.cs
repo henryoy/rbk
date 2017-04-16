@@ -118,6 +118,8 @@ public partial class membresias : System.Web.UI.Page
 
     protected void btnGuardar_Click(object sender, EventArgs e)
     {
+        imgTarjeta.ImageUrl = hfTajeta.Value;
+        hfTajeta.Value = hfTajeta.Value.Replace(" ", "%20");
         try
         {
             int min;
@@ -145,7 +147,6 @@ public partial class membresias : System.Web.UI.Page
             }
             else
             {
-                imgTarjeta.ImageUrl = hfTajeta.Value;
                 ScriptManager.RegisterStartupScript(
                   this,
                   this.GetType(),
@@ -160,7 +161,7 @@ public partial class membresias : System.Web.UI.Page
                  this,
                  this.GetType(),
                  "StartupScript",
-                 "notification('" + ex.Message + "','error')",
+                 "notification('" + ex.Message.Replace("\r\n", "&nbsp;") + "','error')",
                  true);
         }
     }
