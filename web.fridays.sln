@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web.fridays", "web.fridays\", "{9F7DE2C7-7C01-457E-B99E-F8645AFC8706}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web.fridays(9)", "web.fridays\", "{9F7DE2C7-7C01-457E-B99E-F8645AFC8706}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
 		ProjectReferences = "{a8017285-f678-43ee-9d46-9ea2c0d922c5}|cm.mx.catalogo.dll;"
@@ -27,6 +27,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web.fridays", "web.fridays\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cm.mx.catalogo", "cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo.csproj", "{A8017285-F678-43EE-9D46-9EA2C0D922C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestCatalogo", "UnitTestCatalogo\UnitTestCatalogo.csproj", "{16C627DB-4760-4DEF-8436-95C9E9D5A528}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{A8017285-F678-43EE-9D46-9EA2C0D922C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8017285-F678-43EE-9D46-9EA2C0D922C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8017285-F678-43EE-9D46-9EA2C0D922C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16C627DB-4760-4DEF-8436-95C9E9D5A528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16C627DB-4760-4DEF-8436-95C9E9D5A528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16C627DB-4760-4DEF-8436-95C9E9D5A528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16C627DB-4760-4DEF-8436-95C9E9D5A528}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

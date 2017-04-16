@@ -30,6 +30,18 @@ public partial class Login : System.Web.UI.Page
     {
         try
         {
+            CatalogoController cCatalogo = new CatalogoController();
+            string Usuario = "hency.oy@gmail.com";
+            int ClienteID = 2;
+            string Referencia = "TESTING";
+            int SucursalId = 0;
+            bool isExito = false;
+            isExito = cCatalogo.RegistroVisita(Usuario, ClienteID, Referencia, SucursalId);
+            if (isExito)
+            {
+
+            }
+            return;
             string url = string.Empty;
 
             mensajes.Clear();
@@ -58,7 +70,7 @@ public partial class Login : System.Web.UI.Page
             }
 
             string urlAcceso = string.Empty;
-            string Usuario = txtEmail.Text.Trim();
+            //string Usuario = txtEmail.Text.Trim();
 
             if (!cCatalogo.Login(Usuario, txtPassword.Text.Trim()))
             {

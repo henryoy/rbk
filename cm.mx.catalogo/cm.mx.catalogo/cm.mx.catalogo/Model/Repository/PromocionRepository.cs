@@ -100,5 +100,19 @@ namespace cm.mx.catalogo.Model
             lsPromocion = _session.QueryOver<Promocion>().Where(f => f.Vigenciafinal > DateTime.Now).List().ToList();
             return lsPromocion;
         }
+        public List<Promocion> GetPromocionAplyVisita(String TipoMembresia)
+        {
+
+            List<Promocion> lsPromocion = new List<Promocion>();
+
+            lsPromocion = _session.CreateCriteria<Promocion>()
+               .Add(Restrictions.Eq("Estado", "ACTIVO"))
+               .Add(Restrictions.Eq("Tipomembresia", TipoMembresia))
+               .CreateCriteria("Promociondetalle").Add(Restrictions.Eq("Condicion", "VISITA"))
+               .List<Promocion>().Distinct().ToList();
+
+            //lsPromocion = _session.QueryOver<Promocion>().Where(f => f.Vigenciafinal > DateTime.Now && f.Promociondetalle.Any(x=>x.Condicion == "VISITA")).List().ToList();
+            return lsPromocion;
+        }
     }
 }

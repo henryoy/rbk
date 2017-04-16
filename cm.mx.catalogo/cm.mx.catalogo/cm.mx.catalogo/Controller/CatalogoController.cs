@@ -944,12 +944,16 @@ namespace cm.mx.catalogo.Controller
             try
             {
                 rUsuario = new UsuarioRepository();
-                _exito = rUsuario.RegistrarVisiata(Usuario, ClienteID, Referencia, SucursalId);
+                _exito = rUsuario.RegistrarVisita(Usuario, ClienteID, Referencia, SucursalId);
                 if (!_exito)
                 {
                     _mensajes.AddRange(rUsuario.Mensajes);
                     _errores.AddRange(rUsuario.Errores);
                 }
+                List<Promocion> tskPromocion = new List<Promocion>();
+
+                Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
+                //tskPromocion = await lsPromocion;
             }
             catch (Exception ex)
             {
@@ -1038,7 +1042,42 @@ namespace cm.mx.catalogo.Controller
             }
 
         }
+        public void CrearNotificacion(Promocion oPromocion, Usuario oUsuario, int SucursalId)
+        {
+            Notificacion oNotificacion = new Notificacion();
 
+            oNotificacion.Estatus = "ACTIVO";
+            oNotificacion.FechaRegistro = DateTime.Now;
+            oNotificacion.Mensaje = oPromocion.Descripcion;
+            oNotificacion.NotifiacionID = 0;
+            oNotificacion.PromocionID = oPromocion.Promocionid;
+            oNotificacion.Referencia = "";
+            oNotificacion.Tipo = "PROMOCION";
+            oNotificacion.Usuario = oUsuario;
+            oNotificacion.UsuarioID = oUsuario.Usuarioid;
+            oNotificacion.SucursalId = SucursalId;
+            oNotificacion.Vigencia = DateTime.Now;
+
+            rNotificacion = new NotificacionRepository();
+
+            Notificacion _oNotificacion = rNotificacion.GuardarNotificacion(oNotificacion);
+            bool _isContinue = false;
+            if (_oNotificacion != null && oNotificacion.NotifiacionID > 0)
+            {
+                _isContinue = true;
+            }
+            List<Usuario> lsUsuario = new List<Usuario>();
+            lsUsuario = this.GetAllUserPromocion(oPromocion.Promocionid);
+            if (_isContinue)
+            {
+                rPromoUser = new PromocionUsuarioRepository();
+                foreach (Usuario oUser in lsUsuario)
+                {
+                    this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
+                }
+            }
+
+        }
         public bool GuardarUsuarioPromocion(Promocion oPromocion, Usuario oUser, PromocionUsuarioRepository rPromoUser)
         {
 
@@ -1217,6 +1256,83 @@ namespace cm.mx.catalogo.Controller
                 }
             }
             return oNotif;
+        }
+
+        public async Task<List<Promocion>> CrearNotificacionPromocion(int UsuarioId)
+        {
+            List<Promocion> lsPromocion = new List<Promocion>();
+
+            try
+            {
+                List<Promocion> _lsPromocion = new List<Promocion>();
+                Usuario oUsuario = new Usuario();
+
+                rUsuario = new UsuarioRepository();
+                oUsuario = rUsuario.GetById(UsuarioId);
+                if (oUsuario != null)
+                {
+                    rPromocion = new PromocionRepository();
+                    if (oUsuario.VisitaActual > 0)
+                    {
+                        string Tarjeta = string.Empty;
+                        if (oUsuario.oTarjeta != null)
+                            Tarjeta = oUsuario.oTarjeta.Nombre;
+                        else
+                        {
+                            Tipomembresia oTipo = this.GetMembresia(oUsuario.TarjetaID);
+                            if (oTipo != null)
+                                Tarjeta = oTipo.Nombre;
+                        }
+
+                        if (!string.IsNullOrEmpty(Tarjeta))
+                        {
+                            lsPromocion = rPromocion.GetPromocionAplyVisita(Tarjeta);
+                            foreach (Promocion oPromocion in lsPromocion)
+                            {
+                                if (oPromocion.Promociondetalle != null && oPromocion.Promociondetalle.Count > 0)
+                                {
+                                    var DetallePromocion = oPromocion.Promociondetalle.FirstOrDefault();
+                                    if (DetallePromocion != null)
+                                    {
+                                        if (DetallePromocion.Condicion == "VISITA")
+                                        {
+                                            int Valor1 = 0;
+                                            if (!string.IsNullOrEmpty(DetallePromocion.Valor1))
+                                            {
+                                                Valor1 = Convert.ToInt32(DetallePromocion.Valor1);
+                                            }
+                                            if (oUsuario.VisitaActual >= Valor1)
+                                                _lsPromocion.Add(oPromocion);
+                                        }
+                                        else
+                                            _lsPromocion.Add(oPromocion);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (_lsPromocion.Count > 0)
+                    {
+                        foreach (Promocion oPromocion in _lsPromocion)
+                        {
+                            this.CrearNotificacion(oPromocion, oUsuario, 1);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception innerException)
+            {
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                this.Errores.Add(innerException.Message);
+                throw innerException;
+            }
+
+            return lsPromocion;
         }
     }
 }

@@ -252,7 +252,8 @@ namespace cm.mx.catalogo.Model
             return oUsuario;
 
         }
-        public bool RegistrarVisiata(string Usuario, int ClienteID, string Referencia, int SucursalId)
+        
+        public bool RegistrarVisita(string Usuario, int ClienteID, string Referencia, int SucursalId)
         {
             _exito = false;
             _session.Clear();
@@ -370,16 +371,26 @@ namespace cm.mx.catalogo.Model
         public List<Usuario> GetAllUserForVisita(int Visita, string Nivel)
         {
             List<Usuario> lsUser = new List<Usuario>();
-            lsUser = _session.CreateCriteria<Usuario>().Add(Restrictions.Ge("VisitaActual", Visita)).List<Usuario>().ToList();
-                //.CreateCriteria("TipoMembresia").Add(Restrictions.Eq("Nombre", Nivel)).List<Usuario>().ToList();
+            
+            lsUser = _session.CreateCriteria<Usuario>()
+                .Add(Restrictions.Ge("VisitaActual", Visita))
+                .CreateCriteria("oTarjeta").Add(Restrictions.Eq("Nombre", Nivel))
+                .List<Usuario>().Distinct().ToList();
+                
             return lsUser;
         }
         public List<Usuario> GetAllUserForEvento(int Visita, string Nivel)
         {
             List<Usuario> lsUser = new List<Usuario>();
-            lsUser = _session.CreateCriteria<Usuario>().Add(Restrictions.Ge("VisitaActual", Visita))
-                .CreateCriteria("TipoMembresia").Add(Restrictions.Eq("Nombre", Nivel)).List<Usuario>().ToList();
-            //lsUser = _session.QueryOver<Usuario>().Where(f => f.VisitaActual >= Visita && f.oTarjeta.Nombre == Nivel).List().ToList();
+
+            //lsUser = _session.CreateCriteria<Usuario>().Add(Restrictions.Ge("VisitaActual", Visita))
+            //    .CreateCriteria("TipoMembresia").Add(Restrictions.Eq("Nombre", Nivel)).List<Usuario>().ToList();
+
+            lsUser = _session.CreateCriteria<Usuario>()
+               .Add(Restrictions.Ge("VisitaActual", Visita))
+               .CreateCriteria("oTarjeta").Add(Restrictions.Eq("Nombre", Nivel))
+               .List<Usuario>().Distinct().ToList();
+            
             return lsUser;
         }
         public List<Usuario> GetTipoMemb(int cant, string nivel)
