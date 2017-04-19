@@ -1,5 +1,6 @@
 ﻿using cm.mx.catalogo.Enums;
 using cm.mx.catalogo.Model;
+using cm.mx.catalogo.Model.ObjectVM;
 using cm.mx.catalogo.Model.Rules;
 using cm.mx.catalogo.Rules;
 using cm.mx.dbCore.Interfaces;
@@ -1388,5 +1389,146 @@ namespace cm.mx.catalogo.Controller
 
             return IsSave;
         }
+
+        //<summary>Metodo que devuelve un objeto usuario por medio del correo electronico</summary>
+        public Usuario GetUsuario(string usuario)
+        {
+            _exito = false;
+            _mensajes = new List<string>();
+            _errores = new List<string>();
+            Usuario oUsuario = null;
+
+            try
+            {
+                rUsuario = new UsuarioRepository();
+                oUsuario = rUsuario.Query(a => a.Email == usuario).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                if (rNotificacion._session.Transaction.IsActive)
+                {
+                    rNotificacion._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+
+            return oUsuario;
+        }
+
+        //<summary>Metodo que devuelve una lista de visitas del usuario que los dio de alto, pasando el id del usuario alta</summary>
+        public List<Notificacion> GetVisitasByUsuarioAlta(int UsuatioID)
+        {
+            _exito = false;
+            _mensajes = new List<string>();
+            _errores = new List<string>();
+            List<Notificacion> lsNotificaiones = null;
+            try
+            {
+                rNotificacion = new NotificacionRepository();
+                lsNotificaiones = rNotificacion.Query(a => a.UsuarioAlta == UsuatioID && a.Tipo == TipoNotificacion.VISITA.ToString()).OrderByDescending(x => x.FechaRegistro).Take(10).ToList();
+            }
+            catch (Exception ex)
+            {
+                if (rNotificacion._session.Transaction.IsActive)
+                {
+                    rNotificacion._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return lsNotificaiones;
+        }
+
+        //<summary>Metodo que devuelve una lista de visitas del usuario destino distinguiendo por tipo de visita</summary>
+        public List<NotificacionSucursalVM> GetNotifiacionesApp(int UsuatioID, bool visitas = true)
+        {
+            _exito = false;
+            _mensajes = new List<string>();
+            _errores = new List<string>();
+            List<Notificacion> lsNotificaiones = new List<Notificacion>();
+            List<NotificacionSucursalVM> lsNotificacionesSucursal = new List<NotificacionSucursalVM>();
+            try
+            {
+
+                rSucursal = new SucursalRepository();
+
+                rNotificacion = new NotificacionRepository();
+                if (visitas)
+                {
+                    lsNotificaiones = rNotificacion.Query(a => a.UsuarioID == UsuatioID && a.Tipo == TipoNotificacion.VISITA.ToString()).OrderByDescending(x => x.FechaRegistro).Take(5).ToList();
+                }
+                else
+                {
+                    lsNotificaiones = rNotificacion.Query(a => a.UsuarioID == UsuatioID && a.Tipo != TipoNotificacion.VISITA.ToString()).OrderByDescending(x => x.FechaRegistro).Take(5).ToList();
+                }
+
+                foreach (Notificacion oNot in lsNotificaiones)
+                {
+                    NotificacionSucursalVM oNotSuc = new NotificacionSucursalVM();
+                    oNotSuc.Estatus = oNot.Estatus;
+                    oNotSuc.FechaRegistro = oNot.FechaRegistro;
+                    oNotSuc.FolioNota = oNot.FolioNota;
+                    oNotSuc.Mensaje = oNot.Mensaje;
+                    oNotSuc.NotifiacionID = oNot.NotifiacionID;
+                    oNotSuc.PromocionID = oNot.PromocionID;
+                    oNotSuc.Referencia = oNot.Referencia;
+                    oNotSuc.SucursalId = oNot.SucursalId;
+                    oNotSuc.Tipo = oNot.Tipo;
+                    oNotSuc.Usuario = oNot.Usuario;
+                    oNotSuc.UsuarioAlta = oNot.UsuarioAlta;
+                    oNotSuc.UsuarioID = oNot.UsuarioID;
+                    oNotSuc.Vigencia = oNot.Vigencia;
+                    oNotSuc.Sucursal = rSucursal.GetById(oNotSuc.SucursalId).Nombre;
+                    lsNotificacionesSucursal.Add(oNotSuc);
+                }
+
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rNotificacion._session.Transaction.IsActive)
+                {
+                    rNotificacion._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return lsNotificacionesSucursal;
+        }
+
+        //<summary>Metodo que devuelve un objeto de tipo usuario</summary>
+        public Usuario LoginMovil(string usuario, string password, TipoUsuario tipo)
+        {
+            UsuarioRepository rUsuario = new UsuarioRepository();
+            ActivacionRepository rAcrivacion = new ActivacionRepository();
+            Usuario oUsuario = null;
+
+            try
+            {
+                oUsuario = rUsuario.LoginMovil(usuario, password, tipo);
+
+                if (oUsuario == null)
+                {
+                    Errores.AddRange(rUsuario.Errores);
+                }
+            }
+            catch (Exception ex)
+            {
+                Errores.Add(ex.Message);
+            }
+
+            return oUsuario;
+        }
+
     }
 }

@@ -400,5 +400,21 @@ namespace cm.mx.catalogo.Model
             return ls;
 
         }
+
+        public Usuario LoginMovil(string usuario, string pass, TipoUsuario tipo)
+        {
+            Usuario oUsuario = null;
+
+            if (!Funciones.ValidarCorreo(usuario)) _errores.Add("Ingrese un correo válido");
+            else
+            {
+                oUsuario = this.Query(f => f.Email == usuario && f.Contrasena == pass && f.Tipo == tipo.ToString()).ToList().FirstOrDefault();
+
+                if (oUsuario == null)
+                    _errores.Add("El usuario y/o contraseña es incorrecto");
+            }
+
+            return oUsuario;
+        }
     }
 }
