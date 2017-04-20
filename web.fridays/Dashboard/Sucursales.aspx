@@ -44,7 +44,7 @@
             text-decoration: underline;
         }
 
-        .Validators {
+        /*.Validators {
             float: right !important;
             margin-top: -50px;
             color: #f31111 !important;
@@ -76,38 +76,29 @@
                 background-color: #D7D7D7;
                 border-color: #bbb;
                 color: #333;
-            }
+            }*/
 
-        .contenedor-btn-alta {
+        /*.contenedor-btn-alta {
             margin-bottom: 15px;
-        }
+        }*/
 
         .mapa-google {
             border: 1px solid #ababab;
             height: 200px;
         }
 
-        .modal-direccion-entrega .panel {
-            border-bottom: 0;
-            border-left: 0;
-            border-right: 0;
+        /*#popup {
+            padding-bottom: 70px !important;
+            padding-top: 30px;
         }
 
-        .tab-content > .active {
-            display: block;
-            visibility: visible;
-        }
+            #popup input[type="button"], #popup input[type="submit"] {
+                height: 50PX;
+            }*/
 
-        .fade.in {
-            opacity: 1;
-        }
-
-        .fade {
-            opacity: 0;
-            -webkit-transition: opacity .15s linear;
-            -o-transition: opacity .15s linear;
-            transition: opacity .15s linear;
-        }
+        /*.clear-fix {
+            height: 40px !important;
+        }*/
     </style>
     <%--<div id="popupOverlay">
         <div id="popup">
@@ -134,6 +125,7 @@
                                 <div class="row_name"><%# Eval("Nombre") %></div>
                                 <div><%# Eval("Direccion") %></div>
                                 <div class="actions semi_bold">
+                                    <asp:LinkButton runat="server" ID="btnBaja" CssClass="analytics" OnClick="btnBaja_Click" CommandArgument='<%# Eval("SucursalID") %>'>Baja</asp:LinkButton>
                                     <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" OnClick="btnEditar_Click" CommandArgument='<%# Eval("SucursalID") %>'>Editar</asp:LinkButton>
                                 </div>
                             </li>
@@ -152,42 +144,42 @@
     <!--popup-->
     <div id="popupOverlay" style="opacity: 1; transition: all 0.46s ease; display: none;">
         <div id="popup" style="opacity: 1; transition: all 0.46s ease; transform: scale(1) translateY(-50%);">
-            <asp:Button runat="server" OnClientClick="btnGuardar_Click" ID="btnGuardar" CssClass="btnTrue semi_bold" Style="left: 0px; width: 50%;" OnClick="btnGuardar_Click" Text="Aceptar" CausesValidation="true" ValidationGroup="guardar" UseSubmitBehavior="false" />
+            <asp:Button runat="server" ID="btnGuardar" CssClass="btnTrue semi_bold" Style="left: 0px; width: 50%;" OnClick="btnGuardar_Click" Text="Aceptar" CausesValidation="true" ValidationGroup="guardar" UseSubmitBehavior="false" />
             <input type="button" value="Cancelar" class="btnFalse semi_bold" style="right: 0px; width: 50%;" onclick="closePopup();"><div id="sub_data_info" class="bold">
                 <img src="/Images/default.png">Agregar dirección
             </div>
             <ul class="data_change clear-fix">
                 <asp:UpdatePanel runat="server" ID="upModal">
                     <ContentTemplate>
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_name@2x.png)">Nombre:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" ID="txtNombre" CssClass="regular goFocus" MaxLength="30"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="rfvNombre" ControlToValidate="txtNombre" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_email@2x.png)">Dirección:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" ID="txtDireccion" CssClass="regular input-direccion" MaxLength="200"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="rfvDireccion" ControlToValidate="txtDireccion" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Link Facebook:</div>
                             <div class="data_value">
-                                <asp:TextBox runat="server" ID="txtFacebook" CssClass="regular input-direccion" MaxLength="200"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="txtFacebook" CssClass="regular" MaxLength="200"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator1" ControlToValidate="txtFacebook" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Longitud:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" ID="txtLongitud" CssClass="regular position" Style="pointer-events: none"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="rfvLongitud" ControlToValidate="txtLongitud" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Latitud:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" ID="txtLatitud" CssClass="regular position" Style="pointer-events: none"></asp:TextBox>
@@ -199,14 +191,10 @@
                         <asp:AsyncPostBackTrigger ControlID="btnGuardar" />
                     </Triggers>
                 </asp:UpdatePanel>
-                <li class="clear-fix tab-content">
-                    <div runat="server" id="tabUbicacionMapa" role="tabpanel" class="tab-pane fade tab-ubicacion active in">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <div class="col-sm-3">
-                                    <asp:TextBox runat="server" ID="txtBuscarMaps" CssClass="regular input-map" placeholder="Buscar" />
-                                </div>
-                            </div>
+                <li class="clear-fix" style="overflow: auto; height: 260px;">
+                    <div id="tabUbicacionMapa">
+                        <div class="buscar" style="width: 100%;">
+                            <asp:TextBox runat="server" ID="txtBuscarMaps" CssClass="regular input-map" placeholder="Buscar" Style="width: 100%;" />
                         </div>
                         <div id="mapaUbicacion" class="mapa-google"></div>
                     </div>

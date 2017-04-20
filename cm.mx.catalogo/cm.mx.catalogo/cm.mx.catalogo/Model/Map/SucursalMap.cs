@@ -12,6 +12,9 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.Nombre);
             Map(x => x.LinkFacebook);
             Map(x => x.Direccion);
+            Map(x => x.Estado);
+            Map(x => x.FechaBaja);
+            Map(x => x.UsuarioBaja);
             HasMany(x => x.PromocionSucursal).KeyColumn("SucursalID");
         }
     }

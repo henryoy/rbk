@@ -85,6 +85,7 @@
                                 <div class="row_date"><%# Eval("Hasta") %></div>
                                 <div class="row_descuento"><%# Eval("PorcientoDescuento") %>%</div>
                                 <div class="actions semi_bold">
+                                    <asp:LinkButton runat="server" ID="btnBaja" CssClass="analytics" OnClick="btnBaja_Click" CommandArgument='<%# Eval("MembresiaId") %>'>Baja</asp:LinkButton>
                                     <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" CommandArgument='<%#Eval("MembresiaId") %>' OnClick="btnEditar_Click">Editar</asp:LinkButton>
                                 </div>
                             </li>
@@ -109,42 +110,42 @@
             <asp:UpdatePanel runat="server" ID="upMpdal">
                 <ContentTemplate>
                     <ul class="data_change clear-fix">
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_name@2x.png)">Nombre:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" CssClass="regular goFocus" ID="txtNombre"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="rfvLongitud" ControlToValidate="txtNombre" Display="Dynamic" ErrorMessage="* Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Minimo Visitas:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" CssClass="regular entero" ID="txtVisitasMin"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator1" ControlToValidate="txtVisitasMin" Display="Dynamic" ErrorMessage="* Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Máximo Visitas:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" CssClass="regular entero" ID="txtVisitasMax"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator3" ControlToValidate="txtVisitasMax" Display="Dynamic" ErrorMessage="* Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Descuento:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" CssClass="regular decimal" ID="txtDescuento"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator2" ControlToValidate="txtDescuento" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_date@2x.png)">Color:</div>
                             <div class="data_value">
                                 <asp:TextBox runat="server" type="color" CssClass="regular color-picker" ID="txtColor"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator4" ControlToValidate="txtColor" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
-                        <li class="clear-fix">
+                        <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_date@2x.png)">Tarjeta:</div>
                             <div class="data_value">
                                 <asp:Image runat="server" ID="imgTarjeta" CssClass="imgTarjeta" ToolTip="Click para seleccionar imagen" Height="36" Width="62" ImageUrl="~/Images/icon-gallery.svg" />
@@ -234,14 +235,14 @@
                         notification(txt, 'error');
                     },
                     onSelect: function (files) {
-                        var name = "../uploads/" + files[0].name;
+                        var name = "/uploads/" + files[0].name;
                         $("#hfTajeta").val(name);
                     },
                     finish: function (file) {
                         GudarDatos();
                     },
                     success: function (file_name) {
-                        $(".imgTarjeta").attr("src", "../uploads/" + file_name);
+                        $(".imgTarjeta").attr("src", "/uploads/" + file_name);
                     }
                 });
 

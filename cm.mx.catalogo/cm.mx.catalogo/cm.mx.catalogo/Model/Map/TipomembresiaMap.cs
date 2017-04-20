@@ -15,8 +15,10 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.Hasta).Column("Hasta").Not.Nullable();
             Map(x => x.Porcientodescuento).Column("PorcientoDescuento");
             Map(x => x.Color).Column("Color").Not.Nullable();
-            Map(x => x.Estado).Column("Estado").Not.Nullable();
             Map(x => x.UrlImagen).Column("UrlImagen").Not.Nullable();
+            Map(x => x.Estado).Column("Estado").Not.Nullable();
+            Map(x => x.FechaBaja).Column("FechaBaja").Not.Nullable();
+            Map(x => x.UsuarioBaja).Column("UsuarioBaja").Not.Nullable();
             HasMany(x => x.Promocionmembresia).KeyColumn("MembresiaId").Cascade.None();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using cm.mx.dbCore.Clases;
+using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +27,11 @@ namespace cm.mx.catalogo.Model
         {
             _exito = false;
             List<Sucursal> ls = new List<Sucursal>();
-            ls = _session.QueryOver<Sucursal>().List().ToList();
+            ls = _session.CreateCriteria<Sucursal>().Add(Restrictions.Eq("Estado", "ACTIVO")).List<Sucursal>().ToList();
+            //ls = _session.QueryOver<Sucursal>().List().ToList();
             return ls;
         }
-                       
+
         public override Sucursal GetById(object id)
         {
             return _session.Get<Sucursal>(id);

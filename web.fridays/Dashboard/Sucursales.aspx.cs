@@ -170,4 +170,37 @@ public partial class Sucursales : System.Web.UI.Page
                  true);
         }
     }
+
+    protected void btnBaja_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            //Agregar para recuperar el usuaruio
+            SucursalId = int.Parse(((LinkButton)sender).CommandArgument);
+            var r = cCatalogo.BajaSucursal(SucursalId, 0);
+            if (cCatalogo.Exito)
+            {
+                CargarSucursales();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "closePopup(); $('#popupOverlay').hide();", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(
+                  this,
+                  this.GetType(),
+                  "StartupScript",
+                  "notification('" + Funciones.FormatoMsj(cCatalogo.Mensajes) + "','error')",
+                  true);
+            }
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(
+                 this,
+                 this.GetType(),
+                 "StartupScript",
+                 "notification('" + ex.Message + "','error')",
+                 true);
+        }
+    }
 }

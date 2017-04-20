@@ -18,7 +18,7 @@ namespace cm.mx.catalogo.Model
         [DataMember]
         public virtual string Nombre { get; set; }
         [DataMember]
-        public virtual int NumeroDeVisitas { get;set; }
+        public virtual int NumeroDeVisitas { get; set; }
         [DataMember]
         public virtual int ApartirDe { get; set; }
         [DataMember]
@@ -31,6 +31,8 @@ namespace cm.mx.catalogo.Model
         public virtual string Estado { get; set; }
         [DataMember]
         public virtual string UrlImagen { get; set; }
+        public virtual int UsuarioBaja { get; set; }
+        public virtual DateTime FechaBaja { get; set; }
         public virtual IList<Promocionmembresia> Promocionmembresia { get; set; }
     }
 }

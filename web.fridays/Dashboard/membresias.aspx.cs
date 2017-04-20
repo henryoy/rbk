@@ -130,7 +130,7 @@ public partial class membresias : System.Web.UI.Page
             decimal.TryParse(txtDescuento.Text, out descuento);
             Tipomembresia oMembresia = new Tipomembresia();
             oMembresia.Color = txtColor.Text;
-            oMembresia.Estado = "ALTA";
+            oMembresia.Estado = "ACTIVO";
             oMembresia.Nombre = txtNombre.Text;
             oMembresia.Color = txtColor.Text.Trim();
             oMembresia.ApartirDe = min;
@@ -172,6 +172,38 @@ public partial class membresias : System.Web.UI.Page
         {
             MembresiaId = int.Parse(((LinkButton)sender).CommandArgument);
             llenarCampos(true);
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(
+                 this,
+                 this.GetType(),
+                 "StartupScript",
+                 "notification('" + ex.Message + "','error')",
+                 true);
+        }
+    }
+
+    protected void btnBaja_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            MembresiaId = int.Parse(((LinkButton)sender).CommandArgument);
+            var r = cCatalogo.BajaMembresia(MembresiaId, 0);
+            if (cCatalogo.Exito)
+            {
+                CargarMembresias();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "closePopup(); $('#popupOverlay').hide();", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(
+                  this,
+                  this.GetType(),
+                  "StartupScript",
+                  "notification('" + Funciones.FormatoMsj(cCatalogo.Mensajes) + "','error')",
+                  true);
+            }
         }
         catch (Exception ex)
         {

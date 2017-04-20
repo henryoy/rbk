@@ -461,15 +461,31 @@ namespace cm.mx.catalogo.Controller
             {
                 rMembresia = new TipoMembresiaRepository();
                 bool IsValid = false;
+                Tipomembresia obj = null;
                 if (entidad.Membresiaid > 0)
                 {
                     IsValid = MembresiaVR.ActualizarVR(entidad);
                     Mensajes.AddRange(MembresiaVR.Mensajes);
+                    obj = rMembresia.GetById(entidad.Membresiaid);
+                    obj.ApartirDe = entidad.ApartirDe;
+                    obj.Color = entidad.Color;
+                    obj.Estado = entidad.Estado;
+                    obj.Hasta = entidad.Hasta;
+                    obj.Nombre = entidad.Nombre;
+                    obj.NumeroDeVisitas = entidad.NumeroDeVisitas;
+                    obj.Porcientodescuento = entidad.Porcientodescuento;
+                    obj.UrlImagen = entidad.UrlImagen;
+                    obj.FechaBaja = entidad.FechaBaja;
+                    obj.UsuarioBaja = entidad.UsuarioBaja;
                 }
                 else
                 {
                     IsValid = MembresiaVR.InsertarVR(entidad);
                     Mensajes.AddRange(MembresiaVR.Mensajes);
+                    obj = entidad;
+                    obj.Estado = "ACTIVO";
+                    obj.UsuarioBaja = 0;
+                    obj.FechaBaja = new DateTime(1900, 01, 01);
                 }
 
                 TipoMembresiaBR brMembresia = new TipoMembresiaBR();
@@ -481,7 +497,7 @@ namespace cm.mx.catalogo.Controller
 
                 if (IsValid)
                 {
-                    oMembresia = rMembresia.GuardarMembresia(entidad);
+                    oMembresia = rMembresia.GuardarMembresia(obj);
                     _exito = true;
                 }
             }
@@ -568,22 +584,36 @@ namespace cm.mx.catalogo.Controller
             _mensajes.Clear();
             try
             {
+                Sucursal obj = null;
                 rSucursal = new SucursalRepository();
                 bool IsValid = false;
                 if (entidad.SucursalID > 0)
                 {
                     IsValid = SucursalVR.ActualizarVR(entidad);
                     Mensajes.AddRange(SucursalVR.Mensajes);
+                    obj = rSucursal.GetById(entidad.SucursalID);
+                    obj.Direccion = entidad.Direccion;
+                    obj.Latitud = entidad.Latitud;
+                    obj.LinkFacebook = entidad.LinkFacebook;
+                    obj.Longitud = entidad.Longitud;
+                    obj.Nombre = entidad.Nombre;
+                    obj.Estado = entidad.Estado;
+                    obj.UsuarioBaja = entidad.UsuarioBaja;
+                    obj.FechaBaja = entidad.FechaBaja;
                 }
                 else
                 {
                     IsValid = SucursalVR.InsertarVR(entidad);
                     Mensajes.AddRange(SucursalVR.Mensajes);
+                    obj = entidad;
+                    obj.Estado = "ACTIVO";
+                    obj.UsuarioBaja = 0;
+                    obj.FechaBaja = new DateTime(1900, 01, 01);
                 }
 
                 if (IsValid)
                 {
-                    oSucursal = rSucursal.GuardarSucursal(entidad);
+                    oSucursal = rSucursal.GuardarSucursal(obj);
                     _exito = true;
                 }
             }
@@ -1345,7 +1375,7 @@ namespace cm.mx.catalogo.Controller
             rPromocionRedimir = new PromocionRedimirRepository();
             try
             {
-                Promocionredimir oPromocionRedimir = new Promocionredimir();                
+                Promocionredimir oPromocionRedimir = new Promocionredimir();
                 oPromocionRedimir.PromocionRedimirId = oRedimirPromo.PromocionRedimirId;
                 oPromocionRedimir.UsuarioRedimioId = oRedimirPromo.UsuarioRedimioId;
                 oPromocionRedimir.FechaRedimir = DateTime.Now;
@@ -1359,7 +1389,7 @@ namespace cm.mx.catalogo.Controller
                     Usuarioid = oRedimirPromo.UsuarioId
                 };
 
-                isExiste = rPromocionRedimir.PromocionIsRedimida(oRedimirPromo.UsuarioId,oRedimirPromo.PromocionId);
+                isExiste = rPromocionRedimir.PromocionIsRedimida(oRedimirPromo.UsuarioId, oRedimirPromo.PromocionId);
 
                 if (!isExiste)
                 {
@@ -1371,7 +1401,7 @@ namespace cm.mx.catalogo.Controller
                 }
 
                 _exito = true;
-                
+
             }
             catch (Exception innerException)
             {
@@ -1530,5 +1560,58 @@ namespace cm.mx.catalogo.Controller
             return oUsuario;
         }
 
+        public bool BajaSucursal(int SucursalId, int UsuarioId)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            try
+            {
+                rSucursal = new SucursalRepository();
+                var obj = rSucursal.GetById(SucursalId);
+                obj.UsuarioBaja = UsuarioId;
+                obj.Estado = "BAJA";
+                obj.FechaBaja = DateTime.Now;
+                rSucursal.GuardarSucursal(obj);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rSucursal._session.Transaction.IsActive) rSucursal._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return _exito;
+        }
+
+        public bool BajaMembresia(int MembresiaId, int UsuarioId)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            try
+            {
+                rMembresia = new TipoMembresiaRepository();
+                var obj = rMembresia.GetById(MembresiaId);
+                obj.UsuarioBaja = UsuarioId;
+                obj.Estado = "BAJA";
+                obj.FechaBaja = DateTime.Now;
+                rMembresia.GuardarMembresia(obj);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rMembresia._session.Transaction.IsActive) rMembresia._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return _exito;
+        }
     }
 }

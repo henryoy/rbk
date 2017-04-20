@@ -49,7 +49,7 @@ namespace cm.mx.catalogo.Model
         public bool ExisteRegistro(int MembresiaID, int numero)
         {
             _exito = false;
-            _exito = _session.Query<Tipomembresia>().Any(a => a.Membresiaid != MembresiaID && numero >= a.ApartirDe && numero <= a.Hasta);
+            _exito = _session.Query<Tipomembresia>().Any(a => a.Membresiaid != MembresiaID && numero >= a.ApartirDe && numero <= a.Hasta && a.Estado != "BAJA");
             return _exito;
         }
 

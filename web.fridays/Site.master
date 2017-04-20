@@ -36,6 +36,10 @@
                 color: #69c0af;
                 background-image: url(../content/img/icons/arrow_left_hover.png);
             }
+
+        .editar {
+            height: 40px !important;
+        }
     </style>
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
 </head>

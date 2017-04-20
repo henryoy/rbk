@@ -351,10 +351,9 @@ input {
         #menu_drop_down div span {
             font-size: 12px;
             color: #FFF;
-            display:block;
-            margin-left:0px;
-            clear:left;
-
+            display: block;
+            margin-left: 0px;
+            clear: left;
         }
 
 .animate {
@@ -1488,7 +1487,7 @@ label {
     margin: 0px 40px 0 0;
     padding-top: 0px;
     float: left;
-    width: 25%;
+    /*width: 25%;*/
     height: 63px;
     border: 0px;
     background-color: transparent;
@@ -1982,6 +1981,7 @@ label {
     left: 0px;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    padding-left: 15px;
 }
 
 #campaigns #row_picture {
@@ -2032,7 +2032,7 @@ campaigns #row_tarjeta {
     width: 7%;
     height: 100%;
     float: left;
-    margin-right: 10%;
+    /*margin-right: 10%;*/
 }
 
 .row_picture {
@@ -2051,7 +2051,8 @@ campaigns #row_tarjeta {
     width: 35%;
     height: 100%;
     float: left;
-    margin-right: 40px;
+    margin-right: 20px;
+    padding-left: 20px;
 }
 /*.row_date { width: 15%; height: 100%; float: left; }*/
 .row_date {
