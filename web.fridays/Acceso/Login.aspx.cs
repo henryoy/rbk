@@ -109,9 +109,14 @@ public partial class Login : System.Web.UI.Page
         string msj = "";
         foreach (string m in mensajes)
         {
-            msj += "<li><label id=\"error-usuario\" class=\"error\">" + m + "</label></li>";
+            msj += " " + m;
         }
-        errosmj.InnerHtml = msj;
-        errorContent.Visible = true;
+
+        ScriptManager.RegisterStartupScript(
+                  this,
+                  this.GetType(),
+                  "StartupScript",
+                  "notification('" + msj + "','error')",
+                  true);
     }
 }
