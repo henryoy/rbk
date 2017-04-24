@@ -366,4 +366,21 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
         }
     }
+    protected void dpTipoPromocion_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        lblValor2.Visible = false;
+        txtValor2.Visible = false;
+
+        if (dpTipoPromocion.SelectedItem.Text == "VISITA")
+        {
+            lblValor1.InnerText = "Número de visita";
+            lblValor1.Visible = true;
+            txtValor1.Visible = true;
+        }
+        else
+        {
+            lblValor1.Visible = false;
+            txtValor1.Visible = false;
+        }        
+    }
 }
