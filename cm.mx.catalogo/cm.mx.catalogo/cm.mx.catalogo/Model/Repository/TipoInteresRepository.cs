@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cm.mx.catalogo.Model.Repository
+namespace cm.mx.catalogo.Model
 {
     internal class TipoInteresRepository : RepositoryBase<TipoInteres>
     {

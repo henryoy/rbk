@@ -3,7 +3,6 @@
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-
     <div id="mainWrapper">
         <!-- Tabs -->
         <div id="tabs">
@@ -40,7 +39,7 @@
         <!-- Indicator -->
         <div id="indicator" class="indicator_today semi_bold">
             <div class="indicator_today_email_address" style="width: 40%;">
-                <input type="text" runat="server" id="search_bar" placeholder="Buscar cliente" data-search="all">
+                <input type="text" runat="server" id="search_bar" placeholder="Buscar cliente" data-search="all">7
                 <div id="search_bar_result" class="semi_bold hidden"></div>
             </div>
             <div class="indicator_today_name semi_bold" style="width: 20%;">Nombre</div>
@@ -69,6 +68,9 @@
                                 <div class="subscriber_country" style="width: 30%;">
                                     <asp:Label runat="server" ID="lblFechaRegistro"><%# Eval("FechaAlta","{0:d}") %></asp:Label>
                                 </div>
+                                <div class="actions semi_bold">
+                                    <asp:LinkButton runat="server" ID="btnInteres" CssClass="analytics" OnClick="btnInteres_Click" CommandArgument='<%# Eval("Email") %>'>Intereses</asp:LinkButton>
+                                </div>
                             </li>
                         </ItemTemplate>
                         <FooterTemplate>
@@ -86,6 +88,46 @@
             </Triggers>
         </asp:UpdatePanel>
     </div>
+    <div id="popupOverlay" style="opacity: 1; transition: all 0.46s ease; display: none;">
+        <div id="popup" style="opacity: 1; transition: all 0.46s ease; transform: scale(1) translateY(-50%);">
+            <asp:Button runat="server" ID="btnGuardar" OnClick="btnGuardar_Click" CssClass="btnTrue semi_bold" Style="left: 0px; width: 50%;" Text="Aceptar" />
+            <input type="button" value="Cancelar" class="btnFalse semi_bold" style="right: 0px; width: 50%;" onclick="closePopup();"><div id="sub_data_info" class="bold">
+                <img src="<%: ResolveUrl("~/Content/img/icons/default.png") %>">Agregar Membresia
+            </div>
+            <asp:UpdatePanel runat="server" ID="upMpdal">
+                <ContentTemplate>
+                    <div id="mainWrapper2">
+                        <div id="box_row_titles">
+                            <div id="row_titles2">
+                                <div id="row_picture"></div>
+                                <div id="row_name" class="col-name">Nombre</div>
+                                <div class="col-name">Descripción</div>
+                            </div>
+                        </div>
+                        <ul id="edit-urls-images" class="regular hidden" style="display: block;">
+                            <asp:Repeater runat="server" ID="rptItems" OnItemDataBound="rptItems_ItemDataBound">
+                                <ItemTemplate>
+                                    <li>
+                                        <div class="row_picture">
+                                            <label>
+                                                <input type="checkbox"><asp:LinkButton runat="server" class="seleccionar" OnClick="chkInteres_Click" ID="chkInteres" CommandArgument='<%# Eval("TipoInteresID") %>'></asp:LinkButton>
+                                            </label>
+                                        </div>
+                                        <div class="row_name"><%# Eval("Nombre") %></div>
+                                        <div><%# Eval("Descripcion") %></div>
+                                    </li>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </ul>
+                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="btnGuardar" />
+                    <asp:AsyncPostBackTrigger ControlID="rptItems" />
+                </Triggers>
+            </asp:UpdatePanel>
+            <div class="closePopup"></div>
+        </div>
+    </div>
 </asp:Content>
 
 <asp:Content runat="server" ID="ScriptsJS" ContentPlaceHolderID="ScriptsPages">
@@ -94,7 +136,6 @@
     <script src="<%= ResolveClientUrl("~/Scripts/js/chartjs/waypoints.min.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/custom.js") %>" type="text/javascript"></script>
     <script>
-
         $(document).on('mouseenter', '.crown', function () {
             opens = $(this).closest('li').attr('data-opens');
             $(this).text(opens + ' visitas');
@@ -116,6 +157,21 @@
             $('ul li a').on('click', function () {
                 $(this).parent().addClass('activedTab').siblings().removeClass('activedTab');
             });
+        });
+
+        //$(document).on("click", ".seleccionar", function (e) {
+        //    $(this).toggleClass("checked");
+        //    e.preventDefault();
+        //    e.stopImmediatePropagation();
+        //});
+
+        $(document).on('click', '.back_btn', function () {
+            $(location).attr('href', '../default.aspx');
+        });
+
+        $(document).on("click", ".btnFalse", function (e) {
+            $("#popupOverlay").hide();
+            ListadoVacio();
         });
     </script>
 </asp:Content>
