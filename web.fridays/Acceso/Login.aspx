@@ -9,6 +9,11 @@
     <link href="~/Content/css/style.css" rel="stylesheet" />
 </head>
 <body style="background-color: rgb(117, 117, 117); overflow: hidden;">
+    <style>
+        #logo-popup {
+            height: 210px !important;
+        }
+    </style>
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <asp:UpdatePanel runat="server" ID="upLoginForm">
@@ -24,10 +29,7 @@
                             <p class="hidden" style="display: none;">Please, type in your new password with a minimum of 6 characters.</p>
                             <asp:TextBox runat="server" type="text" autocomplete="on" ID="txtEmail" placeholder="Email" CssClass="input-field font-regular input-username-email-login"></asp:TextBox>
                             <asp:TextBox runat="server" type="password" autocomplete="on" ID="txtPassword" placeholder="Contrase&ntilde;a" CssClass="input-field font-regular input-password-login"></asp:TextBox>
-                            <input type="text" autocomplete="on" placeholder="Usuario" class="input-field font-regular input-username-register hidden" style="display: none;">
-                            <input type="text" autocomplete="on" placeholder="Email" class="input-field font-regular input-email-register hidden" style="display: none;">
-                            <input type="password" autocomplete="on" placeholder="Contrase&ntilde;a" class="input-field font-regular input-password-register hidden" style="display: none;">
-                            <input type="password" placeholder="Password" class="input-field font-regular input-new-password hidden" style="display: none;">
+                            <asp:DropDownList runat="server" ID="cbxSucursal" CssClass="input-field font-regular"></asp:DropDownList>
                             <!-- checkbox -->
                             <label class="keep-crisp">
                                 <!-- keep me logged in -->
