@@ -72,7 +72,8 @@ namespace Promocion
                 FechaNacimiento = new DateTime(1979, 03, 22),
                 Imagen = "",
                 Nombre = "Jorge Pech",
-                TarjetaID = 4,
+                //TarjetaID = 4,
+                oTarjeta = new Tipomembresia { Membresiaid = 4 },
                 Tipo = "MOBILE",
                 Usuarioid = 8,
                 VerificacionContrasena = "qwert",
@@ -81,8 +82,8 @@ namespace Promocion
                 //oTargeta = new Tarjeta { TarjetaID = 4 }
             };
 
-            //oUsuario.Addinteres(new TipoInteres { TipoInteresID = 1 });
-            //oUsuario.Addinteres(new TipoInteres { TipoInteresID = 3 });
+            oUsuario.Addinteres(new TipoInteres { TipoInteresID = 1 });
+            oUsuario.Addinteres(new TipoInteres { TipoInteresID = 3 });
             cCatalogo.GuardarUsuario(oUsuario);
         }
         [TestMethod]

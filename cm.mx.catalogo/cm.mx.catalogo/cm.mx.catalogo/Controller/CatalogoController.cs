@@ -69,6 +69,7 @@ namespace cm.mx.catalogo.Controller
         private UsuarioRepository rUsuario;
         private NotificacionRepository rNotificacion;
         private PromocionRedimirRepository rPromocionRedimir;
+        private TipoInteresRepository rTipoInteres;
 
         #endregion Repositorios
 
@@ -363,6 +364,7 @@ namespace cm.mx.catalogo.Controller
             }
             return lsPromocion;
         }
+
         public List<Promocion> GetAllPromocion(Paginacion oPaginacion)
         {
             List<Promocion> lsPromocion = new List<Promocion>();
@@ -776,6 +778,7 @@ namespace cm.mx.catalogo.Controller
             }
             return lsUsuario;
         }
+
         public List<Usuario> GetAllUsuariosRegistro(Paginacion oPaginacion)
         {
             List<Usuario> lsUsuario = new List<Usuario>();
@@ -1002,7 +1005,7 @@ namespace cm.mx.catalogo.Controller
             return _exito;
         }
 
-        //Método de prueba
+        //Guardar Usuario
         public bool GuardarUsuario(Usuario obj)
         {
             _exito = false;
@@ -1074,6 +1077,7 @@ namespace cm.mx.catalogo.Controller
             }
 
         }
+
         public void CrearNotificacion(Promocion oPromocion, Usuario oUsuario, int SucursalId)
         {
             Notificacion oNotificacion = new Notificacion();
@@ -1110,6 +1114,7 @@ namespace cm.mx.catalogo.Controller
             }
 
         }
+
         public bool GuardarUsuarioPromocion(Promocion oPromocion, Usuario oUser, PromocionUsuarioRepository rPromoUser)
         {
 
@@ -1189,6 +1194,7 @@ namespace cm.mx.catalogo.Controller
 
             return lsUser;
         }
+
         public List<Notificacion> GetNotficaionesByTipo(string tipo)
         {
             _exito = false;
@@ -1365,6 +1371,7 @@ namespace cm.mx.catalogo.Controller
 
             return lsPromocion;
         }
+
         public bool RedimirPromocion(RedimirPromocionVM oRedimirPromo)
         {
             _exito = false;
@@ -1612,6 +1619,33 @@ namespace cm.mx.catalogo.Controller
                 }
             }
             return _exito;
+        }
+
+        public List<TipoInteres> GetAllTipoIntereses(Paginacion pag = null)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<TipoInteres> ls = new List<TipoInteres>();
+            if (pag == null) pag = new Paginacion();
+            try
+            {
+                rTipoInteres = new TipoInteresRepository();
+                var r = rTipoInteres.GetAll();
+                if (pag.Paginar) r = r.Skip(pag.Pagina * pag.Cantidad).Take(pag.Cantidad);
+                ls = r.ToList();
+            }
+            catch (Exception ex)
+            {
+                ls = new List<TipoInteres>();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return ls;
         }
     }
 }
