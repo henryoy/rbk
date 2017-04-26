@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.master" CodeFile="Promocion.aspx.cs" Inherits="Dashboard_Promocion" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.master" CodeFile="Promocion.aspx.cs" Inherits="Dashboard_Promocion" Async="true" %>
 
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
     <link rel="stylesheet" type="text/css" href="../Content/css/jquery-ui.css" />
@@ -450,13 +450,13 @@
                                 </asp:DropDownList>
                             </label>
                             <h4 class="semi_bold" style="padding-bottom: 18px!important; margin-top: 6px;">Configurar Fecha de promoción					
-							<div class="switch disabled" name="schedule_switch" style="right: -1px; top: -4px;">
-                                <div class="switch_thumb active" style="right: 19px;"></div>
-                                <input type="hidden" value="0" name="schedule" id="schedule_campaign">
+							<div runat="server" id="switch" class="switch disabled" name="schedule_switch" style="right: -1px; top: -4px;">
+                                <div runat="server" id="switch_thumb" class="switch_thumb active" style="right: 19px;"></div>
+                                <input runat="server" type="hidden" value="0" name="schedule" id="schedule_campaign">
                             </div>
                             </h4>
                             <div class="scheduleCampaignWrapper clear-fix">
-                                <div class="scheduleCampaignWrapperLeft">                                    
+                                <div class="scheduleCampaignWrapperLeft">
                                     <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_day_init" ViewStateMode="Enabled"></asp:TextBox>
                                 </div>
                                 <div class="scheduleCampaignWrapperRight">
@@ -499,14 +499,19 @@
 
                             <div id="uploader_div">
                             </div>
-                            <h4 class="semi_bold">Sucursales </h4>
-                            <label id="subscriber_lists_ul">
-                                <asp:DropDownList class="subscriber_lists" runat="server" ID="dpSucursales" OnSelectedIndexChanged="dpSucursales_SelectedIndexChanged" AutoPostBack="true">
-                                </asp:DropDownList>
-                            </label>
-                            <asp:ListBox ID="lBSucursal" runat="server" SelectionMode="Multiple"></asp:ListBox>
-                            <br />
-                            <asp:Button Text="Eliminar sucursal" runat="server" ID="btnEliminarSucursal" CssClass="generateChecklist" OnClick="btnEliminarSucursal_Click" />
+                            <asp:UpdatePanel runat="server" ID="upSucursal" UpdateMode="Conditional">
+                                <ContentTemplate>
+                                    <h4 class="semi_bold">Sucursales </h4>
+                                    <label id="subscriber_lists_ul">
+                                        <asp:DropDownList class="subscriber_lists" runat="server" ID="dpSucursales" OnSelectedIndexChanged="dpSucursales_SelectedIndexChanged" AutoPostBack="true">
+                                        </asp:DropDownList>
+                                    </label>
+                                    <asp:ListBox ID="lBSucursal" runat="server" SelectionMode="Multiple"></asp:ListBox>
+                                    <br />
+                                    <asp:Button Text="Eliminar sucursal" runat="server" ID="btnEliminarSucursal" CssClass="generateChecklist" OnClick="btnEliminarSucursal_Click" />
+
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                         </div>
                     </div>
                 </div>
@@ -612,7 +617,7 @@
 
             the_switch = $("[name='schedule_switch']");
             switch_thumb = $(this).find('.switch_thumb');
-            
+
             if ($(switch_thumb).hasClass('active')) {
 
                 $('[name="schedule"]').val('0');

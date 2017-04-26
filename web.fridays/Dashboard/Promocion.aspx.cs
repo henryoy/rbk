@@ -142,7 +142,8 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             if (oPromocion.Promocionsucursal != null)
             {
                 lsSucusalVM = new List<SucursalVM>();
-                foreach(Promocionsucursal opromoSucursal in oPromocion.Promocionsucursal){
+                foreach (Promocionsucursal opromoSucursal in oPromocion.Promocionsucursal)
+                {
                     SucursalVM oSucursalVM = new SucursalVM();
                     if (opromoSucursal.Sucursal != null)
                     {
@@ -325,6 +326,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
     }
     protected void dpSucursales_SelectedIndexChanged(object sender, EventArgs e)
     {
+        checkCalendar();
         if (dpSucursales.SelectedItem.Value != "0")
         {
             if (!lsSucusalVM.Any(f => f.SucursalID == Convert.ToInt32(dpSucursales.SelectedItem.Value)))
@@ -370,7 +372,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
     {
         lblValor2.Visible = false;
         txtValor2.Visible = false;
-
+        checkCalendar();
         if (dpTipoPromocion.SelectedItem.Text == "VISITA")
         {
             lblValor1.InnerText = "Número de visita";
@@ -381,6 +383,14 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         {
             lblValor1.Visible = false;
             txtValor1.Visible = false;
-        }        
+        }
+    }
+    private void checkCalendar()
+    {        
+        Page.ClientScript.RegisterStartupScript(
+              this.GetType(),
+              "StartupCalendar",
+              "ActiveCalendar();",
+              true);
     }
 }
