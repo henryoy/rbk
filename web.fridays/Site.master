@@ -72,7 +72,8 @@
                             <ul class="hidden" style="display: none;">
                                 <li id="list_campaign_view"><a href="<%= ResolveUrl("~/Dashboard/Promociones") %>"><font><font>Promoción</font></font></a></li>
                                 <li id="new_campaign_view"><a href="<%= ResolveUrl("~/Dashboard/Promocion") %>"><font><font>Nueva Promocion</font></font></a></li>
-                                <li id="my_campaigns_view_1"><a href="#"><font><font>Borradores</font></font></a></li>
+                                <li id="my_campaigns_view_1"><a href="<%= ResolveUrl("~/Dashboard/AsignarVenta") %>"><font><font>Redimir</font></font></a></li>                                
+                                <li id="my_campaigns_view_2"><a href="<%= ResolveUrl("~/Dashboard/RedimirPromocion") %>"><font><font>Redimir</font></font></a></li>
                                 <%--<li id="my_campaigns_view_2"><a href="#"><font><font>Expedido</font></font></a></li>--%>
                             </ul>
                         </li>

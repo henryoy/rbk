@@ -116,6 +116,9 @@ namespace cm.mx.catalogo.Controller
                                 List<string> msjs = rUsuario.Mensajes;
                                 Mensajes.AddRange(rUsuario.Errores);
                             }
+
+                            if (oUsuario.Usuarioid > 0)                                
+                                this.CrearNotificacionPromocion(oUsuario.Usuarioid);                           
                         }
                         else
                         {
