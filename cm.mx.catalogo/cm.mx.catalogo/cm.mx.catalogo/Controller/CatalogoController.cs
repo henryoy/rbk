@@ -70,6 +70,7 @@ namespace cm.mx.catalogo.Controller
         private NotificacionRepository rNotificacion;
         private PromocionRedimirRepository rPromocionRedimir;
         private TipoInteresRepository rTipoInteres;
+        private CamposDistribucionRepository rCampos;
 
         #endregion Repositorios
 
@@ -1632,12 +1633,47 @@ namespace cm.mx.catalogo.Controller
             {
                 rTipoInteres = new TipoInteresRepository();
                 var r = rTipoInteres.GetAll();
-                if (pag.Paginar) r = r.Skip(pag.Pagina * pag.Cantidad).Take(pag.Cantidad);
+                if (pag.Paginar)
+                {
+                    pag.TotalRegistros = r.Count();
+                    r = r.Skip(pag.Pagina * pag.Cantidad).Take(pag.Cantidad);
+                }
                 ls = r.ToList();
             }
             catch (Exception ex)
             {
                 ls = new List<TipoInteres>();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return ls;
+        }
+
+        public List<CamposDistribucion> GetAllCamposDistrubucion(Paginacion pag = null)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<CamposDistribucion> ls = new List<CamposDistribucion>();
+            if (pag == null) pag = new Paginacion();
+            try
+            {
+                rCampos = new CamposDistribucionRepository();
+                var r = rCampos.GetAll();
+                if (pag.Paginar)
+                {
+                    pag.TotalRegistros = r.Count();
+                    r = r.Skip(pag.Pagina * pag.Cantidad).Take(pag.Cantidad);
+                }
+                ls = r.ToList();
+            }
+            catch (Exception ex)
+            {
+                ls = new List<CamposDistribucion>();
                 while (ex != null)
                 {
                     _errores.Add(ex.Message);

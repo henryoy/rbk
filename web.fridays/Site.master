@@ -103,6 +103,12 @@
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Sucursales") %>">Sucursales</a></li>
                             </ul>
                         </li>
+                        <li id="distribution_link">
+                            <h2 class="semi_bold">Distribución</h2>
+                            <ul class="hidden">
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Distribucion") %>">Distribución</a></li>
+                            </ul>
+                        </li>
                         <li id="account_link" class="">
                             <h2 class="semi_bold">Cuenta</h2>
                             <ul class="hidden" style="">

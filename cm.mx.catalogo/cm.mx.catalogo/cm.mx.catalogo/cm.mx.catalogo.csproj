@@ -60,10 +60,12 @@
     <Compile Include="Controller\UtileriaController.cs" />
     <Compile Include="Enums\CatalogoEnum.cs" />
     <Compile Include="Model\Activacion.cs" />
+    <Compile Include="Model\CamposDistribucion.cs" />
     <Compile Include="Model\ConfigSMTP.cs" />
     <Compile Include="Model\Configuracion.cs" />
     <Compile Include="Model\Fechapublicacion.cs" />
     <Compile Include="Model\Map\ActivacionMap.cs" />
+    <Compile Include="Model\Map\CamposDistribucionMap.cs" />
     <Compile Include="Model\Map\FechapublicacionMap.cs" />
     <Compile Include="Model\Map\NivelUsuarioMap.cs" />
     <Compile Include="Model\Map\NotificacionMap.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Model\Promocionsucursal.cs" />
     <Compile Include="Model\Promocionusuario.cs" />
     <Compile Include="Model\Repository\ActivacionRepository.cs" />
+    <Compile Include="Model\Repository\CamposDistribucionRepository.cs" />
     <Compile Include="Model\Repository\ConfiguracionRepository.cs" />
     <Compile Include="Model\Repository\FechaPublicacionRepository.cs" />
     <Compile Include="Model\Repository\NivelUsuarioRepository.cs" />
