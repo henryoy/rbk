@@ -12,10 +12,8 @@
                         <div id="row_titles2">
                             <div id="row_picture">#</div>
                             <div id="row_color">Titulo</div>
-                            <div id="row_name" class="semi_bold">Descripcion</div>
-                            <div id="row_date" class="semi_bold">Vigencia Inicial </div>
-                            <div id="row_descuento" class="semi_bold">Vigencia Final </div>
-                            <div id="row_tarjeta" class="semi_bold">Membresia </div>
+                            <div id="row_name" class="semi_bold" style="margin-left: 80px;">Tipo Campaña</div>
+                            <div id="row_date" class="semi_bold">Campaña destino </div>
                         </div>
                     </div>
                     <ul id="edit-urls-images" class="regular hidden" style="display: block;">

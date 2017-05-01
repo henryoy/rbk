@@ -29,14 +29,9 @@ namespace cm.mx.catalogo.Model
             }
             if (Objeto.Programacion)
             {
-                if (Objeto.FechaProgramacion.HasValue && Objeto.FechaProgramacion.Value.Year == 0)
+                if (!Objeto.FechaProgramacion.HasValue && Objeto.FechaProgramacion.Value.Year == 0)
                 {
                     _lsMensajes.Add("La fecha de programcion no puede ser vacia.");
-                    _exito = false;
-                }
-                else
-                {
-                    _lsMensajes.Add("La fecha de programacion no puede ser vacia.");
                     _exito = false;
                 }
             }
