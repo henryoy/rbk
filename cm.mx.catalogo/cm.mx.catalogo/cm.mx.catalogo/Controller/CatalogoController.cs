@@ -70,6 +70,7 @@ namespace cm.mx.catalogo.Controller
         private NotificacionRepository rNotificacion;
         private PromocionRedimirRepository rPromocionRedimir;
         private TipoInteresRepository rTipoInteres;
+        private CampanaRepository rCampana;
 
         #endregion Repositorios
 
@@ -1649,6 +1650,102 @@ namespace cm.mx.catalogo.Controller
                 _exito = false;
             }
             return ls;
+        }
+        public Campana GetCampana(int CampanaId)
+        {
+            Mensajes.Clear();
+            Exito = false;
+            Errores.Clear();
+            Campana _oCampana = new Campana();
+            rCampana = new CampanaRepository();
+            try
+            {
+                _oCampana = rCampana.GetById(CampanaId);
+               _exito = rCampana.Exito;
+            }
+            catch (Exception ex)
+            {
+                if (rCampana._session.Transaction.IsActive)
+                {
+                    rCampana._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return _oCampana;
+        }
+        public Campana GuardarCampana(Campana oCampana)
+        {
+            Mensajes.Clear();
+            Exito = false;
+            Errores.Clear();
+            Campana _oCampana = new Campana();
+            rCampana = new CampanaRepository();
+            try
+            {
+                bool IsTransaction = false;
+                if (oCampana.CampanaId > 0)
+                {
+                    IsTransaction = CampanaVR.ActualizarVR(oCampana);
+                    Mensajes.AddRange(CampanaVR.Mensajes);
+                }
+                else
+                {
+                    IsTransaction = CampanaVR.InsertarVR(oCampana);
+                    Mensajes.AddRange(CampanaVR.Mensajes);
+                }
+                if (IsTransaction)
+                {
+                    _oCampana = rCampana.GuardarCampana(oCampana);
+                    _exito = rCampana.Exito;
+                }
+                else { _oCampana = oCampana; _exito = false; }
+            }
+            catch (Exception ex)
+            {
+                
+                if (rCampana._session.Transaction.IsActive)
+                {
+                    rCampana._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return _oCampana;
+        }
+        public List<Campana> GetAllCampana(Paginacion oPaginacion)
+        {
+            List<Campana> lsCampana = new List<Campana>();
+            _exito = true;
+            Mensajes.Clear();
+            Errores.Clear();
+            rCampana = new CampanaRepository();
+            try
+            {
+               
+                lsCampana = rCampana.GetAllCampana(oPaginacion);
+                _exito = true;
+            }
+            catch (Exception innerException)
+            {
+                if (rCampana._session.Transaction.IsActive)
+                {
+                    rCampana._session.Transaction.Rollback();
+                }
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                this.Errores.Add(innerException.Message);
+                throw innerException;
+            }
+            return lsCampana;
         }
     }
 }

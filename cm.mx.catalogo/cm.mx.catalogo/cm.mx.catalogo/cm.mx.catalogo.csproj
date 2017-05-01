@@ -60,13 +60,18 @@
     <Compile Include="Controller\UtileriaController.cs" />
     <Compile Include="Enums\CatalogoEnum.cs" />
     <Compile Include="Model\Activacion.cs" />
+    <Compile Include="Model\Campana.cs" />
     <Compile Include="Model\ConfigSMTP.cs" />
     <Compile Include="Model\Configuracion.cs" />
+    <Compile Include="Model\Distribucion.cs" />
     <Compile Include="Model\Fechapublicacion.cs" />
     <Compile Include="Model\Map\ActivacionMap.cs" />
+    <Compile Include="Model\Map\CampanaMap.cs" />
+    <Compile Include="Model\Map\DistribucionMap.cs" />
     <Compile Include="Model\Map\FechapublicacionMap.cs" />
     <Compile Include="Model\Map\NivelUsuarioMap.cs" />
     <Compile Include="Model\Map\NotificacionMap.cs" />
+    <Compile Include="Model\Map\PlantillaMap.cs" />
     <Compile Include="Model\Map\PromociondetalleMap.cs" />
     <Compile Include="Model\Map\PromocionMap.cs" />
     <Compile Include="Model\Map\PromocionmembresiaMap.cs" />
@@ -86,6 +91,7 @@
     <Compile Include="Model\ObjectVM\PromocionVM.cs" />
     <Compile Include="Model\ObjectVM\RedimirPromocionVM.cs" />
     <Compile Include="Model\ObjectVM\SucursalVM.cs" />
+    <Compile Include="Model\Plantilla.cs" />
     <Compile Include="Model\Promocion.cs" />
     <Compile Include="Model\Promociondetalle.cs" />
     <Compile Include="Model\Promocionmembresia.cs" />
@@ -94,6 +100,7 @@
     <Compile Include="Model\Promocionsucursal.cs" />
     <Compile Include="Model\Promocionusuario.cs" />
     <Compile Include="Model\Repository\ActivacionRepository.cs" />
+    <Compile Include="Model\Repository\CampanaRepository.cs" />
     <Compile Include="Model\Repository\ConfiguracionRepository.cs" />
     <Compile Include="Model\Repository\FechaPublicacionRepository.cs" />
     <Compile Include="Model\Repository\NivelUsuarioRepository.cs" />
@@ -107,6 +114,7 @@
     <Compile Include="Model\Repository\TipoInteresRepository.cs" />
     <Compile Include="Model\Repository\TIpoMembresiaRepository.cs" />
     <Compile Include="Model\Repository\UsuarioRepository.cs" />
+    <Compile Include="Model\Rules\CampanaVR.cs" />
     <Compile Include="Model\Rules\MembresiaVR.cs" />
     <Compile Include="Model\Rules\PromocionVR.cs" />
     <Compile Include="Model\Rules\SucursalVR.cs" />

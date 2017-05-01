@@ -615,18 +615,22 @@
 
         function ActiveCalendar() {
 
-            the_switch = $("[name='schedule_switch']");
-            switch_thumb = $(this).find('.switch_thumb');
+            the_switch = $('[name="schedule_switch"]');
+            switch_thumb = $('[name="schedule_switch"]').find('.switch_thumb');
+
+            $(the_switch).removeClass('disabled');
+            $(switch_thumb).removeClass('active');
+            $(switch_thumb).addClass('disabled');
+            $(switch_thumb).css('right', '2px;')
+            $(the_switch).addClass('active');
+            console.log(the_switch);
+            console.log(switch_thumb);
 
             if ($(switch_thumb).hasClass('active')) {
-
                 $('[name="schedule"]').val('0');
                 $('#datepicker, .scheduleCampaignWrapper').hide();
-
             }
-
             else {
-                $(switch_thumb).addClass('active')
                 $('[name="schedule"]').val('1');
                 $('.scheduleCampaignWrapper').show();
             }
