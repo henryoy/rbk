@@ -71,7 +71,7 @@ namespace cm.mx.catalogo.Controller
         private PromocionRedimirRepository rPromocionRedimir;
         private TipoInteresRepository rTipoInteres;
         private CamposDistribucionRepository rCampos;
-
+        private DistribucionRepository rDistribucion;
         #endregion Repositorios
 
         public bool RegistrarUsuario(Usuario oUsuario)
@@ -1682,6 +1682,37 @@ namespace cm.mx.catalogo.Controller
                 _exito = false;
             }
             return ls;
+        }
+
+        public bool GuardarDistribucion(Distribucion obj)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            try
+            {
+                rDistribucion = new DistribucionRepository();
+                DistribucionVR vrDistribucion = new DistribucionVR();
+                if (!vrDistribucion.Insertar(obj))
+                {
+                    _mensajes.AddRange(vrDistribucion.Mensajes);
+                }
+                else
+                {
+                    _exito = rDistribucion.Guardar(obj);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (rDistribucion._session.Transaction.IsActive) rDistribucion._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return _exito;
         }
     }
 }

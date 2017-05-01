@@ -44,68 +44,11 @@
             text-decoration: underline;
         }
 
-        /*.Validators {
-            float: right !important;
-            margin-top: -50px;
-            color: #f31111 !important;
-        }
-
-        .formulario-clientes .panel {
-            border: 1px solid #ddd;
-            margin-bottom: 0px;
-            -webkit-box-shadow: none;
-            -moz-box-shadow: none;
-            box-shadow: none;
-        }
-
-        .formulario-clientes .tab-circulacion .panel .contenedor-tabla .tabla-principal {
-            border-bottom: 0;
-        }
-
-        .formulario-clientes .tab-circulacion .panel .btn {
-            border-radius: 0;
-        }
-
-        .formulario-clientes .tab-circulacion .panel .btn-default {
-            background-color: #fff;
-            border-color: #ddd;
-        }
-
-            .formulario-clientes .tab-circulacion .panel .btn-default:hover,
-            .formulario-clientes .tab-circulacion .panel .btn-default:focus {
-                background-color: #D7D7D7;
-                border-color: #bbb;
-                color: #333;
-            }*/
-
-        /*.contenedor-btn-alta {
-            margin-bottom: 15px;
-        }*/
-
         .mapa-google {
             border: 1px solid #ababab;
             height: 200px;
         }
-
-        /*#popup {
-            padding-bottom: 70px !important;
-            padding-top: 30px;
-        }
-
-            #popup input[type="button"], #popup input[type="submit"] {
-                height: 50PX;
-            }*/
-
-        /*.clear-fix {
-            height: 40px !important;
-        }*/
     </style>
-    <%--<div id="popupOverlay">
-        <div id="popup">
-            <div class="closePopup">
-            </div>
-        </div>
-    </div>--%>
     <asp:UpdatePanel runat="server" ID="upForm">
         <ContentTemplate>
 

@@ -51,12 +51,7 @@ public partial class Sucursales : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(
-                 this,
-                 this.GetType(),
-                 "StartupScript",
-                 "notification('" + ex.Message + "','error')",
-                 true);
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 
@@ -120,12 +115,7 @@ public partial class Sucursales : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(
-                  this,
-                  this.GetType(),
-                  "StartupScript",
-                  "notification('" + ex.Message + "','error')",
-                  true);
+            Funciones.MostarMensajes("error", new List<string> { ex.Message }); s
         }
     }
 
@@ -138,12 +128,7 @@ public partial class Sucursales : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(
-                 this,
-                 this.GetType(),
-                 "StartupScript",
-                 "notification('" + ex.Message + "','error')",
-                 true);
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 
@@ -162,12 +147,7 @@ public partial class Sucursales : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(
-                 this,
-                 this.GetType(),
-                 "StartupScript",
-                 "notification('" + ex.Message + "','error')",
-                 true);
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 
@@ -185,22 +165,12 @@ public partial class Sucursales : System.Web.UI.Page
             }
             else
             {
-                ScriptManager.RegisterStartupScript(
-                  this,
-                  this.GetType(),
-                  "StartupScript",
-                  "notification('" + Funciones.FormatoMsj(cCatalogo.Mensajes) + "','error')",
-                  true);
+                Funciones.MostarMensajes("error", cCatalogo.Mensajes);
             }
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(
-                 this,
-                 this.GetType(),
-                 "StartupScript",
-                 "notification('" + ex.Message + "','error')",
-                 true);
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 }
