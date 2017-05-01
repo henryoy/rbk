@@ -430,6 +430,7 @@
                         <div id="send_form">
                             <div id="send_email_form">
                                 <!-- Sender Name -->
+                                <asp:HiddenField runat="server" ID="hdCampanaId" Value="0" />
                                 <h4 class="semi_bold">Título de campaña <span class="errorSenderName"></span></h4>
                                 <asp:TextBox runat="server" ID="txtTitulo" placeholder="Título"></asp:TextBox>
                                 <!-- Sender Email Address -->
@@ -615,16 +616,9 @@
             }, notificationTime)
 
         }
-        function ActiveSidebar(list) {
+        function ActiveSidebar() {
 
-            if (list.toUpperCase() == "PROMOCION") {
-                $("#titleListaPromocion").css("display", "block");
-                $("#tipoListaPromocion").css("display", "block");
-            } else {
-                $("#titleListaPromocion").css("display", "none");
-                $("#tipoListaPromocion").css("display", "none");
-            }
-
+            console.log("ready");
 
             $('#filter_sidebar').addClass('expanded');
                         

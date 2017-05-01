@@ -29,17 +29,17 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
         }
     }
 
-    private int CampanaId
+    public string CampanaId
     {
         get
         {
-            int _campanaID = 0;
+            string Id = string.Empty;
+
             if (ViewState["CampanaId"] != null)
             {
-                string Id = ViewState["CampanaId"] as string;
-                int.TryParse(Id, out _campanaID);
+                Id = ViewState["CampanaId"] as string;                
             }
-            return _campanaID;
+            return Id;
 
         }
         set
@@ -58,7 +58,7 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
             if (!String.IsNullOrEmpty(Request.QueryString["id"]))
             {
                 thePID = Convert.ToInt32(Request.QueryString["id"]);
-                CampanaId = thePID;
+                CampanaId = Convert.ToString(thePID);
             }                 
 
             Carga(thePID);
@@ -100,15 +100,15 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
 
     private void ActiveSidebar(string tipo)
     {
-        Page.ClientScript.RegisterStartupScript(
+        ScriptManager.RegisterStartupScript(this,
               this.GetType(),
               "StartupSidebar",
-              "ActiveSidebar('" + tipo + "');",
+              "ActiveSidebar();",
               true);
     }
     private void checkCalendar()
     {
-        Page.ClientScript.RegisterStartupScript(
+        ScriptManager.RegisterStartupScript(this,
               this.GetType(),
               "StartupCalendar",
               "ActiveCalendar();",
@@ -127,6 +127,7 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
         _Result = cCatalogo.GuardarCampana(_oCampana);
         if (cCatalogo.Exito)
         {
+            CampanaId = Convert.ToString(_Result.CampanaId);
             ActiveSidebar(oCampana.TipoCampana);
 
             msj = "La campaña ha sido guardada correctamente";
@@ -156,8 +157,9 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
     private Campana SetCampana()
     {
         Campana oCampana = new Campana();
-
-        oCampana.CampanaId = CampanaId;
+        int sCampanaId = 0;
+        int.TryParse(CampanaId, out sCampanaId);
+        oCampana.CampanaId = sCampanaId;
         oCampana.Nombre = txtTitulo.Text;
         oCampana.MensajePrevio = txtMsjPrevio.Text;
         if (!string.IsNullOrEmpty(send_schedule_campaign_day.Value))
