@@ -820,6 +820,22 @@ input {
         box-shadow: inset 1px 0px 0px #d8d8d8, inset 0px 1px 0px #d8d8d8, inset 0px -1px 0px #d8d8d8;
     }
 
+  #plans-info .Vistaleft {
+        float: left;
+        width: 70%;
+        line-height: 30px;
+        color: #919191;
+        
+    }
+  .submit-btn-vista{
+      float: left;
+        width: 100%;
+        height : 100%;
+        line-height: 100px;
+        color: #919191;
+        padding:0;
+  }
+
         #plans-info .left p {
             padding: 14px 25px 0 0;
         }
@@ -835,6 +851,17 @@ input {
         height: 162px;
         display: table;
         position: relative;
+    }
+
+     #plans-info .Visitaright {
+        float: right;
+        width: 30%;
+        height: 162px;
+        background-color: #FFF;
+        height: 162px;
+        padding: 30px;
+        box-sizing: border-box;
+        box-shadow: inset 1px 0px 0px #d8d8d8, inset 0px 1px 0px #d8d8d8, inset 0px -1px 0px #d8d8d8;
     }
 
     #plans-info #calculatorWrapper {

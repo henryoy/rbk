@@ -103,7 +103,7 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
         ScriptManager.RegisterStartupScript(this,
               this.GetType(),
               "StartupSidebar",
-              "ActiveSidebar();",
+              "ActiveSidebar('"+ tipo +"');",
               true);
     }
     private void checkCalendar()
@@ -143,7 +143,7 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
         else
         {
             msj = Funciones.FormatoMsj(cCatalogo.Mensajes);
-
+            ActiveSidebar(oCampana.TipoCampana);
             ScriptManager.RegisterStartupScript(
                   this,
                   this.GetType(),

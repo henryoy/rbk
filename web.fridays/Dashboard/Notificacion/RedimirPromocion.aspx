@@ -20,12 +20,12 @@
 				
 				<div id="plans-info">
 					<!-- Original -->
-					<div class="left  hidden">						
+					<div class="left  ">						
 						<h1>Your plan: <b class=" semi_bold" style="font-weight: normal;">Redimir promoción</b></h1>
 						<p><font class="extra-for-small">Based on your Subscribers we recommend the plans below.</font> You can use the calculator on the right in case you need more.</p>
 					</div>
 					<!-- Promo -->
-					<div class="left " style="padding-left: 165px; background-image: url(../img/icons/plans_promo_gift.png); background-repeat: no-repeat; background-position: 45px center;">
+					<div class="left hidden" style="padding-left: 165px; background-image: url(../img/icons/plans_promo_gift.png); background-repeat: no-repeat; background-position: 45px center;">
 						<h1>First month free<font class="extra-for-small"> of sending</font>!</h1>
 						<p><span class="semi_bold" style="color: #4a4a4a;">First month free up to 10,000 subscribers! <font class="extra-for-small">Start now &amp; pay next month. Cancel any time.</font></span></p>
 					</div>

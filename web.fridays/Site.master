@@ -56,7 +56,7 @@
                         </div>
 
                         <div id="user">
-                            <span id="username" class="semi_bold">Enrique	
+                            <span id="username" class="semi_bold"><%=Session["Usuario"]%>	
                             </span>
                         </div>
                     </div>
@@ -72,8 +72,8 @@
                             <ul class="hidden" style="display: none;">
                                 <li id="list_campaign_view"><a href="<%= ResolveUrl("~/Dashboard/Promociones") %>"><font><font>Promoción</font></font></a></li>
                                 <li id="new_campaign_view"><a href="<%= ResolveUrl("~/Dashboard/Promocion") %>"><font><font>Nueva Promocion</font></font></a></li>
-                                <li><a href="<%= ResolveUrl("~/Dashboard/AsignarVenta") %>"><font><font>Redimir</font></font></a></li>                                
-                                <li><a href="<%= ResolveUrl("~/Dashboard/RedimirPromocion") %>"><font><font>Redimir Promoción</font></font></a></li>                                
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/AsignarVenta") %>"><font><font>Redimir</font></font></a></li>                                
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/RedimirPromocion") %>"><font><font>Redimir Promoción</font></font></a></li>                                
                             </ul>
                         </li>
                          <li id="campaigns_link_2" class="">
@@ -208,6 +208,7 @@
 
                 console.log(message);
                 console.log(type);
+                notificationTime = 1000;
                 //modify notification
                 $('.popup-notification').html(message);
                 $('.popup-notification').removeClass('error').removeClass('success');

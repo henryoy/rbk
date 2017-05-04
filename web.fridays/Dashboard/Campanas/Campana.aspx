@@ -616,9 +616,19 @@
             }, notificationTime)
 
         }
-        function ActiveSidebar() {
+        function ActiveSidebar(Tipo) {
 
             console.log("ready");
+
+            if (Tipo.toUpperCase() == "PROMOCION") {
+                //titleListaPromocion
+                $("#titleListaPromocion").css("display", "block");
+                $("#tipoListaPromocion").css("display", "block");
+            } else {
+                $("#titleListaPromocion").css("display", "none");
+                $("#tipoListaPromocion").css("display", "none");
+            }
+
 
             $('#filter_sidebar').addClass('expanded');
                         
