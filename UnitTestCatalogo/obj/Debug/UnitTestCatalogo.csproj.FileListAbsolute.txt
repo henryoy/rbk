@@ -28,3 +28,4 @@ C:\Users\EEuan\Source\Repos\rbk\UnitTestCatalogo\bin\Debug\es\Microsoft.VisualSt
 C:\Users\EEuan\Source\Repos\rbk\UnitTestCatalogo\obj\Debug\UnitTestCatalogo.csprojResolveAssemblyReference.cache
 C:\Users\EEuan\Source\Repos\rbk\UnitTestCatalogo\obj\Debug\UnitTestCatalogo.dll
 C:\Users\EEuan\Source\Repos\rbk\UnitTestCatalogo\obj\Debug\UnitTestCatalogo.pdb
+C:\Users\EEuan\Source\Repos\rbk\UnitTestCatalogo\bin\Debug\cm.mx.dbcore.pdb
