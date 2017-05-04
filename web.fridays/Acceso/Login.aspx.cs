@@ -23,7 +23,16 @@ public partial class Login : System.Web.UI.Page
     List<string> mensajes = new List<string>();
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        if (!IsPostBack)
+        {
+            var lsSucursales = cCatalogo.GetAllSucursales();
+            cbxSucursal.Items.Clear();
+            cbxSucursal.DataSource = lsSucursales;
+            cbxSucursal.DataTextField = "Nombre";
+            cbxSucursal.DataValueField = "SucursalID";
+            cbxSucursal.DataBind();
+            cbxSucursal.Items.Insert(0, new ListItem { Text = "Seleccione una sucursal", Value = "" });
+        }
     }
 
     protected void lnkAcceder_Click(object sender, EventArgs e)
@@ -60,6 +69,7 @@ public partial class Login : System.Web.UI.Page
                     true);
                 return;
             }
+
             if (string.IsNullOrEmpty(txtEmail.Text.Trim()))
             {
                 mensajes.Add("¡Usuario invalido!");
@@ -67,6 +77,18 @@ public partial class Login : System.Web.UI.Page
             if (string.IsNullOrEmpty(txtPassword.Text.Trim()))
             {
                 mensajes.Add("¡Contraseña invalida!");
+            }
+
+            if (string.IsNullOrEmpty(cbxSucursal.SelectedItem.Value))
+            {
+                string mjs = "Seleccione la sucursal";
+                ScriptManager.RegisterStartupScript(
+                    this,
+                    this.GetType(),
+                    "StartupScript",
+                    "notification('" + mjs + "','error')",
+                    true);
+                return;
             }
 
             string urlAcceso = string.Empty;
@@ -94,7 +116,14 @@ public partial class Login : System.Web.UI.Page
                   true);
             }
 
+            int Sucursal = 0;
+            if (cbxSucursal.Items.Count > 0)
+            {
+                int.TryParse(cbxSucursal.SelectedItem.Value, out Sucursal);
+            }
+
             Session["Usuario"] = Usuario;
+            Session["Sucursal"] = Sucursal;
             urlAcceso = "~/Dashboard/index";
             Response.Redirect(urlAcceso);
         }

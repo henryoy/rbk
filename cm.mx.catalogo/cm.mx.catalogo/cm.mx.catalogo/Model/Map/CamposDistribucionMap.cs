@@ -5,15 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cm.mx.catalogo.Model
+namespace cm.mx.catalogo.Model.Map
 {
-    public class DistribucionMap : ClassMap<Distribucion>
+    class CamposDistribucionMap : ClassMap<CamposDistribucion>
     {
-        public DistribucionMap()
+        public CamposDistribucionMap()
         {
-            Id(x => x.DistribucionID);
-            Map(x => x.Campos);
-            Map(x => x.Condicion);
+            Id(x => x.Campo);
             Map(x => x.Descripcion);
             Map(x => x.Nombre);
         }

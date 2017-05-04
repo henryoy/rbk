@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
 
 /// <summary>
 /// Descripción breve de Funciones
@@ -28,6 +29,7 @@ public class Funciones
         //{
         //    msj = msj.Remove(msj.Length - 3, 3);
         //}
+        msj = msj.Replace(Environment.NewLine, "&#160;&#160;");
         return msj;
     }
 
@@ -45,5 +47,16 @@ public class Funciones
         sConn = sConn.Replace("[PASSWORD]", password);
 
         return sConn;
+    }
+
+    public static void MostarMensajes(string tipo, List<string> mensajes)
+    {
+        Page page = HttpContext.Current.Handler as Page;
+        ScriptManager.RegisterStartupScript(
+                  page,
+                  page.GetType(),
+                  "StartupScript",
+                  "notification('" + FormatoMsj(mensajes) + "','" + tipo + "')",
+                  true);
     }
 }

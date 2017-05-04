@@ -71,7 +71,8 @@ namespace cm.mx.catalogo.Controller
         private PromocionRedimirRepository rPromocionRedimir;
         private TipoInteresRepository rTipoInteres;
         private CampanaRepository rCampana;
-
+        private CamposDistribucionRepository rCampos;
+        private DistribucionRepository rDistribucion;
         #endregion Repositorios
 
         public bool RegistrarUsuario(Usuario oUsuario)
@@ -118,8 +119,8 @@ namespace cm.mx.catalogo.Controller
                                 Mensajes.AddRange(rUsuario.Errores);
                             }
 
-                            if (oUsuario.Usuarioid > 0)                                
-                                this.CrearNotificacionPromocion(oUsuario.Usuarioid);                           
+                            if (oUsuario.Usuarioid > 0)
+                                this.CrearNotificacionPromocion(oUsuario.Usuarioid);
                         }
                         else
                         {
@@ -1636,7 +1637,11 @@ namespace cm.mx.catalogo.Controller
             {
                 rTipoInteres = new TipoInteresRepository();
                 var r = rTipoInteres.GetAll();
-                if (pag.Paginar) r = r.Skip(pag.Pagina * pag.Cantidad).Take(pag.Cantidad);
+                if (pag.Paginar)
+                {
+                    pag.TotalRegistros = r.Count();
+                    r = r.Skip(pag.Pagina * pag.Cantidad).Take(pag.Cantidad);
+                }
                 ls = r.ToList();
             }
             catch (Exception ex)
@@ -1651,6 +1656,8 @@ namespace cm.mx.catalogo.Controller
             }
             return ls;
         }
+
+
         public Campana GetCampana(int CampanaId)
         {
             Mensajes.Clear();
@@ -1661,7 +1668,7 @@ namespace cm.mx.catalogo.Controller
             try
             {
                 _oCampana = rCampana.GetById(CampanaId);
-               _exito = rCampana.Exito;
+                _exito = rCampana.Exito;
             }
             catch (Exception ex)
             {
@@ -1669,14 +1676,41 @@ namespace cm.mx.catalogo.Controller
                 {
                     rCampana._session.Transaction.Rollback();
                 }
+            }
+            return _oCampana;
+        }
+
+        public List<CamposDistribucion> GetAllCamposDistrubucion(Paginacion pag = null)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<CamposDistribucion> ls = new List<CamposDistribucion>();
+            if (pag == null) pag = new Paginacion();
+            try
+            {
+                rCampos = new CamposDistribucionRepository();
+                var r = rCampos.GetAll();
+                if (pag.Paginar)
+                {
+                    pag.TotalRegistros = r.Count();
+                    r = r.Skip(pag.Pagina * pag.Cantidad).Take(pag.Cantidad);
+                }
+                ls = r.ToList();
+            }
+            catch (Exception ex)
+            {
+                ls = new List<CamposDistribucion>();
                 while (ex != null)
                 {
                     _errores.Add(ex.Message);
                     ex = ex.InnerException;
                 }
+                _exito = false;
             }
-            return _oCampana;
+            return ls;
         }
+
         public Campana GuardarCampana(Campana oCampana)
         {
             Mensajes.Clear();
@@ -1706,19 +1740,48 @@ namespace cm.mx.catalogo.Controller
             }
             catch (Exception ex)
             {
-                
+
                 if (rCampana._session.Transaction.IsActive)
                 {
                     rCampana._session.Transaction.Rollback();
                 }
+            }
+            return _oCampana;
+        }
+
+        public bool GuardarDistribucion(Distribucion obj)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            try
+            {
+                rDistribucion = new DistribucionRepository();
+                DistribucionVR vrDistribucion = new DistribucionVR();
+                if (!vrDistribucion.Insertar(obj))
+                {
+                    _mensajes.AddRange(vrDistribucion.Mensajes);
+                }
+                else
+                {
+                    _exito = rDistribucion.Guardar(obj);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (rDistribucion._session.Transaction.IsActive) rDistribucion._session.Transaction.Rollback();
+
                 while (ex != null)
                 {
                     _errores.Add(ex.Message);
                     ex = ex.InnerException;
                 }
+                _exito = false;
             }
-            return _oCampana;
+            return _exito;
         }
+
+
         public List<Campana> GetAllCampana(Paginacion oPaginacion)
         {
             List<Campana> lsCampana = new List<Campana>();
@@ -1728,7 +1791,7 @@ namespace cm.mx.catalogo.Controller
             rCampana = new CampanaRepository();
             try
             {
-               
+
                 lsCampana = rCampana.GetAllCampana(oPaginacion);
                 _exito = true;
             }
@@ -1747,5 +1810,6 @@ namespace cm.mx.catalogo.Controller
             }
             return lsCampana;
         }
+
     }
 }

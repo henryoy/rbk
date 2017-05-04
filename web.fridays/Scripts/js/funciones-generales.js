@@ -14,7 +14,7 @@
     }
 
     $(document).on('click', '.back_btn', function () {
-        $(location).attr('href', '../default.aspx');
+        $(location).attr('href', '../Dashboard/index');
     });
 
     $(document).on("click", ".btnFalse", function (e) {
