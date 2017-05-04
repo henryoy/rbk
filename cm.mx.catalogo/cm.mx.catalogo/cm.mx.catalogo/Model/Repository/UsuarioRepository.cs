@@ -252,7 +252,7 @@ namespace cm.mx.catalogo.Model
             return oUsuario;
 
         }
-        
+
         public bool RegistrarVisita(string Usuario, int ClienteID, string Referencia, int SucursalId)
         {
             _exito = false;
@@ -347,14 +347,21 @@ namespace cm.mx.catalogo.Model
             return _exito;
         }
 
-        public bool ExisteCorreo(string correo)
+        public string ExisteCorreo(string correo)
         {
             _exito = false;
             Mensajes.Clear();
             Errores.Clear();
+            string origen = null;
+
             try
             {
-                _exito = _session.Query<Usuario>().Any(a => a.Email.Equals(correo));
+                //if(_session.Query<Usuario>().Any(a => a.Email.Equals(correo));
+                if (_session.Query<Usuario>().Any(a => a.Email.Equals(correo)))
+                {
+                    origen = _session.Query<Usuario>().FirstOrDefault(a => a.Email == correo).Origen;
+                    _exito = true;
+                }
             }
             catch (Exception ex)
             {
@@ -365,18 +372,18 @@ namespace cm.mx.catalogo.Model
                 }
                 _mensajes.Add("Ocurrio un problema al realizar la operación solicitada.");
             }
-            return _exito;
+            return origen;
         }
 
         public List<Usuario> GetAllUserForVisita(int Visita, string Nivel)
         {
             List<Usuario> lsUser = new List<Usuario>();
-            
+
             lsUser = _session.CreateCriteria<Usuario>()
                 .Add(Restrictions.Ge("VisitaActual", Visita))
                 .CreateCriteria("oTarjeta").Add(Restrictions.Eq("Nombre", Nivel))
                 .List<Usuario>().Distinct().ToList();
-                
+
             return lsUser;
         }
         public List<Usuario> GetAllUserForEvento(int Visita, string Nivel)
@@ -390,7 +397,7 @@ namespace cm.mx.catalogo.Model
                .Add(Restrictions.Ge("VisitaActual", Visita))
                .CreateCriteria("oTarjeta").Add(Restrictions.Eq("Nombre", Nivel))
                .List<Usuario>().Distinct().ToList();
-            
+
             return lsUser;
         }
         public List<Usuario> GetTipoMemb(int cant, string nivel)

@@ -20,4 +20,11 @@
         VISITA,
         PROMOCION
     }
+
+    public enum Origen
+    {
+        FECEBOOK,
+        INSTAGRAM,
+        MOVIL
+    }
 }

@@ -60,11 +60,13 @@ namespace cm.mx.catalogo.Model
         public virtual int VisitaGlobal { get; set; }
         [DataMember]
         public virtual string Codigo { get; set; }
-        
+        [DataMember]
+        public virtual string Origen { get; set; }
+
         public virtual Tipomembresia oTarjeta { get; set; }
-        
+
         public virtual IList<TipoInteres> Intereses { get; set; }
-        
+
         public virtual IList<Notificacion> Notificaciones { get; set; }
         //public virtual string Correo { get; set; }
         //public virtual string Nombre { get; set; }

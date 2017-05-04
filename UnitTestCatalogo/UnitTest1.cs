@@ -63,5 +63,36 @@ namespace UnitTestCatalogo
 
             }
         }
+
+        [TestMethod]
+        public void GuardarUsuario()
+        {
+            CatalogoController cCatalogo = new CatalogoController();
+            Usuario oUsuario = new Usuario
+            {
+                Codigo = "",
+                Contrasena = "qwert",
+                Email = "jorge.demo@demo.com",
+                Estatus = "ACTIVO",
+                FechaAlta = new DateTime(2017, 03, 22, 03, 19, 09),
+                FechaBaja = new DateTime(1900, 01, 01),
+                FechaNacimiento = new DateTime(1979, 03, 22),
+                Imagen = "",
+                Nombre = "Jorge Pech",
+                //TarjetaID = 4,
+                oTarjeta = new Tipomembresia { Membresiaid = 4 },
+                Tipo = "MOBILE",
+                Usuarioid = 0,
+                VerificacionContrasena = "qwert",
+                VisitaActual = 0,
+                VisitaGlobal = 0,
+                Origen = cm.mx.catalogo.Enums.Origen.FECEBOOK.ToString()
+                //oTargeta = new Tarjeta { TarjetaID = 4 }
+            };
+
+            oUsuario.Addinteres(new TipoInteres { TipoInteresID = 1 });
+            oUsuario.Addinteres(new TipoInteres { TipoInteresID = 2 });
+            cCatalogo.RegistrarUsuario(oUsuario);
+        }
     }
 }
