@@ -72,11 +72,11 @@
                             <ul class="hidden" style="display: none;">
                                 <li id="list_campaign_view"><a href="<%= ResolveUrl("~/Dashboard/Promociones") %>"><font><font>Promoción</font></font></a></li>
                                 <li id="new_campaign_view"><a href="<%= ResolveUrl("~/Dashboard/Promocion") %>"><font><font>Nueva Promocion</font></font></a></li>
-                                <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/AsignarVenta") %>"><font><font>Redimir</font></font></a></li>                                
-                                <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/RedimirPromocion") %>"><font><font>Redimir Promoción</font></font></a></li>                                
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/AsignarVenta") %>"><font><font>Redimir</font></font></a></li>
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/RedimirPromocion") %>"><font><font>Redimir Promoción</font></font></a></li>
                             </ul>
                         </li>
-                         <li id="campaigns_link_2" class="">
+                        <li id="campaigns_link_2" class="">
                             <h2 class="semi_bold">Campaña</h2>
                             <ul class="hidden" style="display: none;">
                                 <li id="my_campaigns_view_1"><a href="<%= ResolveUrl("~/Dashboard/Campanas/campanas") %>"><font><font>Campañas</font></font></a></li>
@@ -114,7 +114,7 @@
                         <li id="distribution_link">
                             <h2 class="semi_bold">Distribución</h2>
                             <ul class="hidden">
-                                <li><a href="<%= ResolveUrl("~/Dashboard/Distribucion") %>">Distribución</a></li>
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Distribuciones") %>">Distribución</a></li>
                             </ul>
                         </li>
                         <li id="account_link" class="">

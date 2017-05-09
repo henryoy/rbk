@@ -1838,5 +1838,37 @@ namespace cm.mx.catalogo.Controller
             }
             return obj;
         }
+
+        public List<Distribucion> GetDistribucion(Paginacion pag)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<Distribucion> ls = new List<Distribucion>();
+            try
+            {
+                if (pag == null) pag = new Paginacion();
+                rDistribucion = new DistribucionRepository();
+                ls = rDistribucion.GetAll().ToList();
+
+                if (pag.Paginar)
+                {
+                    pag.TotalRegistros = ls.Count();
+                    ls = ls.Skip(pag.Pagina * pag.Cantidad).Take(pag.Cantidad).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (rDistribucion._session.Transaction.IsActive) rDistribucion._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return ls;
+        }
     }
 }

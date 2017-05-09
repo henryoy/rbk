@@ -201,10 +201,12 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
                     e.Row.Attributes["ondblclick"] = Page.ClientScript.GetPostBackClientHyperlink(grvCondicion, "Edit$" + e.Row.RowIndex);
                 }
                 var camp = lsCampos.FirstOrDefault(a => a.Campo == obj.Campo);
+                if (camp == null) camp = new CamposDistribucion();
                 e.Row.Cells[1].Text = camp.Nombre;
             }
             else
             {
+                e.Row.CssClass = "row-edit";
                 if (e.Row.RowIndex == 0)
                 {
                     e.Row.Cells[0].Controls[1].Visible = false;

@@ -190,8 +190,17 @@ table tbody tr td input[type="text"],
 table tbody tr td input[type="number"],
 table tbody tr td input[type="password"] {
     width: 100% !important;
+    height: 30px !important;
 }
 
 .table-fixed .col-empty {
     width: 1099px !important;
 }
+
+.row-edit td {
+    padding: 0px !important;
+}
+
+    .row-edit td:last-child {
+        padding-top: 8px !important;
+    }

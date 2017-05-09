@@ -153,6 +153,13 @@
     <script src="<%= ResolveClientUrl("~/Scripts/js/functions.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/custom.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/chartjs/waypoints.min.js") %>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/js/autoNumeric-min.js") %>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/js/funciones-generales.js") %>" type="text/javascript"></script>
+    <script type="text/javascript">
+        Sys.Application.add_load(function () {
+            $(document).ready(function (e) {
+                $(document).on('click', '.back_btn', function () {
+                    $(location).attr('href', '../Dashboard/Distribuciones');
+                });
+            });
+        });
+    </script>
 </asp:Content>
