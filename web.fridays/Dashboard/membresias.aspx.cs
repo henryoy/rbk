@@ -56,6 +56,7 @@ public partial class membresias : System.Web.UI.Page
     {
         var oMembresia = cCatalogo.GetMembresia(MembresiaId);
         if (oMembresia == null) oMembresia = new Tipomembresia();
+        var filePath = (ConfigurationManager.AppSettings["RutaImagenes"]).Replace("~", "");
 
         txtColor.Text = oMembresia.Color;
         txtDescuento.Text = string.Format("{0:N2}", oMembresia.Porcientodescuento);
@@ -72,8 +73,8 @@ public partial class membresias : System.Web.UI.Page
             imgTarjeta.ImageUrl = "~/Images/icon-gallery.svg";
         else
         {
-            imgTarjeta.ImageUrl = oMembresia.UrlImagen;
-            hfTajeta.Value = oMembresia.UrlImagen.Replace(" ", "%20");
+            imgTarjeta.ImageUrl = filePath + oMembresia.UrlImagen;
+            hfTajeta.Value = filePath + oMembresia.UrlImagen.Replace(" ", "%20");
         }
 
 
@@ -89,12 +90,7 @@ public partial class membresias : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(
-                 this,
-                 this.GetType(),
-                 "StartupScript",
-                 "notification('" + ex.Message.Replace("'", "") + "','error')",
-                 true);
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 
@@ -107,12 +103,7 @@ public partial class membresias : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(
-                 this,
-                 this.GetType(),
-                 "StartupScript",
-                 "notification('" + ex.Message + "','error')",
-                 true);
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 
@@ -128,6 +119,7 @@ public partial class membresias : System.Web.UI.Page
             int.TryParse(txtVisitasMin.Text.Trim(), out min);
             int.TryParse(txtVisitasMax.Text.Trim(), out max);
             decimal.TryParse(txtDescuento.Text, out descuento);
+            var filePath = (ConfigurationManager.AppSettings["RutaImagenes"]).Replace("~", "");
             Tipomembresia oMembresia = new Tipomembresia();
             oMembresia.Color = txtColor.Text;
             oMembresia.Estado = "ACTIVO";
@@ -137,32 +129,23 @@ public partial class membresias : System.Web.UI.Page
             oMembresia.Hasta = max;
             oMembresia.Porcientodescuento = descuento;
             oMembresia.Membresiaid = MembresiaId;
-            oMembresia.UrlImagen = hfTajeta.Value;
+            oMembresia.UrlImagen = hfTajeta.Value.Replace(filePath, "");
 
             var r = cCatalogo.GuardarMembresia(oMembresia);
             if (cCatalogo.Exito)
             {
                 CargarMembresias();
+                Funciones.MostarMensajes("success", new List<string> { "La operación se completo correctamente" });
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "closePopup(); $('#popupOverlay').hide();", true);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(
-                  this,
-                  this.GetType(),
-                  "StartupScript",
-                  "notification('" + Funciones.FormatoMsj(cCatalogo.Mensajes) + "','error')",
-                  true);
+                Funciones.MostarMensajes("error", cCatalogo.Mensajes);
             }
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(
-                 this,
-                 this.GetType(),
-                 "StartupScript",
-                 "notification('" + ex.Message.Replace("\r\n", "&nbsp;") + "','error')",
-                 true);
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 
@@ -175,12 +158,7 @@ public partial class membresias : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(
-                 this,
-                 this.GetType(),
-                 "StartupScript",
-                 "notification('" + ex.Message + "','error')",
-                 true);
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 
@@ -197,22 +175,12 @@ public partial class membresias : System.Web.UI.Page
             }
             else
             {
-                ScriptManager.RegisterStartupScript(
-                  this,
-                  this.GetType(),
-                  "StartupScript",
-                  "notification('" + Funciones.FormatoMsj(cCatalogo.Mensajes) + "','error')",
-                  true);
+                Funciones.MostarMensajes("error", cCatalogo.Mensajes);
             }
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(
-                 this,
-                 this.GetType(),
-                 "StartupScript",
-                 "notification('" + ex.Message + "','error')",
-                 true);
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 }

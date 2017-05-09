@@ -482,8 +482,11 @@ namespace cm.mx.catalogo.Controller
                     obj.NumeroDeVisitas = entidad.NumeroDeVisitas;
                     obj.Porcientodescuento = entidad.Porcientodescuento;
                     obj.UrlImagen = entidad.UrlImagen;
-                    obj.FechaBaja = entidad.FechaBaja;
                     obj.UsuarioBaja = entidad.UsuarioBaja;
+                    if (entidad.FechaBaja < new DateTime(1900, 01, 01))
+                        obj.FechaBaja = new DateTime(1900, 01, 01);
+                    else
+                        obj.FechaBaja = entidad.FechaBaja;
                 }
                 else
                 {
@@ -1811,5 +1814,29 @@ namespace cm.mx.catalogo.Controller
             return lsCampana;
         }
 
+        public Distribucion GetDistribucion(int DistribucionID)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            Distribucion obj = null;
+            try
+            {
+                rDistribucion = new DistribucionRepository();
+                obj = rDistribucion.GetById(DistribucionID);
+            }
+            catch (Exception ex)
+            {
+                if (rDistribucion._session.Transaction.IsActive) rDistribucion._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return obj;
+        }
     }
 }

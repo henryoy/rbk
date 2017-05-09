@@ -62,6 +62,7 @@
     <Compile Include="Model\Activacion.cs" />
     <Compile Include="Model\Campana.cs" />
     <Compile Include="Model\CamposDistribucion.cs" />
+    <Compile Include="Model\CondicionDistribucion.cs" />
     <Compile Include="Model\ConfigSMTP.cs" />
     <Compile Include="Model\Configuracion.cs" />
     <Compile Include="Model\Distribucion.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Model\Map\ActivacionMap.cs" />
     <Compile Include="Model\Map\CampanaMap.cs" />
     <Compile Include="Model\Map\CamposDistribucionMap.cs" />
+    <Compile Include="Model\Map\CondicionDistribucionMap.cs" />
     <Compile Include="Model\Map\DistribucionMap.cs" />
     <Compile Include="Model\Map\FechapublicacionMap.cs" />
     <Compile Include="Model\Map\NivelUsuarioMap.cs" />
