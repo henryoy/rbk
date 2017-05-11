@@ -59,5 +59,23 @@ namespace cm.mx.catalogo.Rules
 
             return _mensajes.Count() == 0;
         }
+
+
+        public bool Actualizar(Usuario oUsuario)
+        {
+            TipoUsuario tipo;
+            _mensajes.Clear();
+            if (string.IsNullOrEmpty(oUsuario.Contrasena)) _mensajes.Add("Ingrese el código");
+            if (!Funciones.ValidarCorreo(oUsuario.Email)) _mensajes.Add("Ingrese un correo válido");
+            if (!Enum.TryParse(oUsuario.Tipo, out tipo)) _mensajes.Add("Ingrese el tipo de usuario");
+            if (!oUsuario.Contrasena.Equals(oUsuario.VerificacionContrasena)) _mensajes.Add("La contraseña y la verificación no coincide");
+            //if (string.IsNullOrEmpty(oUsuario.Nivel)) _mensajes.Add("Ingrese el nivel del usuario");
+            //if (rUsuario.ExisteCorreo(oUsuario.Email, oUsuario.Usuarioid)) _mensajes.Add("El correo ya ha sido registrado");
+            if (string.IsNullOrEmpty(oUsuario.Nombre)) _mensajes.Add("Ingrese el nombre del usuario");
+            DateTime ini = DateTime.Now.AddYears(-300);
+            DateTime fin = DateTime.Now.AddYears(-10);
+            if (oUsuario.FechaNacimiento <= ini || oUsuario.FechaNacimiento >= fin) _mensajes.Add("Ingrese una fecha válida");
+            return _mensajes.Count() == 0;
+        }
     }
 }

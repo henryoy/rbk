@@ -277,7 +277,7 @@ namespace cm.mx.catalogo.Model
                 {
                     Estatus = Estatus.ACTIVO.ToString(),
                     FechaRegistro = DateTime.Now,
-                    Mensaje = "Se ha registrado una nueva visita",
+                    Mensaje = "Se registro una nueva visita\n¡Gracias!",
                     NotifiacionID = 0,
                     PromocionID = 0,
                     Tipo = TipoNotificacion.VISITA.ToString(),
@@ -296,10 +296,10 @@ namespace cm.mx.catalogo.Model
                     {
                         Estatus = Estatus.ACTIVO.ToString(),
                         FechaRegistro = DateTime.Now,
-                        Mensaje = "Nueva membresia alcanzado",
+                        Mensaje = "¡Felicidades!\nHas alcanzado un nuevo nivel",
                         NotifiacionID = 0,
                         PromocionID = 0,
-                        Tipo = TipoNotificacion.VISITA.ToString(),
+                        Tipo = TipoNotificacion.INFORMACION.ToString(),
                         UsuarioID = oUsuario.Usuarioid,
                         Vigencia = DateTime.Now.AddDays(5),
                         UsuarioAlta = emp.Usuarioid,
@@ -313,6 +313,7 @@ namespace cm.mx.catalogo.Model
                 _session.SaveOrUpdate(oUsuario);
                 _session.Transaction.Commit();
                 _exito = true;
+                _mensajes.Add("¡Felicidades! \nSe registró la visita correctamente.");
             }
             return _exito;
         }

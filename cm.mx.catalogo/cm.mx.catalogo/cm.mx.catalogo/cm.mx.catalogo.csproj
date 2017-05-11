@@ -88,6 +88,7 @@
     <Compile Include="Model\Map\TarjetaMap.cs" />
     <Compile Include="Model\Map\TipoInteresMap.cs" />
     <Compile Include="Model\Map\TipomembresiaMap.cs" />
+    <Compile Include="Model\Map\UsuarioDipositivoMap.cs" />
     <Compile Include="Model\Map\UsuarioMap.cs" />
     <Compile Include="Model\NivelUsuario.cs" />
     <Compile Include="Model\Notificacion.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Model\Repository\TarjetaRepository.cs" />
     <Compile Include="Model\Repository\TipoInteresRepository.cs" />
     <Compile Include="Model\Repository\TIpoMembresiaRepository.cs" />
+    <Compile Include="Model\Repository\UsuarioDispositivoRepository.cs" />
     <Compile Include="Model\Repository\UsuarioRepository.cs" />
     <Compile Include="Model\Rules\CampanaVR.cs" />
     <Compile Include="Model\Rules\DistribucionVR.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="Model\TipoInteres.cs" />
     <Compile Include="Model\Tipomembresia.cs" />
     <Compile Include="Model\Usuario.cs" />
+    <Compile Include="Model\UsuarioDispositivo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Funciones.cs" />
   </ItemGroup>

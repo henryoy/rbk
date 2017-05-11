@@ -15,10 +15,11 @@
         MOBILE
     }
 
-    internal enum TipoNotificacion
+    public enum TipoNotificacion
     {
         VISITA,
-        PROMOCION
+        PROMOCION,
+        INFORMACION
     }
 
     public enum Origen
@@ -26,5 +27,11 @@
         FECEBOOK,
         INSTAGRAM,
         MOVIL
+    }
+
+    public enum Plataforma
+    {
+        ANDROID,
+        IOS
     }
 }
