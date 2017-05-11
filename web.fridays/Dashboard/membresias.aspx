@@ -183,6 +183,7 @@
     <script type="text/javascript">
         function pageLoad(sender, args) {
             $(document).ready(function () {
+                var filePath = '<%= ConfigurationManager.AppSettings["RutaImagenes"]%>';
                 //var picker = new CP(document.querySelector('.color-picker'));
                 //picker.on("change", function (color) {
                 //    this.target.value = '#' + color;
@@ -235,14 +236,17 @@
                         notification(txt, 'error');
                     },
                     onSelect: function (files) {
-                        var name = "/uploads/" + files[0].name;
+                        var ruta = filePath.replace("~", "");
+                        console.log(ruta);
+                        var name = ruta + files[0].name;
                         $("#hfTajeta").val(name);
                     },
                     finish: function (file) {
                         GudarDatos();
                     },
                     success: function (file_name) {
-                        $(".imgTarjeta").attr("src", "/uploads/" + file_name);
+                        var ruta = filePath.replace("~", "");
+                        $(".imgTarjeta").attr("src", ruta + file_name);
                     }
                 });
 

@@ -3,6 +3,7 @@ using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NHibernate.Linq;
 
 namespace cm.mx.catalogo.Model
 {
@@ -66,6 +67,18 @@ namespace cm.mx.catalogo.Model
                 lsNotificaion = r.ToList();
             }
             return lsNotificaion;
+        }
+
+        //<sumary>1 si es la referencia 2, 2 si es la nota de venta</sumary>
+        public Notificacion getByReferencias(int tipo, string referencia)
+        {
+            Notificacion oNotificacion = null;
+            if(tipo == 1)
+                oNotificacion = _session.Query<Notificacion>().Where(x => x.Referencia == referencia).FirstOrDefault();
+            else
+                oNotificacion = _session.Query<Notificacion>().Where(x => x.FolioNota == referencia).FirstOrDefault();
+
+            return oNotificacion;
         }
     }
 }

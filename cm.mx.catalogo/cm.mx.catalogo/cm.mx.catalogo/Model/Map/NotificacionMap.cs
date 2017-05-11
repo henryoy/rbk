@@ -19,6 +19,7 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.UsuarioAlta);
             Map(x => x.Vigencia);
             References(x => x.Usuario).Column("UsuarioID").ForeignKey("UsuarioID");
+            Map(x => x.Enviado);
         }
     }
 }

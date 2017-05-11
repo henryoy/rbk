@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.master" CodeFile="Promocion.aspx.cs" Inherits="Dashboard_Promocion" Async="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.master" CodeFile="Promocion.aspx.cs" Inherits="Dashboard_Promocion" EnableEventValidation="true" Async="true" %>
 
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
     <link rel="stylesheet" type="text/css" href="../Content/css/jquery-ui.css" />

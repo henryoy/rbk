@@ -73,6 +73,7 @@ namespace cm.mx.catalogo.Controller
         private CampanaRepository rCampana;
         private CamposDistribucionRepository rCampos;
         private DistribucionRepository rDistribucion;
+        private UsuarioDispositivoRepository rUsuarioDispositivo;
         #endregion Repositorios
 
         public bool RegistrarUsuario(Usuario oUsuario)
@@ -482,8 +483,11 @@ namespace cm.mx.catalogo.Controller
                     obj.NumeroDeVisitas = entidad.NumeroDeVisitas;
                     obj.Porcientodescuento = entidad.Porcientodescuento;
                     obj.UrlImagen = entidad.UrlImagen;
-                    obj.FechaBaja = entidad.FechaBaja;
                     obj.UsuarioBaja = entidad.UsuarioBaja;
+                    if (entidad.FechaBaja < new DateTime(1900, 01, 01))
+                        obj.FechaBaja = new DateTime(1900, 01, 01);
+                    else
+                        obj.FechaBaja = entidad.FechaBaja;
                 }
                 else
                 {
@@ -983,16 +987,32 @@ namespace cm.mx.catalogo.Controller
             _mensajes = new List<string>();
             try
             {
-                rUsuario = new UsuarioRepository();
-                _exito = rUsuario.RegistrarVisita(Usuario, ClienteID, Referencia, SucursalId);
-                if (!_exito)
-                {
-                    _mensajes.AddRange(rUsuario.Mensajes);
-                    _errores.AddRange(rUsuario.Errores);
-                }
-                List<Promocion> tskPromocion = new List<Promocion>();
+                rNotificacion = new NotificacionRepository();
 
-                Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
+                Notificacion oNot = rNotificacion.getByReferencias(1, Referencia);
+
+                if(oNot != null)
+                {
+                    _errores.Add("La referencia de la nota ya está asociada a otra visita");
+                }
+                else
+                {
+                    rUsuario = new UsuarioRepository();
+                    _exito = rUsuario.RegistrarVisita(Usuario, ClienteID, Referencia, SucursalId);
+                    if (!_exito)
+                    {
+                        _mensajes.AddRange(rUsuario.Mensajes);
+                        _errores.AddRange(rUsuario.Errores);
+                    }
+                    else
+                    {
+                        _mensajes.AddRange(rUsuario.Mensajes);
+                    }
+                    List<Promocion> tskPromocion = new List<Promocion>();
+
+                    Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
+                }
+
                 //tskPromocion = await lsPromocion;
             }
             catch (Exception ex)
@@ -1298,6 +1318,8 @@ namespace cm.mx.catalogo.Controller
                     ex = ex.InnerException;
                 }
             }
+
+            rNotificacion._session.Clear();
             return oNotif;
         }
 
@@ -1458,6 +1480,8 @@ namespace cm.mx.catalogo.Controller
                 }
             }
 
+            rUsuario._session.Clear();
+
             return oUsuario;
         }
 
@@ -1489,7 +1513,7 @@ namespace cm.mx.catalogo.Controller
         }
 
         //<summary>Metodo que devuelve una lista de visitas del usuario destino distinguiendo por tipo de visita</summary>
-        public List<NotificacionSucursalVM> GetNotifiacionesApp(int UsuatioID, bool visitas = true)
+        public List<NotificacionSucursalVM> GetNotifiacionesApp(int UsuatioID, bool visitas = true, bool SoloNoEnviadas = false)
         {
             _exito = false;
             _mensajes = new List<string>();
@@ -1502,13 +1526,21 @@ namespace cm.mx.catalogo.Controller
                 rSucursal = new SucursalRepository();
 
                 rNotificacion = new NotificacionRepository();
-                if (visitas)
+
+                if (SoloNoEnviadas)
                 {
-                    lsNotificaiones = rNotificacion.Query(a => a.UsuarioID == UsuatioID && a.Tipo == TipoNotificacion.VISITA.ToString()).OrderByDescending(x => x.FechaRegistro).Take(5).ToList();
+                    lsNotificaiones = rNotificacion.Query(a => a.Enviado == false).ToList();
                 }
                 else
                 {
-                    lsNotificaiones = rNotificacion.Query(a => a.UsuarioID == UsuatioID && a.Tipo != TipoNotificacion.VISITA.ToString()).OrderByDescending(x => x.FechaRegistro).Take(5).ToList();
+                    if (visitas)
+                    {
+                        lsNotificaiones = rNotificacion.Query(a => a.UsuarioID == UsuatioID && a.Tipo == TipoNotificacion.VISITA.ToString()).OrderByDescending(x => x.FechaRegistro).Take(5).ToList();
+                    }
+                    else
+                    {
+                        lsNotificaiones = rNotificacion.Query(a => a.UsuarioID == UsuatioID && a.Tipo != TipoNotificacion.VISITA.ToString()).OrderByDescending(x => x.FechaRegistro).Take(5).ToList();
+                    }
                 }
 
                 foreach (Notificacion oNot in lsNotificaiones)
@@ -1811,5 +1843,180 @@ namespace cm.mx.catalogo.Controller
             return lsCampana;
         }
 
+        public Distribucion GetDistribucion(int DistribucionID)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            Distribucion obj = null;
+            try
+            {
+                rDistribucion = new DistribucionRepository();
+                obj = rDistribucion.GetById(DistribucionID);
+            }
+            catch (Exception ex)
+            {
+                if (rDistribucion._session.Transaction.IsActive) rDistribucion._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return obj;
+        }
+
+        public List<Distribucion> GetDistribucion(Paginacion pag)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<Distribucion> ls = new List<Distribucion>();
+            try
+            {
+                if (pag == null) pag = new Paginacion();
+                rDistribucion = new DistribucionRepository();
+                ls = rDistribucion.GetAll().ToList();
+
+                if (pag.Paginar)
+                {
+                    pag.TotalRegistros = ls.Count();
+                    ls = ls.Skip(pag.Pagina * pag.Cantidad).Take(pag.Cantidad).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (rDistribucion._session.Transaction.IsActive) rDistribucion._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return ls;
+        }
+
+        public UsuarioDispositivo GetTokenActivoUsuario(int UsuarioId)
+        {
+            Mensajes.Clear();
+            Exito = false;
+            Errores.Clear();
+            UsuarioDispositivo _oDispositivo = new UsuarioDispositivo();
+            rUsuarioDispositivo = new UsuarioDispositivoRepository();
+            try
+            {
+                _oDispositivo = rUsuarioDispositivo.Query(a => a.UsuarioId == UsuarioId && a.Plataforma == Enums.Plataforma.IOS.ToString()).OrderByDescending(a => a.FechaAlta).FirstOrDefault();
+                _exito = rCampana.Exito;
+            }
+            catch (Exception ex)
+            {
+                if (rUsuarioDispositivo._session.Transaction.IsActive)
+                {
+                    rUsuarioDispositivo._session.Transaction.Rollback();
+                }
+            }
+            return _oDispositivo;
+        }
+
+        public bool ActualizaNotificacion(Notificacion _notificacion)
+        {
+            bool bResult = false;
+
+            rNotificacion = new NotificacionRepository();
+
+            try
+            {
+                rNotificacion.GuardarNotificacion(_notificacion);
+                bResult = true;
+            }
+            catch (Exception ex)
+            {
+                bResult = false;
+                if (rNotificacion._session.Transaction.IsActive)
+                {
+                    rNotificacion._session.Transaction.Rollback();
+                }
+            }
+            return bResult;
+        }
+
+        public bool saveToken(int usuarioId, string token, string dispositivo, string serie, string origen)
+        {
+            _exito = false;
+
+            try
+            {
+                rUsuarioDispositivo = new UsuarioDispositivoRepository();
+                UsuarioDispositivo oUsuarioD = new UsuarioDispositivo();
+                oUsuarioD.UsuarioId = usuarioId;
+                oUsuarioD.Usuario = new Usuario { Usuarioid = usuarioId };
+                oUsuarioD.Token = token;
+                oUsuarioD.Dispositivo = dispositivo;
+                oUsuarioD.Serie = serie;
+                oUsuarioD.Plataforma = origen.ToString();
+                oUsuarioD.FechaAlta = DateTime.Now;
+
+                UsuarioDispositivo UsuarioToken = rUsuarioDispositivo.getByUsuarioToken(oUsuarioD);
+
+                if (UsuarioToken == null)
+                    rUsuarioDispositivo.GuardarToken(oUsuarioD);
+                else
+                    _mensajes.Add("Token/Usuario registrado previamente");
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rUsuarioDispositivo._session.Transaction.IsActive)
+                {
+                    rUsuarioDispositivo._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+
+            return _exito;
+        }
+
+        public bool deleteTokens(string usuario, string token, bool EliminarTodos = false)
+        {
+            _exito = false;
+
+            try
+            {
+                rUsuarioDispositivo = new UsuarioDispositivoRepository();
+                Usuario oUsuario = GetUsuario(usuario);
+
+                rUsuarioDispositivo._session.BeginTransaction();
+                //rUsuarioDispositivo.Delete()
+                List<UsuarioDispositivo> lDispositivos = rUsuarioDispositivo.Query(x => x.UsuarioId == oUsuario.Usuarioid).ToList();
+
+                foreach (UsuarioDispositivo oUsuarioDis in lDispositivos)
+                {
+                    rUsuarioDispositivo.Delete(oUsuarioDis);
+                }
+                rUsuarioDispositivo._session.Transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (rUsuarioDispositivo._session.Transaction.IsActive)
+                {
+                    rUsuarioDispositivo._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+
+            return _exito;
+        }
     }
 }

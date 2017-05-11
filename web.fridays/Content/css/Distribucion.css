@@ -1,0 +1,206 @@
+﻿.fila {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: table;
+}
+
+div {
+    display: block;
+}
+
+#campaigns {
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 0px;
+    border-spacing: 0;
+    border-bottom: 1px solid #bdbdbd;
+}
+
+.columna {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+    .columna label {
+        min-width: 70px;
+        width: 10%;
+    }
+
+    .columna input {
+        min-width: 70px;
+        width: 90%;
+    }
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+    text-align: left;
+    font-family: 'source_sans_proregular', Helvetica, Arial, sans-serif;
+}
+
+.table > thead > tr > th {
+    border-top: none !important;
+    height: 30px;
+    line-height: 30px;
+    color: #919191;
+}
+
+.table > tbody > tr > td {
+    background-color: #fff !important;
+}
+
+.table > tbody {
+    box-shadow: 0px 0px 0px 1px #e1e1e1;
+}
+
+.data_name {
+    width: 17% !important;
+    color: #333;
+}
+
+.data_value {
+    width: 83%;
+}
+
+label {
+    float: none;
+}
+
+body {
+    overflow-y: auto !important;
+    color: #333;
+}
+
+body, input, button {
+    line-height: 1.4;
+    font: 13px Helvetica,arial,freesans,clean,sans-serif;
+}
+
+a {
+    color: #4183C4;
+    text-decoration: none;
+}
+
+hr {
+    margin: 0px;
+}
+
+.add-option {
+    float: right;
+    padding: 3px;
+    border: 1px solid #919191;
+    width: 100px;
+    text-align: center;
+}
+
+.empty {
+    text-align: center;
+}
+
+#campaigns li input[type="text"] {
+    width: 85%;
+}
+
+.deshabilitado {
+    cursor: not-allowed !important;
+    pointer-events: none;
+    background: #ddd !important;
+}
+
+    ttr.deshabilitado > td > ul > li > a,
+    tr.deshabilitado > td > li > a,
+    tr.deshabilitado > td > a,
+    .deshabilitado > ul > li > a,
+    .deshabilitado > li > a .deshabilitado > a,
+    a.deshabilitado,
+    a.btn.deshabilitado,
+    .disabled,
+    .disabled:focus,
+    .btn.disabled,
+    .btn.disabled:focus {
+        background-color: #eee !important;
+        border-color: #dfdfdf !important;
+        color: #bdbdbd !important;
+        filter: alpha(opacity=100);
+        opacity: 1;
+        text-shadow: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+tr.deshabilitado {
+    background: none !important;
+    border: none !important;
+}
+
+.add-option {
+    background-color: #69c0af;
+    color: #fff;
+    height: 40px;
+}
+
+.table-fixed {
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+}
+
+    .table-fixed tbody {
+        display: block !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        max-height: 300px !important;
+    }
+
+    .table-fixed thead {
+        display: block !important;
+        /*background-color: #0b84c8 !important;*/
+        margin-bottom: 0px;
+    }
+
+        .table-fixed tbody tr td:last-child,
+        .table-fixed thead tr th:last-child {
+            width: 100%;
+        }
+
+    .table-fixed .checkbox {
+        min-width: 70px !important;
+    }
+
+    .table-fixed .col-name {
+        min-width: 300px !important;
+        max-width: 350px !important;
+    }
+
+    .table-fixed .col-data {
+        min-width: 150px !important;
+        max-width: 200px !important;
+    }
+
+table tbody tr td select,
+table tbody tr td input[type="text"],
+table tbody tr td input[type="number"],
+table tbody tr td input[type="password"] {
+    width: 100% !important;
+    height: 30px !important;
+}
+
+.table-fixed .col-empty {
+    width: 1099px !important;
+}
+
+.row-edit td {
+    padding: 0px !important;
+}
+
+    .row-edit td:last-child {
+        padding-top: 8px !important;
+    }

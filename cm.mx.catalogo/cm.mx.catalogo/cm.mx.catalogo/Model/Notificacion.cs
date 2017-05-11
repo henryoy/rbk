@@ -9,10 +9,13 @@ namespace cm.mx.catalogo.Model
     {
         [DataMember]
         public virtual string Estatus { get; set; }
+        [DataMember]
         public virtual DateTime FechaRegistro { get; set; }
         [DataMember]
         public virtual string Mensaje { get; set; }
+        [DataMember]
         public virtual int NotifiacionID { get; set; }
+        [DataMember]
         public virtual int PromocionID { get; set; }
         [DataMember]
         public virtual string Referencia { get; set; }
@@ -28,5 +31,7 @@ namespace cm.mx.catalogo.Model
         public virtual Usuario Usuario { get; set; }
         [DataMember]
         public virtual string FolioNota { get; set; }
+        [DataMember]
+        public virtual bool Enviado { get; set; }
     }
 }
