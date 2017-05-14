@@ -28,6 +28,23 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         }
     }
     private CatalogoController cCatalogo;
+
+    private Promocion _oPromocion = new Promocion();
+    private Promocion oPromocion
+    {
+        get
+        {
+            if (ViewState["oPromocion"] != null)
+            {
+                _oPromocion = ViewState["oPromocion"] as Promocion;
+            }
+            return _oPromocion;
+        }
+        set
+        {
+            ViewState["oPromocion"] = value;
+        }
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -105,7 +122,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                 });
             }
         }
-        Promocion oPromocion = new Promocion();
+        
         if (PromocionId > 0)
         {
             oPromocion = cCatalogo.GetPromocion(PromocionId);
@@ -120,7 +137,14 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             if (oPromocion.Vigenciafinal.HasValue)
                 txtFechaFinal.Text = String.Format("{0:yyyy-MM-dd}", oPromocion.Vigenciafinal);//oPromocion.Vigenciafinal.ToString("yyyy-MM-dd"); ;
 
-            Page.ClientScript.RegisterStartupScript(
+            if (!string.IsNullOrEmpty(oPromocion.ImagenUrl))
+            {
+                hfTajeta.Value = oPromocion.ImagenUrl;
+                imgTarjeta.ImageUrl = oPromocion.ImagenUrl;
+            }
+            txtCondiciones.Text = oPromocion.TerminosCondiciones;
+
+            ScriptManager.RegisterStartupScript(this,
                   this.GetType(),
                   "StartupCalendar",
                   "ActiveCalendar();",
@@ -198,16 +222,16 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
 
 
-        Promocion oPromocion = new Promocion();
+        Promocion _oPromocion = new Promocion();
         cCatalogo = new CatalogoController();
-        oPromocion.Titulo = txtTitulo.Text;
-        oPromocion.Descripcion = txtDescripcion.Text;
-        oPromocion.Promocionid = thePID;
-        oPromocion.Resumen = txtDescripcion.Text;
-        oPromocion.Tipomembresia = dpTarjeta.SelectedItem.Text;
-        oPromocion.Tipocliente = oPromocion.Tipomembresia;
-        //oPromocion.TerminosCondiciones = txtCondiciones.Text;
-        //oPromocion.ImagenUrl = hfTajeta.Value;
+        _oPromocion.Titulo = txtTitulo.Text;
+        _oPromocion.Descripcion = txtDescripcion.Text;
+        _oPromocion.Promocionid = thePID;
+        _oPromocion.Resumen = txtDescripcion.Text;
+        _oPromocion.Tipomembresia = dpTarjeta.SelectedItem.Text;
+        _oPromocion.Tipocliente = _oPromocion.Tipomembresia;
+        _oPromocion.TerminosCondiciones = txtCondiciones.Text;
+        _oPromocion.ImagenUrl = hfTajeta.Value;
 
         int TarjetaId = Convert.ToInt32(dpTarjeta.SelectedItem.Value);
 
@@ -218,7 +242,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
             msj = "La condicion de la promoción esta vacia";
 
-            Page.ClientScript.RegisterStartupScript(
+            ScriptManager.RegisterStartupScript(this,
                   this.GetType(),
                   "StartupScript",
                   "notification('" + msj + "','error')",
@@ -233,44 +257,53 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
             msj = "El número de visitas no puede ser vacío";
 
-            Page.ClientScript.RegisterStartupScript(
+            ScriptManager.RegisterStartupScript(this,
                   this.GetType(),
                   "StartupScript",
                   "notification('" + msj + "','error')",
                   true);
         }
 
+        
+        if (oPromocion.Promociondetalle.Count > 0)
+        {
+            var detalle = oPromocion.Promociondetalle.FirstOrDefault();
+            if(detalle != null){
+                oPromocionDetalle.Promociondetalleid = detalle.Promociondetalleid;                
+            }
+        }
+
         oPromocionDetalle.Valor1 = txtValor1.Text;
         oPromocionDetalle.Valor2 = txtValor2.Text;
 
 
-        oPromocion.AddDetalle(oPromocionDetalle);
+        _oPromocion.AddDetalle(oPromocionDetalle);
 
-        oPromocion.AddMembresia(new Promocionmembresia()
+        _oPromocion.AddMembresia(new Promocionmembresia()
         {
             Membresiaid = TarjetaId,
-            Promocionid = oPromocion.Promocionid
+            Promocionid = _oPromocion.Promocionid
         });
 
         if (!string.IsNullOrEmpty(txtFechaInicio.Text))
-            oPromocion.Vigenciainicial = Convert.ToDateTime(txtFechaInicio.Text);
+            _oPromocion.Vigenciainicial = Convert.ToDateTime(txtFechaInicio.Text);
         if (!string.IsNullOrEmpty(txtFechaFinal.Text))
-            oPromocion.Vigenciafinal = Convert.ToDateTime(txtFechaFinal.Text);
+            _oPromocion.Vigenciafinal = Convert.ToDateTime(txtFechaFinal.Text);
 
         foreach (SucursalVM oPromoSucursal in lsSucusalVM)
         {
             Promocionsucursal _oPromoSucursal = new Promocionsucursal();
             _oPromoSucursal.Sucursalid = oPromoSucursal.SucursalID;
-            _oPromoSucursal.Promocionid = oPromocion.Promocionid;
+            _oPromoSucursal.Promocionid = _oPromocion.Promocionid;
 
-            oPromocion.AddSucursal(_oPromoSucursal);
+            _oPromocion.AddSucursal(_oPromoSucursal);
         }
 
-        Promocion _oPromocion = cCatalogo.GuardarPromocion(oPromocion);
+        Promocion __oPromocion = cCatalogo.GuardarPromocion(_oPromocion);
 
 
 
-        if (_oPromocion != null)
+        if (__oPromocion != null)
         {
             Tipo = "success";
         }
@@ -289,7 +322,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             }
         }
         /* Mensajes */
-        Page.ClientScript.RegisterStartupScript(
+        ScriptManager.RegisterStartupScript(this,
                    this.GetType(),
                    "StartupScript",
                    "notification('" + msj + "','" + Tipo + "')",
@@ -357,7 +390,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             }
             else
             {
-                Page.ClientScript.RegisterStartupScript(
+                ScriptManager.RegisterStartupScript(this,
                    this.GetType(),
                    "StartupScript",
                    "notification('La sucursal ha sido agregada recientemente','error')",
@@ -386,8 +419,8 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         }
     }
     private void checkCalendar()
-    {        
-        Page.ClientScript.RegisterStartupScript(
+    {
+        ScriptManager.RegisterStartupScript(this,
               this.GetType(),
               "StartupCalendar",
               "ActiveCalendar();",

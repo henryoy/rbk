@@ -1,5 +1,7 @@
+using System;
 namespace cm.mx.catalogo.Model
 {
+    [Serializable]
     public class Promociondetalle
     {
         public Promociondetalle()

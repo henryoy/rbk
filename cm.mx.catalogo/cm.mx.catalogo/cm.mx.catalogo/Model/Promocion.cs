@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace cm.mx.catalogo.Model
 {
+    [Serializable]
     public class Promocion
     {
         public Promocion()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 
 namespace cm.mx.catalogo.Model {
-    
+    [Serializable]
     public partial class Promocionnotificacion {
         public virtual int Notificacionid { get; set; }
         public virtual int Promocionid { get; set; }
