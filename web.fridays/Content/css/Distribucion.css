@@ -102,6 +102,10 @@ hr {
     text-align: center;
 }
 
+    .add-option :hover {
+        cursor: pointer;
+    }
+
 .empty {
     text-align: center;
 }

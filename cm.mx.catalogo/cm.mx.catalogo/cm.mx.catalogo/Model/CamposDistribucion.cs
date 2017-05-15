@@ -11,6 +11,7 @@ namespace cm.mx.catalogo.Model
     {
         public virtual string Campo { get; set; }
         public virtual string Descripcion { get; set; }
+        public virtual string Formato { get; set; }
         public virtual string Nombre { get; set; }
     }
 }

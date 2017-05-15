@@ -424,5 +424,20 @@ namespace cm.mx.catalogo.Model
 
             return oUsuario;
         }
+
+        public int GetUsuarioID(string correo)
+        {
+            var r = _session.Query<Usuario>().FirstOrDefault(a => a.Email == correo);
+            if (r == null) r = new Usuario();
+            return r.Usuarioid;
+        }
+
+        public List<Usuario> GetUsuarios(List<ICriterion> condiciones)
+        {
+            _exito = false;
+            var sql = _session.CreateCriteria<Usuario>();
+            condiciones.ForEach(x => sql.Add(x));
+            return sql.List<Usuario>().ToList();
+        }
     }
 }

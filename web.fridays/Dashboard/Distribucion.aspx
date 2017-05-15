@@ -52,8 +52,8 @@
                 </asp:GridView>
                 <div class="fila" style="background: #fff; height: 30px; padding: 0px;">
                     <span style="display: table-cell; vertical-align: middle;" class="sub_title">Condiciones</span>
-                    <%--<asp:LinkButton runat="server" ID="btnAddCondicion" CssClass="add-option semi_bold" OnClick="btnAddCondicion_Click">Agregar</asp:LinkButton>--%>
                     <asp:Button runat="server" ID="btnAddCondicion" CssClass="add-option semi_bold" OnClick="btnAddCondicion_Click" Text="Agregar" UseSubmitBehavior="false" />
+                    <asp:Button runat="server" ID="btnResultado" CssClass="add-option semi_bold" OnClick="btnResultado_Click" Text="Probar" UseSubmitBehavior="false" Style="margin-right: 10px;" />
                 </div>
                 <hr />
                 <asp:GridView runat="server" ID="grvCondicion" GridLines="None" ShowHeader="true" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false"
@@ -145,6 +145,32 @@
             </Triggers>
         </asp:UpdatePanel>
     </div>
+
+    <!--popup-->
+    <div id="popupOverlay" style="opacity: 1; transition: all 0.46s ease; display: none;">
+        <div id="popup" style="opacity: 1; transition: all 0.46s ease; transform: scale(1) translateY(-50%);">
+            <input type="button" value="Cerrar" class="btnFalse semi_bold" style="right: 0px; width: 50%;" onclick="closePopup();"><div id="sub_data_info" class="bold">
+                <img src="<%: ResolveUrl("~/Content/img/icons/default.png") %>">Resultado
+            </div>
+            <asp:UpdatePanel runat="server" ID="upMpdal">
+                <ContentTemplate>
+                    <div style="overflow: auto !important; height: 300px;">
+                        <asp:GridView runat="server" ID="grvResultado" GridLines="None" ShowHeader="true" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false" CssClass="table">
+                            <Columns>
+                            </Columns>
+                            <EmptyDataTemplate>
+                                <div role="alert" class="empty">
+                                    <p>¡No exite información para mostrar!</p>
+                                </div>
+                            </EmptyDataTemplate>
+                        </asp:GridView>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <div class="closePopup"></div>
+        </div>
+    </div>
+
 </asp:Content>
 <asp:Content ID="ScriptsJS" ContentPlaceHolderID="ScriptsPages" runat="Server">
     <script src="<%= ResolveClientUrl("~/Scripts/js/jquery.min.js") %>" type="text/javascript"></script>
@@ -158,6 +184,9 @@
             $(document).ready(function (e) {
                 $(document).on('click', '.back_btn', function () {
                     $(location).attr('href', '../Dashboard/Distribuciones');
+                });
+                $(document).on("click", ".btnFalse", function (e) {
+                    $("#popupOverlay").hide();
                 });
             });
         });

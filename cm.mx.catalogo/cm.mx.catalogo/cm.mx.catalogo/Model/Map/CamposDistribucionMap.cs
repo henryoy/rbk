@@ -13,6 +13,7 @@ namespace cm.mx.catalogo.Model.Map
         {
             Id(x => x.Campo);
             Map(x => x.Descripcion);
+            Map(x => x.Formato);
             Map(x => x.Nombre);
         }
     }

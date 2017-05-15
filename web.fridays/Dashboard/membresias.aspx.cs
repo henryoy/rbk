@@ -167,7 +167,7 @@ public partial class membresias : System.Web.UI.Page
         try
         {
             MembresiaId = int.Parse(((LinkButton)sender).CommandArgument);
-            var r = cCatalogo.BajaMembresia(MembresiaId, 0);
+            var r = cCatalogo.BajaMembresia(MembresiaId);
             if (cCatalogo.Exito)
             {
                 CargarMembresias();

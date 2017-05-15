@@ -26,7 +26,7 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.Codigo).Column("Codigo").Not.Nullable();
             Map(x => x.Origen).Column("Origen").Not.Nullable();
             References(x => x.oTarjeta).Column("TarjetaID").Cascade.None();
-            HasManyToMany(x => x.Intereses).Cascade.None().Table("UsuarioTipoInteres").ParentKeyColumn("UsuarioId").ChildKeyColumn("TipoInteresID");
+            HasManyToMany(x => x.Intereses).Cascade.None().Table("UsuarioTipoInteres").ParentKeyColumn("UsuarioId").ChildKeyColumn("TipoInteresID").Not.LazyLoad();
             HasMany(x => x.Notificaciones).KeyColumn("UsuarioId").Cascade.All().Inverse();
             //HasOne(x => x.oTargeta).Cascade.None().ForeignKey("TarjetaID");
             //.Formula("TarjetaID");

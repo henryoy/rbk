@@ -74,6 +74,15 @@ namespace cm.mx.catalogo.Controller
         private CamposDistribucionRepository rCampos;
         private DistribucionRepository rDistribucion;
         private UsuarioDispositivoRepository rUsuarioDispositivo;
+        private int UsuarioId
+        {
+            get
+            {
+                var temp = (string)System.Web.HttpContext.Current.Session["Usuario"];
+                if (rUsuario == null) rUsuario = new UsuarioRepository();
+                return rUsuario.GetUsuarioID(temp);
+            }
+        }
         #endregion Repositorios
 
         public bool RegistrarUsuario(Usuario oUsuario)
@@ -295,7 +304,7 @@ namespace cm.mx.catalogo.Controller
                 if (entidad.Promocionid > 0)
                 {
                     entidad.Fechaalta = DateTime.Now;
-                    entidad.Usuarioaltaid = 1;
+                    entidad.Usuarioaltaid = UsuarioId;
                     entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
                     entidad.Estado = "ACTIVO";
                     IsTransaction = PromocionVR.ActualizarVR(entidad);
@@ -304,7 +313,7 @@ namespace cm.mx.catalogo.Controller
                 {
                     entidad.Fechaalta = DateTime.Now;
                     entidad.Estado = "ACTIVO";
-                    entidad.Usuarioaltaid = 1;
+                    entidad.Usuarioaltaid = UsuarioId;
                     entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
                     entidad.Vigenciainicial = Convert.ToDateTime("1900-01-01");
                     entidad.Vigenciafinal = Convert.ToDateTime("1900-01-01");
@@ -610,7 +619,10 @@ namespace cm.mx.catalogo.Controller
                     obj.Nombre = entidad.Nombre;
                     obj.Estado = entidad.Estado;
                     obj.UsuarioBaja = entidad.UsuarioBaja;
-                    obj.FechaBaja = entidad.FechaBaja;
+                    if (entidad.FechaBaja < new DateTime(1900, 01, 01))
+                        obj.FechaBaja = new DateTime(1900, 01, 01);
+                    else
+                        obj.FechaBaja = entidad.FechaBaja;
                 }
                 else
                 {
@@ -991,7 +1003,7 @@ namespace cm.mx.catalogo.Controller
 
                 Notificacion oNot = rNotificacion.getByReferencias(1, Referencia);
 
-                if(oNot != null)
+                if (oNot != null)
                 {
                     _errores.Add("La referencia de la nota ya está asociada a otra visita");
                 }
@@ -1073,8 +1085,8 @@ namespace cm.mx.catalogo.Controller
             oNotificacion.PromocionID = oPromocion.Promocionid;
             oNotificacion.Referencia = "";
             oNotificacion.Tipo = "PROMOCION";
-            oNotificacion.Usuario = new Usuario() { Usuarioid = 1 };
-            oNotificacion.UsuarioID = 1;
+            oNotificacion.Usuario = new Usuario() { Usuarioid = UsuarioId };
+            oNotificacion.UsuarioID = UsuarioId;
             oNotificacion.Vigencia = DateTime.Now;
 
             rNotificacion = new NotificacionRepository();
@@ -1604,7 +1616,7 @@ namespace cm.mx.catalogo.Controller
             return oUsuario;
         }
 
-        public bool BajaSucursal(int SucursalId, int UsuarioId)
+        public bool BajaSucursal(int SucursalId)
         {
             _exito = false;
             _errores = new List<string>();
@@ -1631,7 +1643,7 @@ namespace cm.mx.catalogo.Controller
             return _exito;
         }
 
-        public bool BajaMembresia(int MembresiaId, int UsuarioId)
+        public bool BajaMembresia(int MembresiaId)
         {
             _exito = false;
             _errores = new List<string>();
@@ -1788,6 +1800,7 @@ namespace cm.mx.catalogo.Controller
             _mensajes = new List<string>();
             try
             {
+                if (obj.FechaBaja < new DateTime(1900, 01, 01)) obj.FechaBaja = new DateTime(1900, 01, 01);
                 rDistribucion = new DistribucionRepository();
                 DistribucionVR vrDistribucion = new DistribucionVR();
                 if (!vrDistribucion.Insertar(obj))
@@ -1878,7 +1891,7 @@ namespace cm.mx.catalogo.Controller
             {
                 if (pag == null) pag = new Paginacion();
                 rDistribucion = new DistribucionRepository();
-                ls = rDistribucion.GetAll().ToList();
+                ls = rDistribucion.GetAllActivos();
 
                 if (pag.Paginar)
                 {
@@ -2016,6 +2029,35 @@ namespace cm.mx.catalogo.Controller
                 }
             }
 
+            return _exito;
+        }
+
+        public bool BajaDistribucion(int DistribucionID)
+        {
+            _exito = false;
+            _mensajes = new List<string>();
+            _errores = new List<string>();
+            try
+            {
+                rDistribucion = new DistribucionRepository();
+                var oDistribucion = rDistribucion.GetById(DistribucionID);
+                oDistribucion.Estado = Estatus.BAJA.ToString();
+                oDistribucion.UsuarioBaja = UsuarioId;
+                oDistribucion.FechaBaja = DateTime.Now;
+                _exito = rDistribucion.Guardar(oDistribucion);
+            }
+            catch (Exception ex)
+            {
+                if (rDistribucion._session.Transaction.IsActive)
+                {
+                    rDistribucion._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
             return _exito;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using cm.mx.dbCore.Clases;
+using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,14 @@ namespace cm.mx.catalogo.Model
         public override bool Update(CamposDistribucion modificado)
         {
             throw new NotImplementedException();
+        }
+
+        public List<CamposDistribucion> GetCampos(List<string> campos)
+        {
+            _exito = false;
+            List<CamposDistribucion> ls = _session.CreateCriteria<CamposDistribucion>().Add(Restrictions.In("Campo", campos)).List<CamposDistribucion>().ToList();
+            _exito = true;
+            return ls;
         }
     }
 }

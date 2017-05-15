@@ -15,6 +15,9 @@ namespace cm.mx.catalogo.Model
             Map(x => x.Campos);
             Map(x => x.Descripcion);
             Map(x => x.Nombre);
+            Map(x => x.Estado);
+            Map(x => x.FechaBaja);
+            Map(x => x.UsuarioBaja);
             HasMany(x => x.Condiciones).Table("CondicionDistribucion").KeyColumn("DistribucionID").Cascade.AllDeleteOrphan().Inverse();
         }
     }

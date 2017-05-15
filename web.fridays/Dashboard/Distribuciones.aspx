@@ -67,6 +67,7 @@
                                 <div class="row_name"><%# Eval("Nombre") %></div>
                                 <div><%# Eval("Descripcion") %></div>
                                 <div class="actions semi_bold">
+                                    <asp:LinkButton runat="server" ID="btnBaja" CssClass="analytics" OnClick="btnBaja_Click" CommandArgument='<%# Eval("DistribucionID") %>'>Baja</asp:LinkButton>
                                     <asp:LinkButton runat="server" ID="btnEditar" CssClass="analytics" OnClick="btnEditar_Click" CommandArgument='<%# Eval("DistribucionID") %>'>Editar</asp:LinkButton>
                                 </div>
                             </li>

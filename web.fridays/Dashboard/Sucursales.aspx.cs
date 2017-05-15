@@ -115,7 +115,7 @@ public partial class Sucursales : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            Funciones.MostarMensajes("error", new List<string> { ex.Message }); 
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 
@@ -157,7 +157,7 @@ public partial class Sucursales : System.Web.UI.Page
         {
             //Agregar para recuperar el usuaruio
             SucursalId = int.Parse(((LinkButton)sender).CommandArgument);
-            var r = cCatalogo.BajaSucursal(SucursalId, 0);
+            var r = cCatalogo.BajaSucursal(SucursalId);
             if (cCatalogo.Exito)
             {
                 CargarSucursales();

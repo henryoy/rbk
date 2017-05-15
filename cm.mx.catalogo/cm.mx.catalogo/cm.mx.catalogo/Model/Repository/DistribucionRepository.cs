@@ -1,4 +1,5 @@
 ﻿using cm.mx.dbCore.Clases;
+using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,15 @@ namespace cm.mx.catalogo.Model
             _session.Transaction.Commit();
             _exito = true;
             return _exito;
+        }
+
+        public List<Distribucion> GetAllActivos()
+        {
+            _exito = false;
+            List<Distribucion> ls = new List<Distribucion>();
+            ls = _session.CreateCriteria<Distribucion>().Add(Restrictions.Eq("Estado", "ACTIVO")).List<Distribucion>().ToList();
+            _exito = true;
+            return ls;
         }
     }
 }

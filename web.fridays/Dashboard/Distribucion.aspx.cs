@@ -97,6 +97,21 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
         }
     }
 
+    protected string GetCampos()
+    {
+        string campos = "";
+        foreach (GridViewRow r in grvCampos.Rows)
+        {
+            CheckBox chk = (CheckBox)r.Cells[0].Controls[1];
+            if (chk.Checked)
+            {
+                campos += grvCampos.DataKeys[r.RowIndex].Value.ToString() + ",";
+            }
+        }
+        if (!string.IsNullOrEmpty(campos)) campos = campos.Remove(campos.Length - 1, 1);
+        return campos;
+    }
+
     protected void chkAll_CheckedChanged(object sender, EventArgs e)
     {
         try
@@ -138,17 +153,7 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
         try
         {
             List<string> mensajes = new List<string>();
-            string campos = "";
             StringBuilder sb = new StringBuilder();
-
-            foreach (GridViewRow r in grvCampos.Rows)
-            {
-                CheckBox chk = (CheckBox)r.Cells[0].Controls[1];
-                if (chk.Checked)
-                {
-                    campos += grvCampos.DataKeys[r.RowIndex].Value.ToString() + ", ";
-                }
-            }
 
             if (mensajes.Count() > 0)
             {
@@ -157,11 +162,9 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             else
             {
                 if (oDistribucion == null) oDistribucion = new Distribucion();
-
-                if (!string.IsNullOrEmpty(campos)) campos = campos.Remove(campos.Length - 2, 2);
                 string cond = sb.ToString().Trim();
                 //if (!string.IsNullOrEmpty(cond)) cond = cond.Substring(3, cond.Length - 3);
-                oDistribucion.Campos = campos;
+                oDistribucion.Campos = GetCampos();
                 oDistribucion.Descripcion = txtDescripcion.Text.Trim();
                 oDistribucion.Nombre = txtNombre.Text.Trim();
                 cCatalogo = new CatalogoController();
@@ -303,6 +306,28 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
                 CheckBox chk = e.Row.Cells[0].Controls[1] as CheckBox;
                 chk.Checked = oDistribucion.Campos.IndexOf(campo.Campo) > -1;
             }
+        }
+    }
+
+    protected void btnResultado_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            UtileriaController cUtileria = new UtileriaController();
+            oDistribucion.Campos = GetCampos();
+            if (!cUtileria.ProbarDistribucion(oDistribucion, grvResultado))
+            {
+                Funciones.MostarMensajes("error", cUtileria.Errores);
+            }
+            else
+            {
+                cUtileria.ProbarDistribucion(oDistribucion, grvResultado);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "$('#popupOverlay').show();", true);
+            }
+        }
+        catch (Exception ex)
+        {
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
 }
