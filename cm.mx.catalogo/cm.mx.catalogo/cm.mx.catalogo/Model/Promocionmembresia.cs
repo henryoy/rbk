@@ -1,5 +1,7 @@
+using System;
 namespace cm.mx.catalogo.Model
 {
+    [Serializable]
     public class Promocionmembresia
     {
         public virtual int Promocionid { get; set; }
