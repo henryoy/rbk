@@ -2117,44 +2117,45 @@ namespace cm.mx.catalogo.Controller
             string Tipo = string.Empty;
             if (oCampana.PromocionId > 0)
                 Tipo = "PROMOCION";
-            else Tipo = "EVENTO";
+            else Tipo = "INFORMATIVO";
 
             switch (Tipo.ToUpper())
             {
                 case "PROMOCION":
 
                     Promocion oPromocion = this.GetPromocion(oCampana.PromocionId.Value);
-                    
-                    Notificacion oNotificacionProm = new Notificacion();
-                    oNotificacionProm.Estatus = "ACTIVO";
-                    oNotificacionProm.FechaRegistro = DateTime.Now;
-                    oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                    oNotificacionProm.NotifiacionID = 0;
-                    oNotificacionProm.PromocionID = oPromocion.Promocionid;
-                    oNotificacionProm.Referencia = "";
-                    oNotificacionProm.Tipo = "PROMOCION";
-                    oNotificacionProm.Usuario = new Usuario() { Usuarioid = UsuarioId };
-                    oNotificacionProm.UsuarioID = UsuarioId;
-                    oNotificacionProm.Vigencia = DateTime.Now;
-
-                    rNotificacion = new NotificacionRepository();
-
-                    Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
-                    bool _isContinue = false;
-                    if (_oNotificacionProm != null && oNotificacionProm.NotifiacionID > 0)
+                    foreach (Usuario oUser in lsUsuario)
                     {
-                        _isContinue = true;
-                    }
-                    if (_isContinue)
-                    {
-                        rPromoUser = new PromocionUsuarioRepository();
-                        foreach (Usuario oUser in lsUsuario)
+                        Notificacion oNotificacionProm = new Notificacion();
+                        oNotificacionProm.Estatus = "ACTIVO";
+                        oNotificacionProm.FechaRegistro = DateTime.Now;
+                        oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                        oNotificacionProm.NotifiacionID = 0;
+                        oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                        oNotificacionProm.Referencia = "";
+                        oNotificacionProm.Tipo = "PROMOCION";
+                        oNotificacionProm.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
+                        oNotificacionProm.UsuarioID = oUser.Usuarioid;
+                        oNotificacionProm.Vigencia = DateTime.Now;
+
+                        rNotificacion = new NotificacionRepository();
+
+                        Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
+                        bool _isContinue = false;
+
+                        if (_oNotificacionProm != null && oNotificacionProm.NotifiacionID > 0)
                         {
+                            _isContinue = true;
+                        }
+                        if (_isContinue)
+                        {
+                            rPromoUser = new PromocionUsuarioRepository();
+
                             this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
                         }
                     }
                     break;
-                case "EVENTO":
+                case "INFORMATIVO":
 
                     foreach (Usuario oUser in lsUsuario)
                     {
@@ -2176,7 +2177,7 @@ namespace cm.mx.catalogo.Controller
                         Notificacion _oNotificacion = rNotificacion.GuardarNotificacion(oNotificacion);
 
                     }
-                    
+
                     break;
             }
         }
