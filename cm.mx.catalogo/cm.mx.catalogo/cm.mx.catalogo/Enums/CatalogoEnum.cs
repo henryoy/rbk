@@ -34,4 +34,9 @@
         ANDROID,
         IOS
     }
+
+    public enum DistribucionTipo
+    {
+        Texto
+    }
 }

@@ -5,9 +5,12 @@ using cm.mx.catalogo.Model.Rules;
 using cm.mx.catalogo.Rules;
 using cm.mx.dbCore.Interfaces;
 using cm.mx.dbCore.Tools;
+using NHibernate;
+using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace cm.mx.catalogo.Controller
@@ -1778,6 +1781,17 @@ namespace cm.mx.catalogo.Controller
                 if (IsTransaction)
                 {
                     _oCampana = rCampana.GuardarCampana(oCampana);
+
+                    if (oCampana.DistribucionId > 0)
+                    {
+                        List<Usuario> lsUsuario = this.GetUserForCampana(oCampana);
+
+                        if (lsUsuario.Count > 0)
+                        {
+                            this.CrearNotificacion(oCampana, lsUsuario);
+                        }
+                    }
+
                     _exito = rCampana.Exito;
                 }
                 else { _oCampana = oCampana; _exito = false; }
@@ -2059,6 +2073,137 @@ namespace cm.mx.catalogo.Controller
                 }
             }
             return _exito;
+        }
+
+        public List<Usuario> GetUserForCampana(Campana oCampana)
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            List<Usuario> lsUsuario = new List<Usuario>();
+            try
+            {
+                UtileriaController oUtileria = new UtileriaController();
+                Distribucion obj = this.GetDistribucion(oCampana.DistribucionId);
+
+
+                if (obj.Condiciones != null && obj.Condiciones.Count > 0)
+                {
+                    var cond = oUtileria.CrearCondion(obj.Condiciones.ToList());
+                    rUsuario = new UsuarioRepository();
+                    lsUsuario = rUsuario.GetUsuarios(cond);
+                }
+
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rUsuario._session.Transaction.IsActive)
+                {
+                    rUsuario._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return lsUsuario;
+        }
+
+        public void CrearNotificacion(Campana oCampana, List<Usuario> lsUsuario)
+        {
+
+            string Tipo = string.Empty;
+            if (oCampana.PromocionId > 0)
+                Tipo = "PROMOCION";
+            else Tipo = "EVENTO";
+
+            switch (Tipo.ToUpper())
+            {
+                case "PROMOCION":
+
+                    Promocion oPromocion = this.GetPromocion(oCampana.PromocionId.Value);
+                    
+                    Notificacion oNotificacionProm = new Notificacion();
+                    oNotificacionProm.Estatus = "ACTIVO";
+                    oNotificacionProm.FechaRegistro = DateTime.Now;
+                    oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                    oNotificacionProm.NotifiacionID = 0;
+                    oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                    oNotificacionProm.Referencia = "";
+                    oNotificacionProm.Tipo = "PROMOCION";
+                    oNotificacionProm.Usuario = new Usuario() { Usuarioid = UsuarioId };
+                    oNotificacionProm.UsuarioID = UsuarioId;
+                    oNotificacionProm.Vigencia = DateTime.Now;
+
+                    rNotificacion = new NotificacionRepository();
+
+                    Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
+                    bool _isContinue = false;
+                    if (_oNotificacionProm != null && oNotificacionProm.NotifiacionID > 0)
+                    {
+                        _isContinue = true;
+                    }
+                    if (_isContinue)
+                    {
+                        rPromoUser = new PromocionUsuarioRepository();
+                        foreach (Usuario oUser in lsUsuario)
+                        {
+                            this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
+                        }
+                    }
+                    break;
+                case "EVENTO":
+
+                    foreach (Usuario oUser in lsUsuario)
+                    {
+                        Notificacion oNotificacion = new Notificacion();
+
+                        oNotificacion.Estatus = "ACTIVO";
+                        oNotificacion.FechaRegistro = DateTime.Now;
+                        oNotificacion.Mensaje = oCampana.MensajePrevio;
+                        oNotificacion.NotifiacionID = 0;
+                        oNotificacion.PromocionID = 0;
+                        oNotificacion.Referencia = "";
+                        oNotificacion.Tipo = "EVENTO";
+                        oNotificacion.Usuario = new Usuario() { Usuarioid = UsuarioId };
+                        oNotificacion.UsuarioID = oUser.Usuarioid;
+                        oNotificacion.Vigencia = DateTime.Now;
+
+                        rNotificacion = new NotificacionRepository();
+
+                        Notificacion _oNotificacion = rNotificacion.GuardarNotificacion(oNotificacion);
+
+                    }
+                    
+                    break;
+            }
+        }
+
+        public List<Distribucion> GetAllDistribucion()
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<Distribucion> ls = new List<Distribucion>();
+            try
+            {
+                rDistribucion = new DistribucionRepository();
+                ls = rDistribucion.GetAllActivos();
+            }
+            catch (Exception ex)
+            {
+                if (rDistribucion._session.Transaction.IsActive) rDistribucion._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return ls;
         }
     }
 }

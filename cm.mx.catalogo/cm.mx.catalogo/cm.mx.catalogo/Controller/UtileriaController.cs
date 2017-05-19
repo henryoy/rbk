@@ -82,7 +82,7 @@ namespace cm.mx.catalogo.Controller
             return folio;
         }
 
-        private List<ICriterion> CrearCondion(List<CondicionDistribucion> condiciones)
+        public List<ICriterion> CrearCondion(List<CondicionDistribucion> condiciones)
         {
             List<ICriterion> lsCond = new List<ICriterion>();
             try

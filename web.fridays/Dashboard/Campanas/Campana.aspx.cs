@@ -67,7 +67,38 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
     public void Carga(int CampanaId = 0)
     {
         cCatalogo = new CatalogoController();
-        
+
+        List<Promocion> lsPromocion = cCatalogo.GetAllPromocion();
+
+        dpPromocion.Items.Clear();
+        dpPromocion.Items.Insert(0, new ListItem()
+        {
+            Text = "Selecciona promoción",
+            Value = "0"
+        });
+
+        foreach (Promocion oPromocion in lsPromocion)
+        {
+            ListItem oItem = new ListItem();
+            oItem.Text = oPromocion.Titulo;
+            oItem.Value = Convert.ToString(oPromocion.Promocionid);
+            dpPromocion.Items.Add(oItem);
+        }
+         List<Distribucion> lsDistribucion = cCatalogo.GetAllDistribucion();
+         dpDistribucion.Items.Clear();
+         dpDistribucion.Items.Insert(0, new ListItem()
+         {
+             Text = "Selecciona Distribucion",
+             Value = "0"
+         });
+         foreach (Distribucion oDistribucion in lsDistribucion)
+         {
+             ListItem oItem = new ListItem();
+             oItem.Text = oDistribucion.Nombre;
+             oItem.Value = Convert.ToString(oDistribucion.DistribucionID);
+             dpDistribucion.Items.Add(oItem);
+         }
+
         if (CampanaId > 0) {
             oCampana = cCatalogo.GetCampana(CampanaId);
             if (cCatalogo.Exito)
