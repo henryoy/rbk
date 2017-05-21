@@ -2113,7 +2113,6 @@ namespace cm.mx.catalogo.Controller
 
         public void CrearNotificacion(Campana oCampana, List<Usuario> lsUsuario)
         {
-
             string Tipo = string.Empty;
             if (oCampana.PromocionId > 0)
                 Tipo = "PROMOCION";
@@ -2196,6 +2195,134 @@ namespace cm.mx.catalogo.Controller
             catch (Exception ex)
             {
                 if (rDistribucion._session.Transaction.IsActive) rDistribucion._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return ls;
+        }
+
+        public bool GuardarTipoInteres(TipoInteres oTipo)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            try
+            {
+                TipoInteresVR vrTipoInteres = new TipoInteresVR();
+                rTipoInteres = new TipoInteresRepository();
+                if (rTipoInteres.ExisteTipoInteres(oTipo))
+                {
+                    _mensajes.Add("El tipo de interes ya ha sido ingresado.");
+                }
+                else if (!vrTipoInteres.Insertar(oTipo)) _mensajes.AddRange(vrTipoInteres.Mensajes);
+                else
+                {
+                    var modificado = new TipoInteres();
+                    if (oTipo.TipoInteresID == 0)
+                    {
+                        oTipo.FechaAlta = DateTime.Now;
+                        oTipo.Estatus = Estatus.ACTIVO.ToString();
+                        oTipo.UsuarioAlta = UsuarioId;
+                        oTipo.FechaBaja = new DateTime(1900, 01, 01);
+                        modificado = oTipo;
+                    }
+                    else
+                    {
+                        modificado = rTipoInteres.GetById(oTipo.TipoInteresID);
+                        modificado.Descripcion = oTipo.Descripcion;
+                        modificado.Nombre = oTipo.Nombre;
+                    }
+                    _exito = rTipoInteres.Guardar(modificado);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (rTipoInteres._session.Transaction.IsActive) rTipoInteres._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return _exito;
+        }
+
+        public bool BajaTipoInteres(int TipoInteresID)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            try
+            {
+                rTipoInteres = new TipoInteresRepository();
+                var oTipo = rTipoInteres.GetById(TipoInteresID);
+                oTipo.Estatus = Estatus.BAJA.ToString();
+                oTipo.FechaBaja = DateTime.Now;
+                oTipo.UsuarioBaja = UsuarioId;
+                _exito = rTipoInteres.Guardar(oTipo);
+            }
+            catch (Exception ex)
+            {
+                if (rTipoInteres._session.Transaction.IsActive) rTipoInteres._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return _exito;
+        }
+
+        public TipoInteres GetTipoInteres(int TipoInteresID)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            TipoInteres oTipo = null;
+            try
+            {
+                rTipoInteres = new TipoInteresRepository();
+                oTipo = rTipoInteres.GetById(TipoInteresID);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rTipoInteres._session.Transaction.IsActive) rTipoInteres._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return oTipo;
+        }
+
+        public List<TipoInteres> GetAllTipoInteres()
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<TipoInteres> ls = new List<TipoInteres>();
+            try
+            {
+                rTipoInteres = new TipoInteresRepository();
+                ls = rTipoInteres.GetAllActivos();
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rTipoInteres._session.Transaction.IsActive) rTipoInteres._session.Transaction.Rollback();
 
                 while (ex != null)
                 {

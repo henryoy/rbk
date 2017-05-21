@@ -117,6 +117,12 @@
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Distribuciones") %>">Distribución</a></li>
                             </ul>
                         </li>
+                        <li id="TipoInteres_link">
+                            <h2 class="semi_bold">Tipo Interes</h2>
+                            <ul class="hidden">
+                                <li><a href="<%= ResolveUrl("~/Dashboard/TipoInteres") %>">Tipo Interes</a></li>
+                            </ul>
+                        </li>
                         <li id="account_link" class="">
                             <h2 class="semi_bold">Cuenta</h2>
                             <ul class="hidden" style="">
