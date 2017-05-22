@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 namespace cm.mx.catalogo.Model
 {
+    [Serializable]
     public class Sucursal
     {
         public virtual float Latitud { get; set; }

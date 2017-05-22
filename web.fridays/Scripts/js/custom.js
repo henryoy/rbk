@@ -887,102 +887,13 @@ $(document).ready(function () {
 
     });
 
-    $(document).on('click', '.disabled:not(.confirm-forget-password, .confirm-new-password)', function () {
-
-        detectFormRequirements();
-
-    });
-
-    //register
-    $(document).on('click', '#register_btn', function () {
-
-        openRegister();
-
-    });
-
-    $(document).on('keyup', '.input-username-email-login', function () {
-
-        checkForgetPasswordRequirements();
-
-    })
-
-    $(document).on('keyup', '.input-new-password', function () {
-
-        checkNewPasswordRequirements();
-
-    })
-
-
-    //Enter amount of credits
-    $('#define_amount').keyup(function () {
-
-        //vars
-        val = $(this).val();
-        val = val.toString().replace(/\./g, '');
-        original = val * 0.02;
-
-        //If under 5000
-        if (val < 5000) {
-
-            price = (val * 0.02).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            bare = val * 0.02;
-
-        }
-
-            //Else above 4999 and below 49999
-        else if (val > 4999 && val < 50000) {
-
-            price = (val * 0.015).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            bare = val * 0.015;
-
-        }
-
-            //Else above 49999 and below 199999
-        else if (val > 49999 && val < 200000) {
-
-            price = (val * 0.01).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            bare = val * 0.01;
-
-        }
-
-            //Else above 199999 and below 1999999
-        else if (val > 199999 && val < 2000000) {
-
-            price = (val * 0.005).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            bare = val * 0.005;
-
-        }
-
-            //Else
-        else {
-
-            //vars
-            price = (val * 0.002).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            bare = val * 0.002;
-
-        }
-
-        $('#define_amount_price').text('$' + price);
-
-    });
-
-    //Enter amount of credits
-    $('#define_amount_plan').keyup(function () {
-
-        calcPrices();
-
-    });
 
     $(document).on('keypress', '#define_amount', function () {
-
         $('.result').slideDown();
-
     });
 
     $(document).on('keypress', '#define_amount_plan', function () {
-
         $('.result2').slideDown();
-
     });
 
     $(window).scroll(function () {

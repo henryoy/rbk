@@ -22,14 +22,14 @@
                 <div id="calculatorWrapper">
                     <div class="calculator">
                         <h4 class="semi_bold">
-                            <asp:TextBox runat="server" ID="txtFolio" CssClass="semi_bold" placeholder="Codigo Usuario"></asp:TextBox>
+                            <asp:TextBox runat="server" ID="txtFolio" CssClass="semi_bold" placeholder="Codigo Usuario" style="color: black;"></asp:TextBox>
                         </h4>                        
                     </div>
-                    <div class="calculator">
+<%--                    <div class="calculator">
                         <h4 class="semi_bold">
                             <asp:TextBox runat="server" ID="txtPromocion" CssClass="semi_bold" placeholder="Identificador promoción"></asp:TextBox>
                         </h4>                        
-                    </div>
+                    </div>--%>
                 </div>               
             </div>
             <div class="Visitaright">

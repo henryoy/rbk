@@ -177,6 +177,25 @@ namespace cm.mx.catalogo.Controller
             return oUsuario;
         }
 
+        public Usuario getUsuarioById(int UsuarioId)
+        {
+            _exito = true;
+            _mensajes.Clear();
+            Usuario oUsuario = new Usuario();
+            try
+            {
+                rUsuario = new UsuarioRepository();
+                oUsuario = rUsuario.GetById(UsuarioId);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                oUsuario = null;
+                _errores.Add(ex.Message);
+            }
+            return oUsuario;
+        }
+
         public Tipomembresia GetProximoNivel(int visitas, int membresiaActual)
         {
             Tipomembresia Resultado = null;
@@ -318,8 +337,12 @@ namespace cm.mx.catalogo.Controller
                     entidad.Estado = "ACTIVO";
                     entidad.Usuarioaltaid = UsuarioId;
                     entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
-                    entidad.Vigenciainicial = Convert.ToDateTime("1900-01-01");
-                    entidad.Vigenciafinal = Convert.ToDateTime("1900-01-01");
+                    if(entidad.Vigenciainicial.HasValue && entidad.Vigenciainicial.Value.Year == 0)
+                        entidad.Vigenciainicial = Convert.ToDateTime("1900-01-01");
+
+                    if (entidad.Vigenciafinal.HasValue && entidad.Vigenciafinal.Value.Year == 0)
+                        entidad.Vigenciafinal = Convert.ToDateTime("1900-01-01");
+
                     IsTransaction = PromocionVR.InsertarVR(entidad);
 
                 }
@@ -327,11 +350,11 @@ namespace cm.mx.catalogo.Controller
                 if (IsTransaction)
                 {
                     oPromocion = rPromocion.GuardarPromocion(entidad);
-                    if (oPromocion.Promocionid > 0)
-                    {
-                        var task = this.CrearNotificacion(oPromocion.Promocionid);
+                    //if (oPromocion.Promocionid > 0)
+                    //{
+                        //var task = this.CrearNotificacion(oPromocion.Promocionid);
                         //task.Start();
-                    }
+                    //}
                     _exito = true;
                 }
                 else Mensajes.AddRange(PromocionVR.Mensajes);

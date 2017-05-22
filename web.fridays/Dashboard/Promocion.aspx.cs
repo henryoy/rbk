@@ -174,6 +174,8 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                         oSucursalVM.Nombre = opromoSucursal.Sucursal.Nombre;
                         oSucursalVM.SucursalID = opromoSucursal.Sucursalid;
                     }
+
+                    lsSucusalVM.Add(oSucursalVM);
                 }
 
                 DataTable DBSucursal = (DataTable)ViewState["DBSucursal"];

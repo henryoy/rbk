@@ -69,6 +69,23 @@ public partial class Dashboard_Notificacion_RedimirPromocion : System.Web.UI.Pag
             ViewState["oUsuario"] = value;
         }
     }
+
+    public Notificacion oNotificacion
+    {
+        get
+        {
+            Notificacion _oNotificacion = new Notificacion();
+            if (ViewState["Notificacion"] != null)
+            {
+                _oNotificacion = ViewState["Notificacion"] as Notificacion;
+            }
+            return _oNotificacion;
+        }
+        set
+        {
+            ViewState["Notificacion"] = value;
+        }
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -77,8 +94,9 @@ public partial class Dashboard_Notificacion_RedimirPromocion : System.Web.UI.Pag
     {
         RedimirPromocionVM oRedimirPromocion = new RedimirPromocionVM();
         cCatalogo = new CatalogoController();
-        int PromocionId = 0;
-        int.TryParse(txtPromocion.Text, out PromocionId);
+
+        int NotificacionId = 0;
+        int PromocionId = oNotificacion.PromocionID;        
         int SucursalId = 0;
 
         string Sucursal = string.Empty;
@@ -173,41 +191,61 @@ public partial class Dashboard_Notificacion_RedimirPromocion : System.Web.UI.Pag
             
             cCatalogo = new CatalogoController();
             string Codigo = txtFolio.Text;
-            string CodigoPromocion = txtPromocion.Text;
+            int NotificacionId = 0;
+            int.TryParse(Codigo, out NotificacionId);
+            //string CodigoPromocion = txtPromocion.Text;
 
-            if (!string.IsNullOrEmpty(Codigo) && !string.IsNullOrEmpty(CodigoPromocion))
+            if (!string.IsNullOrEmpty(Codigo))
             {
-                oUsuario = cCatalogo.getDatosUsuarioByCodigo(Codigo);
-                if (oUsuario == null || oUsuario.Usuarioid == 0)
-                {
-                    mainWrapper1.Visible = false;
-                    mainWrapper2.Visible = true;
+                //codigo es el numero de notificacion-id
 
-                    ScriptManager.RegisterStartupScript(
-                      this,
-                      this.GetType(),
-                      "StartupScript",
-                      "notification('El codigo no esta vinculado con ningun usuario','error');",
-                      true);
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "$('#popupOverlay').show();", true);
+                oNotificacion = cCatalogo.GetNotificacion(NotificacionId);
+                if (oNotificacion != null && oNotificacion.NotifiacionID > 0)
+                {
+                    if (oNotificacion.PromocionID > 0 && oNotificacion.UsuarioID > 0)
+                    {
+                        oUsuario = cCatalogo.getUsuarioById(oNotificacion.UsuarioID);
+
+                       if (oUsuario == null || oUsuario.Usuarioid == 0)
+                       {
+                           mainWrapper1.Visible = false;
+                           mainWrapper2.Visible = true;
+
+                           ScriptManager.RegisterStartupScript(
+                             this,
+                             this.GetType(),
+                             "StartupScript",
+                             "notification('El codigo no esta vinculado con ningun usuario','error');",
+                             true);
+                           ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "$('#popupOverlay').show();", true);
+                       }
+                       else
+                       {
+                           mainWrapper1.Visible = true;
+                           mainWrapper2.Visible = false;
+                           btnGuardar.Visible = true;
+                           btnGuardar.Text = "Redimir promoción";
+                           txtNombre.Text = oUsuario.Nombre;
+                           txtEmail.Text = oUsuario.Email;
+                           txtFechaNacimiento.Text = oUsuario.FechaNacimiento.ToShortDateString();
+                           txtVisita.Text = Convert.ToString(oUsuario.VisitaGlobal);
+                           txtTarjeta.Text = oUsuario.oTarjeta.Nombre;
+                           if (!string.IsNullOrEmpty(oUsuario.oTarjeta.UrlImagen))
+                               imgTarjeta.ImageUrl = ResolveUrl(oUsuario.oTarjeta.UrlImagen);
+
+                           ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "$('#popupOverlay').show();", true);
+                       }
+                    }
                 }
                 else
                 {
-                    mainWrapper1.Visible = true;
-                    mainWrapper2.Visible = false;
-                    btnGuardar.Visible = true;
-                    btnGuardar.Text = "Redimir promoción";
-                    txtNombre.Text = oUsuario.Nombre;
-                    txtEmail.Text = oUsuario.Email;
-                    txtFechaNacimiento.Text = oUsuario.FechaNacimiento.ToShortDateString();
-                    txtVisita.Text = Convert.ToString(oUsuario.VisitaGlobal);
-                    txtTarjeta.Text = oUsuario.oTarjeta.Nombre;
-                    if (!string.IsNullOrEmpty(oUsuario.oTarjeta.UrlImagen))
-                        imgTarjeta.ImageUrl = ResolveUrl(oUsuario.oTarjeta.UrlImagen);
-
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "$('#popupOverlay').show();", true);
+                    ScriptManager.RegisterStartupScript(
+                     this,
+                     this.GetType(),
+                     "StartupScript",
+                     "notification('La notificación no existe, verifique e intente de nuevo','error');",
+                     true);
                 }
-
             }
             else
             {

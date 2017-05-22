@@ -420,7 +420,7 @@
             cursor: pointer;
         }
     </style>
-    <asp:UpdatePanel runat="server" ID="upPromocion">
+    <asp:UpdatePanel runat="server" ID="upPromocion" UpdateMode="Conditional">
         <ContentTemplate>
             <div id="mainWrapper" style="padding-top: 26px;">
                 <div id="send_view">
@@ -532,6 +532,7 @@
     <script src="<%= ResolveUrl("~/Scripts/js/ajaxupload-min.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
         function pageLoad(sender, args) {
+
             $(document).ready(function () {
 
                 $('.decimal').autoNumeric('init', {
@@ -612,7 +613,6 @@
         }
     </script>
     <script type="text/javascript">
-
         function ActiveCalendar() {
 
             the_switch = $('[name="schedule_switch"]');
@@ -622,20 +622,21 @@
             $(switch_thumb).removeClass('active');
             $(switch_thumb).addClass('disabled');
             $(switch_thumb).css('right', '2px;')
-            $(the_switch).addClass('active');
-            console.log(the_switch);
-            console.log(switch_thumb);
 
+            $(the_switch).addClass('active');
             if ($(switch_thumb).hasClass('active')) {
-                $('[name="schedule"]').val('0');
-                $('#datepicker, .scheduleCampaignWrapper').hide();
+
+                $(switch_thumb).animate({ 'right': '2px' }, { duration: 100, easing: 'linear' });
+                $(the_switch).removeClass('disabled');
+                $(switch_thumb).removeClass('active');
             }
             else {
-                $('[name="schedule"]').val('1');
-                $('.scheduleCampaignWrapper').show();
+
+                $(switch_thumb).animate({ 'right': '19px' }, { duration: 100, easing: 'linear' });
+                $(the_switch).addClass('disabled');
+                $(switch_thumb).addClass('active');
             }
         }
-
         $(document).ready(function () {
 
             //vars
@@ -649,25 +650,55 @@
             testFlag = false;
             isMouseDown = false;
 
-            showTime();
+            $(document).on('mousedown', '.switch', function () {
 
-            setInterval(function () {
+                console.log("gjghjghghj-----");
+                the_switch = $(this);
+                switch_thumb = $(this).find('.switch_thumb');
 
-                showTime();
+                if ($(switch_thumb).hasClass('active')) {
 
-            }, 1000);
+                    $(switch_thumb).animate({ 'right': '2px' }, { duration: 100, easing: 'linear' });
+                    $(the_switch).removeClass('disabled');
+                    $(switch_thumb).removeClass('active');
+                }
+                else {
 
+                    $(switch_thumb).animate({ 'right': '19px' }, { duration: 100, easing: 'linear' });
+                    $(the_switch).addClass('disabled');
+                    $(switch_thumb).addClass('active');
+                }
+            });
 
+            $(document).on('mousedown', '[name="schedule_switch"]', function () {
+                console.log("hgdhddgh");
+                the_switch = $(this);
+                switch_thumb = $(this).find('.switch_thumb');
+
+                if ($(switch_thumb).hasClass('active')) {
+                    $('[name="schedule"]').val('0');
+                    $('#datepicker, .scheduleCampaignWrapper').hide();
+
+                }
+
+                else {
+                    $('[name="schedule"]').val('1');
+                    $('.scheduleCampaignWrapper').show();
+                }
+            });
 
             $(document).on('click', '.send_schedule_campaign_day', function (e) {
                 e.stopPropagation();
+                console.log("---->");
+                
                 $('#datepicker').show();
                 $('#send_form .selected').removeClass('selected');
             });
 
             $(document).on('click', '.send_schedule_campaign_day_init', function (e) {
                 e.stopPropagation();
-
+                console.log("q---->");
+                
                 $('#datepicker_init').show();
                 $('#send_form .selected').removeClass('selected');
             });
@@ -679,106 +710,9 @@
             });
 
 
-            $(document).on('mousedown', '.switch', function () {
-
-                the_switch = $(this);
-                switch_thumb = $(this).find('.switch_thumb');
-
-                if ($(switch_thumb).hasClass('active')) {
-
-                    $(switch_thumb).animate({
-
-                        'right': '2px',
-
-                    }, { duration: 100, easing: 'linear' });
-
-                    $(the_switch).removeClass('disabled')
-
-                    $(switch_thumb).removeClass('active');
-
-                }
-
-                else {
-
-                    $(switch_thumb).animate({
-
-                        'right': '19px'
-
-                    }, { duration: 100, easing: 'linear' });
-
-                    $(the_switch).addClass('disabled')
-
-                    $(switch_thumb).addClass('active');
-
-                }
-
-            });
-
-            $(document).on('mousedown', '[name="signature_switch"]', function () {
-
-                the_switch = $(this);
-                switch_thumb = $(this).find('.switch_thumb');
-
-                if ($(switch_thumb).hasClass('active')) {
-
-                    $('[name="signature"]').val('0');
-
-                }
-
-                else {
-
-                    $('[name="signature"]').val('1');
-
-                }
-
-            });
-
-            $(document).on('mousedown', '[name="schedule_switch"]', function () {
-
-                the_switch = $(this);
-                switch_thumb = $(this).find('.switch_thumb');
-
-                if ($(switch_thumb).hasClass('active')) {
-
-                    $('[name="schedule"]').val('0');
-                    $('#datepicker, .scheduleCampaignWrapper').hide();
-
-                }
-
-                else {
-
-                    $('[name="schedule"]').val('1');
-                    $('.scheduleCampaignWrapper').show();
-
-                    setTimeout(function () {
-
-                        $('#send_form').animate({
-                            scrollTop: $('#send_form')[0].scrollHeight - $('#send_form')[0].clientHeight
-                        }, 500);
-
-                    }, 50);
-
-                }
-
-            });
-
         });
 
-
-        function showTime() {
-
-            dt = new Date();
-            h = dt.getHours(), m = dt.getMinutes();
-            if (m < 10) { m = '0' + m; }
-
-            _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM');
-
-            $('.send_schedule_campaign_time').attr('placeholder', _time);
-
-        }
-
         $(function () {
-
 
             $('#datepicker').datepicker({
                 onSelect: function (date) {
@@ -796,7 +730,6 @@
             $('#datepicker_init').datepicker({
                 onSelect: function (date) {
                     $("#<%=txtFechaInicio.ClientID%>").val(date);
-                    //$('.send_schedule_campaign_day_init').val(date);
                     $('#datepicker_init').hide();
 
                 },
@@ -806,12 +739,75 @@
                 defaultDate: new Date()
             });
         });
+        
+        function ActiveCalendar2() {
 
-            $.expr[':'].textEquals = $.expr.createPseudo(function (arg) {
-                return function (elem) {
-                    return $(elem).text().match("^" + arg + "$");
-                };
+            the_switch = $('[name="schedule_switch"]');
+            switch_thumb = $('[name="schedule_switch"]').find('.switch_thumb');
+
+            $(the_switch).removeClass('disabled');
+            $(switch_thumb).removeClass('active');
+            $(switch_thumb).addClass('disabled');
+            $(switch_thumb).css('right', '2px;')
+            $(the_switch).addClass('active');
+            console.log(the_switch);
+            console.log(switch_thumb);
+
+            the_switch = $(this);
+            switch_thumb = $(this).find('.switch_thumb');
+
+            if ($(switch_thumb).hasClass('active')) {
+
+                $(switch_thumb).animate({ 'right': '2px' }, { duration: 100, easing: 'linear' });
+                $(the_switch).removeClass('disabled');
+                $(switch_thumb).removeClass('active');
+            }
+            else {
+
+                $(switch_thumb).animate({ 'right': '19px' }, { duration: 100, easing: 'linear' });
+                $(the_switch).addClass('disabled');
+                $(switch_thumb).addClass('active');
+            }
+            the_switch = $(this);
+            switch_thumb = $(this).find('.switch_thumb');
+
+            if ($(switch_thumb).hasClass('active')) {
+                $('[name="schedule"]').val('0');
+                $('#datepicker, .scheduleCampaignWrapper').hide();
+
+            }
+
+            else {
+                $('[name="schedule"]').val('1');
+                $('.scheduleCampaignWrapper').show();
+            }
+
+            $(document).on('click', '.send_schedule_campaign_day_init', function (e) {
+                e.stopPropagation();
+                console.log("click --->");
+
+                $('#datepicker_init').show();
+                $('#send_form .selected').removeClass('selected');
             });
+
+
+            $(document).on('click', 'body', function () {
+                $('#datepicker').hide();
+                $('#datepicker_init').hide();
+            });
+            //if ($(switch_thumb).hasClass('active')) {
+            //    $('[name="schedule"]').val('0');
+            //    $('#datepicker, .scheduleCampaignWrapper').hide();
+            //    console.log("1132");
+            //}
+            //else {
+            //    $('[name="schedule"]').val('1');
+            //    $('.scheduleCampaignWrapper').show();
+            //    console.log("11");
+            //}
+        }        
+
+
 
     </script>
 </asp:Content>
