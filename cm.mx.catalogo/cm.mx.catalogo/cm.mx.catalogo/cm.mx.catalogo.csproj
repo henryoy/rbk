@@ -130,6 +130,7 @@
     <Compile Include="Model\Rules\MembresiaVR.cs" />
     <Compile Include="Model\Rules\PromocionVR.cs" />
     <Compile Include="Model\Rules\SucursalVR.cs" />
+    <Compile Include="Model\Rules\TipoInteresVR.cs" />
     <Compile Include="Model\Rules\TipoMembresiaBR.cs" />
     <Compile Include="Model\Rules\UsuarioVR.cs" />
     <Compile Include="Model\Sesion.cs" />
