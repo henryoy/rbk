@@ -47,6 +47,12 @@ namespace cm.mx.catalogo.Model
             return _session.Get<Notificacion>(id);
         }
 
+        public Notificacion GetNotificacion(int UsuarioId, int PromocionId)
+        {
+            Notificacion oNotificacion = _session.QueryOver<Notificacion>().Where(f => f.PromocionID == PromocionId && f.UsuarioID == UsuarioId).List().ToList().FirstOrDefault();
+            return oNotificacion;
+        }
+
         public override Notificacion GetNewEntidad()
         {
             throw new NotImplementedException();

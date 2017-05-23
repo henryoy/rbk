@@ -2144,38 +2144,62 @@ namespace cm.mx.catalogo.Controller
             switch (Tipo.ToUpper())
             {
                 case "PROMOCION":
-
+                    
                     Promocion oPromocion = this.GetPromocion(oCampana.PromocionId.Value);
-                    foreach (Usuario oUser in lsUsuario)
+                    if (oCampana.PromocionId.HasValue && oCampana.PromocionId.Value > 0)
                     {
-                        Notificacion oNotificacionProm = new Notificacion();
-                        oNotificacionProm.Estatus = "ACTIVO";
-                        oNotificacionProm.FechaRegistro = DateTime.Now;
-                        oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                        oNotificacionProm.NotifiacionID = 0;
-                        oNotificacionProm.PromocionID = oPromocion.Promocionid;
-                        oNotificacionProm.Referencia = "";
-                        oNotificacionProm.Tipo = "PROMOCION";
-                        oNotificacionProm.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
-                        oNotificacionProm.UsuarioID = oUser.Usuarioid;
-                        oNotificacionProm.Vigencia = DateTime.Now;
-
                         rNotificacion = new NotificacionRepository();
+                        rPromoUser = new PromocionUsuarioRepository();
 
-                        Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
-                        bool _isContinue = false;
-
-                        if (_oNotificacionProm != null && oNotificacionProm.NotifiacionID > 0)
+                        foreach (Usuario oUser in lsUsuario)
                         {
-                            _isContinue = true;
-                        }
-                        if (_isContinue)
-                        {
-                            rPromoUser = new PromocionUsuarioRepository();
+                            Notificacion _oNotificacion = rNotificacion.GetNotificacion(oUser.Usuarioid, oPromocion.Promocionid);
+                            Notificacion oNotificacionProm = new Notificacion();
 
-                            this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
-                        }
+                            if (_oNotificacion != null && _oNotificacion.NotifiacionID > 0)
+                            {                                
+                                oNotificacionProm.Estatus = "ACTIVO";
+                                oNotificacionProm.FechaRegistro = DateTime.Now;
+                                oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                                oNotificacionProm.NotifiacionID = _oNotificacion.NotifiacionID;
+                                oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                                oNotificacionProm.Referencia = "";
+                                oNotificacionProm.Tipo = "PROMOCION";
+                                oNotificacionProm.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
+                                oNotificacionProm.UsuarioID = oUser.Usuarioid;
+                                oNotificacionProm.Vigencia = DateTime.Now;
+                            }
+                            else
+                            {                                
+                                oNotificacionProm.Estatus = "ACTIVO";
+                                oNotificacionProm.FechaRegistro = DateTime.Now;
+                                oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                                oNotificacionProm.NotifiacionID = 0;
+                                oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                                oNotificacionProm.Referencia = "";
+                                oNotificacionProm.Tipo = "PROMOCION";
+                                oNotificacionProm.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
+                                oNotificacionProm.UsuarioID = oUser.Usuarioid;
+                                oNotificacionProm.Vigencia = DateTime.Now;
+                            }                                                      
+
+                            Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
+
+                            //bool _isContinue = false;
+
+                            //if (_oNotificacionProm != null && oNotificacionProm.NotifiacionID > 0)
+                            //{
+                            //    _isContinue = true;
+                            //}
+                            //if (_isContinue)
+                            //{                               
+
+                            //    this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
+                            //}
+                        }    
                     }
+
+                    
                     break;
                 case "INFORMATIVO":
 
