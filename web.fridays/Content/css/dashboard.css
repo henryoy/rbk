@@ -6856,3 +6856,118 @@ span.feed_empty_state {
         width: 105px !important;
         background-image: none !important;
     }
+
+
+    /* Make clicks pass-through */
+#nprogress,
+#MainContent_upPreload {
+  /*pointer-events: none;*/
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1040;
+}
+.nprogress {
+  display: none;
+}
+#nprogress .bar {
+  background: #9df500;
+  height: 2px;
+  left: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 1031;
+}
+#nprogress .bar.bar-login {
+  top: 0;;
+}
+/* Fancy blur effect */
+#nprogress .peg {
+  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+  display: block;
+  height: 100%;
+  opacity: 1.0;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+      -ms-transform: rotate(3deg) translate(0px, -4px);
+          transform: rotate(3deg) translate(0px, -4px);
+}
+/* Remove these to get rid of the spinner */
+#nprogress .spinner,
+#MainContent_upPreload .spinner {
+  display: block;
+  position: fixed;
+  /*right: 15px;
+  top: 85px;*/
+  right: 50%;
+  top: 50%;
+  margin-left: -10px;
+  margin-top: -10px;
+  z-index: 1031;
+}
+#nprogress .spinner.spinner-login {
+  top: 15px;
+}
+#nprogress .spinner-icon,  
+#MainContent_upPreload .spinner-icon {  
+  border: solid 2px transparent;
+  border-left-color: transparent;
+  border-radius: 50%;
+  border-top-color: transparent;
+  box-sizing: border-box;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+          animation: nprogress-spinner 400ms linear infinite;
+}
+#nprogress .spinner-icon-bg, 
+#MainContent_upPreload .spinner-icon-bg {  
+  border: solid 2px rgba(0,0,0,0.2);
+  border-radius: 50%;
+  box-sizing: border-box;
+  height: 20px;
+  width: 20px;
+}
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+#nprogress .overlay,
+#MainContent_upPreload .overlay {
+  /*pointer-events: none;
+  cursor: not-allowed;*/
+  background-color: #000;
+  background-color: rgba(0,0,0, 0.4);
+  color: #fff;
+  display: block;
+  height: 100%;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 1030;
+/*  -webkit-transition: 0.3s all;
+     -moz-transition: 0.3s all;
+      -ms-transition: 0.3s all;
+       -o-transition: 0.3s all;
+          transition: 0.3s all;*/
+}
+@-webkit-keyframes nprogress-spinner {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes nprogress-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

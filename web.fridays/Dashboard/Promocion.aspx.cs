@@ -212,6 +212,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
     }
     protected void lnkGuardarPromocion_Click(object sender, EventArgs e)
     {
+        lnkGuardarPromocion.Enabled = false;
         string Tipo = string.Empty;
         string msj = string.Empty;
 
@@ -329,6 +330,8 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                    "StartupScript",
                    "notification('" + msj + "','" + Tipo + "')",
                    true);
+
+        lnkGuardarPromocion.Enabled = true;
     }
     protected void btnEliminarSucursal_Click(object sender, EventArgs e)
     {

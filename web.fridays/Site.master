@@ -160,7 +160,15 @@
 
             </div>
         </div>
-
+        <asp:UpdateProgress runat="server" ID="upPreload" class="nprogress">
+            <ProgressTemplate>
+                <div class="spinner">
+                    <div class="spinner-icon"></div>
+                    <div class="spinner-icon-bg"></div>
+                </div>
+                <div class="overlay"></div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>
         <script src="<%= ResolveUrl("~/Scripts/jquery-1.10.1.min.js") %>" type="text/javascript"></script>
         <asp:ContentPlaceHolder runat="server" ID="ScriptsPages" />
         <script src="<%= ResolveUrl("~/Scripts/jquery.signalR-2.2.1.js") %>" type="text/javascript"></script>

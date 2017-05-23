@@ -518,6 +518,15 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+    <asp:UpdateProgress runat="server" ID="upPreload" class="nprogress">
+        <ProgressTemplate>
+            <div class="spinner">
+                <div class="spinner-icon"></div>
+                <div class="spinner-icon-bg"></div>
+            </div>
+            <div class="overlay"></div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
 </asp:Content>
 
 <asp:Content runat="server" ID="ScriptsJS" ContentPlaceHolderID="ScriptsPages">
