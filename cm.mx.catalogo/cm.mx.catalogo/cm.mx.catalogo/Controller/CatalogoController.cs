@@ -94,18 +94,46 @@ namespace cm.mx.catalogo.Controller
             Mensajes.Clear();
             Errores.Clear();
 
+            bool NuevoUsuario = true;
+
+            Usuario oUsuarioSaved = null;
+
             try
             {
                 if (oUsuario.Usuarioid == 0)
                 {
                     oUsuario.FechaAlta = DateTime.Now;
-                    oUsuario.Estatus = Estatus.PENDIENTE.ToString();
+                    if (oUsuario.Origen == "FACEBOOK" || oUsuario.Origen == "INSTAGRAM")
+                        oUsuario.Estatus = Estatus.ACTIVO.ToString();
+                    else
+                        oUsuario.Estatus = Estatus.PENDIENTE.ToString();
                     oUsuario.FechaBaja = new DateTime(1900, 01, 01);
                     oUsuario.oTarjeta.Membresiaid = 1;
                 }
 
+                if (oUsuario.Origen == "FACEBOOK" || oUsuario.Origen == "INSTAGRAM")
+                {
+                    oUsuarioSaved = GetUsuario(oUsuario.Email);
+                    if (oUsuarioSaved != null)
+                    {
+                        if (oUsuario.Email == oUsuarioSaved.Email && oUsuario.Contrasena == oUsuarioSaved.Contrasena)
+                        {
+                            oUsuarioSaved.Nombre = oUsuario.Nombre;
+                            NuevoUsuario = false;
+                        }
+                        else
+                            oUsuarioSaved = null;
+                    }
+                }
+
                 UsuarioVR vrUsaurio = new UsuarioVR();
-                if (!vrUsaurio.Insertar(oUsuario))
+                bool res = false;
+                if (oUsuarioSaved == null)
+                    res = vrUsaurio.Insertar(oUsuario);
+                else
+                    res = true;
+
+                if (!res)
                 {
                     bResult = false;
                     Errores.AddRange(vrUsaurio.Mensajes);
@@ -113,7 +141,13 @@ namespace cm.mx.catalogo.Controller
                 else
                 {
                     rUsuario = new UsuarioRepository();
-                    var clave = rUsuario.Save(oUsuario);
+                    string clave = "";
+
+                    if (NuevoUsuario)
+                        rUsuario.SaveUsuario(oUsuario);
+                    else
+                        rUsuario.SaveUsuario(oUsuarioSaved);
+
                     if (rUsuario.Exito)
                     {
                         bResult = true;
@@ -1592,12 +1626,23 @@ namespace cm.mx.catalogo.Controller
                     oNotSuc.PromocionID = oNot.PromocionID;
                     oNotSuc.Referencia = oNot.Referencia;
                     oNotSuc.SucursalId = oNot.SucursalId;
+                    oNotSuc.ImporteVisita = oNot.ImporteVisita;
+                    oNotSuc.Relacionado = oNot.Relacionado;
                     oNotSuc.Tipo = oNot.Tipo;
                     oNotSuc.Usuario = oNot.Usuario;
                     oNotSuc.UsuarioAlta = oNot.UsuarioAlta;
                     oNotSuc.UsuarioID = oNot.UsuarioID;
                     oNotSuc.Vigencia = oNot.Vigencia;
-                    oNotSuc.Sucursal = rSucursal.GetById(oNotSuc.SucursalId).Nombre;
+                    Sucursal oSuc = rSucursal.GetById(oNotSuc.SucursalId);
+                    if (oSuc != null)
+                    {
+                        oNotSuc.Sucursal = rSucursal.GetById(oNotSuc.SucursalId).Nombre;
+                    }
+                    else
+                    {
+                        oNotSuc.Sucursal = "Todas";
+                    }
+
                     lsNotificacionesSucursal.Add(oNotSuc);
                 }
 
@@ -1840,6 +1885,12 @@ namespace cm.mx.catalogo.Controller
                 if (obj.FechaBaja < new DateTime(1900, 01, 01)) obj.FechaBaja = new DateTime(1900, 01, 01);
                 rDistribucion = new DistribucionRepository();
                 DistribucionVR vrDistribucion = new DistribucionVR();
+
+                if(obj.DistribucionID == 0)
+                {
+                    obj.Estado = "ACTIVO";
+                }
+
                 if (!vrDistribucion.Insertar(obj))
                 {
                     _mensajes.AddRange(vrDistribucion.Mensajes);
@@ -2214,7 +2265,7 @@ namespace cm.mx.catalogo.Controller
                         oNotificacion.PromocionID = 0;
                         oNotificacion.Referencia = "";
                         oNotificacion.Tipo = "EVENTO";
-                        oNotificacion.Usuario = new Usuario() { Usuarioid = UsuarioId };
+                        oNotificacion.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
                         oNotificacion.UsuarioID = oUser.Usuarioid;
                         oNotificacion.Vigencia = DateTime.Now;
 

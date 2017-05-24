@@ -57,5 +57,21 @@ namespace cm.mx.catalogo
 
             return mensaje;
         }
+
+        public static String GetRandomString()
+        {
+            var allowedChars = "ABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
+            var length = 15;
+
+            var chars = new char[length];
+            var rd = new Random();
+
+            for (var i = 0; i < length; i++)
+            {
+                chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
+            }
+
+            return new String(chars);
+        }
     }
 }

@@ -33,5 +33,10 @@ namespace cm.mx.catalogo.Model
         public virtual string FolioNota { get; set; }
         [DataMember]
         public virtual bool Enviado { get; set; }
+
+        [DataMember]
+        public virtual bool Relacionado { get; set; }
+        [DataMember]
+        public virtual decimal ImporteVisita { get; set; }
     }
 }

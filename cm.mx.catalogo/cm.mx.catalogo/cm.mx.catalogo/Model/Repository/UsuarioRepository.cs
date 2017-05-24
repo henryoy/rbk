@@ -439,5 +439,50 @@ namespace cm.mx.catalogo.Model
             condiciones.ForEach(x => sql.Add(x));
             return sql.List<Usuario>().ToList();
         }
+
+        public string SaveUsuario(Usuario obj, bool NuevoCodigo = true)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            string clave = "";
+            try
+            {
+                bool activar = obj.Usuarioid == 0;
+                _session.Clear();
+                _session.BeginTransaction();
+
+                if (NuevoCodigo)
+                {
+                    clave = Funciones.GetRandomString();
+                    obj.Codigo = clave;
+                }
+
+                _session.SaveOrUpdate(obj);
+                if (activar)
+                {
+                    Activacion oActivacion = new Activacion();
+                    oActivacion.Activado = false;
+                    oActivacion.Email = obj.Email;
+                    oActivacion.FechaAlta = DateTime.Now;
+                    oActivacion.FechaVencimiento = oActivacion.FechaAlta.AddDays(5);
+                    oActivacion.Llave = clave;
+                    oActivacion.UsuarioId = obj.Usuarioid;
+                    _session.SaveOrUpdate(oActivacion);
+                }
+                _session.Transaction.Commit();
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                clave = "";
+            }
+            return clave;
+        }
     }
 }

@@ -20,6 +20,9 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.Vigencia);
             References(x => x.Usuario).Column("UsuarioID").ForeignKey("UsuarioID");
             Map(x => x.Enviado);
+
+            Map(x => x.Relacionado);
+            Map(x => x.ImporteVisita);
         }
     }
 }
