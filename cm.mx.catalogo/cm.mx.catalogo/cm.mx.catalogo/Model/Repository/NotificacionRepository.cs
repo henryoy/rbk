@@ -86,5 +86,10 @@ namespace cm.mx.catalogo.Model
 
             return oNotificacion;
         }
+
+        public List<Notificacion> GetPromocionByUser(int UsuarioID)
+        {
+            return _session.Query<Notificacion>().Where(x => x.UsuarioID == UsuarioID && x.Estatus == "ACTIVO" && x.Tipo == "PROMOCION").ToList();
+        }
     }
 }

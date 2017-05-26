@@ -13,6 +13,7 @@ namespace cm.mx.catalogo.Model
         {
             Intereses = new List<TipoInteres>();
             Notificaciones = new List<Notificacion>();
+            oTarjeta = new Tipomembresia();
         }
 
         public virtual void Addinteres(TipoInteres oInteres)
@@ -34,9 +35,9 @@ namespace cm.mx.catalogo.Model
         public virtual int Usuarioid { get; set; }
         [DataMember]
         public virtual string Email { get; set; }
-        [DataMember]
+        
         public virtual string Contrasena { get; set; }
-        [DataMember]
+        
         public virtual string VerificacionContrasena { get; set; }
         [DataMember]
         public virtual string Tipo { get; set; }

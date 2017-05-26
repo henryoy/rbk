@@ -13,5 +13,6 @@ namespace cm.mx.catalogo.Model
         public int UsuarioRedimioId { get; set; }
         public int  SucursalId { get; set; }
         public int PromocionId { get; set; }
+        public int NotificacionId { get; set; }
     }
 }

@@ -1001,7 +1001,7 @@ namespace cm.mx.catalogo.Controller
                                         {
                                             Valor1 = Convert.ToInt32(oPromocionDetalle.Valor1);
                                         }
-                                        if (oUsuario.VisitaActual >= Valor1)
+                                        if (oUsuario.VisitaActual == Valor1)
                                             _lsPromocion.Add(oPromocion);
                                     }
                                     else
@@ -1438,7 +1438,7 @@ namespace cm.mx.catalogo.Controller
                                             {
                                                 Valor1 = Convert.ToInt32(DetallePromocion.Valor1);
                                             }
-                                            if (oUsuario.VisitaActual >= Valor1)
+                                            if (oUsuario.VisitaActual == Valor1)
                                                 _lsPromocion.Add(oPromocion);
                                         }
                                         else
@@ -1494,16 +1494,21 @@ namespace cm.mx.catalogo.Controller
                 {
                     Usuarioid = oRedimirPromo.UsuarioId
                 };
-
+                
                 isExiste = rPromocionRedimir.PromocionIsRedimida(oRedimirPromo.UsuarioId, oRedimirPromo.PromocionId);
 
                 if (!isExiste)
                 {
+
+                    rNotificacion = new NotificacionRepository();
+
+                    List<Notificacion> lNotificacion = rNotificacion.GetPromocionByUser(oRedimirPromo.UsuarioId);
+
                     IsSave = rPromocionRedimir.Guardar(oPromocionRedimir);
                 }
                 else
                 {
-                    _mensajes.Add("La promoción ha sido redimida");
+                    _mensajes.Add("La promoción ha sido redimida con anterioridad");
                 }
 
                 _exito = true;

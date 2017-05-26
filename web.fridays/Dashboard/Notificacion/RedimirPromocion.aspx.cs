@@ -110,6 +110,7 @@ public partial class Dashboard_Notificacion_RedimirPromocion : System.Web.UI.Pag
         oRedimirPromocion.PromocionId = PromocionId;
         oRedimirPromocion.PromocionRedimirId = 0;
         oRedimirPromocion.SucursalId = SucursalId;
+        oRedimirPromocion.NotificacionId = oNotificacion.NotificacionId;
 
         bool isRedimido = cCatalogo.RedimirPromocion(oRedimirPromocion);
         if (isRedimido)
