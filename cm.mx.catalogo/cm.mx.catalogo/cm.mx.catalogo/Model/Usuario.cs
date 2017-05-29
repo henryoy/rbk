@@ -35,9 +35,9 @@ namespace cm.mx.catalogo.Model
         public virtual int Usuarioid { get; set; }
         [DataMember]
         public virtual string Email { get; set; }
-        
+
         public virtual string Contrasena { get; set; }
-        
+
         public virtual string VerificacionContrasena { get; set; }
         [DataMember]
         public virtual string Tipo { get; set; }
@@ -64,7 +64,8 @@ namespace cm.mx.catalogo.Model
         [DataMember]
         public virtual string Origen { get; set; }
 
-        public virtual Tipomembresia oTarjeta { get; set; }
+        Tipomembresia mebresia = new Tipomembresia();
+        public virtual Tipomembresia oTarjeta { get { return mebresia; } set { mebresia = value; TarjetaID = mebresia.Membresiaid; } }
 
         public virtual IList<TipoInteres> Intereses { get; set; }
 

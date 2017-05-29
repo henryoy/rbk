@@ -110,7 +110,7 @@ public partial class Dashboard_Notificacion_RedimirPromocion : System.Web.UI.Pag
         oRedimirPromocion.PromocionId = PromocionId;
         oRedimirPromocion.PromocionRedimirId = 0;
         oRedimirPromocion.SucursalId = SucursalId;
-        oRedimirPromocion.NotificacionId = oNotificacion.NotificacionId;
+        oRedimirPromocion.NotificacionId = oNotificacion.NotificacionID;
 
         bool isRedimido = cCatalogo.RedimirPromocion(oRedimirPromocion);
         if (isRedimido)
@@ -201,7 +201,7 @@ public partial class Dashboard_Notificacion_RedimirPromocion : System.Web.UI.Pag
                 //codigo es el numero de notificacion-id
 
                 oNotificacion = cCatalogo.GetNotificacion(NotificacionId);
-                if (oNotificacion != null && oNotificacion.NotifiacionID > 0)
+                if (oNotificacion != null && oNotificacion.NotificacionID > 0)
                 {
                     if (oNotificacion.PromocionID > 0 && oNotificacion.UsuarioID > 0)
                     {

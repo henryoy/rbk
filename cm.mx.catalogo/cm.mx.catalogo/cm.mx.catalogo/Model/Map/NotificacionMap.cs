@@ -6,7 +6,7 @@ namespace cm.mx.catalogo.Model.Map
     {
         public NotificacionMap()
         {
-            Id(x => x.NotifiacionID);
+            Id(x => x.NotificacionID);
             Map(x => x.Estatus);
             Map(x => x.FechaRegistro);
             Map(x => x.FolioNota);

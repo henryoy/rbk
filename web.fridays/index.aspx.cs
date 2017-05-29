@@ -25,7 +25,7 @@ public partial class index : System.Web.UI.Page
         {
             connection.Open();
             //var sql = @"SELECT UsuarioID, Mensaje, PromocionID, Vigencia, Estatus, SucursalId FROM Notificacion WHERE Tipo = 'VISITA' AND ISNULL(FolioNota,'') = ''";
-            var sql = @"SELECT b.Nombre Usuario, a.Referencia, a.FechaRegistro, a.NotifiacionID FROM Notificacion a INNER JOIN Usuario b ON a.UsuarioID = b.UsuarioId WHERE a.Tipo = 'VISITA' AND ISNULL(FolioNota,'') = '' AND SucursalId = " + SucursalID;
+            var sql = @"SELECT b.Nombre Usuario, a.Referencia, a.FechaRegistro, a.NotificacionID FROM Notificacion a INNER JOIN Usuario b ON a.UsuarioID = b.UsuarioId WHERE a.Tipo = 'VISITA' AND ISNULL(FolioNota,'') = '' AND SucursalId = " + SucursalID;
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
                 // Make sure the command object does not already have
@@ -45,7 +45,7 @@ public partial class index : System.Web.UI.Page
                             Usuario = new Usuario { Nombre = x.GetString(0) },
                             Referencia = x.GetString(1),
                             FechaRegistro = x.GetDateTime(2),
-                            NotifiacionID = x.GetInt32(3)
+                            NotificacionID = x.GetInt32(3)
                         }).ToList();
             }
         }

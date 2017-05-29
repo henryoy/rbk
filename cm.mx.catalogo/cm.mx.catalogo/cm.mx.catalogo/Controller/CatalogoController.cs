@@ -1141,7 +1141,7 @@ namespace cm.mx.catalogo.Controller
             oNotificacion.Estatus = "ACTIVO";
             oNotificacion.FechaRegistro = DateTime.Now;
             oNotificacion.Mensaje = oPromocion.Descripcion;
-            oNotificacion.NotifiacionID = 0;
+            oNotificacion.NotificacionID = 0;
             oNotificacion.PromocionID = oPromocion.Promocionid;
             oNotificacion.Referencia = "";
             oNotificacion.Tipo = "PROMOCION";
@@ -1153,7 +1153,7 @@ namespace cm.mx.catalogo.Controller
 
             Notificacion _oNotificacion = rNotificacion.GuardarNotificacion(oNotificacion);
             bool _isContinue = false;
-            if (_oNotificacion != null && oNotificacion.NotifiacionID > 0)
+            if (_oNotificacion != null && oNotificacion.NotificacionID > 0)
             {
                 _isContinue = true;
             }
@@ -1182,7 +1182,7 @@ namespace cm.mx.catalogo.Controller
             oNotificacion.Estatus = "ACTIVO";
             oNotificacion.FechaRegistro = DateTime.Now;
             oNotificacion.Mensaje = oPromocion.Descripcion;
-            oNotificacion.NotifiacionID = 0;
+            oNotificacion.NotificacionID = 0;
             oNotificacion.PromocionID = oPromocion.Promocionid;
             oNotificacion.Referencia = "";
             oNotificacion.Tipo = "PROMOCION";
@@ -1195,7 +1195,7 @@ namespace cm.mx.catalogo.Controller
 
             Notificacion _oNotificacion = rNotificacion.GuardarNotificacion(oNotificacion);
             bool _isContinue = false;
-            if (_oNotificacion != null && oNotificacion.NotifiacionID > 0)
+            if (_oNotificacion != null && oNotificacion.NotificacionID > 0)
             {
                 _isContinue = true;
             }
@@ -1627,7 +1627,7 @@ namespace cm.mx.catalogo.Controller
                     oNotSuc.FechaRegistro = oNot.FechaRegistro;
                     oNotSuc.FolioNota = oNot.FolioNota;
                     oNotSuc.Mensaje = oNot.Mensaje;
-                    oNotSuc.NotifiacionID = oNot.NotifiacionID;
+                    oNotSuc.NotificacionID = oNot.NotificacionID;
                     oNotSuc.PromocionID = oNot.PromocionID;
                     oNotSuc.Referencia = oNot.Referencia;
                     oNotSuc.SucursalId = oNot.SucursalId;
@@ -2212,12 +2212,12 @@ namespace cm.mx.catalogo.Controller
                             Notificacion _oNotificacion = rNotificacion.GetNotificacion(oUser.Usuarioid, oPromocion.Promocionid);
                             Notificacion oNotificacionProm = new Notificacion();
 
-                            if (_oNotificacion != null && _oNotificacion.NotifiacionID > 0)
+                            if (_oNotificacion != null && _oNotificacion.NotificacionID > 0)
                             {                                
                                 oNotificacionProm.Estatus = "ACTIVO";
                                 oNotificacionProm.FechaRegistro = DateTime.Now;
                                 oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                                oNotificacionProm.NotifiacionID = _oNotificacion.NotifiacionID;
+                                oNotificacionProm.NotificacionID = _oNotificacion.NotificacionID;
                                 oNotificacionProm.PromocionID = oPromocion.Promocionid;
                                 oNotificacionProm.Referencia = "";
                                 oNotificacionProm.Tipo = "PROMOCION";
@@ -2230,7 +2230,7 @@ namespace cm.mx.catalogo.Controller
                                 oNotificacionProm.Estatus = "ACTIVO";
                                 oNotificacionProm.FechaRegistro = DateTime.Now;
                                 oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                                oNotificacionProm.NotifiacionID = 0;
+                                oNotificacionProm.NotificacionID = 0;
                                 oNotificacionProm.PromocionID = oPromocion.Promocionid;
                                 oNotificacionProm.Referencia = "";
                                 oNotificacionProm.Tipo = "PROMOCION";
@@ -2266,7 +2266,7 @@ namespace cm.mx.catalogo.Controller
                         oNotificacion.Estatus = "ACTIVO";
                         oNotificacion.FechaRegistro = DateTime.Now;
                         oNotificacion.Mensaje = oCampana.MensajePrevio;
-                        oNotificacion.NotifiacionID = 0;
+                        oNotificacion.NotificacionID = 0;
                         oNotificacion.PromocionID = 0;
                         oNotificacion.Referencia = "";
                         oNotificacion.Tipo = "EVENTO";

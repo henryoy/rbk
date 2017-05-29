@@ -278,7 +278,7 @@ namespace cm.mx.catalogo.Model
                     Estatus = Estatus.ACTIVO.ToString(),
                     FechaRegistro = DateTime.Now,
                     Mensaje = "Se registro una nueva visita\n¡Gracias!",
-                    NotifiacionID = 0,
+                    NotificacionID = 0,
                     PromocionID = 0,
                     Tipo = TipoNotificacion.VISITA.ToString(),
                     UsuarioID = oUsuario.Usuarioid,
@@ -297,7 +297,7 @@ namespace cm.mx.catalogo.Model
                         Estatus = Estatus.ACTIVO.ToString(),
                         FechaRegistro = DateTime.Now,
                         Mensaje = "¡Felicidades!\nHas alcanzado un nuevo nivel",
-                        NotifiacionID = 0,
+                        NotificacionID = 0,
                         PromocionID = 0,
                         Tipo = TipoNotificacion.INFORMACION.ToString(),
                         UsuarioID = oUsuario.Usuarioid,
@@ -432,12 +432,31 @@ namespace cm.mx.catalogo.Model
             return r.Usuarioid;
         }
 
-        public List<Usuario> GetUsuarios(List<ICriterion> condiciones)
+        public List<Usuario> GetUsuarios(List<ICriterion> lsICriterion)
         {
             _exito = false;
-            var sql = _session.CreateCriteria<Usuario>();
-            condiciones.ForEach(x => sql.Add(x));
-            return sql.List<Usuario>().ToList();
+            ICriteria IQuery = _session.CreateCriteria<Usuario>().SetCacheable(true).SetCacheMode(CacheMode.Refresh);
+            List<ICriterion> sql = new List<ICriterion>();
+            lsICriterion.ForEach(x =>
+            {
+                string cond = x.ToString();
+                if (cond.IndexOf("TarjetaID", StringComparison.OrdinalIgnoreCase) > -1 || cond.IndexOf("MembresiaId", StringComparison.OrdinalIgnoreCase) > -1)
+                {
+                    sql.Add(x);
+                }
+                else
+                {
+                    IQuery.Add(x);
+                }
+            });
+
+            if (sql.Count > 0)
+            {
+                sql.ForEach(x => IQuery.CreateCriteria("oTarjeta").Add(x));
+            }
+
+            var lsEntidad = IQuery.List<Usuario>().ToList();
+            return lsEntidad;
         }
 
         public string SaveUsuario(Usuario obj, bool NuevoCodigo = true)

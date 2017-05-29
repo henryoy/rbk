@@ -14,7 +14,7 @@ namespace cm.mx.catalogo.Model
         [DataMember]
         public virtual string Mensaje { get; set; }
         [DataMember]
-        public virtual int NotifiacionID { get; set; }
+        public virtual int NotificacionID { get; set; }
         [DataMember]
         public virtual int PromocionID { get; set; }
         [DataMember]
