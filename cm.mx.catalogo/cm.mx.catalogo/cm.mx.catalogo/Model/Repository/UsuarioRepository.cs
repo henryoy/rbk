@@ -503,5 +503,21 @@ namespace cm.mx.catalogo.Model
             }
             return clave;
         }
+
+        public bool SaveNumVisita(int UsuarioId, int NumeroVisita)
+        {
+            _exito = true;
+
+            String hqlUpdate = "update Usuario c set c.VisitaActual =:VisitaActual where c.Usuarioid=:Usuarioid";
+            _session.Clear();
+            _session.Transaction.Begin();
+            int updatedEntities = _session.CreateQuery(hqlUpdate)
+                    .SetInt32("Usuarioid", UsuarioId)
+                    .SetInt32("VisitaActual", NumeroVisita)
+                    .ExecuteUpdate();
+            _session.Transaction.Commit();
+
+            return _exito;      
+        }
     }
 }

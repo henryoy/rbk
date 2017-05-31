@@ -1505,13 +1505,32 @@ namespace cm.mx.catalogo.Controller
                     List<Notificacion> lNotificacion = rNotificacion.GetPromocionByUser(oRedimirPromo.UsuarioId);
 
                     IsSave = rPromocionRedimir.Guardar(oPromocionRedimir);
+                    if (IsSave)
+                    {
+                        bool IsSaveVisita = this.ActualizarVisitaPromocion(oRedimirPromo.PromocionId, oRedimirPromo.UsuarioId);
+                        if (IsSaveVisita)
+                        {
+                          bool IsSaveBajaNot =  this.BajaNotificacionPromocion(oRedimirPromo.UsuarioId);
+                          if (IsSaveBajaNot)
+                          {
+                              _exito = true;
+                          }
+                          else
+                          {
+                              _mensajes.Add("No se pudo dar de baja la notificación");
+                              _exito = false;
+                          }
+                        }else
+                        {
+                            _exito = false;
+                            Mensajes.Add("No se pudo actualizar las visita del usuario");
+                        }
+                    }
                 }
                 else
                 {
                     _mensajes.Add("La promoción ha sido redimida con anterioridad");
                 }
-
-                _exito = true;
 
             }
             catch (Exception innerException)
@@ -2435,6 +2454,156 @@ namespace cm.mx.catalogo.Controller
                 _exito = false;
             }
             return ls;
+        }
+
+        //Para dar de baja las notificaciones primero se debe aplicar la actualizacion de la visita de usuario
+        public bool BajaNotificacionPromocion(int UsuarioId)
+        {
+            _exito = true;
+            _mensajes.Clear();
+            _errores.Clear();
+            try
+            {
+                int VisitaActual = 0;
+                Usuario oUsuario = this.getUsuarioById(UsuarioId);
+                if (oUsuario != null)
+                {
+                   VisitaActual = oUsuario.VisitaActual;
+                   List<Promocion> lsPromocion = this.GetAllPromocionIdBaja(VisitaActual);
+                   foreach (Promocion oPromocion in lsPromocion)
+                   {
+                       bool isSave = BajaNotificacion(UsuarioId, oPromocion.Promocionid);
+                       if (!isSave)
+                       {
+                           Mensajes.Add("La notificacion de la promocion '" + oPromocion.Descripcion + "' no se puede dar de baja.");
+                       }
+                   }
+                }               
+            }
+            catch (Exception ex)
+            {
+                if (rUsuario._session.Transaction.IsActive)
+                {
+                    rUsuario._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return _exito;
+        }
+       //Solo se usa la promocion para poder actualizar las visitas
+        public bool ActualizarVisitaPromocion(int PromocionId, int UsuarioId)
+        {
+            _exito = true;
+            _mensajes.Clear();
+            _errores.Clear();
+            try
+            {
+                Promocion oPromocion = this.GetPromocion(PromocionId);
+
+                if (oPromocion != null && oPromocion.Promocionid > 0)
+                {
+                    Promociondetalle oDetalle = oPromocion.Promociondetalle.FirstOrDefault();
+                    int NumeroARestar = 0;
+                    int VisitaAnterior = 0;
+                    int VisitaActual = 0;
+                    if (oDetalle != null)
+                    {
+                        if (oDetalle.Condicion == "VISITA")
+                        {
+                            int.TryParse(oDetalle.Valor1, out NumeroARestar);
+                            if (NumeroARestar > 0)
+                            {
+                                Usuario oUsuario = this.getUsuarioById(UsuarioId);
+                                if (oUsuario != null)
+                                {
+                                    VisitaAnterior = oUsuario.VisitaActual;
+                                    VisitaActual = VisitaAnterior - NumeroARestar;
+                                    rUsuario = new UsuarioRepository();
+                                    bool IsSave = rUsuario.SaveNumVisita(UsuarioId, VisitaActual);
+                                    if (!IsSave)
+                                    {
+                                        Mensajes.Add("Ocurrio un error al actualizar el numero de visitas");
+                                        _exito = false;
+                                        return false;
+                                    }else _exito = true;                                    
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    _exito = false;
+                    Mensajes.Add("No existe la promoción");
+                }
+            }
+            catch (Exception ex)
+            {
+                if (rUsuario._session.Transaction.IsActive)
+                {
+                    rUsuario._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return _exito;
+        }
+        public List<Promocion> GetAllPromocionIdBaja(int NumeroVisita)
+        {
+            _exito = true;
+            _mensajes.Clear();
+            _errores.Clear();
+            List<Promocion> lsPromocion = new List<Promocion>();
+            try
+            {
+                lsPromocion = rPromocion.GetPromocionBajaVisita(NumeroVisita);
+                _exito = true;
+
+            }catch(Exception ex){
+                if (rPromocion._session.Transaction.IsActive)
+                {
+                    rPromocion._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return lsPromocion;
+        }
+        private bool BajaNotificacion(int UsuarioId, int PromocionId)
+        {
+            _exito = true;
+            _mensajes.Clear();
+            _errores.Clear();
+            rNotificacion = new NotificacionRepository();
+
+            try
+            {
+                _exito = rNotificacion.BajaNotificacionPorPromocion(UsuarioId, PromocionId);
+            }
+            catch (Exception ex)
+            {
+                if (rNotificacion._session.Transaction.IsActive) rNotificacion._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return _exito;
         }
     }
 }

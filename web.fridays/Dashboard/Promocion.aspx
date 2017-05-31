@@ -476,7 +476,7 @@
                             <div id="datepicker" class="ll-skin-melon clear-fix"></div>
                         </div>
                         <div id="generateChecklist" class="semi_bold">
-                            <asp:LinkButton runat="server" ID="lnkGuardarPromocion" CssClass="generateChecklistName" OnClick="lnkGuardarPromocion_Click">Guardar promoción</asp:LinkButton>
+                            <asp:LinkButton runat="server" ID="lnkGuardarPromocion" CssClass="btnTrue generateChecklistName" OnClick="lnkGuardarPromocion_Click">Guardar promoción</asp:LinkButton>
                             <%-- <div class="generateChecklistName">
                             Guardar promoción
                         </div>--%>
@@ -496,7 +496,7 @@
                             <h4 class="semi_bold" runat="server">Imagen</h4>
                             <asp:Image runat="server" ID="imgTarjeta" CssClass="imgTarjeta" ToolTip="Click para seleccionar imagen" Height="36" Width="62" ImageUrl="~/Images/icon-gallery.svg" />
                             <asp:HiddenField runat="server" ID="hfTajeta" ClientIDMode="Static" Value="" />
-
+                            <asp:LinkButton runat="server" ID="btnSave" CssClass="btn-save" OnClick="lnkGuardarPromocion_Click" CausesValidation="true" ValidationGroup="guardar" UseSubmitBehavior="false" Style="display: none"></asp:LinkButton>
                             <div id="uploader_div">
                             </div>
                             <asp:UpdatePanel runat="server" ID="upSucursal" UpdateMode="Conditional">
@@ -548,6 +548,11 @@
                     vMax: '999999999'
                 });
 
+                var filePath = '<%= Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "" + ConfigurationManager.AppSettings["RutaImagenes"]%>';
+
+
+                console.log(filePath);
+
                 $('#uploader_div').ajaxupload({
                     url: '../upload.aspx',
                     maxFileSize: '1M',
@@ -566,14 +571,17 @@
                         notification(txt, 'error');
                     },
                     onSelect: function (files) {
-                        var name = "../uploads/" + files[0].name;
+                        var name = filePath + files[0].name;
+                        console.log("------onSelect: --");
                         $("#hfTajeta").val(name);
                     },
                     finish: function (file) {
+                        console.log("------finish: --");
                         GudarDatos();
                     },
                     success: function (file_name) {
-                        $(".imgTarjeta").attr("src", "../uploads/" + file_name);
+                        console.log("------success: --");
+                        $(".imgTarjeta").attr("src", filePath + file_name);
                     }
                 });
 
@@ -607,7 +615,9 @@
                 });
 
                 window.GudarDatos = function () {
-                    eval($(".btn-save").attr('href'));
+                    console.log("test");
+                    document.getElementById("<%= lnkGuardarPromocion.ClientID %>").click();
+
                 }
             });
         }

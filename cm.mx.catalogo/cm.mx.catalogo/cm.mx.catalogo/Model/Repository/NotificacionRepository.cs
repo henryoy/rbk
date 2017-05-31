@@ -91,5 +91,23 @@ namespace cm.mx.catalogo.Model
         {
             return _session.Query<Notificacion>().Where(x => x.UsuarioID == UsuarioID && x.Estatus == "ACTIVO" && x.Tipo == "PROMOCION").ToList();
         }
+
+        public bool BajaNotificacionPorPromocion(int UsuarioId, int PromocionId)
+        {
+            _exito = true;
+
+            String hqlUpdate = "update Notificacion c set c.Estatus=:Estatus where c.UsuarioID=:UsuarioID and c.PromocionID:=PromocionID";
+            _session.Clear();
+            _session.Transaction.Begin();
+            int updatedEntities = _session.CreateQuery(hqlUpdate)
+                    .SetInt32("UsuarioID", UsuarioId)
+                    .SetInt32("PromocionID", PromocionId)
+                    .SetString("Estatus", "INACTIVO")
+                    .ExecuteUpdate();
+            _session.Transaction.Commit();
+
+            return _exito;
+        }
+        
     }
 }

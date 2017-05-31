@@ -27,7 +27,7 @@ namespace cm.mx.catalogo.Model.Map
             HasMany(x => x.Fechapublicacion).KeyColumn("PromocionId").Cascade.None();
             HasMany(x => x.Promociondetalle).KeyColumn("PromocionId").Cascade.All().Inverse();
             HasMany(x => x.Promocionmembresia).KeyColumn("PromocionId").Cascade.All().Inverse();
-            HasMany(x => x.PromocionRedimir).KeyColumn("PromocionId").Cascade.None().ReadOnly();
+            //HasMany(x => x.PromocionRedimir).KeyColumn("PromocionId").Cascade.None().ReadOnly();
             //HasMany(x => x.Promocionusuario).KeyColumn("PromocionId").Cascade.None().ReadOnly();
             HasMany(x => x.Promocionsucursal).KeyColumn("PromocionId").Cascade.All().Inverse();
             HasMany(x => x.Promocionnotificacion).KeyColumn("PromocionId").Cascade.All().Inverse();
