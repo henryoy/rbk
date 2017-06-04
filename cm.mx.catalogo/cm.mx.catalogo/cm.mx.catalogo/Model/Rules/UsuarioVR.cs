@@ -33,7 +33,10 @@ namespace cm.mx.catalogo.Rules
             TipoUsuario tipo;
             _mensajes.Clear();
             if (string.IsNullOrEmpty(oUsuario.Contrasena)) _mensajes.Add("Ingrese el código");
-            if (!Funciones.ValidarCorreo(oUsuario.Email)) _mensajes.Add("Ingrese un correo válido");
+
+            if(oUsuario.Origen == "INSTAGRAM")
+                if (!Funciones.ValidarCorreo(oUsuario.Email)) _mensajes.Add("Ingrese un correo válido");
+
             if (!Enum.TryParse(oUsuario.Tipo, out tipo)) _mensajes.Add("Ingrese el tipo de usuario");
             if (!oUsuario.Contrasena.Equals(oUsuario.VerificacionContrasena)) _mensajes.Add("La contraseña y la verificación no coincide");
             //if (string.IsNullOrEmpty(oUsuario.Nivel)) _mensajes.Add("Ingrese el nivel del usuario");
@@ -44,7 +47,7 @@ namespace cm.mx.catalogo.Rules
                 if (origen != oUsuario.Origen)
                 {
                     _mensajes.Add("No puede usar este método de registro");
-                    if (origen == Origen.MOVIL.ToString()) _mensajes.Add("Inicie sessión con su correo y contraseña");
+                    if (origen == Origen.MOBILE.ToString()) _mensajes.Add("Inicie sessión con su correo y contraseña");
                     else _mensajes.Add("inicie sesión con: " + origen);
                 }
 
@@ -52,7 +55,7 @@ namespace cm.mx.catalogo.Rules
             if (string.IsNullOrEmpty(oUsuario.Nombre)) _mensajes.Add("Ingrese el nombre del usuario");
             DateTime ini = DateTime.Now.AddYears(-100);
             DateTime fin = DateTime.Now.AddYears(-13);
-            if (oUsuario.Origen == Origen.MOVIL.ToString())
+            if (oUsuario.Origen == Origen.MOBILE.ToString())
             {
                 if (oUsuario.FechaNacimiento <= ini || oUsuario.FechaNacimiento >= fin) _mensajes.Add("Ingrese una fecha válida");
             }

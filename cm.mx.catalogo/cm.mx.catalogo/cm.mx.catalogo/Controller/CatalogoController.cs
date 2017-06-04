@@ -113,16 +113,11 @@ namespace cm.mx.catalogo.Controller
 
                 if (oUsuario.Origen == "FACEBOOK" || oUsuario.Origen == "INSTAGRAM")
                 {
-                    oUsuarioSaved = GetUsuario(oUsuario.Email);
+                    oUsuarioSaved = GetUsuarioByIDExterno(oUsuario.IdExterno);
                     if (oUsuarioSaved != null)
                     {
-                        if (oUsuario.Email == oUsuarioSaved.Email && oUsuario.Contrasena == oUsuarioSaved.Contrasena)
-                        {
-                            oUsuarioSaved.Nombre = oUsuario.Nombre;
-                            NuevoUsuario = false;
-                        }
-                        else
-                            oUsuarioSaved = null;
+                        oUsuarioSaved.Nombre = oUsuario.Nombre;
+                        NuevoUsuario = false;
                     }
                 }
 
@@ -220,6 +215,7 @@ namespace cm.mx.catalogo.Controller
             {
                 rUsuario = new UsuarioRepository();
                 oUsuario = rUsuario.GetById(UsuarioId);
+                rUsuario._session.Clear();
                 _exito = true;
             }
             catch (Exception ex)
@@ -1052,7 +1048,7 @@ namespace cm.mx.catalogo.Controller
             return lsNotificaiones;
         }
 
-        public bool RegistroVisita(string Usuario, int ClienteID, string Referencia, int SucursalId)
+        public bool RegistroVisita(int Usuario, int ClienteID, string Referencia, int SucursalId)
         {
             _exito = false;
             _errores = new List<string>();
@@ -1551,7 +1547,7 @@ namespace cm.mx.catalogo.Controller
         }
 
         //<summary>Metodo que devuelve un objeto usuario por medio del correo electronico</summary>
-        public Usuario GetUsuario(string usuario)
+        /*public Usuario GetUsuario(string usuario)
         {
             _exito = false;
             _mensajes = new List<string>();
@@ -1562,6 +1558,36 @@ namespace cm.mx.catalogo.Controller
             {
                 rUsuario = new UsuarioRepository();
                 oUsuario = rUsuario.Query(a => a.Email == usuario).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                if (rNotificacion._session.Transaction.IsActive)
+                {
+                    rNotificacion._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+
+            rUsuario._session.Clear();
+
+            return oUsuario;
+        }*/
+
+        public Usuario GetUsuarioByIDExterno(string usuario)
+        {
+            _exito = false;
+            _mensajes = new List<string>();
+            _errores = new List<string>();
+            Usuario oUsuario = null;
+
+            try
+            {
+                rUsuario = new UsuarioRepository();
+                oUsuario = rUsuario.Query(a => a.IdExterno == usuario).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -1688,7 +1714,7 @@ namespace cm.mx.catalogo.Controller
         }
 
         //<summary>Metodo que devuelve un objeto de tipo usuario</summary>
-        public Usuario LoginMovil(string usuario, string password, TipoUsuario tipo)
+        public Usuario LoginMovil(string usuario, string password, Origen origen = Origen.MOBILE)
         {
             UsuarioRepository rUsuario = new UsuarioRepository();
             ActivacionRepository rAcrivacion = new ActivacionRepository();
@@ -1696,7 +1722,7 @@ namespace cm.mx.catalogo.Controller
 
             try
             {
-                oUsuario = rUsuario.LoginMovil(usuario, password, tipo);
+                oUsuario = rUsuario.LoginMovil(usuario, password, origen);
 
                 if (oUsuario == null)
                 {
@@ -2109,14 +2135,14 @@ namespace cm.mx.catalogo.Controller
             return _exito;
         }
 
-        public bool deleteTokens(string usuario, string token, bool EliminarTodos = false)
+        public bool deleteTokens(int usuario, string token = "", bool EliminarTodos = true)
         {
             _exito = false;
 
             try
             {
                 rUsuarioDispositivo = new UsuarioDispositivoRepository();
-                Usuario oUsuario = GetUsuario(usuario);
+                Usuario oUsuario = getUsuarioById(usuario);
 
                 rUsuarioDispositivo._session.BeginTransaction();
                 //rUsuarioDispositivo.Delete()

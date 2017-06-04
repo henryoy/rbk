@@ -26,7 +26,7 @@
     {
         FECEBOOK,
         INSTAGRAM,
-        MOVIL
+        MOBILE
     }
 
     public enum Plataforma

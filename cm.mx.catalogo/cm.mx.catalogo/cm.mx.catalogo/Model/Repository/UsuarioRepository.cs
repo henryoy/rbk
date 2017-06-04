@@ -101,7 +101,7 @@ namespace cm.mx.catalogo.Model
             if (!Funciones.ValidarCorreo(usuario)) _errores.Add("Ingrese un correo válido");
             else
             {
-                oUsuario = this.Query(f => f.Email == usuario && f.Contrasena == pass).ToList().FirstOrDefault();
+                oUsuario = this.Query(f => f.Email == usuario && f.Contrasena == pass && f.Tipo == "WEB").ToList().FirstOrDefault();
 
                 if (oUsuario == null)
                     _errores.Add("El usuario y/o contraseña es incorrecto");
@@ -253,7 +253,7 @@ namespace cm.mx.catalogo.Model
 
         }
 
-        public bool RegistrarVisita(string Usuario, int ClienteID, string Referencia, int SucursalId)
+        public bool RegistrarVisita(int Usuario, int ClienteID, string Referencia, int SucursalId)
         {
             _exito = false;
             _session.Clear();
@@ -270,7 +270,7 @@ namespace cm.mx.catalogo.Model
 
                 if (string.IsNullOrEmpty(oUsuario.Codigo)) oUsuario.Codigo = "";
                 _session.BeginTransaction();
-                var emp = _session.CreateCriteria<Usuario>().Add(Restrictions.Eq("Email", Usuario).IgnoreCase()).List<Usuario>().FirstOrDefault();
+                var emp = _session.CreateCriteria<Usuario>().Add(Restrictions.Eq("UsuarioID", Usuario).IgnoreCase()).List<Usuario>().FirstOrDefault();
                 if (emp == null) emp = new Usuario();
 
                 Notificacion oNotifiacion = new Notificacion
@@ -409,18 +409,32 @@ namespace cm.mx.catalogo.Model
 
         }
 
-        public Usuario LoginMovil(string usuario, string pass, TipoUsuario tipo)
+        public Usuario LoginMovil(string usuario, string pass, Origen origen = Origen.MOBILE)
         {
             Usuario oUsuario = null;
 
-            if (!Funciones.ValidarCorreo(usuario)) _errores.Add("Ingrese un correo válido");
+            if(origen == Origen.MOBILE)
+            {
+                if (!Funciones.ValidarCorreo(usuario)) _errores.Add("Ingrese un correo válido");
+                else
+                {
+                    oUsuario = this.Query(f => f.Usuarioid == int.Parse(usuario) && f.Contrasena == pass && f.Tipo == "MOBILE").ToList().FirstOrDefault();
+
+                    if (oUsuario == null)
+                        _errores.Add("El usuario y/o contraseña es incorrecto");
+                }
+            }
             else
             {
-                oUsuario = this.Query(f => f.Email == usuario && f.Contrasena == pass && f.Tipo == tipo.ToString()).ToList().FirstOrDefault();
+                oUsuario = this.Query(f => f.IdExterno == usuario && f.Tipo == "MOBILE").ToList().FirstOrDefault();
 
                 if (oUsuario == null)
                     _errores.Add("El usuario y/o contraseña es incorrecto");
             }
+
+
+            
+            
 
             return oUsuario;
         }
