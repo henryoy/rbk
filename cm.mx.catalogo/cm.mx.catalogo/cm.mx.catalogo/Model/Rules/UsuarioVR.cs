@@ -34,7 +34,7 @@ namespace cm.mx.catalogo.Rules
             _mensajes.Clear();
             if (string.IsNullOrEmpty(oUsuario.Contrasena)) _mensajes.Add("Ingrese el código");
 
-            if(oUsuario.Origen == "INSTAGRAM")
+            if(oUsuario.Origen == "MOBILE")
                 if (!Funciones.ValidarCorreo(oUsuario.Email)) _mensajes.Add("Ingrese un correo válido");
 
             if (!Enum.TryParse(oUsuario.Tipo, out tipo)) _mensajes.Add("Ingrese el tipo de usuario");

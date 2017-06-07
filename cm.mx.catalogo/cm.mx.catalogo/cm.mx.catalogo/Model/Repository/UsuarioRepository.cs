@@ -270,7 +270,7 @@ namespace cm.mx.catalogo.Model
 
                 if (string.IsNullOrEmpty(oUsuario.Codigo)) oUsuario.Codigo = "";
                 _session.BeginTransaction();
-                var emp = _session.CreateCriteria<Usuario>().Add(Restrictions.Eq("UsuarioID", Usuario).IgnoreCase()).List<Usuario>().FirstOrDefault();
+                var emp = _session.CreateCriteria<Usuario>().Add(Restrictions.Eq("Usuarioid", Usuario).IgnoreCase()).List<Usuario>().FirstOrDefault();
                 if (emp == null) emp = new Usuario();
 
                 Notificacion oNotifiacion = new Notificacion
