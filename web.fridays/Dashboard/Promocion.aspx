@@ -1,8 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.master" CodeFile="Promocion.aspx.cs" Inherits="Dashboard_Promocion" EnableEventValidation="true" Async="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.master" CodeFile="Promocion.aspx.cs" Inherits="Dashboard_Promocion" EnableEventValidation="false" Async="true" %>
 
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
     <link rel="stylesheet" type="text/css" href="../Content/css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="<%= ResolveClientUrl("~/Content/classicTheme/style.css") %>" media="screen">
+    <link href="<%= ResolveClientUrl("~/Content/css/Distribucion.css") %>" rel="stylesheet" />
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <style>
@@ -73,6 +74,21 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            cursor: pointer;
+            z-index: 99;
+            display: block;
+            width: 100%;
+            clear: both;
+            border-radius: 0px;
+            position: relative;
+            font-family: Helvetica, Arial, "Lucida Grande", sans-serif !important;
+        }
+         select.tipopromo {
+            box-shadow: 0px 0px 0px 1px #d8d8d8;
+            height: 45px;            
+            color: #23282d;
+            font-size: 12px;
+            border: 0px;
             cursor: pointer;
             z-index: 99;
             display: block;
@@ -496,7 +512,7 @@
                             <h4 class="semi_bold" runat="server">Imagen</h4>
                             <asp:Image runat="server" ID="imgTarjeta" CssClass="imgTarjeta" ToolTip="Click para seleccionar imagen" Height="36" Width="62" ImageUrl="~/Images/icon-gallery.svg" />
                             <asp:HiddenField runat="server" ID="hfTajeta" ClientIDMode="Static" Value="" />
-                            <asp:LinkButton runat="server" ID="btnSave" CssClass="btn-save" OnClick="lnkGuardarPromocion_Click" CausesValidation="true" ValidationGroup="guardar" UseSubmitBehavior="false" Style="display: none"></asp:LinkButton>
+                            <%--<asp:LinkButton runat="server" ID="btnSave" CssClass="btn-save" OnClick="lnkGuardarPromocion_Click" CausesValidation="true" ValidationGroup="guardar" UseSubmitBehavior="false" Style="display: none"></asp:LinkButton>--%>
                             <div id="uploader_div">
                             </div>
                             <asp:UpdatePanel runat="server" ID="upSucursal" UpdateMode="Conditional">
@@ -509,7 +525,73 @@
                                     <asp:ListBox ID="lBSucursal" runat="server" SelectionMode="Multiple"></asp:ListBox>
                                     <br />
                                     <asp:Button Text="Eliminar sucursal" runat="server" ID="btnEliminarSucursal" CssClass="generateChecklist" OnClick="btnEliminarSucursal_Click" />
-
+                                    <div class="fila" style="background: #fff; height: 30px; padding: 0px;">
+                                        <span style="display: table-cell; vertical-align: middle;" class="sub_title">Importes</span>
+                                        <asp:Button runat="server" ID="btnAddDetalle" CssClass="add-option semi_bold" OnClick="btnAddDetalle_Click" Text="Agregar Importes" UseSubmitBehavior="false" />
+                                        <%--<asp:Button runat="server" ID="btnResultado" CssClass="add-option semi_bold" OnClick="btnResultado_Click" Text="Probar" UseSubmitBehavior="false" Style="margin-right: 10px;" />--%>
+                                    </div>
+                                    <hr />
+                                    <asp:GridView runat="server" ID="grvDetalle" GridLines="None" ShowHeader="true" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false"
+                                        CssClass="table"
+                                        OnRowDataBound="grvDetalle_RowDataBound"
+                                        OnRowCancelingEdit="grvDetalle_RowCancelingEdit"
+                                        OnRowEditing="grvDetalle_RowEditing"
+                                        OnRowDeleting="grvDetalle_RowDeleting"
+                                        OnRowUpdating="grvDetalle_RowUpdating">
+                                        <Columns>
+                                            <%--<asp:TemplateField HeaderText="Tipo" HeaderStyle-CssClass="checkbox" ItemStyle-CssClass="checkbox">
+                                                <ItemTemplate>
+                                                    <%# Eval("Condicion") %>
+                                                </ItemTemplate>
+                                                <EditItemTemplate>
+                                                    <asp:DropDownList runat="server" ID="cbxUnion" CssClass="tipopromo">
+                                                        <asp:ListItem Value=""></asp:ListItem>
+                                                        <asp:ListItem Value="VISITA">VISITA</asp:ListItem>
+                                                        <asp:ListItem Value="EVENTO">EVENTO</asp:ListItem>
+                                                        <asp:ListItem Value="IMPORTE">IMPORTE</asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </EditItemTemplate>
+                                            </asp:TemplateField>--%>
+                                            <asp:TemplateField HeaderText="Valor 1" HeaderStyle-CssClass="checkbox" ItemStyle-CssClass="checkbox">
+                                                <ItemTemplate>
+                                                    <%# Eval("Valor1") %>
+                                                </ItemTemplate>
+                                                <EditItemTemplate>
+                                                    <asp:TextBox runat="server" ID="txtValor1" Text='<%# Eval("Valor1") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Valor 2" HeaderStyle-CssClass="col-data" ItemStyle-CssClass="col-data">
+                                                <ItemTemplate>
+                                                    <%# Eval("Valor2") %>
+                                                </ItemTemplate>
+                                                <EditItemTemplate>
+                                                    <asp:TextBox runat="server" ID="txtValor2" Text='<%# Eval("Valor2") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Cambio" HeaderStyle-CssClass="col-name" ItemStyle-CssClass="col-name">
+                                                <ItemTemplate>
+                                                    <%# Eval("Cambio") %>
+                                                </ItemTemplate>
+                                                <EditItemTemplate>
+                                                    <asp:TextBox runat="server" ID="txtCambio" Text='<%# Eval("Cambio") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                <ItemTemplate>
+                                                    <asp:LinkButton runat="server" ID="btnEliminar" OnClick="btnEliminar_Click">Eliminar</asp:LinkButton>
+                                                </ItemTemplate>
+                                                <EditItemTemplate>
+                                                    <asp:LinkButton runat="server" ID="btnAplicar" CommandName="Update">Aceptar</asp:LinkButton>
+                                                    <asp:LinkButton runat="server" ID="btnCancelar" CommandName="Cancel">Cancelar</asp:LinkButton>
+                                                </EditItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                        <EmptyDataTemplate>
+                                            <div role="alert" class="empty">
+                                                <p>¡No exite información para mostrar!</p>
+                                            </div>
+                                        </EmptyDataTemplate>
+                                    </asp:GridView>
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
@@ -517,7 +599,7 @@
                 </div>
             </div>
         </ContentTemplate>
-    </asp:UpdatePanel>    
+    </asp:UpdatePanel>
 </asp:Content>
 
 <asp:Content runat="server" ID="ScriptsJS" ContentPlaceHolderID="ScriptsPages">
@@ -572,11 +654,9 @@
                     },
                     onSelect: function (files) {
                         var name = filePath + files[0].name;
-                        console.log("------onSelect: --");
                         $("#hfTajeta").val(name);
                     },
                     finish: function (file) {
-                        console.log("------finish: --");
                         GudarDatos();
                     },
                     success: function (file_name) {
@@ -604,19 +684,19 @@
                         GudarDatos();
                     }
                     else if (Archivos.length == 0) {
-                        notification('Seleccione una imagen', 'error');
+                        //notification('Seleccione una imagen', 'error');
                     }
                     else {
                         $(".ax-upload").click();
                     }
-                    e.preventDefault();
-                    e.stopPropagation();
-                    e.stopImmediatePropagation();
+                    //e.preventDefault();
+                    //e.stopPropagation();
+                    //e.stopImmediatePropagation();
                 });
 
                 window.GudarDatos = function () {
                     console.log("test");
-                    document.getElementById("<%= lnkGuardarPromocion.ClientID %>").click();
+                    //document.getElementById("<%= lnkGuardarPromocion.ClientID %>").click();
 
                 }
             });
@@ -700,7 +780,7 @@
             $(document).on('click', '.send_schedule_campaign_day', function (e) {
                 e.stopPropagation();
                 console.log("---->");
-                
+
                 $('#datepicker').show();
                 $('#send_form .selected').removeClass('selected');
             });
@@ -708,7 +788,7 @@
             $(document).on('click', '.send_schedule_campaign_day_init', function (e) {
                 e.stopPropagation();
                 console.log("q---->");
-                
+
                 $('#datepicker_init').show();
                 $('#send_form .selected').removeClass('selected');
             });
@@ -749,73 +829,73 @@
                 defaultDate: new Date()
             });
         });
-        
-        function ActiveCalendar2() {
 
-            the_switch = $('[name="schedule_switch"]');
-            switch_thumb = $('[name="schedule_switch"]').find('.switch_thumb');
+            function ActiveCalendar2() {
 
-            $(the_switch).removeClass('disabled');
-            $(switch_thumb).removeClass('active');
-            $(switch_thumb).addClass('disabled');
-            $(switch_thumb).css('right', '2px;')
-            $(the_switch).addClass('active');
-            console.log(the_switch);
-            console.log(switch_thumb);
+                the_switch = $('[name="schedule_switch"]');
+                switch_thumb = $('[name="schedule_switch"]').find('.switch_thumb');
 
-            the_switch = $(this);
-            switch_thumb = $(this).find('.switch_thumb');
-
-            if ($(switch_thumb).hasClass('active')) {
-
-                $(switch_thumb).animate({ 'right': '2px' }, { duration: 100, easing: 'linear' });
                 $(the_switch).removeClass('disabled');
                 $(switch_thumb).removeClass('active');
+                $(switch_thumb).addClass('disabled');
+                $(switch_thumb).css('right', '2px;')
+                $(the_switch).addClass('active');
+                console.log(the_switch);
+                console.log(switch_thumb);
+
+                the_switch = $(this);
+                switch_thumb = $(this).find('.switch_thumb');
+
+                if ($(switch_thumb).hasClass('active')) {
+
+                    $(switch_thumb).animate({ 'right': '2px' }, { duration: 100, easing: 'linear' });
+                    $(the_switch).removeClass('disabled');
+                    $(switch_thumb).removeClass('active');
+                }
+                else {
+
+                    $(switch_thumb).animate({ 'right': '19px' }, { duration: 100, easing: 'linear' });
+                    $(the_switch).addClass('disabled');
+                    $(switch_thumb).addClass('active');
+                }
+                the_switch = $(this);
+                switch_thumb = $(this).find('.switch_thumb');
+
+                if ($(switch_thumb).hasClass('active')) {
+                    $('[name="schedule"]').val('0');
+                    $('#datepicker, .scheduleCampaignWrapper').hide();
+
+                }
+
+                else {
+                    $('[name="schedule"]').val('1');
+                    $('.scheduleCampaignWrapper').show();
+                }
+
+                $(document).on('click', '.send_schedule_campaign_day_init', function (e) {
+                    e.stopPropagation();
+                    console.log("click --->");
+
+                    $('#datepicker_init').show();
+                    $('#send_form .selected').removeClass('selected');
+                });
+
+
+                $(document).on('click', 'body', function () {
+                    $('#datepicker').hide();
+                    $('#datepicker_init').hide();
+                });
+                //if ($(switch_thumb).hasClass('active')) {
+                //    $('[name="schedule"]').val('0');
+                //    $('#datepicker, .scheduleCampaignWrapper').hide();
+                //    console.log("1132");
+                //}
+                //else {
+                //    $('[name="schedule"]').val('1');
+                //    $('.scheduleCampaignWrapper').show();
+                //    console.log("11");
+                //}
             }
-            else {
-
-                $(switch_thumb).animate({ 'right': '19px' }, { duration: 100, easing: 'linear' });
-                $(the_switch).addClass('disabled');
-                $(switch_thumb).addClass('active');
-            }
-            the_switch = $(this);
-            switch_thumb = $(this).find('.switch_thumb');
-
-            if ($(switch_thumb).hasClass('active')) {
-                $('[name="schedule"]').val('0');
-                $('#datepicker, .scheduleCampaignWrapper').hide();
-
-            }
-
-            else {
-                $('[name="schedule"]').val('1');
-                $('.scheduleCampaignWrapper').show();
-            }
-
-            $(document).on('click', '.send_schedule_campaign_day_init', function (e) {
-                e.stopPropagation();
-                console.log("click --->");
-
-                $('#datepicker_init').show();
-                $('#send_form .selected').removeClass('selected');
-            });
-
-
-            $(document).on('click', 'body', function () {
-                $('#datepicker').hide();
-                $('#datepicker_init').hide();
-            });
-            //if ($(switch_thumb).hasClass('active')) {
-            //    $('[name="schedule"]').val('0');
-            //    $('#datepicker, .scheduleCampaignWrapper').hide();
-            //    console.log("1132");
-            //}
-            //else {
-            //    $('[name="schedule"]').val('1');
-            //    $('.scheduleCampaignWrapper').show();
-            //    console.log("11");
-            //}
-        }        
 
 
 

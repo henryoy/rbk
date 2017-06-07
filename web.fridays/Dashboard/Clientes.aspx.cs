@@ -215,7 +215,8 @@ public partial class Dashboard_Clientes : System.Web.UI.Page
         {
             cCatalogo = new CatalogoController();
             var email = ((LinkButton)sender).CommandArgument;
-            oUsuario = cCatalogo.GetUsuario(email);
+            //oUsuario = cCatalogo.GetUsuario(email);
+            
             CargarTipoInteres(0);
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "$('#popupOverlay').show();", true);
         }

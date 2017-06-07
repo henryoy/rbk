@@ -367,7 +367,7 @@ namespace cm.mx.catalogo.Controller
                     entidad.Estado = "ACTIVO";
                     entidad.Usuarioaltaid = UsuarioId;
                     entidad.Fechabaja = Convert.ToDateTime("1900-01-01");
-                    if(entidad.Vigenciainicial.HasValue && entidad.Vigenciainicial.Value.Year == 0)
+                    if (entidad.Vigenciainicial.HasValue && entidad.Vigenciainicial.Value.Year == 0)
                         entidad.Vigenciainicial = Convert.ToDateTime("1900-01-01");
 
                     if (entidad.Vigenciafinal.HasValue && entidad.Vigenciafinal.Value.Year == 0)
@@ -382,8 +382,8 @@ namespace cm.mx.catalogo.Controller
                     oPromocion = rPromocion.GuardarPromocion(entidad);
                     //if (oPromocion.Promocionid > 0)
                     //{
-                        //var task = this.CrearNotificacion(oPromocion.Promocionid);
-                        //task.Start();
+                    //var task = this.CrearNotificacion(oPromocion.Promocionid);
+                    //task.Start();
                     //}
                     _exito = true;
                 }
@@ -978,6 +978,7 @@ namespace cm.mx.catalogo.Controller
                 Usuario oUsuario = new Usuario();
                 rUsuario = new UsuarioRepository();
                 oUsuario = rUsuario.GetUserCodigo(Codigo);
+
                 if (oUsuario != null)
                 {
                     rPromocion = new PromocionRepository();
@@ -988,21 +989,46 @@ namespace cm.mx.catalogo.Controller
                         {
                             if (oPromocion.Promociondetalle != null && oPromocion.Promociondetalle.Count > 0)
                             {
-                                foreach (Promociondetalle oPromocionDetalle in oPromocion.Promociondetalle)
+                                if (oPromocion.Promociondetalle.Any(f => f.Condicion == "VISITA"))
                                 {
-                                    if (oPromocionDetalle.Condicion == "VISITA")
+                                    if (oPromocion.Promociondetalle.Any(f => f.Condicion == "IMPORTE"))
                                     {
-                                        int Valor1 = 0;
-                                        if (!string.IsNullOrEmpty(oPromocionDetalle.Valor1))
+                                        var ProImporte = oPromocion.Promociondetalle.Where(f => f.Condicion == "IMPORTE").ToList();
+                                        ProImporte.ForEach(f =>
                                         {
-                                            Valor1 = Convert.ToInt32(oPromocionDetalle.Valor1);
-                                        }
-                                        if (oUsuario.VisitaActual == Valor1)
-                                            _lsPromocion.Add(oPromocion);
+                                            double Valor1 = 0;
+                                            double Valor2 = 0;
+
+                                            double.TryParse(f.Valor1, out Valor1);
+                                            double.TryParse(f.Valor2, out Valor2);
+
+                                            
+                                            if (oUsuario.ImporteActual >= Valor1 && oUsuario.ImporteActual <= Valor2)
+                                            {
+                                                _lsPromocion.Add(oPromocion);
+                                                _exito = true;
+                                            }
+
+                                        });
                                     }
-                                    else
-                                        _lsPromocion.Add(oPromocion);
                                 }
+                                else  _lsPromocion.Add(oPromocion);
+
+                                //foreach (Promociondetalle oPromocionDetalle in oPromocion.Promociondetalle)
+                                //{
+                                //    if (oPromocionDetalle.Condicion == "VISITA")
+                                //    {
+                                //        int Valor1 = 0;
+                                //        if (!string.IsNullOrEmpty(oPromocionDetalle.Valor1))
+                                //        {
+                                //            Valor1 = Convert.ToInt32(oPromocionDetalle.Valor1);
+                                //        }
+                                //        if (oUsuario.VisitaActual == Valor1)
+                                //            _lsPromocion.Add(oPromocion);
+                                //    }
+                                //    else
+                                //        _lsPromocion.Add(oPromocion);
+                                //}
                             }
                         }
                     }
@@ -1242,10 +1268,11 @@ namespace cm.mx.catalogo.Controller
 
         public List<Usuario> GetAllUserPromocion(int PromocionId)
         {
-            List<Usuario> lsUser = new List<Usuario>();
+            List<Usuario> _lsUser = new List<Usuario>();
 
             try
             {
+                List<Usuario> lsUser = new List<Usuario>();
                 rUsuario = new UsuarioRepository();
                 Promocion oPromocion = this.GetPromocion(PromocionId);
                 if (oPromocion != null && oPromocion.Promocionid > 0)
@@ -1253,7 +1280,7 @@ namespace cm.mx.catalogo.Controller
                     if (oPromocion.Promociondetalle != null)
                     {
                         Promociondetalle oPromoDetalle = new Promociondetalle();
-                        oPromoDetalle = oPromocion.Promociondetalle.FirstOrDefault();
+                        oPromoDetalle = oPromocion.Promociondetalle.FirstOrDefault(f => f.Condicion == "VISITA");
                         if (oPromoDetalle != null && oPromoDetalle.Promociondetalleid > 0)
                         {
                             switch (oPromoDetalle.Condicion.ToUpper())
@@ -1263,7 +1290,38 @@ namespace cm.mx.catalogo.Controller
                                     string vNivel = string.Empty;
                                     vNivel = oPromocion.Tipomembresia;
                                     vVisita = Convert.ToInt32(oPromoDetalle.Valor1);
+
                                     lsUser = rUsuario.GetAllUserForVisita(vVisita, vNivel);
+
+                                    lsUser.ForEach(d =>
+                                    {
+                                        if (oPromocion.Promociondetalle.Any(f => f.Condicion == "VISITA"))
+                                        {
+                                            if (oPromocion.Promociondetalle.Any(f => f.Condicion == "IMPORTE"))
+                                            {
+                                                var ProImporte = oPromocion.Promociondetalle.Where(f => f.Condicion == "IMPORTE").ToList();
+                                                ProImporte.ForEach(f =>
+                                                {
+                                                    double Valor1 = 0;
+                                                    double Valor2 = 0;
+
+                                                    double.TryParse(f.Valor1, out Valor1);
+                                                    double.TryParse(f.Valor2, out Valor2);
+
+                                                    //if (Valor2 < d.ImporteActual || Valor1 > d.ImporteActual)
+                                                    if (d.ImporteActual >= Valor1 && d.ImporteActual <= Valor2)
+                                                    {
+                                                        _lsUser.Add(d);
+                                                        _exito = true;
+                                                    }
+
+                                                });
+                                            }
+                                        }
+
+                                    });
+
+
                                     break;
                                 case "EVENTO":
                                     int eVisita = Convert.ToInt32(oPromoDetalle.Valor1);
@@ -1285,7 +1343,7 @@ namespace cm.mx.catalogo.Controller
                 this.Errores.Add(innerException.Message);
             }
 
-            return lsUser;
+            return _lsUser;
         }
 
         public List<Notificacion> GetNotficaionesByTipo(string tipo)
@@ -1424,22 +1482,47 @@ namespace cm.mx.catalogo.Controller
                             {
                                 if (oPromocion.Promociondetalle != null && oPromocion.Promociondetalle.Count > 0)
                                 {
-                                    var DetallePromocion = oPromocion.Promociondetalle.FirstOrDefault();
-                                    if (DetallePromocion != null)
+                                    if (oPromocion.Promociondetalle.Any(f => f.Condicion == "VISITA"))
                                     {
-                                        if (DetallePromocion.Condicion == "VISITA")
+                                        if (oPromocion.Promociondetalle.Any(f => f.Condicion == "IMPORTE"))
                                         {
-                                            int Valor1 = 0;
-                                            if (!string.IsNullOrEmpty(DetallePromocion.Valor1))
+                                            var ProImporte = oPromocion.Promociondetalle.Where(f => f.Condicion == "IMPORTE").ToList();
+                                            ProImporte.ForEach(f =>
                                             {
-                                                Valor1 = Convert.ToInt32(DetallePromocion.Valor1);
-                                            }
-                                            if (oUsuario.VisitaActual == Valor1)
-                                                _lsPromocion.Add(oPromocion);
+                                                double Valor1 = 0;
+                                                double Valor2 = 0;
+
+                                                double.TryParse(f.Valor1, out Valor1);
+                                                double.TryParse(f.Valor2, out Valor2);
+
+                                                //if (Valor2 < oUsuario.ImporteActual || Valor1 > oUsuario.ImporteActual)
+                                                if (oUsuario.ImporteActual >= Valor1 && oUsuario.ImporteActual <= Valor2)
+                                                {
+                                                    _lsPromocion.Add(oPromocion);
+                                                    _exito = true;
+                                                }
+
+                                            });
                                         }
-                                        else
-                                            _lsPromocion.Add(oPromocion);
                                     }
+                                    else  _lsPromocion.Add(oPromocion);
+
+                                    //var DetallePromocion = oPromocion.Promociondetalle.FirstOrDefault();
+                                    //if (DetallePromocion != null)
+                                    //{
+                                    //    if (DetallePromocion.Condicion == "VISITA")
+                                    //    {
+                                    //        int Valor1 = 0;
+                                    //        if (!string.IsNullOrEmpty(DetallePromocion.Valor1))
+                                    //        {
+                                    //            Valor1 = Convert.ToInt32(DetallePromocion.Valor1);
+                                    //        }
+                                    //        if (oUsuario.VisitaActual == Valor1)
+                                    //            _lsPromocion.Add(oPromocion);
+                                    //    }
+                                    //    else
+                                    //        _lsPromocion.Add(oPromocion);
+                                    //}
                                 }
                             }
                         }
@@ -1490,7 +1573,7 @@ namespace cm.mx.catalogo.Controller
                 {
                     Usuarioid = oRedimirPromo.UsuarioId
                 };
-                
+
                 isExiste = rPromocionRedimir.PromocionIsRedimida(oRedimirPromo.UsuarioId, oRedimirPromo.PromocionId);
 
                 if (!isExiste)
@@ -1506,17 +1589,18 @@ namespace cm.mx.catalogo.Controller
                         bool IsSaveVisita = this.ActualizarVisitaPromocion(oRedimirPromo.PromocionId, oRedimirPromo.UsuarioId);
                         if (IsSaveVisita)
                         {
-                          bool IsSaveBajaNot =  this.BajaNotificacionPromocion(oRedimirPromo.UsuarioId);
-                          if (IsSaveBajaNot)
-                          {
-                              _exito = true;
-                          }
-                          else
-                          {
-                              _mensajes.Add("No se pudo dar de baja la notificación");
-                              _exito = false;
-                          }
-                        }else
+                            bool IsSaveBajaNot = this.BajaNotificacionPromocion(oRedimirPromo.UsuarioId);
+                            if (IsSaveBajaNot)
+                            {
+                                _exito = true;
+                            }
+                            else
+                            {
+                                _mensajes.Add("No se pudo dar de baja la notificación");
+                                _exito = false;
+                            }
+                        }
+                        else
                         {
                             _exito = false;
                             Mensajes.Add("No se pudo actualizar las visita del usuario");
@@ -1936,7 +2020,7 @@ namespace cm.mx.catalogo.Controller
                 rDistribucion = new DistribucionRepository();
                 DistribucionVR vrDistribucion = new DistribucionVR();
 
-                if(obj.DistribucionID == 0)
+                if (obj.DistribucionID == 0)
                 {
                     obj.Estado = "ACTIVO";
                 }
@@ -2252,39 +2336,96 @@ namespace cm.mx.catalogo.Controller
                         rNotificacion = new NotificacionRepository();
                         rPromoUser = new PromocionUsuarioRepository();
 
-                        foreach (Usuario oUser in lsUsuario)
-                        {
-                            Notificacion _oNotificacion = rNotificacion.GetNotificacion(oUser.Usuarioid, oPromocion.Promocionid);
-                            Notificacion oNotificacionProm = new Notificacion();
+                        lsUsuario.ForEach(d =>
+                                    {
+                                        if (oPromocion.Promociondetalle.Any(f => f.Condicion == "VISITA"))
+                                        {
+                                            if (oPromocion.Promociondetalle.Any(f => f.Condicion == "IMPORTE"))
+                                            {
+                                                var ProImporte = oPromocion.Promociondetalle.Where(f => f.Condicion == "IMPORTE").ToList();
+                                                ProImporte.ForEach(f =>
+                                                {
+                                                    double Valor1 = 0;
+                                                    double Valor2 = 0;
 
-                            if (_oNotificacion != null && _oNotificacion.NotificacionID > 0)
-                            {                                
-                                oNotificacionProm.Estatus = "ACTIVO";
-                                oNotificacionProm.FechaRegistro = DateTime.Now;
-                                oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                                oNotificacionProm.NotificacionID = _oNotificacion.NotificacionID;
-                                oNotificacionProm.PromocionID = oPromocion.Promocionid;
-                                oNotificacionProm.Referencia = "";
-                                oNotificacionProm.Tipo = "PROMOCION";
-                                oNotificacionProm.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
-                                oNotificacionProm.UsuarioID = oUser.Usuarioid;
-                                oNotificacionProm.Vigencia = DateTime.Now;
-                            }
-                            else
-                            {                                
-                                oNotificacionProm.Estatus = "ACTIVO";
-                                oNotificacionProm.FechaRegistro = DateTime.Now;
-                                oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                                oNotificacionProm.NotificacionID = 0;
-                                oNotificacionProm.PromocionID = oPromocion.Promocionid;
-                                oNotificacionProm.Referencia = "";
-                                oNotificacionProm.Tipo = "PROMOCION";
-                                oNotificacionProm.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
-                                oNotificacionProm.UsuarioID = oUser.Usuarioid;
-                                oNotificacionProm.Vigencia = DateTime.Now;
-                            }                                                      
+                                                    double.TryParse(f.Valor1, out Valor1);
+                                                    double.TryParse(f.Valor2, out Valor2);
+                                                    // 0 >= 12 || 0 <= 14
+                                                    if (d.ImporteActual >= Valor1 && d.ImporteActual <= Valor2)
+                                                    {
+                                                         Notificacion _oNotificacion = rNotificacion.GetNotificacion(d.Usuarioid, oPromocion.Promocionid);
+                                                         Notificacion oNotificacionProm = new Notificacion();
 
-                            Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
+                                                        if (_oNotificacion != null && _oNotificacion.NotificacionID > 0)
+                                                        {                                
+                                                            oNotificacionProm.Estatus = "ACTIVO";
+                                                            oNotificacionProm.FechaRegistro = DateTime.Now;
+                                                            oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                                                            oNotificacionProm.NotificacionID = _oNotificacion.NotificacionID;
+                                                            oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                                                            oNotificacionProm.Referencia = "";
+                                                            oNotificacionProm.Tipo = "PROMOCION";
+                                                            oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
+                                                            oNotificacionProm.UsuarioID = d.Usuarioid;
+                                                            oNotificacionProm.Vigencia = DateTime.Now;
+                                                        }
+                                                        else
+                                                        {                                
+                                                            oNotificacionProm.Estatus = "ACTIVO";
+                                                            oNotificacionProm.FechaRegistro = DateTime.Now;
+                                                            oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                                                            oNotificacionProm.NotificacionID = 0;
+                                                            oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                                                            oNotificacionProm.Referencia = "";
+                                                            oNotificacionProm.Tipo = "PROMOCION";
+                                                            oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
+                                                            oNotificacionProm.UsuarioID = d.Usuarioid;
+                                                            oNotificacionProm.Vigencia = DateTime.Now;
+                                                        }                                                      
+
+                                                        Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
+                                                        _exito = true;
+                                                    }
+
+                                                });
+                                            }
+                                        }
+
+                                    });
+                        //--
+                        //foreach (Usuario oUser in lsUsuario)
+                        //{
+                        //    Notificacion _oNotificacion = rNotificacion.GetNotificacion(oUser.Usuarioid, oPromocion.Promocionid);
+                        //    Notificacion oNotificacionProm = new Notificacion();
+
+                        //    if (_oNotificacion != null && _oNotificacion.NotificacionID > 0)
+                        //    {                                
+                        //        oNotificacionProm.Estatus = "ACTIVO";
+                        //        oNotificacionProm.FechaRegistro = DateTime.Now;
+                        //        oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                        //        oNotificacionProm.NotificacionID = _oNotificacion.NotificacionID;
+                        //        oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                        //        oNotificacionProm.Referencia = "";
+                        //        oNotificacionProm.Tipo = "PROMOCION";
+                        //        oNotificacionProm.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
+                        //        oNotificacionProm.UsuarioID = oUser.Usuarioid;
+                        //        oNotificacionProm.Vigencia = DateTime.Now;
+                        //    }
+                        //    else
+                        //    {                                
+                        //        oNotificacionProm.Estatus = "ACTIVO";
+                        //        oNotificacionProm.FechaRegistro = DateTime.Now;
+                        //        oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                        //        oNotificacionProm.NotificacionID = 0;
+                        //        oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                        //        oNotificacionProm.Referencia = "";
+                        //        oNotificacionProm.Tipo = "PROMOCION";
+                        //        oNotificacionProm.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
+                        //        oNotificacionProm.UsuarioID = oUser.Usuarioid;
+                        //        oNotificacionProm.Vigencia = DateTime.Now;
+                        //    }                                                      
+
+                        //    Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
 
                             //bool _isContinue = false;
 
@@ -2297,7 +2438,7 @@ namespace cm.mx.catalogo.Controller
 
                             //    this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
                             //}
-                        }    
+                        //}    
                     }
 
                     
@@ -2494,17 +2635,17 @@ namespace cm.mx.catalogo.Controller
                 Usuario oUsuario = this.getUsuarioById(UsuarioId);
                 if (oUsuario != null)
                 {
-                   VisitaActual = oUsuario.VisitaActual;
-                   List<Promocion> lsPromocion = this.GetAllPromocionIdBaja(VisitaActual);
-                   foreach (Promocion oPromocion in lsPromocion)
-                   {
-                       bool isSave = BajaNotificacion(UsuarioId, oPromocion.Promocionid);
-                       if (!isSave)
-                       {
-                           Mensajes.Add("La notificacion de la promocion '" + oPromocion.Descripcion + "' no se puede dar de baja.");
-                       }
-                   }
-                }               
+                    VisitaActual = oUsuario.VisitaActual;
+                    List<Promocion> lsPromocion = this.GetAllPromocionIdBaja(VisitaActual);
+                    foreach (Promocion oPromocion in lsPromocion)
+                    {
+                        bool isSave = BajaNotificacion(UsuarioId, oPromocion.Promocionid);
+                        if (!isSave)
+                        {
+                            Mensajes.Add("La notificacion de la promocion '" + oPromocion.Descripcion + "' no se puede dar de baja.");
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -2521,7 +2662,7 @@ namespace cm.mx.catalogo.Controller
             }
             return _exito;
         }
-       //Solo se usa la promocion para poder actualizar las visitas
+        //Solo se usa la promocion para poder actualizar las visitas
         public bool ActualizarVisitaPromocion(int PromocionId, int UsuarioId)
         {
             _exito = true;
@@ -2556,7 +2697,8 @@ namespace cm.mx.catalogo.Controller
                                         Mensajes.Add("Ocurrio un error al actualizar el numero de visitas");
                                         _exito = false;
                                         return false;
-                                    }else _exito = true;                                    
+                                    }
+                                    else _exito = true;
                                 }
                             }
                         }
@@ -2594,7 +2736,9 @@ namespace cm.mx.catalogo.Controller
                 lsPromocion = rPromocion.GetPromocionBajaVisita(NumeroVisita);
                 _exito = true;
 
-            }catch(Exception ex){
+            }
+            catch (Exception ex)
+            {
                 if (rPromocion._session.Transaction.IsActive)
                 {
                     rPromocion._session.Transaction.Rollback();

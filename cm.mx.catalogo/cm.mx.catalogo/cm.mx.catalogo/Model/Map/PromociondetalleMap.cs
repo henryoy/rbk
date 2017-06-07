@@ -14,6 +14,7 @@ namespace cm.mx.catalogo.Model.Map
             Map(x => x.Valor2).Column("Valor2").Not.Nullable();
             Map(x => x.Condicion).Column("Condicion").Not.Nullable();
             Map(x => x.Todos).Column("Todos").Not.Nullable();
+            Map(x => x.Cambio).Column("Cambio");
         }
     }
 }

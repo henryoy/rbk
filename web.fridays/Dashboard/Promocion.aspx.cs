@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using cm.mx.catalogo.Controller;
 using cm.mx.catalogo.Model;
 using System.Data;
+using System.IO;
+using System.Configuration;
 
 public partial class Dashboard_Promocion : System.Web.UI.Page
 {
@@ -45,10 +47,23 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             ViewState["oPromocion"] = value;
         }
     }
+    List<PromocionDetalleVM> lsDetalle
+    {
+        get
+        {
+            var temp = ViewState["Promociondetalle"];
+            return temp == null ? null : (List<PromocionDetalleVM>)temp;
+        }
+        set
+        {
+            ViewState["Promociondetalle"] = value;
+        }
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
+            lsDetalle = new List<PromocionDetalleVM>();
             int thePID = 0;
             lsSucusalVM = new List<SucursalVM>();
 
@@ -139,9 +154,11 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
             if (!string.IsNullOrEmpty(oPromocion.ImagenUrl))
             {
-                hfTajeta.Value = oPromocion.ImagenUrl;
-                imgTarjeta.ImageUrl = oPromocion.ImagenUrl;
+                string _Path = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "" + ConfigurationManager.AppSettings["RutaImagenes"];
+                hfTajeta.Value = _Path + oPromocion.ImagenUrl;
+                imgTarjeta.ImageUrl = _Path + oPromocion.ImagenUrl;
             }
+
             txtCondiciones.Text = oPromocion.TerminosCondiciones;
 
             ScriptManager.RegisterStartupScript(this,
@@ -153,7 +170,23 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
             if (oPromocion.Promociondetalle != null)
             {
-                Promociondetalle oPromocionDetalle = oPromocion.Promociondetalle.FirstOrDefault();
+                Promociondetalle oPromocionDetalle = oPromocion.Promociondetalle.FirstOrDefault(f=>f.Condicion != "IMPORTE");
+                List<Promociondetalle> _oPromocionDetalle = oPromocion.Promociondetalle.Where(f => f.Condicion == "IMPORTE").ToList();
+                _oPromocionDetalle.ForEach(d =>
+                {
+                    lsDetalle.Add(new PromocionDetalleVM()
+                    {
+                        Cambio = d.Cambio,
+                        Condicion = d.Condicion,
+                        Promociondetalleid = d.Promociondetalleid,
+                        Todos = d.Todos,
+                        Valor1 = d.Valor1,
+                        Valor2 = d.Valor2
+                    });
+                });
+
+                BindGrid(this.grvDetalle, new List<dynamic>(lsDetalle));
+
                 if (oPromocionDetalle != null)
                 {
 
@@ -222,9 +255,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         {
             thePID = Convert.ToInt32(Request.QueryString["id"]);
         }
-
-
-
+        
         Promocion _oPromocion = new Promocion();
         cCatalogo = new CatalogoController();
         _oPromocion.Titulo = txtTitulo.Text;
@@ -234,7 +265,16 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         _oPromocion.Tipomembresia = dpTarjeta.SelectedItem.Text;
         _oPromocion.Tipocliente = _oPromocion.Tipomembresia;
         _oPromocion.TerminosCondiciones = txtCondiciones.Text;
-        _oPromocion.ImagenUrl = hfTajeta.Value;
+        string path = string.Empty;
+        string fileName = string.Empty;
+
+        if (!string.IsNullOrEmpty(hfTajeta.Value))
+        {
+            path = hfTajeta.Value;
+            fileName = Path.GetFileName(path);
+        }
+
+        _oPromocion.ImagenUrl = fileName;
 
         int TarjetaId = Convert.ToInt32(dpTarjeta.SelectedItem.Value);
 
@@ -270,7 +310,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         
         if (oPromocion.Promociondetalle.Count > 0)
         {
-            var detalle = oPromocion.Promociondetalle.FirstOrDefault();
+            var detalle = oPromocion.Promociondetalle.Where(f=>f.Condicion != "IMPORTE").FirstOrDefault();
             if(detalle != null){
                 oPromocionDetalle.Promociondetalleid = detalle.Promociondetalleid;                
             }
@@ -278,9 +318,19 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
         oPromocionDetalle.Valor1 = txtValor1.Text;
         oPromocionDetalle.Valor2 = txtValor2.Text;
-
-
         _oPromocion.AddDetalle(oPromocionDetalle);
+        foreach (PromocionDetalleVM oPromocionDetalleVM in lsDetalle)
+        {
+            Promociondetalle _oPromocionDetalle = new Promociondetalle();
+
+            _oPromocionDetalle.Condicion = oPromocionDetalleVM.Condicion;
+            _oPromocionDetalle.Valor1 = oPromocionDetalleVM.Valor1;
+            _oPromocionDetalle.Valor2 = oPromocionDetalleVM.Valor2;
+            _oPromocionDetalle.Promociondetalleid = oPromocionDetalleVM.Promociondetalleid;
+            _oPromocionDetalle.Cambio = oPromocionDetalleVM.Cambio;
+
+            _oPromocion.AddDetalle(_oPromocionDetalle);
+        }
 
         _oPromocion.AddMembresia(new Promocionmembresia()
         {
@@ -430,5 +480,148 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
               "StartupCalendar",
               "ActiveCalendar();",
               true);
+    }
+    protected void grvDetalle_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.EmptyDataRow)
+        {
+            e.Row.Cells[0].CssClass = "col-empty";
+        }
+        else if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            PromocionDetalleVM obj = (PromocionDetalleVM)e.Row.DataItem;
+            if (grvDetalle.EditIndex != e.Row.RowIndex)
+            {
+                if (grvDetalle.EditIndex > -1) e.Row.CssClass = "deshabilitado";
+                else
+                {
+                    e.Row.Attributes["ondblclick"] = Page.ClientScript.GetPostBackClientHyperlink(grvDetalle, "Edit$" + e.Row.RowIndex);
+                }
+                //var camp = lsDetalle.FirstOrDefault(a => a.Promociondetalleid == obj.Promociondetalleid);
+                //if (camp == null) 
+                //    camp = new PromocionDetalleVM();
+
+
+                //e.Row.Cells[0].Text = camp.Condicion;
+                //e.Row.Cells[1].Text = camp.Valor1;
+                //e.Row.Cells[2].Text = camp.Valor2;
+                //e.Row.Cells[3].Text = camp.Cambio;
+            }
+            else
+            {
+                e.Row.CssClass = "row-edit";
+
+                TextBox cbxU = (TextBox)e.Row.Cells[0].Controls[1];
+                TextBox cbxO = (TextBox)e.Row.Cells[1].Controls[1];
+                TextBox cbxT = (TextBox)e.Row.Cells[2].Controls[1];
+
+                cbxU.Text = obj.Valor1;
+                cbxO.Text = obj.Valor2;
+                cbxT.Text = obj.Cambio;
+            }
+        }
+    }
+    protected void grvDetalle_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+    {
+        grvDetalle.EditIndex = -1;
+        BindGrid(grvDetalle, new List<dynamic>(lsDetalle));
+    }
+    protected void grvDetalle_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+
+        grvDetalle.EditIndex = e.NewEditIndex;
+        BindGrid(grvDetalle, new List<dynamic>(lsDetalle));
+    }
+    protected void grvDetalle_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    {
+        try
+        {
+            GridView _gridview = (GridView)sender;
+            GridViewRow r = _gridview.Rows[e.RowIndex];
+            List<string> mensajes = new List<string>();
+            //DropDownList TipoPromocion = (DropDownList)r.Cells[0].Controls[1];
+            //if (string.IsNullOrEmpty(TipoPromocion.SelectedValue) && e.RowIndex > 0)
+            //{
+            //    mensajes.Add("Indique el tipo de promoción");
+            //}
+            //else
+            //{
+                TextBox txtValor1 = (TextBox)r.Cells[0].Controls[1];
+                TextBox txtValor2 = (TextBox)r.Cells[1].Controls[1];
+                TextBox txtCambio = (TextBox)r.Cells[2].Controls[1];
+
+                if (string.IsNullOrEmpty(txtValor1.Text.Trim()))
+                {
+                    mensajes.Add("Ingrese el valor 1");
+                }
+                else if (string.IsNullOrEmpty(txtValor1.Text.Trim()))
+                {
+                    mensajes.Add("Ingrese el valor 2");
+                }
+                else if (string.IsNullOrEmpty(txtCambio.Text.Trim()))
+                {
+                    mensajes.Add("Ingrese la condicion para el rango del importe");
+                }
+                else
+                {
+                    var obj = lsDetalle.ElementAt(e.RowIndex);
+                    obj.Condicion = "IMPORTE";
+                    obj.Cambio = txtCambio.Text;
+                    obj.Valor1 = txtValor1.Text;
+                    obj.Valor2 = txtValor2.Text;
+                }
+            //}
+
+            if (mensajes.Count() > 0)
+            {
+                Funciones.MostarMensajes("error", mensajes);
+            }
+            else
+            {
+                grvDetalle.EditIndex = -1;
+                BindGrid(grvDetalle, new List<dynamic>(lsDetalle));
+            }
+        }
+        catch (Exception ex)
+        {
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
+        }
+    }
+    protected void btnAddDetalle_Click(object sender, EventArgs e)
+    {
+        PromocionDetalleVM oPromoDetalle = new PromocionDetalleVM();
+        lsDetalle.Add(oPromoDetalle);
+        grvDetalle.EditIndex = lsDetalle.Count() - 1;
+        //BindGrid(grvDetalle, new List<dynamic>(lsDetalle));
+        grvDetalle.DataSource = lsDetalle;
+        grvDetalle.DataBind();
+        upSucursal.Update();
+    }
+    protected void BindGrid(GridView grid, List<dynamic> ls)
+    {
+        grid.DataSource = ls;
+        grid.DataBind();
+    }
+    protected void btnEliminar_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            GridViewRow row = (GridViewRow)((LinkButton)sender).NamingContainer;
+            lsDetalle.RemoveAt(row.RowIndex);
+            BindGrid(grvDetalle, new List<dynamic>(lsDetalle));
+        }
+        catch (Exception ex)
+        {
+            Funciones.MostarMensajes("error", new List<string> { ex.Message });
+        }
+    }
+
+    protected void grvDetalle_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        grvDetalle.EditIndex = e.RowIndex;
+
+        PromocionDetalleVM o = lsDetalle.ElementAt(e.RowIndex);
+        lsDetalle.Remove(o);
+        BindGrid(grvDetalle, new List<dynamic>(lsDetalle));
     }
 }

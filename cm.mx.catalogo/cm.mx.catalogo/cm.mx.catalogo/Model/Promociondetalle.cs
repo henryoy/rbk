@@ -21,5 +21,6 @@ namespace cm.mx.catalogo.Model
         public virtual string Valor2 { get; set; }
         public virtual string Condicion { get; set; }
         public virtual bool Todos { get; set; }
+        public virtual string Cambio { get; set; }
     }
 }

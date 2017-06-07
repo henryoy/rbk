@@ -67,6 +67,9 @@ namespace cm.mx.catalogo.Model
         [DataMember]
         public virtual string IdExterno { get; set; }
 
+        public virtual double ImporteTotal { get; set; }
+        public virtual double ImporteActual { get; set; }
+
         Tipomembresia mebresia = new Tipomembresia();
         public virtual Tipomembresia oTarjeta { get { return mebresia; } set { mebresia = value; TarjetaID = mebresia.Membresiaid; } }
 

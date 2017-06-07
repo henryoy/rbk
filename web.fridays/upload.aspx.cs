@@ -33,7 +33,7 @@ public partial class upload : System.Web.UI.Page
          * The following parameters can be changed, and is reccomended to change them from here for security reason
          ***********************************************************************************************************/
         //string upload_path      = Server.MapPath(string.IsNullOrEmpty(Request.Params["ax-file-path"]) ? "" : Request.Params["ax-file-path"]);
-        var path = ConfigurationManager.AppSettings["RutaImagenes"];
+        var path = "~" + ConfigurationManager.AppSettings["RutaImagenes"];
         if (string.IsNullOrEmpty(path)) path = string.IsNullOrEmpty(Request.Params["ax-file-path"]) ? "" : Request.Params["ax-file-path"];
         string upload_path = Path.IsPathRooted(path) ? path : Server.MapPath(path);
         string max_file_size = string.IsNullOrEmpty(Request.Params["ax-max-file-size"]) ? "10M" : Request.Params["ax-max-file-size"];

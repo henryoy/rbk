@@ -170,7 +170,7 @@ public partial class Dashboard_Notificacion_asignarventa : System.Web.UI.Page
                 {
                     Sucursal = (int)Session["Sucursal"];
                 }
-                isRegisterVisita = cCatalogo.RegistroVisita("Administrador.root", oUsuario.Usuarioid, txtReferencia.Text, Sucursal);
+                isRegisterVisita = cCatalogo.RegistroVisita(1, oUsuario.Usuarioid, txtReferencia.Text, Sucursal);
                 if (isRegisterVisita)
                 {
                     ScriptManager.RegisterStartupScript(

@@ -96,6 +96,7 @@
     <Compile Include="Model\NivelUsuario.cs" />
     <Compile Include="Model\Notificacion.cs" />
     <Compile Include="Model\ObjectVM\NotificacionSucursalVM.cs" />
+    <Compile Include="Model\ObjectVM\PromocionDetalleVM.cs" />
     <Compile Include="Model\ObjectVM\PromocionVM.cs" />
     <Compile Include="Model\ObjectVM\RedimirPromocionVM.cs" />
     <Compile Include="Model\ObjectVM\SucursalVM.cs" />
