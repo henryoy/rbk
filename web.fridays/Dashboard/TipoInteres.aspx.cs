@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Dashboard_TipoInteres : System.Web.UI.Page
+public partial class TipoInteress : System.Web.UI.Page
 {
     #region
     CatalogoController _catalogo;

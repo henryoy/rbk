@@ -573,6 +573,38 @@
 
             });
         }
+
+        $(document).on('change', '#send_sidebar .subscriber_lists', function () {
+
+
+            el = $(this);
+
+
+            id = $('option:selected', this).attr('data-list-id');
+            list = $('option:selected', this).val();
+
+            console.log(el);
+            console.log(id);
+            console.log(list);
+
+            if (id == 'create_new_list') {
+                $('.create_new_list').trigger('click');
+                $('#send_sidebar select').prop('selectedIndex', 0);
+                return false;
+            }
+
+            if (list.toUpperCase() == "PROMOCION") {
+                //titleListaPromocion
+                $("#titleListaPromocion").css("display", "block");
+                $("#tipoListaPromocion").css("display", "block");
+            } else {
+                $("#titleListaPromocion").css("display", "none");
+                $("#tipoListaPromocion").css("display", "none");
+            }
+            openFilterSidebar();
+
+        });
+
     </script>
     <script type="text/javascript">
 
@@ -780,405 +812,12 @@
 
             });
 
-            $(document).on('click', '.filter_button', function () {
-
-                data_overview_id = $(this).attr('data-overview-id');
-
-                openResultOverview(data_overview_id);
-
-            });
-
-            $(document).on('click', '.view_campaign_online', function () {
-
-                campaign_id = $('[data-campaign]').attr('data-campaign');
-
-                window.open('http://www.stampready.net/dashboard/online/index.php?id=' + campaign_id);
-
-            })
-
-            $(document).on('click', '.campaign_send_test_email', function () {
-
-                headline = 'Send an email for test purposes';
-                paragraph = 'Enter the email address of the recipient that should receive your newsletter. We send from <span class="semi_bold" style="color: #343434">noreply@stampready.net</span>, with subject as <span class="semi_bold" style="color: #343434">Test Email</span>, so it may be caught as spam. Please, check your junk folder.';
-
-                inputField = user_email;
-                inputFieldId = 'send_test_email_value';
-
-                btnTrue = 'Send Test Email';
-                btnTrueId = 'verify_send_test_email';
-
-                btnFalse = 'Cancel';
-
-                openPopup();
-
-                setTimeout(function () {
-
-                    $('#send_test_email_value').val(user_email);
-
-                }, 120);
-
-            })
-
-            $(document).on('click', '#verify_send_test_email', function () {
-
-                if (testFlag) {
-
-                    return false;
-
-                }
-
-                testFlag = true;
-
-                test_email = $('#send_test_email_value').val();
-                campaign_id = $('[data-campaign]').attr('data-campaign');
-
-                $('#verify_send_test_email').val('Sending..');
-
-                $.ajax({
-                    type: "POST",
-                    dataType: "html",
-                    url: "../scripts/calls.php?func=send_test_email",
-                    data: { test_email: test_email, campaign_id: campaign_id }
-                }).done(function (data) {
-
-                    if (data == 'invalid email') {
-
-                        notificationContent = "Email address does not look valid";
-                        notificationColor = "#ea5a5b";
-                        notification();
-
-                        $('#verify_send_test_email').val('Send Test Email');
-
-                    }
-
-                    else if (data == 'success') {
-
-                        closePopup();
-
-                        setTimeout(function () {
-
-                            notificationContent = "Test email sent to " + test_email;
-                            notificationColor = "#69c0af";
-                            notification();
-
-                        }, 500)
-
-                    }
-
-                    testFlag = false;
-
-                }).fail(function (data) {
-
-                    testFlag = false;
-                    $('#verify_send_test_email').trigger('click')
-
-                });
-
-            })
-
-            $(document).on('mouseenter', '.selection_item', function () {
-
-                if (isMouseDown) {
-
-                    $(this).toggleClass("selected")
-                    calculateSelection();
-                }
-            });
-
-            $(document).on('click', '.clear_selection_states', function () {
-
-                $('#selection_form .selected').removeClass('selected');
-                calculateSelection();
-
-            });
-
-            $(document).on('change', '#filter_sidebar select', function () {
-
-                el = $(this);
-                val = $('option:selected', this).attr('data-selected-vip');
-
-                if (val == '0') {
-
-                    val = '';
-
-                }
-
-                $('#send_form .selected').attr('data-selected-vip', val);
-
-            });
-
-            $(document).on('click', '.filter_item:not(.selected)', function () {
-
-                $('#filter_form .selected').removeClass('selected');
-                $(this).addClass('selected');
-
-                if ($('#selection_sidebar').hasClass('expanded')) {
-
-
-
-                }
-
-                else {
-
-                    openSelectionSidebar();
-
-                }
-
-                getSelectionList();
-
-            });
-
-            $(document).on('click', '.removeListBtn', function (e) {
-
-                e.stopPropagation();
-
-                //remove list
-                id = $(this).closest('li').attr('data-id');
-                list = $(this).closest('li').attr('data-l-name');
-
-                //resest filter
-                resetFilters();
-                removeList(id, list);
-
-            });
-
-            $(document).on('click', '.edit_lists_btn', function () {
-
-                $('#send_form .selected').removeClass('selected');
-                resetFilterSidebar();
-                resetSelectionSidebar();
-                closeAllSidebars();
-
-                if ($(".edit_lists_btn:contains('done')").length) {
-
-
-                }
-
-                else {
-
-                    editableListsOn();
-
-                }
-
-            });
-
-            $(document).on('change', '#send_sidebar .subscriber_lists', function () {
-
-
-                el = $(this);
-                
-
-                id = $('option:selected', this).attr('data-list-id');
-                list = $('option:selected', this).val();
-
-                console.log(el);
-                console.log(id);
-                console.log(list);
-
-                if (id == 'create_new_list') {
-                    $('.create_new_list').trigger('click');
-                    $('#send_sidebar select').prop('selectedIndex', 0);
-                    return false;
-                }
-
-                if (list.toUpperCase() == "PROMOCION") {
-                    //titleListaPromocion
-                    $("#titleListaPromocion").css("display", "block");
-                    $("#tipoListaPromocion").css("display", "block");
-                } else {
-                    $("#titleListaPromocion").css("display", "none");
-                    $("#tipoListaPromocion").css("display", "none");
-                }
-                openFilterSidebar();
-
-            });
-
-            $(document).on('change', '#filter_sidebar select', function () {
-
-                el = $(this);
-                amount = $('option:selected', this).attr('data-amount');
-
-                if (amount == undefined) {
-
-                    //hide amount
-
-
-                }
-
-                else {
-
-                    $(this).closest('label').find('.filter_amount').text(amount);
-
-                }
-
-            })
-
-            $(document).on('click', '#send_sidebar li:not(.selected)', function () {
-
-                if ($('.removeListBtn').length > 0) {
-
-                    return false;
-
-                }
-
-                $('#send_form .selected').removeClass('selected');
-                $(this).addClass('selected');
-
-                restoreFilterSidebar();
-                openFilterSidebar();
-                closeSelectionSidebar();
-
-            });
-
-            if (getQueryVariable('callback') == 'success') {
-
-                analytics_id = getQueryVariable('id');
-
-                notificationContent = "Campaign successfully sent!"; notificationColor = "#7ebbad"; notification(); setTimeout(function () { $(location).attr("href", "../analytics/index.php?id=" + analytics_id); }, 3000);
-
-            }
-
-            else if (getQueryVariable('callback') == 'credits') {
-
-
-                amount = getQueryVariable('amount');
-                save = getQueryVariable('save');
-                stripe = getQueryVariable('stripe');
-                headline = 'You need to buy more credits'
-                paragraph = 'It seems you don\'t have enough credits to send out your campaign. You just need ' + amount + ' more.';
-
-                btnTrue = 'Buy ' + amount + ' credits';
-                btnTrueId = 'buy_more_credits';
-
-                openPopup();
-
-            }
-
-            else if (getQueryVariable('callback') == 'lowplan') {
-
-                notificationContent = "You have to many subscribers in order to sent this newsletter. Please upgrade"; notificationColor = "#ea5a5b"; notification(); setTimeout(function () { $(location).attr("href", "../credits/index.php?"); }, 3000);
-
-            }
-
-
-            else if (getQueryVariable('callback') == 'verify') {
-
-                email = getQueryVariable('email');
-                name = getQueryVariable('name');
-                name = decodeURIComponent((name).replace(/\+/g, '%20'));
-                subject = getQueryVariable('subject');
-                subject = decodeURIComponent((subject).replace(/\+/g, '%20'));
-                list = getQueryVariable('list');
-                list = decodeURIComponent((list).replace(/\+/g, '%20'));
-
-                headline = 'Please verify ' + email
-                paragraph = 'Due to security measures, we need to make sure you have control over <span class="brandColor">' + email + '</span>. This is a one time process. Please, check your email.';
-
-                inputField = 'Verification Code';
-                inputFieldId = 'verification_value';
-
-                btnTrue = 'Verify address and send campaign';
-                btnTrueId = 'verify_and_send';
-
-                openPopup();
-
-                subject = decodeURIComponent((subject).replace(/\+/g, '%20'));
-                subject = subject.replace(/\\/g, '');
-                name = decodeURIComponent((name).replace(/\+/g, '%20'));
-                $('#send_from_name').val(name);
-                $('#send_from_email').val(email);
-                $('#send_subject_line').val(subject);
-
-                setTimeout(function () {
-
-                    $('[data-list-name="' + list + '"]').trigger('click');
-
-                }, 250)
-
-
-            }
-
-            else if (getQueryVariable('redirect') == '1') {
-
-                email = getQueryVariable('email');
-                name = getQueryVariable('name');
-                subject = getQueryVariable('subject');
-                list = getQueryVariable('list');
-
-                subject = decodeURIComponent((subject).replace(/\+/g, '%20'));
-                subject = subject.replace(/\\/g, '');
-                list = decodeURIComponent((list).replace(/\+/g, '%20'));
-                name = decodeURIComponent((name).replace(/\+/g, '%20'));
-
-                $('#send_from_name').val(name);
-                $('#send_from_email').val(email);
-                $('#send_subject_line').val(subject);
-
-                setTimeout(function () {
-
-                    $('[data-list-name="' + list + '"]').trigger('click');
-
-                }, 250)
-
-            }
-
-            $(document).on('click', '#verify_and_send', function () {
-
-                if (disableFlag == '1') {
-
-                    return false;
-
-                }
-
-                disableFlag = 1;
-
-                $(this).val('Verifying..')
-
-                verification_code = $('#verification_value').val();
-
-                $.ajax({
-                    type: "POST",
-                    dataType: "html",
-                    url: "../scripts/calls.php?func=verify_address",
-                    data: { verification_code: verification_code }
-                }).done(function (data) {
-
-                    if (data == 0) {
-
-                        closePopup();
-
-                        setTimeout(function () {
-
-                            $('#generateChecklist').trigger('click');
-
-                        }, 500);
-
-                    }
-
-                    else {
-
-                        notificationContent = "Wrong verification code"; notificationColor = "#ea5a5b"; notification();
-                        $('#verify_and_send').val('Verify Email Address');
-
-                    }
-
-                    disableFlag = 0;
-
-                });
-
-            });
-
             $(document).on('click', 'body', function () {
 
                 $('#datepicker').hide();
 
             });
 
-            $(document).on('click', '#continue_to_analytics', function () {
-
-                $(location).attr('href', '../analytics/campaign/index.php?id=' + campaignId);
-
-            });
 
             $(document).on('mousedown', '.switch', function () {
 
@@ -1261,14 +900,7 @@
 
                 }
 
-            });
-
-
-            $(document).on('click', '#buy_more_credits', function () {
-
-                $(location).attr('href', '../checkout/index.php?credits=' + creditsShort);
-
-            })
+            });         
 
         });
 
@@ -1678,8 +1310,6 @@
             })
 
         }
-
-
 
         function calculateSelection() {
 

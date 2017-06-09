@@ -9,6 +9,7 @@
         // Código que se ejecuta al iniciar la aplicación
         AuthConfig.RegisterOpenAuth();
         RouteConfig.RegisterRoutes(RouteTable.Routes);
+        //HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
     }
     
     void Application_End(object sender, EventArgs e)
