@@ -672,27 +672,27 @@
                     e.stopImmediatePropagation();
                 });
 
-                $(document).on("click", ".btnTrue", function (e) {
-                    var Archivos = $('.ax-file-list li');
-                    var seleccionado = $("#hfTajeta").val();
-                    var procesado = $(".imgTarjeta").attr("src");
+                //$(document).on("click", ".btnTrue", function (e) {
+                //    var Archivos = $('.ax-file-list li');
+                //    var seleccionado = $("#hfTajeta").val();
+                //    var procesado = $(".imgTarjeta").attr("src");
 
-                    console.log(seleccionado);
-                    console.log(procesado);
+                //    console.log(seleccionado);
+                //    console.log(procesado);
 
-                    if (seleccionado == procesado) {
-                        GudarDatos();
-                    }
-                    else if (Archivos.length == 0) {
-                        //notification('Seleccione una imagen', 'error');
-                    }
-                    else {
-                        $(".ax-upload").click();
-                    }
-                    //e.preventDefault();
-                    //e.stopPropagation();
-                    //e.stopImmediatePropagation();
-                });
+                //    if (seleccionado == procesado) {
+                //        GudarDatos();
+                //    }
+                //    else if (Archivos.length == 0) {
+                //        notification('Seleccione una imagen', 'error');
+                //    }
+                //    else {
+                //        $(".ax-upload").click();
+                //    }
+                //    e.preventDefault();
+                //    e.stopPropagation();
+                //    e.stopImmediatePropagation();
+                //});
 
                 window.GudarDatos = function () {
                     console.log("test");

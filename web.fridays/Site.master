@@ -76,11 +76,11 @@
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/RedimirPromocion") %>"><font><font>Redimir Promoción</font></font></a></li>
                             </ul>
                         </li>
-                        <li id="campaigns_link_2" class="">
+                        <li id="analytics_link" class="">
                             <h2 class="semi_bold">Campaña</h2>
                             <ul class="hidden" style="display: none;">
-                                <li id="my_campaigns_view_1"><a href="<%= ResolveUrl("~/Dashboard/Campanas/campanas") %>"><font><font>Campañas</font></font></a></li>
-                                <li id="my_campaigns_view_2"><a href="<%= ResolveUrl("~/Dashboard/Campanas/campana") %>"><font><font>Nueva campaña</font></font></a></li>
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Campanas/campanas") %>"><font><font>Campañas</font></font></a></li>
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Campanas/campana") %>"><font><font>Nueva campaña</font></font></a></li>
                                 <%--<li id="my_campaigns_view_2"><a href="#"><font><font>Expedido</font></font></a></li>--%>
                             </ul>
                         </li>
@@ -92,13 +92,13 @@
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Clientes") %>">Clientes</a></li>
                             </ul>
                         </li>
-                        <li id="analytics_link" class="">
+<%--                        <li id="analytics_link" class="">
                             <h2 class="semi_bold">Analítica</h2>
                             <ul class="hidden">
                                 <li><a href="#">campañas</a></li>
                                 <li><a href="#">Suscriptores</a></li>
                             </ul>
-                        </li>
+                        </li>--%>
                         <li id="knowledge_base_link">
                             <h2 class="semi_bold">Membresia</h2>
                             <ul class="hidden">
@@ -222,7 +222,7 @@
 
                 console.log(message);
                 console.log(type);
-                notificationTime = 1000;
+                notificationTime = 10000;
                 //modify notification
                 $('.popup-notification').html(message);
                 $('.popup-notification').removeClass('error').removeClass('success');

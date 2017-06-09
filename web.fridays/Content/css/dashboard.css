@@ -6858,9 +6858,9 @@ span.feed_empty_state {
     }
 
 
-    /* Make clicks pass-through */
+/* Make clicks pass-through */
 #nprogress,
-#MainContent_upPreload {
+#MainContent_upPreload,#upPreload {
   /*pointer-events: none;*/
   height: 100%;
   left: 0;
@@ -6900,7 +6900,8 @@ span.feed_empty_state {
 }
 /* Remove these to get rid of the spinner */
 #nprogress .spinner,
-#MainContent_upPreload .spinner {
+#MainContent_upPreload .spinner,
+#upPreload .spinner {
   display: block;
   position: fixed;
   /*right: 15px;
@@ -6915,7 +6916,8 @@ span.feed_empty_state {
   top: 15px;
 }
 #nprogress .spinner-icon,  
-#MainContent_upPreload .spinner-icon {  
+#MainContent_upPreload .spinner-icon,
+#upPreload .spinner-icon  {  
   border: solid 2px transparent;
   border-left-color: transparent;
   border-radius: 50%;
@@ -6928,7 +6930,8 @@ span.feed_empty_state {
           animation: nprogress-spinner 400ms linear infinite;
 }
 #nprogress .spinner-icon-bg, 
-#MainContent_upPreload .spinner-icon-bg {  
+#MainContent_upPreload .spinner-icon-bg,
+#upPreload .spinner-icon-bg  {  
   border: solid 2px rgba(0,0,0,0.2);
   border-radius: 50%;
   box-sizing: border-box;
@@ -6944,7 +6947,8 @@ span.feed_empty_state {
   position: absolute;
 }
 #nprogress .overlay,
-#MainContent_upPreload .overlay {
+#MainContent_upPreload .overlay,
+#upPreload .overlay {
   /*pointer-events: none;
   cursor: not-allowed;*/
   background-color: #000;

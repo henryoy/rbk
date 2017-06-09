@@ -1,9 +1,9 @@
 ﻿using cm.mx.catalogo.Controller;
 using cm.mx.catalogo.Model;
-
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -116,8 +116,8 @@ public partial class membresias : System.Web.UI.Page
             int min;
             int max;
             decimal descuento;
-            int.TryParse(txtVisitasMin.Text.Trim(), out min);
-            int.TryParse(txtVisitasMax.Text.Trim(), out max);
+            int.TryParse(txtVisitasMin.Text.Trim(), NumberStyles.AllowThousands, new NumberFormatInfo() { NumberGroupSeparator = "," }, out min);
+            int.TryParse(txtVisitasMax.Text.Trim(), NumberStyles.AllowThousands, new NumberFormatInfo() { NumberGroupSeparator = "," },out max);
             decimal.TryParse(txtDescuento.Text, out descuento);
             var filePath = (ConfigurationManager.AppSettings["RutaImagenes"]).Replace("~", "");
             Tipomembresia oMembresia = new Tipomembresia();

@@ -66,8 +66,8 @@
 
                 $('#edit-urls-images, #row_titles2, .select_all_checkboxes').hide();
                 $('#mainWrapper').append('<div class="empty_campaigns regular" style="font-size: 34px; color: #4a4a4a">'
-                     + '<a href="<%= ResolveClientUrl("~/Dashboard/Promocion.aspx") %>" class="semi_bold" style="padding: 18px 34px; font-size: 13px; margin: auto;">' +
-                     'No existen promociones</a>' +
+                     + '<a href="<%= ResolveClientUrl("~/Dashboard/Campanas/Campana.aspx") %>" class="semi_bold" style="padding: 18px 34px; font-size: 13px; margin: auto;">' +
+                     'No existen campañas</a>' +
                      ' </div>');
 
             }

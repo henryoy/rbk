@@ -152,7 +152,7 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
     {
         try
         {
-            List<string> mensajes = new List<string>();
+           List<string> mensajes = new List<string>();
             StringBuilder sb = new StringBuilder();
 
             if (mensajes.Count() > 0)
@@ -161,9 +161,21 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             }
             else
             {
+                bool isContinue = true;
                 if (oDistribucion == null) oDistribucion = new Distribucion();
-                string cond = sb.ToString().Trim();
-                //if (!string.IsNullOrEmpty(cond)) cond = cond.Substring(3, cond.Length - 3);
+                foreach (var item in oDistribucion.Condiciones)
+                {
+                    if (string.IsNullOrEmpty(item.Campo))
+                    {
+                        Funciones.MostarMensajes("error", new List<string> { "Existe una condicion vacia."});
+                        isContinue = false;
+                        break;
+                    }
+                }
+
+                if (!isContinue)
+                    return;
+
                 oDistribucion.Campos = GetCampos();
                 oDistribucion.Descripcion = txtDescripcion.Text.Trim();
                 oDistribucion.Nombre = txtNombre.Text.Trim();
@@ -173,6 +185,7 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
                     mensajes = cCatalogo.Mensajes;
                     if (cCatalogo.Errores.Count() > 0) mensajes.AddRange(cCatalogo.Errores);
                     Funciones.MostarMensajes("error", cCatalogo.Mensajes);
+                    btnGuardar.CssClass = "add-option semi_bold";
                 }
                 else
                 {

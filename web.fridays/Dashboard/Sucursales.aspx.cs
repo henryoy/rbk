@@ -33,6 +33,7 @@ public partial class Sucursales : System.Web.UI.Page
     }
     #endregion
 
+    
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -90,6 +91,7 @@ public partial class Sucursales : System.Web.UI.Page
             oSucursal.Longitud = longitud;
             oSucursal.SucursalID = SucursalId;
             oSucursal.LinkFacebook = txtFacebook.Text.Trim();
+            oSucursal.Estado = "ACTIVO";
 
             var r = cCatalogo.GuardarSucursal(oSucursal);
             if (cCatalogo.Exito)

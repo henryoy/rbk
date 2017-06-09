@@ -262,6 +262,19 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         _oPromocion.Descripcion = txtDescripcion.Text;
         _oPromocion.Promocionid = thePID;
         _oPromocion.Resumen = txtDescripcion.Text;
+
+        if (dpTarjeta.SelectedItem.Value == "0")
+        {
+            msj = "Seleccione tipo de membresia.";
+
+            ScriptManager.RegisterStartupScript(this,
+                  this.GetType(),
+                  "StartupScript",
+                  "notification('" + msj + "','error')",
+                  true);
+            lnkGuardarPromocion.Enabled = true;
+            return; 
+        }
         _oPromocion.Tipomembresia = dpTarjeta.SelectedItem.Text;
         _oPromocion.Tipocliente = _oPromocion.Tipomembresia;
         _oPromocion.TerminosCondiciones = txtCondiciones.Text;
@@ -290,6 +303,8 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                   "StartupScript",
                   "notification('" + msj + "','error')",
                   true);
+            lnkGuardarPromocion.Enabled = true;
+            return;
         }
 
         oPromocionDetalle.Condicion = dpTipoPromocion.SelectedItem.Value;
@@ -305,6 +320,9 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                   "StartupScript",
                   "notification('" + msj + "','error')",
                   true);
+            lnkGuardarPromocion.Enabled = true;
+
+            return;
         }
 
         
@@ -339,9 +357,17 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         });
 
         if (!string.IsNullOrEmpty(txtFechaInicio.Text))
-            _oPromocion.Vigenciainicial = Convert.ToDateTime(txtFechaInicio.Text);
+        {
+            DateTime _oInicial = new DateTime();
+            DateTime.TryParse(txtFechaInicio.Text, out _oInicial);
+            _oPromocion.Vigenciainicial = _oInicial;
+        }
         if (!string.IsNullOrEmpty(txtFechaFinal.Text))
-            _oPromocion.Vigenciafinal = Convert.ToDateTime(txtFechaFinal.Text);
+        {
+            DateTime _oFinal = new DateTime();
+            DateTime.TryParse(txtFechaFinal.Text, out _oFinal);
+            _oPromocion.Vigenciafinal = _oFinal;
+        }
 
         foreach (SucursalVM oPromoSucursal in lsSucusalVM)
         {
