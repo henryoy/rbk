@@ -348,6 +348,18 @@ namespace cm.mx.catalogo.Model
             return _exito;
         }
 
+        public bool GuardarVarios(Usuario obj, Notificacion notificacion)
+        {
+            _exito = false;
+            _session.Clear();
+            _session.BeginTransaction();
+            _session.SaveOrUpdate(obj);
+            _session.SaveOrUpdate(notificacion);
+            _session.Transaction.Commit();
+            _exito = true;
+            return _exito;
+        }
+
         public string ExisteCorreo(string correo)
         {
             _exito = false;
@@ -415,14 +427,14 @@ namespace cm.mx.catalogo.Model
 
             if(origen == Origen.MOBILE)
             {
-                if (!Funciones.ValidarCorreo(usuario)) _errores.Add("Ingrese un correo válido");
-                else
-                {
+                
+                //else
+                //{
                     oUsuario = this.Query(f => f.Usuarioid == int.Parse(usuario) && f.Contrasena == pass && f.Tipo == "MOBILE").ToList().FirstOrDefault();
 
                     if (oUsuario == null)
                         _errores.Add("El usuario y/o contraseña es incorrecto");
-                }
+                //}
             }
             else
             {

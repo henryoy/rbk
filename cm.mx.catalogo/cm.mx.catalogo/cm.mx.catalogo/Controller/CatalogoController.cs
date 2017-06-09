@@ -1101,8 +1101,11 @@ namespace cm.mx.catalogo.Controller
                     else
                     {
                         _mensajes.AddRange(rUsuario.Mensajes);
+
                     }
                     List<Promocion> tskPromocion = new List<Promocion>();
+
+                    
 
                     Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
                 }
@@ -1798,7 +1801,7 @@ namespace cm.mx.catalogo.Controller
         }
 
         //<summary>Metodo que devuelve un objeto de tipo usuario</summary>
-        public Usuario LoginMovil(string usuario, string password, Origen origen = Origen.MOBILE)
+        public Usuario LoginMovil(string usuario, string password, Origen origen = Origen.MOBILE, bool Login1 = false)
         {
             UsuarioRepository rUsuario = new UsuarioRepository();
             ActivacionRepository rAcrivacion = new ActivacionRepository();
@@ -1806,6 +1809,15 @@ namespace cm.mx.catalogo.Controller
 
             try
             {
+                if(Login1)
+                {
+                    if (!Funciones.ValidarCorreo(usuario))
+                        throw new Exception("Ingrese un correo válido");
+
+                    usuario = rUsuario.GetUsuarioID(usuario).ToString();
+                        //_errores.Add("Ingrese un correo válido");
+                }
+
                 oUsuario = rUsuario.LoginMovil(usuario, password, origen);
 
                 if (oUsuario == null)
@@ -2774,6 +2786,93 @@ namespace cm.mx.catalogo.Controller
                 _exito = false;
             }
             return _exito;
+        }
+
+        public List<Notificacion> GetNotificacionesNoRelacionadas()
+        {
+            List<Notificacion> lNot = null;
+
+            try
+            {
+                rNotificacion = new NotificacionRepository();
+                lNot = rNotificacion.Query(x => x.Relacionado == false && x.Tipo == "VISITA").ToList();
+
+                rNotificacion._session.Clear();
+            }
+            catch (Exception ex)
+            {
+                if (rNotificacion._session.Transaction.IsActive)
+                {
+                    rNotificacion._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return lNot;
+        }
+
+        public bool GuardaProductos(List<ProductoVenta> lProductos)
+        {
+            bool bResult = false;
+
+            ProductoVentaRepository rProductoVenta = new ProductoVentaRepository();
+
+            try
+            {
+                rProductoVenta._session.BeginTransaction();
+                foreach (ProductoVenta oProducto in lProductos)
+                {
+                    rProductoVenta.Add(oProducto);
+
+                }
+
+                rProductoVenta._session.Transaction.Commit();
+                bResult = true;
+            }
+            catch (Exception ex)
+            {
+                Errores.Add(ex.Message);
+            }
+
+            return bResult;
+        }
+
+        public bool ActualizaNotificacionYUsuario(Usuario usuaurio, Notificacion notificacion)
+        {
+            bool bResult = false;
+            rUsuario = new UsuarioRepository();
+            rNotificacion = new NotificacionRepository();
+
+            try
+            {
+                if (rUsuario.GuardarVarios(usuaurio, notificacion))
+                    bResult = true;
+                /*if(rUsuario.Errores.Count > 0)
+                {
+                    rUsuario._session.Transaction.Rollback();
+                }
+                else
+                {
+                    rNotificacion.GuardarNotificacion2(notificacion);
+
+                    if (rNotificacion.Errores.Count > 0)
+                        rUsuario._session.Transaction.Rollback();
+                    else
+                        rUsuario._session.Transaction.Commit();
+                }*/
+            }
+            catch(Exception ex)
+            {
+                if (rUsuario._session.Transaction != null)
+                    rUsuario._session.Transaction.Rollback();
+
+                Errores.Add(ex.Message);
+            }
+
+            return bResult;
         }
     }
 }

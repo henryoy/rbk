@@ -26,6 +26,14 @@ namespace cm.mx.catalogo.Model
             return oNotificacion;
         }
 
+        public Notificacion GuardarNotificacion2(Notificacion oNotificacion)
+        {
+            _exito = false;
+            _session.SaveOrUpdate(oNotificacion);
+            _exito = true;
+            return oNotificacion;
+        }
+
         public bool EliminarNotificacion(Notificacion oNotificacion)
         {
             _exito = false;
