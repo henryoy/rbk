@@ -1,13 +1,19 @@
 ﻿using cm.mx.catalogo.Model;
 using cm.mx.dbCore.Interfaces;
+using Newtonsoft.Json.Linq;
 using NHibernate;
 using NHibernate.Criterion;
+using PushSharp.Apple;
+using PushSharp.Core;
+using PushSharp.Google;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.UI.WebControls;
 
 namespace cm.mx.catalogo.Controller
@@ -343,5 +349,177 @@ namespace cm.mx.catalogo.Controller
             }
             return _exito;
         }
+
+        public void sendAppleNotification(Notificacion notificacion, UsuarioDispositivo usuario)
+        {
+            string file = ConfigurationManager.AppSettings["PathCertificado1"];//@"C:\privado\Push Produccion.p12"; //HttpContext.Current.Server.MapPath("~/privado/Push Produccion.p12");
+            var config = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Production, file, "mi#esel16");
+
+            // Create a new broker
+            var apnsBroker = new ApnsServiceBroker(config);
+
+            // Wire up events
+            apnsBroker.OnNotificationFailed += (notification, aggregateEx) =>
+            {
+
+                aggregateEx.Handle(ex =>
+                {
+
+                    // See what kind of exception it was to further diagnose
+                    if (ex is ApnsNotificationException)
+                    {
+                        var notificationException = (ApnsNotificationException)ex;
+
+                        // Deal with the failed notification
+                        var apnsNotification = notificationException.Notification;
+                        var statusCode = notificationException.ErrorStatusCode;
+
+                        Console.WriteLine($"Apple Notification Failed: ID={apnsNotification.Identifier}, Code={statusCode}");
+                    }
+                    else
+                    {
+                        // Inner exception might hold more useful information like an ApnsConnectionException			
+                        Console.WriteLine($"Apple Notification Failed for some unknown reason : {ex.InnerException}");
+                    }
+
+                    // Mark it as handled
+                    return true;
+                });
+            };
+
+            apnsBroker.OnNotificationSucceeded += (notification) =>
+            {
+                //Console.WriteLine("Apple Notification Sent!");
+                CatalogoController cCatalogoTemp = new CatalogoController();
+                Notificacion oNot = cCatalogoTemp.GetNotificacion(int.Parse(notification.Tag.ToString()));
+                if (oNot != null)
+                {
+                    oNot.Enviado = true;
+                    cCatalogoTemp.ActualizaNotificacion(oNot);
+                }
+            };
+
+            // Start the broker
+            apnsBroker.Start();
+
+
+            apnsBroker.QueueNotification(new ApnsNotification
+            {
+                DeviceToken = usuario.Token,
+                Payload = JObject.Parse("{\"aps\":{\"alert\":\"" + notificacion.Mensaje + "\",\"badge\":\"2\",\"sound\":\"default\"}}"),
+                Tag = notificacion.NotificacionID
+            });
+
+            apnsBroker.Stop();
+
+        }
+
+        public void sendGoogleNotifications(Notificacion notificacion, UsuarioDispositivo usuario)
+        {
+            var config = new GcmConfiguration("122905653622", "AIzaSyCLhUuzR_Dqe0Vf4v3WKbvr31akgwc16_8", null);
+
+            var gcmBroker = new GcmServiceBroker(config);
+
+
+            // Wire up events
+            gcmBroker.OnNotificationFailed += (notification, aggregateEx) =>
+            {
+
+                aggregateEx.Handle(ex =>
+                {
+
+                    // See what kind of exception it was to further diagnose
+                    if (ex is GcmNotificationException)
+                    {
+                        var notificationException = (GcmNotificationException)ex;
+
+                        // Deal with the failed notification
+                        var gcmNotification = notificationException.Notification;
+                        var description = notificationException.Description;
+
+                        Console.WriteLine($"GCM Notification Failed: ID={gcmNotification.MessageId}, Desc={description}");
+                        //richTextBox1.Text += "\n" + $"GCM Notification Failed: ID={gcmNotification.MessageId}, Desc={description}";
+                    }
+                    else if (ex is GcmMulticastResultException)
+                    {
+                        var multicastException = (GcmMulticastResultException)ex;
+
+                        foreach (var succeededNotification in multicastException.Succeeded)
+                        {
+                            Console.WriteLine($"GCM Notification Failed: ID={succeededNotification.MessageId}");
+                            //richTextBox1.Text += "\n" + $"GCM Notification Failed: ID={succeededNotification.MessageId}";
+                        }
+
+                        foreach (var failedKvp in multicastException.Failed)
+                        {
+                            var n = failedKvp.Key;
+                            var e1 = failedKvp.Value;
+
+                            Console.WriteLine($"GCM Notification Failed: ID={n.MessageId}, Desc={e1.InnerException}");
+                            //richTextBox1.Text += "\n" + $"GCM Notification Failed: ID={n.MessageId}, Desc={e1.InnerException}";
+                        }
+
+                    }
+                    else if (ex is DeviceSubscriptionExpiredException)
+                    {
+                        var expiredException = (DeviceSubscriptionExpiredException)ex;
+
+                        var oldId = expiredException.OldSubscriptionId;
+                        var newId = expiredException.NewSubscriptionId;
+
+
+                        Console.WriteLine($"Device RegistrationId Expired: {oldId}");
+                        //richTextBox1.Text += "\n" + $"Device RegistrationId Expired: {oldId}";
+                        //ExecuteQuery(false, notification.RegistrationIds[0]);
+
+                        if (!string.IsNullOrWhiteSpace(newId))
+                        {
+                            // If this value isn't null, our subscription changed and we should update our database
+                            Console.WriteLine($"Device RegistrationId Changed To: {newId}");
+                            //richTextBox1.Text += "\n" + $"Device RegistrationId Changed To: {newId}";
+                        }
+                    }
+                    else if (ex is RetryAfterException)
+                    {
+                        var retryException = (RetryAfterException)ex;
+                        // If you get rate limited, you should stop sending messages until after the RetryAfterUtc date
+                        Console.WriteLine($"GCM Rate Limited, don't send more until after {retryException.RetryAfterUtc}");
+                        //richTextBox1.Text += "\n" + $"GCM Rate Limited, don't send more until after {retryException.RetryAfterUtc}";
+                    }
+                    else
+                    {
+                        Console.WriteLine("GCM Notification Failed for some unknown reason");
+                        //richTextBox1.Text += "\n" + "GCM Notification Failed for some unknown reason";
+                    }
+
+                    // Mark it as handled
+                    return true;
+                });
+            };
+
+            gcmBroker.OnNotificationSucceeded += (notification) =>
+            {
+                Console.WriteLine("GCM Notification Sent!");
+
+                CatalogoController cCatalogoTemp = new CatalogoController();
+                Notificacion oNot = cCatalogoTemp.GetNotificacion(int.Parse(notification.Tag.ToString()));
+                if (oNot != null)
+                {
+                    oNot.Enviado = true;
+                    cCatalogoTemp.ActualizaNotificacion(oNot);
+                }
+            };
+            
+            gcmBroker.Start();
+
+            GcmNotification obj = new GcmNotification();
+            obj.RegistrationIds = new List<string> { usuario.Token };
+            obj.Data = JObject.Parse("{ \"notification\" : {\"body\" : \"" + notificacion.Mensaje + "\",\"icon\" : \"ic_launcher.png\",\"title\" : \"" + "Friday's App" + "\"} }");
+            obj.Tag = notificacion.NotificacionID;
+            gcmBroker.QueueNotification(obj);
+            gcmBroker.Stop();
+
+        }
+
     }
 }

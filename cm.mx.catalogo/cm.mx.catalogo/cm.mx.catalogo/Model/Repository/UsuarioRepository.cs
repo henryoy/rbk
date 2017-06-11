@@ -253,10 +253,12 @@ namespace cm.mx.catalogo.Model
 
         }
 
-        public bool RegistrarVisita(int Usuario, int ClienteID, string Referencia, int SucursalId)
+        public bool RegistrarVisita(int Usuario, int ClienteID, string Referencia, int SucursalId, out int notificacionid)
         {
             _exito = false;
             _session.Clear();
+
+            notificacionid = 0;
             var oUsuario = _session.Get<Usuario>(ClienteID);
             if (oUsuario == null || oUsuario.Estatus == Estatus.BAJA.ToString() || oUsuario.Estatus == Estatus.INACTIVO.ToString())
             {
@@ -312,6 +314,7 @@ namespace cm.mx.catalogo.Model
                 }
                 _session.SaveOrUpdate(oUsuario);
                 _session.Transaction.Commit();
+                notificacionid = oNotifiacion.NotificacionID;
                 _exito = true;
                 _mensajes.Add("¡Felicidades! \nSe registró la visita correctamente.");
             }

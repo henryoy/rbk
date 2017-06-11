@@ -1091,8 +1091,9 @@ namespace cm.mx.catalogo.Controller
                 }
                 else
                 {
+                    int Notificacion = 0;
                     rUsuario = new UsuarioRepository();
-                    _exito = rUsuario.RegistrarVisita(Usuario, ClienteID, Referencia, SucursalId);
+                    _exito = rUsuario.RegistrarVisita(Usuario, ClienteID, Referencia, SucursalId, out Notificacion);
                     if (!_exito)
                     {
                         _mensajes.AddRange(rUsuario.Mensajes);
@@ -1100,13 +1101,18 @@ namespace cm.mx.catalogo.Controller
                     }
                     else
                     {
-                        _mensajes.AddRange(rUsuario.Mensajes);
+                        if(Notificacion > 0)
+                        {
+                            //var t = Task.Run(() => {
+                            //    this.EnviaNotificacion(Notificacion);
+                            //});
+                            //t.Wait();
+                            new Task(()=>EnviaNotificacion(Notificacion)).Start();
+                        }
 
+                        _mensajes.AddRange(rUsuario.Mensajes);
                     }
                     List<Promocion> tskPromocion = new List<Promocion>();
-
-                    
-
                     Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
                 }
 
@@ -2874,5 +2880,48 @@ namespace cm.mx.catalogo.Controller
 
             return bResult;
         }
+
+        public UsuarioDispositivo GetTokenActivoUsuario(int UsuarioId, Plataforma _plataforma)
+        {
+            Mensajes.Clear();
+            Exito = false;
+            Errores.Clear();
+            UsuarioDispositivo _oDispositivo = new UsuarioDispositivo();
+            rUsuarioDispositivo = new UsuarioDispositivoRepository();
+            try
+            {
+                _oDispositivo = rUsuarioDispositivo.Query(a => a.UsuarioId == UsuarioId && a.Plataforma == _plataforma.ToString()).OrderByDescending(a => a.FechaAlta).FirstOrDefault();
+                _exito = rCampana.Exito;
+            }
+            catch (Exception ex)
+            {
+                if (rUsuarioDispositivo._session.Transaction.IsActive)
+                {
+                    rUsuarioDispositivo._session.Transaction.Rollback();
+                }
+            }
+            return _oDispositivo;
+        }
+
+        public async void EnviaNotificacion(int notificacionId)
+        {
+            Notificacion notificacion = GetNotificacion(notificacionId);
+            rUsuarioDispositivo = new UsuarioDispositivoRepository();
+            UtileriaController cUtil = new UtileriaController();
+
+            if(notificacion != null)
+            {
+                UsuarioDispositivo oUsuario = rUsuarioDispositivo.getTokenActivo(notificacion.UsuarioID);
+                if(oUsuario != null)
+                {
+                    if (oUsuario.Plataforma == Plataforma.ANDROID.ToString())
+                        cUtil.sendGoogleNotifications(notificacion, oUsuario);
+               
+                    if(oUsuario.Plataforma == Plataforma.IOS.ToString())
+                        cUtil.sendAppleNotification(notificacion, oUsuario);
+                }
+            }
+        }
+
     }
 }
