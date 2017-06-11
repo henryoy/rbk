@@ -98,6 +98,7 @@
                                     <asp:ListItem Value="In">In</asp:ListItem>
                                     <asp:ListItem Value="Not in">Not in</asp:ListItem>
                                     <asp:ListItem Value="Like">Like</asp:ListItem>
+                                    <asp:ListItem Value="En mes">En mes</asp:ListItem>
                                 </asp:DropDownList>
                             </EditItemTemplate>
                         </asp:TemplateField>

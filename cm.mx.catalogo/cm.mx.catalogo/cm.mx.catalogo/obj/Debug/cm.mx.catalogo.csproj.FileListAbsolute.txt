@@ -98,3 +98,5 @@ F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\PushSharp.Firefox.
 F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\PushSharp.Google.dll
 F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\PushSharp.Windows.dll
 F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Newtonsoft.Json.xml
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll.config
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache

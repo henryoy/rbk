@@ -225,6 +225,10 @@ namespace cm.mx.catalogo.Controller
                                     if (ExpresionOr == null) ExpresionOr = Restrictions.Disjunction();
                                     ExpresionOr.Add(Restrictions.Like(Projections.Cast(NHibernateUtil.String, Projections.Property(x.Campo)), x.Valor, MatchMode.Anywhere));
                                     break;
+                                case "En mes":
+                                    if (ExpresionOr == null) ExpresionOr = Restrictions.Disjunction();
+                                    ExpresionOr.Add(Restrictions.Eq(Projections.SqlFunction("month", NHibernateUtil.DateTime, Projections.Property(x.Campo)), val));
+                                    break;
                             }
                         }
                         else
@@ -268,6 +272,10 @@ namespace cm.mx.catalogo.Controller
                                 case "Like":
                                     if (ExpresionAnd == null) ExpresionAnd = Restrictions.Conjunction();
                                     ExpresionAnd.Add(Restrictions.Like(Projections.Cast(NHibernateUtil.String, Projections.Property(x.Campo)), x.Valor, MatchMode.Anywhere));
+                                    break;
+                                case "En mes":
+                                    if (ExpresionAnd == null) ExpresionAnd = Restrictions.Conjunction();
+                                    ExpresionAnd.Add(Restrictions.Eq(Projections.SqlFunction("month", NHibernateUtil.DateTime, Projections.Property(x.Campo)), val));
                                     break;
                             }
                         }
@@ -509,7 +517,7 @@ namespace cm.mx.catalogo.Controller
                     cCatalogoTemp.ActualizaNotificacion(oNot);
                 }
             };
-            
+
             gcmBroker.Start();
 
             GcmNotification obj = new GcmNotification();
