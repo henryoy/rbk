@@ -107,6 +107,7 @@
     <Compile Include="Model\Map\CampanaMap.cs" />
     <Compile Include="Model\Map\CamposDistribucionMap.cs" />
     <Compile Include="Model\Map\CondicionDistribucionMap.cs" />
+    <Compile Include="Model\Map\ConfiguracionMap.cs" />
     <Compile Include="Model\Map\DistribucionMap.cs" />
     <Compile Include="Model\Map\FechapublicacionMap.cs" />
     <Compile Include="Model\Map\NivelUsuarioMap.cs" />

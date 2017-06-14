@@ -39,5 +39,12 @@ namespace cm.mx.catalogo.Model
         public virtual bool Relacionado { get; set; }
         [DataMember]
         public virtual decimal ImporteVisita { get; set; }
+
+        [DataMember]
+        public virtual bool ErrorRelacion { get; set; }
+        [DataMember]
+        public virtual string SubTipo { get; set; }
+        [DataMember]
+        public virtual int CampanaId { get; set; }
     }
 }

@@ -77,6 +77,8 @@ namespace cm.mx.catalogo.Controller
         private CamposDistribucionRepository rCampos;
         private DistribucionRepository rDistribucion;
         private UsuarioDispositivoRepository rUsuarioDispositivo;
+        private ConfiguracionRepository rConfiguracion;
+
         private int UsuarioId
         {
             get
@@ -1091,32 +1093,63 @@ namespace cm.mx.catalogo.Controller
                 }
                 else
                 {
-                    int Notificacion = 0;
-                    rUsuario = new UsuarioRepository();
-                    _exito = rUsuario.RegistrarVisita(Usuario, ClienteID, Referencia, SucursalId, out Notificacion);
-                    if (!_exito)
+                    rConfiguracion = new ConfiguracionRepository();
+                    Configuracion oConfig = rConfiguracion.GetByClave("NVISITAS_DIA");
+                    bool ValidaNoVisitas = true;
+                    bool ValidaDiffVisitas = true;
+
+                    if (oConfig != null)
                     {
-                        _mensajes.AddRange(rUsuario.Mensajes);
-                        _errores.AddRange(rUsuario.Errores);
-                    }
-                    else
-                    {
-                        if(Notificacion > 0)
+                        int nVisitas = rNotificacion.getNumeroVisitasDelDia(ClienteID);
+                        if (nVisitas >= int.Parse(oConfig.Valor))
                         {
-                            //var t = Task.Run(() => {
-                            //    this.EnviaNotificacion(Notificacion);
-                            //});
-                            //t.Wait();
-                            new Task(()=>EnviaNotificacion(Notificacion)).Start();
+                            ValidaNoVisitas = false;
+                            Errores.Add("El usuario ya ha registrado las visitas maximas diarias permitidas. (" + oConfig.Valor + " VISITAS)");
                         }
-
-                        _mensajes.AddRange(rUsuario.Mensajes);
                     }
-                    List<Promocion> tskPromocion = new List<Promocion>();
-                    Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
-                }
 
-                //tskPromocion = await lsPromocion;
+                    if (ValidaNoVisitas)
+                    {
+                        oConfig = rConfiguracion.GetByClave("NHORAS_DIF");
+                        if (oConfig != null)
+                        {
+                            oNot = rNotificacion.getUltimaVisita(ClienteID);
+                            if (oNot != null)
+                            {
+                                double diff = (DateTime.Now - oNot.FechaRegistro).TotalHours;
+                                if (diff < double.Parse(oConfig.Valor))
+                                {
+                                    ValidaDiffVisitas = false;
+                                    Errores.Add("La diferencia entre registro de visitas es muy corta (Debe Haber Diff de " + oConfig.Valor + " HRS)");
+                                }
+                            }
+                        }
+                    }
+
+                    List<int> Notificacion = new List<int>();
+                    rUsuario = new UsuarioRepository();
+
+                    if (ValidaDiffVisitas && ValidaNoVisitas)
+                    {
+                        _exito = rUsuario.RegistrarVisita(Usuario, ClienteID, Referencia, SucursalId, out Notificacion);
+                        if (!_exito)
+                        {
+                            _mensajes.AddRange(rUsuario.Mensajes);
+                            _errores.AddRange(rUsuario.Errores);
+                        }
+                        else
+                        {
+                            if (Notificacion.Count > 0)
+                            {
+                                new Task(() => EnviaNotificacion(Notificacion)).Start();
+                            }
+
+                            Mensajes.AddRange(rUsuario.Mensajes);
+                        }
+                        List<Promocion> tskPromocion = new List<Promocion>();
+                        Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -2903,23 +2936,40 @@ namespace cm.mx.catalogo.Controller
             return _oDispositivo;
         }
 
-        public async void EnviaNotificacion(int notificacionId)
+        public async void EnviaNotificacion(List<int> notificaciones)
         {
-            Notificacion notificacion = GetNotificacion(notificacionId);
-            rUsuarioDispositivo = new UsuarioDispositivoRepository();
-            UtileriaController cUtil = new UtileriaController();
-
-            if(notificacion != null)
+            try
             {
-                UsuarioDispositivo oUsuario = rUsuarioDispositivo.getTokenActivo(notificacion.UsuarioID);
-                if(oUsuario != null)
+                foreach (int notificacionId in notificaciones)
                 {
-                    if (oUsuario.Plataforma == Plataforma.ANDROID.ToString())
-                        cUtil.sendGoogleNotifications(notificacion, oUsuario);
-               
-                    if(oUsuario.Plataforma == Plataforma.IOS.ToString())
-                        cUtil.sendAppleNotification(notificacion, oUsuario);
+                    Notificacion notificacion = GetNotificacion(notificacionId);
+                    rUsuarioDispositivo = new UsuarioDispositivoRepository();
+                    UtileriaController cUtil = new UtileriaController();
+
+                    if (notificacion != null)
+                    {
+                        UsuarioDispositivo oUsuario = rUsuarioDispositivo.getTokenActivo(notificacion.UsuarioID);
+                        if (oUsuario != null)
+                        {
+                            try
+                            {
+                                if (oUsuario.Plataforma == Plataforma.ANDROID.ToString())
+                                    cUtil.sendGoogleNotifications(notificacion, oUsuario);
+
+                                if (oUsuario.Plataforma == Plataforma.IOS.ToString())
+                                    cUtil.sendAppleNotification(notificacion, oUsuario);
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
