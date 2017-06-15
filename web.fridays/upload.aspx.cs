@@ -25,13 +25,14 @@ public partial class upload : System.Web.UI.Page
         string main_receiver = "albanx@gmail.com";   //who receive the email
         string cc = "";                   //other receivers in cc
         string from = "from@ajaxupload.com";//who appear in the from field
-        /*****************************************************************************/
+                                            /*****************************************************************************/
 
 
         /***********************************************************************************************************
          * RECOMMENDED CONFIGURATION HERE
          * The following parameters can be changed, and is reccomended to change them from here for security reason
          ***********************************************************************************************************/
+        
         //string upload_path      = Server.MapPath(string.IsNullOrEmpty(Request.Params["ax-file-path"]) ? "" : Request.Params["ax-file-path"]);
         var path = "~" + ConfigurationManager.AppSettings["RutaImagenes"];
         if (string.IsNullOrEmpty(path)) path = string.IsNullOrEmpty(Request.Params["ax-file-path"]) ? "" : Request.Params["ax-file-path"];

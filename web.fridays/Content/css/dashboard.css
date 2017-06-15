@@ -636,7 +636,7 @@ input {
         background-position: 21px -168px;
     }
 
-#analytics_link {
+#analytics_link, .analytics_link {
     background-image: url(../img/icons/analytics.png);
     background-position: 21px 16px;
 }

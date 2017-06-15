@@ -67,12 +67,12 @@
                             <ul style="display: none;">
                             </ul>
                         </li>
-                        <li id="campaigns_link" class="">
+                        <li id="campaigns_link">
                             <h2 class="semi_bold">Promociones</h2>
                             <ul class="hidden" style="display: none;">
-                                <li id="list_campaign_view"><a href="<%= ResolveUrl("~/Dashboard/Promociones") %>"><font><font>Promoción</font></font></a></li>
-                                <li id="new_campaign_view"><a href="<%= ResolveUrl("~/Dashboard/Promocion") %>"><font><font>Nueva Promocion</font></font></a></li>
-                                <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/AsignarVenta") %>"><font><font>Redimir</font></font></a></li>
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Promociones") %>"><font><font>Promoción</font></font></a></li>
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Promocion") %>"><font><font>Nueva Promocion</font></font></a></li>
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/GenerarVisita") %>"><font><font>Redimir</font></font></a></li>
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/RedimirPromocion") %>"><font><font>Redimir Promoción</font></font></a></li>
                             </ul>
                         </li>
@@ -92,7 +92,7 @@
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Clientes") %>">Clientes</a></li>
                             </ul>
                         </li>
-<%--                        <li id="analytics_link" class="">
+                        <%--                        <li id="analytics_link" class="">
                             <h2 class="semi_bold">Analítica</h2>
                             <ul class="hidden">
                                 <li><a href="#">campañas</a></li>
@@ -111,13 +111,13 @@
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Sucursales") %>">Sucursales</a></li>
                             </ul>
                         </li>
-                        <li id="distribution_link">
+                        <li id="distribution_link" class="analytics_link">
                             <h2 class="semi_bold">Distribución</h2>
                             <ul class="hidden">
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Distribuciones") %>">Distribución</a></li>
                             </ul>
                         </li>
-                        <li id="TipoInteres_link">
+                        <li id="TipoInteres_link" class="analytics_link">
                             <h2 class="semi_bold">Tipo Interes</h2>
                             <ul class="hidden">
                                 <li><a href="<%= ResolveUrl("~/Dashboard/TipoInteres") %>">Tipo Interes</a></li>
@@ -206,11 +206,11 @@
                             for (var i = 0; i < newdata.length; i++) {
                                 var d = new Date(parseInt(newdata[i].FechaRegistro.replace("/Date(", "").replace(")/", ""), 10));
                                 rows.push('<div><a href="/Dashboard/Notificacion/AsignarVenta?id=' + newdata[i].NotifiacionID + '">' +
-                                            '<span>' + newdata[i].Usuario.Nombre + '</span>' +
-                                            '<span>' + newdata[i].Referencia + '</span>' +
-                                            '<span>' + d.format("dd/MM/yyyy HH:mm") + '</span>' +
-                                                '</a>' +
-                                            '</div>');
+                                    '<span>' + newdata[i].Usuario.Nombre + '</span>' +
+                                    '<span>' + newdata[i].Referencia + '</span>' +
+                                    '<span>' + d.format("dd/MM/yyyy HH:mm") + '</span>' +
+                                    '</a>' +
+                                    '</div>');
                             }
                             $tbl.append(rows.join(''));
                         }
