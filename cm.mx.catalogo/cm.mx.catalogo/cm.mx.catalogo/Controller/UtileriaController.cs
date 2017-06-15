@@ -382,12 +382,12 @@ namespace cm.mx.catalogo.Controller
                         var apnsNotification = notificationException.Notification;
                         var statusCode = notificationException.ErrorStatusCode;
 
-                        Console.WriteLine($"Apple Notification Failed: ID={apnsNotification.Identifier}, Code={statusCode}");
+                        Console.WriteLine("Apple Notification Failed: ID={apnsNotification.Identifier}, Code={statusCode}");
                     }
                     else
                     {
                         // Inner exception might hold more useful information like an ApnsConnectionException			
-                        Console.WriteLine($"Apple Notification Failed for some unknown reason : {ex.InnerException}");
+                        Console.WriteLine("Apple Notification Failed for some unknown reason : {ex.InnerException}");
                     }
 
                     // Mark it as handled
@@ -445,7 +445,7 @@ namespace cm.mx.catalogo.Controller
                         var gcmNotification = notificationException.Notification;
                         var description = notificationException.Description;
 
-                        Console.WriteLine($"GCM Notification Failed: ID={gcmNotification.MessageId}, Desc={description}");
+                        Console.WriteLine("GCM Notification Failed: ID={gcmNotification.MessageId}, Desc={description}");
                         //richTextBox1.Text += "\n" + $"GCM Notification Failed: ID={gcmNotification.MessageId}, Desc={description}";
                     }
                     else if (ex is GcmMulticastResultException)
@@ -454,7 +454,7 @@ namespace cm.mx.catalogo.Controller
 
                         foreach (var succeededNotification in multicastException.Succeeded)
                         {
-                            Console.WriteLine($"GCM Notification Failed: ID={succeededNotification.MessageId}");
+                            Console.WriteLine("GCM Notification Failed: ID={succeededNotification.MessageId}");
                             //richTextBox1.Text += "\n" + $"GCM Notification Failed: ID={succeededNotification.MessageId}";
                         }
 
@@ -463,7 +463,7 @@ namespace cm.mx.catalogo.Controller
                             var n = failedKvp.Key;
                             var e1 = failedKvp.Value;
 
-                            Console.WriteLine($"GCM Notification Failed: ID={n.MessageId}, Desc={e1.InnerException}");
+                            Console.WriteLine("GCM Notification Failed: ID={n.MessageId}, Desc={e1.InnerException}");
                             //richTextBox1.Text += "\n" + $"GCM Notification Failed: ID={n.MessageId}, Desc={e1.InnerException}";
                         }
 
@@ -476,14 +476,14 @@ namespace cm.mx.catalogo.Controller
                         var newId = expiredException.NewSubscriptionId;
 
 
-                        Console.WriteLine($"Device RegistrationId Expired: {oldId}");
+                        Console.WriteLine("Device RegistrationId Expired: {oldId}");
                         //richTextBox1.Text += "\n" + $"Device RegistrationId Expired: {oldId}";
                         //ExecuteQuery(false, notification.RegistrationIds[0]);
 
                         if (!string.IsNullOrWhiteSpace(newId))
                         {
                             // If this value isn't null, our subscription changed and we should update our database
-                            Console.WriteLine($"Device RegistrationId Changed To: {newId}");
+                            Console.WriteLine("Device RegistrationId Changed To: {newId}");
                             //richTextBox1.Text += "\n" + $"Device RegistrationId Changed To: {newId}";
                         }
                     }
@@ -491,7 +491,7 @@ namespace cm.mx.catalogo.Controller
                     {
                         var retryException = (RetryAfterException)ex;
                         // If you get rate limited, you should stop sending messages until after the RetryAfterUtc date
-                        Console.WriteLine($"GCM Rate Limited, don't send more until after {retryException.RetryAfterUtc}");
+                        Console.WriteLine("GCM Rate Limited, don't send more until after {retryException.RetryAfterUtc}");
                         //richTextBox1.Text += "\n" + $"GCM Rate Limited, don't send more until after {retryException.RetryAfterUtc}";
                     }
                     else

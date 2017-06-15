@@ -633,7 +633,28 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         try
         {
             GridViewRow row = (GridViewRow)((LinkButton)sender).NamingContainer;
-            lsDetalle.RemoveAt(row.RowIndex);
+            var obj = lsDetalle.ElementAt(row.RowIndex);
+            if (obj != null && obj.Promociondetalleid > 0)
+            {
+                cCatalogo = new CatalogoController();
+                bool IsDelete = cCatalogo.EliminarDetallePromocion(oPromocion.Promocionid, obj.Promociondetalleid);
+                if (IsDelete)                
+                    lsDetalle.RemoveAt(row.RowIndex);
+                else
+                {
+                    string msj = Funciones.FormatoMsj(cCatalogo.Mensajes);
+                    ScriptManager.RegisterStartupScript(this,
+                 this.GetType(),
+                 "StartupScript",
+                 "notification('" + msj + "','error')",
+                 true);
+                }
+            }
+            else
+            {
+
+                lsDetalle.RemoveAt(row.RowIndex);
+            }
             BindGrid(grvDetalle, new List<dynamic>(lsDetalle));
         }
         catch (Exception ex)

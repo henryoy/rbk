@@ -62,6 +62,17 @@ namespace cm.mx.catalogo.Model
             return oPromocion;
         }
 
+        public bool EliminarDetalle(int PromocionID, int PromocionDetalleId)
+        {
+            _exito = false;
+            _session.Transaction.Begin();
+            var item = _session.QueryOver<Promociondetalle>().Where(f=>f.Promociondetalleid == PromocionDetalleId && f.Promocion.Promocionid == PromocionID).List().FirstOrDefault();
+            _session.Delete(item);
+            _session.Transaction.Commit();
+            _exito = true;
+            return _exito;
+        }
+
         public bool EliminarPromocion(int PromocionId)
         {
             _exito = false;
