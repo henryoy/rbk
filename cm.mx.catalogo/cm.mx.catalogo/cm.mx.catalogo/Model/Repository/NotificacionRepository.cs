@@ -26,6 +26,14 @@ namespace cm.mx.catalogo.Model
             return oNotificacion;
         }
 
+        public Notificacion GuardarNotificacion2(Notificacion oNotificacion)
+        {
+            _exito = false;
+            _session.SaveOrUpdate(oNotificacion);
+            _exito = true;
+            return oNotificacion;
+        }
+
         public bool EliminarNotificacion(Notificacion oNotificacion)
         {
             _exito = false;
@@ -108,6 +116,25 @@ namespace cm.mx.catalogo.Model
 
             return _exito;
         }
-        
+
+        public Notificacion getUltimaVisita(int usuarioId)
+        {
+            Notificacion oNot = new Notificacion();
+
+            oNot = _session.Query<Notificacion>().Where(x => x.FechaRegistro.Date == DateTime.Now.Date && x.UsuarioID == usuarioId && x.Tipo == "VISITA").OrderByDescending(x => x.FechaRegistro).FirstOrDefault();
+
+            return oNot;
+        }
+
+
+        public int getNumeroVisitasDelDia(int usuarioId)
+        {
+            int nVisitas = 0;
+
+            nVisitas = _session.Query<Notificacion>().Where(x => x.FechaRegistro.Date == DateTime.Now.Date && x.UsuarioID == usuarioId && x.Tipo == "VISITA").Count();
+
+            return nVisitas;
+        }
+
     }
 }

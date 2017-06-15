@@ -77,6 +77,8 @@ namespace cm.mx.catalogo.Controller
         private CamposDistribucionRepository rCampos;
         private DistribucionRepository rDistribucion;
         private UsuarioDispositivoRepository rUsuarioDispositivo;
+        private ConfiguracionRepository rConfiguracion;
+
         private int UsuarioId
         {
             get
@@ -1091,23 +1093,63 @@ namespace cm.mx.catalogo.Controller
                 }
                 else
                 {
+                    rConfiguracion = new ConfiguracionRepository();
+                    Configuracion oConfig = rConfiguracion.GetByClave("NVISITAS_DIA");
+                    bool ValidaNoVisitas = true;
+                    bool ValidaDiffVisitas = true;
+
+                    if (oConfig != null)
+                    {
+                        int nVisitas = rNotificacion.getNumeroVisitasDelDia(ClienteID);
+                        if (nVisitas >= int.Parse(oConfig.Valor))
+                        {
+                            ValidaNoVisitas = false;
+                            Errores.Add("El usuario ya ha registrado las visitas maximas diarias permitidas. (" + oConfig.Valor + " VISITAS)");
+                        }
+                    }
+
+                    if (ValidaNoVisitas)
+                    {
+                        oConfig = rConfiguracion.GetByClave("NHORAS_DIF");
+                        if (oConfig != null)
+                        {
+                            oNot = rNotificacion.getUltimaVisita(ClienteID);
+                            if (oNot != null)
+                            {
+                                double diff = (DateTime.Now - oNot.FechaRegistro).TotalHours;
+                                if (diff < double.Parse(oConfig.Valor))
+                                {
+                                    ValidaDiffVisitas = false;
+                                    Errores.Add("La diferencia entre registro de visitas es muy corta (Debe Haber Diff de " + oConfig.Valor + " HRS)");
+                                }
+                            }
+                        }
+                    }
+
+                    List<int> Notificacion = new List<int>();
                     rUsuario = new UsuarioRepository();
-                    _exito = rUsuario.RegistrarVisita(Usuario, ClienteID, Referencia, SucursalId);
-                    if (!_exito)
-                    {
-                        _mensajes.AddRange(rUsuario.Mensajes);
-                        _errores.AddRange(rUsuario.Errores);
-                    }
-                    else
-                    {
-                        _mensajes.AddRange(rUsuario.Mensajes);
-                    }
-                    List<Promocion> tskPromocion = new List<Promocion>();
 
-                    Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
+                    if (ValidaDiffVisitas && ValidaNoVisitas)
+                    {
+                        _exito = rUsuario.RegistrarVisita(Usuario, ClienteID, Referencia, SucursalId, out Notificacion);
+                        if (!_exito)
+                        {
+                            _mensajes.AddRange(rUsuario.Mensajes);
+                            _errores.AddRange(rUsuario.Errores);
+                        }
+                        else
+                        {
+                            if (Notificacion.Count > 0)
+                            {
+                                new Task(() => EnviaNotificacion(Notificacion)).Start();
+                            }
+
+                            Mensajes.AddRange(rUsuario.Mensajes);
+                        }
+                        List<Promocion> tskPromocion = new List<Promocion>();
+                        Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
+                    }
                 }
-
-                //tskPromocion = await lsPromocion;
             }
             catch (Exception ex)
             {
@@ -1798,7 +1840,7 @@ namespace cm.mx.catalogo.Controller
         }
 
         //<summary>Metodo que devuelve un objeto de tipo usuario</summary>
-        public Usuario LoginMovil(string usuario, string password, Origen origen = Origen.MOBILE)
+        public Usuario LoginMovil(string usuario, string password, Origen origen = Origen.MOBILE, bool Login1 = false)
         {
             UsuarioRepository rUsuario = new UsuarioRepository();
             ActivacionRepository rAcrivacion = new ActivacionRepository();
@@ -1806,6 +1848,15 @@ namespace cm.mx.catalogo.Controller
 
             try
             {
+                if(Login1)
+                {
+                    if (!Funciones.ValidarCorreo(usuario))
+                        throw new Exception("Ingrese un correo válido");
+
+                    usuario = rUsuario.GetUsuarioID(usuario).ToString();
+                        //_errores.Add("Ingrese un correo válido");
+                }
+
                 oUsuario = rUsuario.LoginMovil(usuario, password, origen);
 
                 if (oUsuario == null)
@@ -2390,6 +2441,41 @@ namespace cm.mx.catalogo.Controller
                                                 });
                                             }
                                         }
+                                        else
+                                        {
+                                            Notificacion _oNotificacion = rNotificacion.GetNotificacion(d.Usuarioid, oPromocion.Promocionid);
+                                            Notificacion oNotificacionProm = new Notificacion();
+
+                                            if (_oNotificacion != null && _oNotificacion.NotificacionID > 0)
+                                            {
+                                                oNotificacionProm.Estatus = "ACTIVO";
+                                                oNotificacionProm.FechaRegistro = DateTime.Now;
+                                                oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                                                oNotificacionProm.NotificacionID = _oNotificacion.NotificacionID;
+                                                oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                                                oNotificacionProm.Referencia = "";
+                                                oNotificacionProm.Tipo = "PROMOCION";
+                                                oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
+                                                oNotificacionProm.UsuarioID = d.Usuarioid;
+                                                oNotificacionProm.Vigencia = DateTime.Now;
+                                            }
+                                            else
+                                            {
+                                                oNotificacionProm.Estatus = "ACTIVO";
+                                                oNotificacionProm.FechaRegistro = DateTime.Now;
+                                                oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                                                oNotificacionProm.NotificacionID = 0;
+                                                oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                                                oNotificacionProm.Referencia = "";
+                                                oNotificacionProm.Tipo = "PROMOCION";
+                                                oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
+                                                oNotificacionProm.UsuarioID = d.Usuarioid;
+                                                oNotificacionProm.Vigencia = DateTime.Now;
+                                            }
+
+                                            Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
+                                            _exito = true;
+                                        }
 
                                     });
                         //--
@@ -2775,5 +2861,152 @@ namespace cm.mx.catalogo.Controller
             }
             return _exito;
         }
+
+        public List<Notificacion> GetNotificacionesNoRelacionadas()
+        {
+            List<Notificacion> lNot = null;
+
+            try
+            {
+                rNotificacion = new NotificacionRepository();
+                lNot = rNotificacion.Query(x => x.Relacionado == false && x.Tipo == "VISITA").ToList();
+
+                rNotificacion._session.Clear();
+            }
+            catch (Exception ex)
+            {
+                if (rNotificacion._session.Transaction.IsActive)
+                {
+                    rNotificacion._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return lNot;
+        }
+
+        public bool GuardaProductos(List<ProductoVenta> lProductos)
+        {
+            bool bResult = false;
+
+            ProductoVentaRepository rProductoVenta = new ProductoVentaRepository();
+
+            try
+            {
+                rProductoVenta._session.BeginTransaction();
+                foreach (ProductoVenta oProducto in lProductos)
+                {
+                    rProductoVenta.Add(oProducto);
+
+                }
+
+                rProductoVenta._session.Transaction.Commit();
+                bResult = true;
+            }
+            catch (Exception ex)
+            {
+                Errores.Add(ex.Message);
+            }
+
+            return bResult;
+        }
+
+        public bool ActualizaNotificacionYUsuario(Usuario usuaurio, Notificacion notificacion)
+        {
+            bool bResult = false;
+            rUsuario = new UsuarioRepository();
+            rNotificacion = new NotificacionRepository();
+
+            try
+            {
+                if (rUsuario.GuardarVarios(usuaurio, notificacion))
+                    bResult = true;
+                /*if(rUsuario.Errores.Count > 0)
+                {
+                    rUsuario._session.Transaction.Rollback();
+                }
+                else
+                {
+                    rNotificacion.GuardarNotificacion2(notificacion);
+
+                    if (rNotificacion.Errores.Count > 0)
+                        rUsuario._session.Transaction.Rollback();
+                    else
+                        rUsuario._session.Transaction.Commit();
+                }*/
+            }
+            catch(Exception ex)
+            {
+                if (rUsuario._session.Transaction != null)
+                    rUsuario._session.Transaction.Rollback();
+
+                Errores.Add(ex.Message);
+            }
+
+            return bResult;
+        }
+
+        public UsuarioDispositivo GetTokenActivoUsuario(int UsuarioId, Plataforma _plataforma)
+        {
+            Mensajes.Clear();
+            Exito = false;
+            Errores.Clear();
+            UsuarioDispositivo _oDispositivo = new UsuarioDispositivo();
+            rUsuarioDispositivo = new UsuarioDispositivoRepository();
+            try
+            {
+                _oDispositivo = rUsuarioDispositivo.Query(a => a.UsuarioId == UsuarioId && a.Plataforma == _plataforma.ToString()).OrderByDescending(a => a.FechaAlta).FirstOrDefault();
+                _exito = rCampana.Exito;
+            }
+            catch (Exception ex)
+            {
+                if (rUsuarioDispositivo._session.Transaction.IsActive)
+                {
+                    rUsuarioDispositivo._session.Transaction.Rollback();
+                }
+            }
+            return _oDispositivo;
+        }
+
+        public async void EnviaNotificacion(List<int> notificaciones)
+        {
+            try
+            {
+                foreach (int notificacionId in notificaciones)
+                {
+                    Notificacion notificacion = GetNotificacion(notificacionId);
+                    rUsuarioDispositivo = new UsuarioDispositivoRepository();
+                    UtileriaController cUtil = new UtileriaController();
+
+                    if (notificacion != null)
+                    {
+                        UsuarioDispositivo oUsuario = rUsuarioDispositivo.getTokenActivo(notificacion.UsuarioID);
+                        if (oUsuario != null)
+                        {
+                            try
+                            {
+                                if (oUsuario.Plataforma == Plataforma.ANDROID.ToString())
+                                    cUtil.sendGoogleNotifications(notificacion, oUsuario);
+
+                                if (oUsuario.Plataforma == Plataforma.IOS.ToString())
+                                    cUtil.sendAppleNotification(notificacion, oUsuario);
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
     }
 }

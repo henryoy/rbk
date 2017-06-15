@@ -71,6 +71,7 @@ C:\Users\VM-MAC\Documents\Visual Studio 2015\Projects\rbk\cm.mx.catalogo\cm.mx.c
 C:\Users\VM-MAC\Documents\Visual Studio 2015\Projects\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache
 C:\Users\VM-MAC\Documents\Visual Studio 2015\Projects\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.dll
 C:\Users\VM-MAC\Documents\Visual Studio 2015\Projects\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
+<<<<<<< HEAD
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.pdb
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.dll
@@ -80,3 +81,27 @@ C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.cata
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.dll
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
+=======
+\\VBOXSVR\Proyectos_.NET\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll
+\\VBOXSVR\Proyectos_.NET\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.pdb
+\\VBOXSVR\Proyectos_.NET\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.dll
+\\VBOXSVR\Proyectos_.NET\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.dll
+\\VBOXSVR\Proyectos_.NET\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.xml
+\\VBOXSVR\Proyectos_.NET\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.xml
+\\VBOXSVR\Proyectos_.NET\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.dll
+\\VBOXSVR\Proyectos_.NET\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
+F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll.config
+F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Newtonsoft.Json.dll
+F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\PushSharp.Amazon.dll
+F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\PushSharp.Apple.dll
+F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\PushSharp.Blackberry.dll
+F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\PushSharp.Core.dll
+F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\PushSharp.Firefox.dll
+F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\PushSharp.Google.dll
+F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\PushSharp.Windows.dll
+F:\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Newtonsoft.Json.xml
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll.config
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache
+>>>>>>> bf812801a8c7c836bc7081bf4bd228d477c368f8
+C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll.config
+C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Newtonsoft.Json.xml

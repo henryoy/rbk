@@ -23,6 +23,10 @@ namespace cm.mx.catalogo.Model.Map
 
             Map(x => x.Relacionado);
             Map(x => x.ImporteVisita);
+
+            Map(x => x.ErrorRelacion);
+            Map(x => x.SubTipo);
+            Map(x => x.CampanaId);
         }
     }
 }

@@ -46,6 +46,15 @@ namespace cm.mx.catalogo.Model
             return _exito;
         }
 
+        public UsuarioDispositivo getTokenActivo(int UsuarioID)
+        {
+            UsuarioDispositivo oUsuario = new UsuarioDispositivo();
+
+            oUsuario = _session.Query<UsuarioDispositivo>().Where(x => x.UsuarioId == UsuarioID).OrderByDescending(x => x.FechaAlta).FirstOrDefault();
+
+            return oUsuario;
+        }
+
         //public List<UsuarioDispositivo> getTokensByUsuario(int usuarioId)
         //{
 
