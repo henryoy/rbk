@@ -253,12 +253,15 @@ namespace cm.mx.catalogo.Model
 
         }
 
-        public bool RegistrarVisita(int Usuario, int ClienteID, string Referencia, int SucursalId, out int notificacionid)
+        public bool RegistrarVisita(int Usuario, int ClienteID, string Referencia, int SucursalId, out List<int> notificaciones)
         {
             _exito = false;
             _session.Clear();
 
-            notificacionid = 0;
+            Notificacion oNotifiacion = null;
+            Notificacion oNotifiacionCambio = null;
+
+            notificaciones = new List<int>();
             var oUsuario = _session.Get<Usuario>(ClienteID);
             if (oUsuario == null || oUsuario.Estatus == Estatus.BAJA.ToString() || oUsuario.Estatus == Estatus.INACTIVO.ToString())
             {
@@ -275,7 +278,7 @@ namespace cm.mx.catalogo.Model
                 var emp = _session.CreateCriteria<Usuario>().Add(Restrictions.Eq("Usuarioid", Usuario).IgnoreCase()).List<Usuario>().FirstOrDefault();
                 if (emp == null) emp = new Usuario();
 
-                Notificacion oNotifiacion = new Notificacion
+                oNotifiacion = new Notificacion
                 {
                     Estatus = Estatus.ACTIVO.ToString(),
                     FechaRegistro = DateTime.Now,
@@ -290,11 +293,11 @@ namespace cm.mx.catalogo.Model
                     SucursalId = SucursalId
                 };
                 oUsuario.AddNotifiacion(oNotifiacion);
-                //_session.SaveOrUpdate(oNotifiacion);
+
                 var tm = _session.Query<Tipomembresia>().FirstOrDefault(a => oUsuario.VisitaActual >= a.ApartirDe && oUsuario.VisitaActual <= a.Hasta);
                 if (tm != null && tm.ApartirDe == oUsuario.VisitaActual)
                 {
-                    oNotifiacion = new Notificacion
+                    oNotifiacionCambio = new Notificacion
                     {
                         Estatus = Estatus.ACTIVO.ToString(),
                         FechaRegistro = DateTime.Now,
@@ -308,15 +311,20 @@ namespace cm.mx.catalogo.Model
                         Referencia = Referencia,
                         SucursalId = SucursalId
                     };
-                    //_session.SaveOrUpdate(oNotifiacion);
-                    oUsuario.AddNotifiacion(oNotifiacion);
+
+                    oUsuario.AddNotifiacion(oNotifiacionCambio);
                     oUsuario.oTarjeta = tm;
                 }
                 _session.SaveOrUpdate(oUsuario);
                 _session.Transaction.Commit();
-                notificacionid = oNotifiacion.NotificacionID;
+                //notificaciones.AddRange(oUsuario.Notificaciones as List<Notificacion>);
+                notificaciones.Add(oNotifiacion.NotificacionID);
+                if (oNotifiacionCambio != null)
+                    notificaciones.Add(oNotifiacionCambio.NotificacionID);
+
+                Console.WriteLine(oUsuario.Notificaciones);
+
                 _exito = true;
-                _mensajes.Add("¡Felicidades! \nSe registró la visita correctamente.");
             }
             return _exito;
         }
