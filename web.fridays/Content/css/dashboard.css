@@ -564,7 +564,7 @@ input {
         margin-top: 0px !important;
     }
 
-#subscribers_link {
+#subscribers_link, .subscribers_link {
     background-image: url(../img/icons/subscribers.png);
     background-position: 21px 16px;
     position: relative;
@@ -820,94 +820,94 @@ input {
         box-shadow: inset 1px 0px 0px #d8d8d8, inset 0px 1px 0px #d8d8d8, inset 0px -1px 0px #d8d8d8;
     }
 
-  #plans-info .Vistaleft {
+    #plans-info .Vistaleft {
         float: left;
         width: 70%;
         line-height: 30px;
         color: #919191;
-        
-    }
-  .submit-btn-vista{
-      float: left;
-        width: 100%;
-        height : 100%;
-        line-height: 100px;
-        color: #919191;
-        padding:0;
-  }
-
-        #plans-info .left p {
-            padding: 14px 25px 0 0;
-        }
-
-            #plans-info .left p span {
-                font-family: 'source_sans_prosemibold', Helvetica, Arial, sans-serif;
-                color: #4a4a4a;
-            }
-
-    #plans-info .right {
-        float: right;
-        width: 50%;
-        height: 162px;
-        display: table;
-        position: relative;
     }
 
-     #plans-info .Visitaright {
-        float: right;
-        width: 30%;
-        height: 162px;
-        background-color: #FFF;
-        height: 162px;
-        padding: 30px;
-        box-sizing: border-box;
-        box-shadow: inset 1px 0px 0px #d8d8d8, inset 0px 1px 0px #d8d8d8, inset 0px -1px 0px #d8d8d8;
+.submit-btn-vista {
+    float: left;
+    width: 100%;
+    height: 100%;
+    line-height: 100px;
+    color: #919191;
+    padding: 0;
+}
+
+#plans-info .left p {
+    padding: 14px 25px 0 0;
+}
+
+    #plans-info .left p span {
+        font-family: 'source_sans_prosemibold', Helvetica, Arial, sans-serif;
+        color: #4a4a4a;
     }
 
-    #plans-info #calculatorWrapper {
-        position: relative;
-        width: 100%;
-        background-color: #e76a46;
-        height: 162px;
+#plans-info .right {
+    float: right;
+    width: 50%;
+    height: 162px;
+    display: table;
+    position: relative;
+}
+
+#plans-info .Visitaright {
+    float: right;
+    width: 30%;
+    height: 162px;
+    background-color: #FFF;
+    height: 162px;
+    padding: 30px;
+    box-sizing: border-box;
+    box-shadow: inset 1px 0px 0px #d8d8d8, inset 0px 1px 0px #d8d8d8, inset 0px -1px 0px #d8d8d8;
+}
+
+#plans-info #calculatorWrapper {
+    position: relative;
+    width: 100%;
+    background-color: #e76a46;
+    height: 162px;
+}
+
+#plans-info .calculator-icon {
+    float: right;
+    width: 150px;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    background-color: #FFFFFF;
+    text-align: center;
+    box-shadow: inset -1px 0px 0px 0px #d8d8d8, inset 0px 1px 0px 0px #d8d8d8, inset 0px -1px 0px 0px #d8d8d8;
+    -moz-box-shadow: inset -1px 0px 0px 0px #d8d8d8, inset 0px 1px 0px 0px #d8d8d8, inset 0px -1px 0px 0px #d8d8d8;
+    -webkit-box-shadow: inset -1px 0px 0px 0px #d8d8d8, inset 0px 1px 0px 0px #d8d8d8, inset 0px -1px 0px 0px #d8d8d8;
+}
+
+    #plans-info .calculator-icon img {
+        margin-top: 48px;
     }
 
-    #plans-info .calculator-icon {
-        float: right;
-        width: 150px;
-        height: 100%;
-        display: table-cell;
-        vertical-align: middle;
-        background-color: #FFFFFF;
-        text-align: center;
-        box-shadow: inset -1px 0px 0px 0px #d8d8d8, inset 0px 1px 0px 0px #d8d8d8, inset 0px -1px 0px 0px #d8d8d8;
-        -moz-box-shadow: inset -1px 0px 0px 0px #d8d8d8, inset 0px 1px 0px 0px #d8d8d8, inset 0px -1px 0px 0px #d8d8d8;
-        -webkit-box-shadow: inset -1px 0px 0px 0px #d8d8d8, inset 0px 1px 0px 0px #d8d8d8, inset 0px -1px 0px 0px #d8d8d8;
-    }
+#plans-info .calculator {
+    float: left;
+    width: 60%;
+    height: 162px;
+    padding-left: 60px;
+    padding-top: 48px;
+}
 
-        #plans-info .calculator-icon img {
-            margin-top: 48px;
-        }
-
-    #plans-info .calculator {
-        float: left;
-        width: 60%;
-        height: 162px;
-        padding-left: 60px;
-        padding-top: 48px;
-    }
-
-        #plans-info .calculator input {
-            color: #FFFFFF;
-        }
-
-        #plans-info .calculator .define_amount_plan {
-            text-align: left;
-            color: #FFFFFF;
-        }
-
-    #plans-info ::-webkit-input-placeholder {
+    #plans-info .calculator input {
         color: #FFFFFF;
     }
+
+    #plans-info .calculator .define_amount_plan {
+        text-align: left;
+        color: #FFFFFF;
+    }
+
+#plans-info ::-webkit-input-placeholder {
+    color: #FFFFFF;
+}
 
 :-moz-placeholder { /* Firefox 18- */
     color: #FFFFFF;
@@ -2463,8 +2463,8 @@ campaigns #row_tarjeta {
 }
 
 #filter_sidebar {
-   width: 400px;
-     /*height: 100%;*/
+    width: 400px;
+    /*height: 100%;*/
     background-color: #FFF;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -6860,118 +6860,140 @@ span.feed_empty_state {
 
 /* Make clicks pass-through */
 #nprogress,
-#MainContent_upPreload,#upPreload {
-  /*pointer-events: none;*/
-  height: 100%;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1040;
+#MainContent_upPreload, #upPreload {
+    /*pointer-events: none;*/
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1040;
 }
+
 .nprogress {
-  display: none;
+    display: none;
 }
+
 #nprogress .bar {
-  background: #9df500;
-  height: 2px;
-  left: 0;
-  overflow: hidden;
-  position: fixed;
-  top: 0px;
-  width: 100%;
-  z-index: 1031;
+    background: #9df500;
+    height: 2px;
+    left: 0;
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 1031;
 }
-#nprogress .bar.bar-login {
-  top: 0;;
-}
+
+    #nprogress .bar.bar-login {
+        top: 0;
+        ;
+    }
 /* Fancy blur effect */
 #nprogress .peg {
-  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
-  display: block;
-  height: 100%;
-  opacity: 1.0;
-  position: absolute;
-  right: 0px;
-  width: 100px;
-  -webkit-transform: rotate(3deg) translate(0px, -4px);
-      -ms-transform: rotate(3deg) translate(0px, -4px);
-          transform: rotate(3deg) translate(0px, -4px);
+    box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+    display: block;
+    height: 100%;
+    opacity: 1.0;
+    position: absolute;
+    right: 0px;
+    width: 100px;
+    -webkit-transform: rotate(3deg) translate(0px, -4px);
+    -ms-transform: rotate(3deg) translate(0px, -4px);
+    transform: rotate(3deg) translate(0px, -4px);
 }
 /* Remove these to get rid of the spinner */
 #nprogress .spinner,
 #MainContent_upPreload .spinner,
 #upPreload .spinner {
-  display: block;
-  position: fixed;
-  /*right: 15px;
+    display: block;
+    position: fixed;
+    /*right: 15px;
   top: 85px;*/
-  right: 50%;
-  top: 50%;
-  margin-left: -10px;
-  margin-top: -10px;
-  z-index: 1031;
+    right: 50%;
+    top: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+    z-index: 1031;
 }
-#nprogress .spinner.spinner-login {
-  top: 15px;
-}
-#nprogress .spinner-icon,  
+
+    #nprogress .spinner.spinner-login {
+        top: 15px;
+    }
+
+#nprogress .spinner-icon,
 #MainContent_upPreload .spinner-icon,
-#upPreload .spinner-icon  {  
-  border: solid 2px transparent;
-  border-left-color: transparent;
-  border-radius: 50%;
-  border-top-color: transparent;
-  box-sizing: border-box;
-  height: 20px;
-  width: 20px;
-  position: absolute;
-  -webkit-animation: nprogress-spinner 400ms linear infinite;
-          animation: nprogress-spinner 400ms linear infinite;
+#upPreload .spinner-icon {
+    border: solid 2px transparent;
+    border-left-color: transparent;
+    border-radius: 50%;
+    border-top-color: transparent;
+    box-sizing: border-box;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    -webkit-animation: nprogress-spinner 400ms linear infinite;
+    animation: nprogress-spinner 400ms linear infinite;
 }
-#nprogress .spinner-icon-bg, 
+
+#nprogress .spinner-icon-bg,
 #MainContent_upPreload .spinner-icon-bg,
-#upPreload .spinner-icon-bg  {  
-  border: solid 2px rgba(0,0,0,0.2);
-  border-radius: 50%;
-  box-sizing: border-box;
-  height: 20px;
-  width: 20px;
+#upPreload .spinner-icon-bg {
+    border: solid 2px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    box-sizing: border-box;
+    height: 20px;
+    width: 20px;
 }
+
 .nprogress-custom-parent {
-  overflow: hidden;
-  position: relative;
+    overflow: hidden;
+    position: relative;
 }
-.nprogress-custom-parent #nprogress .spinner,
-.nprogress-custom-parent #nprogress .bar {
-  position: absolute;
-}
+
+    .nprogress-custom-parent #nprogress .spinner,
+    .nprogress-custom-parent #nprogress .bar {
+        position: absolute;
+    }
+
 #nprogress .overlay,
 #MainContent_upPreload .overlay,
 #upPreload .overlay {
-  /*pointer-events: none;
+    /*pointer-events: none;
   cursor: not-allowed;*/
-  background-color: #000;
-  background-color: rgba(0,0,0, 0.4);
-  color: #fff;
-  display: block;
-  height: 100%;
-  position: fixed;
-  text-align: center;
-  top: 0;
-  width: 100%;
-  z-index: 1030;
-/*  -webkit-transition: 0.3s all;
+    background-color: #000;
+    background-color: rgba(0,0,0, 0.4);
+    color: #fff;
+    display: block;
+    height: 100%;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+    /*  -webkit-transition: 0.3s all;
      -moz-transition: 0.3s all;
       -ms-transition: 0.3s all;
        -o-transition: 0.3s all;
           transition: 0.3s all;*/
 }
+
 @-webkit-keyframes nprogress-spinner {
-  0%   { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
 }
+
 @keyframes nprogress-spinner {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

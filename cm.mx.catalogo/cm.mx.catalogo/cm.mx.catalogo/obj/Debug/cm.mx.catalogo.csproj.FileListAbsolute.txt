@@ -105,3 +105,4 @@ C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj
 >>>>>>> bf812801a8c7c836bc7081bf4bd228d477c368f8
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll.config
 C:\Users\Henry\Documents\GitHub\Project\Sitios\rbk\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Newtonsoft.Json.xml
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Newtonsoft.Json.xml

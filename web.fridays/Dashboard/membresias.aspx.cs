@@ -63,6 +63,7 @@ public partial class membresias : System.Web.UI.Page
         txtNombre.Text = oMembresia.Nombre;
         txtVisitasMax.Text = oMembresia.Hasta.ToString();
         txtVisitasMin.Text = oMembresia.ApartirDe.ToString();
+        txtColorL.Text = oMembresia.ColorLetra;
         txtColor.Enabled = !read;
         txtDescuento.ReadOnly = read;
         txtNombre.ReadOnly = read;
@@ -117,7 +118,7 @@ public partial class membresias : System.Web.UI.Page
             int max;
             decimal descuento;
             int.TryParse(txtVisitasMin.Text.Trim(), NumberStyles.AllowThousands, new NumberFormatInfo() { NumberGroupSeparator = "," }, out min);
-            int.TryParse(txtVisitasMax.Text.Trim(), NumberStyles.AllowThousands, new NumberFormatInfo() { NumberGroupSeparator = "," },out max);
+            int.TryParse(txtVisitasMax.Text.Trim(), NumberStyles.AllowThousands, new NumberFormatInfo() { NumberGroupSeparator = "," }, out max);
             decimal.TryParse(txtDescuento.Text, out descuento);
             var filePath = (ConfigurationManager.AppSettings["RutaImagenes"]).Replace("~", "");
             Tipomembresia oMembresia = new Tipomembresia();
@@ -125,6 +126,7 @@ public partial class membresias : System.Web.UI.Page
             oMembresia.Estado = "ACTIVO";
             oMembresia.Nombre = txtNombre.Text;
             oMembresia.Color = txtColor.Text.Trim();
+            oMembresia.ColorLetra = txtColorL.Text.Trim();
             oMembresia.ApartirDe = min;
             oMembresia.Hasta = max;
             oMembresia.Porcientodescuento = descuento;

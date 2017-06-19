@@ -34,7 +34,7 @@ namespace cm.mx.catalogo.Rules
             _mensajes.Clear();
             if (string.IsNullOrEmpty(oUsuario.Contrasena)) _mensajes.Add("Ingrese el código");
 
-            if(oUsuario.Origen == "MOBILE")
+            if (oUsuario.Origen == "MOBILE")
                 if (!Funciones.ValidarCorreo(oUsuario.Email)) _mensajes.Add("Ingrese un correo válido");
 
             if (!Enum.TryParse(oUsuario.Tipo, out tipo)) _mensajes.Add("Ingrese el tipo de usuario");
@@ -50,7 +50,6 @@ namespace cm.mx.catalogo.Rules
                     if (origen == Origen.MOBILE.ToString()) _mensajes.Add("Inicie sessión con su correo y contraseña");
                     else _mensajes.Add("inicie sesión con: " + origen);
                 }
-
             }
             if (string.IsNullOrEmpty(oUsuario.Nombre)) _mensajes.Add("Ingrese el nombre del usuario");
             DateTime ini = DateTime.Now.AddYears(-100);
@@ -78,6 +77,23 @@ namespace cm.mx.catalogo.Rules
             DateTime ini = DateTime.Now.AddYears(-300);
             DateTime fin = DateTime.Now.AddYears(-10);
             if (oUsuario.FechaNacimiento <= ini || oUsuario.FechaNacimiento >= fin) _mensajes.Add("Ingrese una fecha válida");
+            return _mensajes.Count() == 0;
+        }
+
+        public bool Guardar(Usuario oUser)
+        {
+            _mensajes = new List<string>();
+            DateTime ini = DateTime.Now.AddYears(-100);
+            DateTime fin = DateTime.Now.AddYears(-13);
+            if (string.IsNullOrEmpty(oUser.Codigo)) _mensajes.Add("Ingrese el código.");
+            if (string.IsNullOrEmpty(oUser.Contrasena)) _mensajes.Add("Ingrese la contraseña.");
+            else if (!oUser.Contrasena.Equals(oUser.VerificacionContrasena)) _mensajes.Add("Las contraseña y la verifiación no coincide.");
+            if (oUser.FechaNacimiento <= ini || oUser.FechaNacimiento >= fin) _mensajes.Add("Ingrese una fecha válida");
+            if (string.IsNullOrEmpty(oUser.IdExterno)) _mensajes.Add("Ingrese la clave del usuario");
+            if (string.IsNullOrEmpty(oUser.Email)) _mensajes.Add("Ingrse el correo.");
+            else if (!Funciones.ValidarCorreo(oUser.Email)) _mensajes.Add("Ingrese un correo válido.");
+            if (string.IsNullOrEmpty(oUser.Nombre)) _mensajes.Add("Ingrese el nombre.");
+            if (string.IsNullOrEmpty(oUser.Origen)) _mensajes.Add("Ingrese el origen");
             return _mensajes.Count() == 0;
         }
     }

@@ -31,6 +31,8 @@ namespace cm.mx.catalogo.Model
         public virtual string Estado { get; set; }
         [DataMember]
         public virtual string UrlImagen { get; set; }
+        [DataMember]
+        public virtual string ColorLetra { get; set; }
         public virtual int UsuarioBaja { get; set; }
         public virtual DateTime FechaBaja { get; set; }
         public virtual IList<Promocionmembresia> Promocionmembresia { get; set; }

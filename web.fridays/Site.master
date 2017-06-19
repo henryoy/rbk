@@ -123,6 +123,14 @@
                                 <li><a href="<%= ResolveUrl("~/Dashboard/TipoInteres") %>">Tipo Interes</a></li>
                             </ul>
                         </li>
+                        <li class="subscribers_link">
+                            <h2 class="semi_bold">Usuarios
+                                <%--<div class="create_new_list"></div>--%>
+                            </h2>
+                            <ul class="hidden" style="display: none;">
+                                <li><a href="<%= ResolveUrl("~/Dashboard/Usuario") %>">Usuarios</a></li>
+                            </ul>
+                        </li>
                         <li id="account_link" class="">
                             <h2 class="semi_bold">Cuenta</h2>
                             <ul class="hidden" style="">

@@ -77,7 +77,8 @@
                         <ItemTemplate>
                             <li data-id="<%# Eval("MembresiaId") %>">
                                 <div class="row_color">
-                                    <div <%# "style=\"margin: 10px; width: 50px; height: 50px; background: "+Eval("Color")+";\"" %>>
+                                    <div <%# "style=\"margin: 10px; width: 50px; height: 50px; background: " + Eval("Color") + ";\"" %>>
+                                        <span <%# "style=\"text-align: center; vertical-align: middle; color: " + Eval("ColorLetra") + ";\"" %>>Letras</span>
                                     </div>
                                 </div>
                                 <div class="row_name"><%# Eval("Nombre") %></div>
@@ -143,6 +144,13 @@
                             <div class="data_value">
                                 <asp:TextBox runat="server" type="color" CssClass="regular color-picker" ID="txtColor"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator4" ControlToValidate="txtColor" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
+                            </div>
+                        </li>
+                        <li class="clear-fix editar">
+                            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_date@2x.png)">Color Letra:</div>
+                            <div class="data_value">
+                                <asp:TextBox runat="server" type="color" CssClass="regular color-picker" ID="txtColorL"></asp:TextBox>
+                                <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator5" ControlToValidate="txtColorL" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
                         <li class="clear-fix editar">

@@ -9,6 +9,7 @@ namespace cm.mx.catalogo.Model.Map
             Table("TipoMembresia");
             LazyLoad();
             Id(x => x.Membresiaid).GeneratedBy.Identity().Column("MembresiaId");
+            Map(x => x.ColorLetra).Column("ColorLetra").Not.Nullable();
             Map(x => x.Nombre).Column("Nombre").Not.Nullable();
             Map(x => x.NumeroDeVisitas).Column("NumeroDeVisitas").Not.Nullable();
             Map(x => x.ApartirDe).Column("ApartirDe").Not.Nullable();
