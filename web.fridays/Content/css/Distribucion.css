@@ -208,3 +208,13 @@ table tbody tr td input[type="password"] {
     .row-edit td:last-child {
         padding-top: 8px !important;
     }
+
+.columna {
+    width: 125px;
+    min-width: 100px;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    /*height: 100%;*/
+}

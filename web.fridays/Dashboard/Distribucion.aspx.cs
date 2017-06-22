@@ -35,17 +35,24 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             ViewState["distribucion"] = value;
         }
     }
+    CondicionDistribucion oCondicionMemb
+    {
+        get
+        {
+            var temp = ViewState["tipoembresia"];
+            return temp == null ? null : (CondicionDistribucion)temp;
+        }
+        set
+        {
+            ViewState["tipoembresia"] = value;
+        }
+    }
 
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
-            int id;
-            int.TryParse(Request.QueryString["id"], out id);
-            lsCampos = new List<CamposDistribucion>();
-            cCatalogo = new CatalogoController();
-            lsCampos = cCatalogo.GetAllCamposDistrubucion();
-            GetDistribucion(id);
+            CargaInicial();
         }
     }
 
@@ -73,6 +80,23 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
         }
     }
 
+    protected void CargaInicial()
+    {
+        int id;
+        int.TryParse(Request.QueryString["id"], out id);
+        lsCampos = new List<CamposDistribucion>();
+        cCatalogo = new CatalogoController();
+        lsCampos = cCatalogo.GetAllCamposDistrubucion();
+        var lsMembresias = cCatalogo.GetAllMembresias();
+        cbxMembresia.Items.Clear();
+        cbxMembresia.DataSource = lsMembresias;
+        cbxMembresia.DataTextField = "Nombre";
+        cbxMembresia.DataValueField = "Membresiaid";
+        cbxMembresia.DataBind();
+        cbxMembresia.Items.Insert(0, new ListItem { Text = "Todos", Value = "" });
+        GetDistribucion(id);
+    }
+
     protected void BindGrid(GridView grid, List<dynamic> ls)
     {
         grid.DataSource = ls;
@@ -88,8 +112,28 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             if (oDistribucion == null) oDistribucion = new Distribucion();
             txtDescripcion.Text = oDistribucion.Descripcion;
             txtNombre.Text = oDistribucion.Nombre;
+            var lsCondicones = oDistribucion.Condiciones;
+            oCondicionMemb = lsCondicones.FirstOrDefault(a => a.Campo == "TarjetaID");
+
+            if (oCondicionMemb != null) lsCondicones.Remove(oCondicionMemb);
+            else
+            {
+                oCondicionMemb = new CondicionDistribucion
+                {
+                    Campo = "TarjetaID",
+                    DistribucionID = oDistribucion.DistribucionID,
+                    Distrubucion = oDistribucion,
+                    Nexo = "Y",
+                    Operador = "=",
+                    Tipo = "Entero",
+                    Valor = "0"
+                };
+            }
+
+            cbxMembresia.SelectedIndex = cbxMembresia.Items.IndexOf(cbxMembresia.Items.FindByValue(oCondicionMemb.Valor));
+
             BindGrid(grvCampos, new List<dynamic>(lsCampos));
-            BindGrid(grvCondicion, new List<dynamic>(oDistribucion.Condiciones));
+            BindGrid(grvCondicion, new List<dynamic>(lsCondicones));
         }
         catch (Exception ex)
         {
@@ -152,7 +196,7 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
     {
         try
         {
-           List<string> mensajes = new List<string>();
+            List<string> mensajes = new List<string>();
             StringBuilder sb = new StringBuilder();
 
             if (mensajes.Count() > 0)
@@ -161,20 +205,21 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             }
             else
             {
-                bool isContinue = true;
                 if (oDistribucion == null) oDistribucion = new Distribucion();
-                foreach (var item in oDistribucion.Condiciones)
+
+                if (oDistribucion.Condiciones.Any(a => string.IsNullOrEmpty(a.Campo)))
                 {
-                    if (string.IsNullOrEmpty(item.Campo))
-                    {
-                        Funciones.MostarMensajes("error", new List<string> { "Existe una condicion vacia."});
-                        isContinue = false;
-                        break;
-                    }
+                    Funciones.MostarMensajes("error", new List<string> { "Existe una condicion vacia." });
+                    return;
                 }
 
-                if (!isContinue)
-                    return;
+                string membresia = cbxMembresia.SelectedValue;
+                if (!string.IsNullOrEmpty(membresia))
+                {
+                    oCondicionMemb.Campo = "TarjetaID";
+                    oCondicionMemb.Valor = membresia;
+                    oDistribucion.Condiciones.Add(oCondicionMemb);
+                }
 
                 oDistribucion.Campos = GetCampos();
                 oDistribucion.Descripcion = txtDescripcion.Text.Trim();
@@ -328,14 +373,29 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
         {
             UtileriaController cUtileria = new UtileriaController();
             oDistribucion.Campos = GetCampos();
+            string membresia = cbxMembresia.SelectedValue;
+            bool exite = false;
+            if (!string.IsNullOrEmpty(membresia))
+            {
+                oCondicionMemb.Valor = membresia;
+                oDistribucion.Condiciones.Add(oCondicionMemb);
+                exite = true;
+            }
+
             if (!cUtileria.ProbarDistribucion(oDistribucion, grvResultado))
             {
                 Funciones.MostarMensajes("error", cUtileria.Errores);
             }
             else
             {
-                cUtileria.ProbarDistribucion(oDistribucion, grvResultado);
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "$('#popupOverlay').show();", true);
+                //cUtileria.ProbarDistribucion(oDistribucion, grvResultado);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "$('#popupOverlay').show(); ocultarHeader();", true);
+            }
+
+            if (exite)
+            {
+                oCondicionMemb.Campo = "TarjetaID";
+                oDistribucion.Condiciones.Remove(oCondicionMemb);
             }
         }
         catch (Exception ex)

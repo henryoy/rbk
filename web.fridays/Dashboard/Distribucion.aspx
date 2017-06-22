@@ -52,6 +52,10 @@
                 </asp:GridView>
                 <div class="fila" style="background: #fff; height: 30px; padding: 0px;">
                     <span style="display: table-cell; vertical-align: middle;" class="sub_title">Condiciones</span>
+                    <div style="display: table-cell; vertical-align: middle;">
+                        <label for="cbxmembresia">Tarjeta:</label>
+                        <asp:DropDownList runat="server" ID="cbxMembresia" Style="width: 75%; height: 25px; border: none;"></asp:DropDownList>
+                    </div>
                     <asp:Button runat="server" ID="btnAddCondicion" CssClass="add-option semi_bold" OnClick="btnAddCondicion_Click" Text="Agregar" UseSubmitBehavior="false" />
                     <asp:Button runat="server" ID="btnResultado" CssClass="add-option semi_bold" OnClick="btnResultado_Click" Text="Probar" UseSubmitBehavior="false" Style="margin-right: 10px;" />
                 </div>
@@ -156,7 +160,7 @@
             <asp:UpdatePanel runat="server" ID="upMpdal">
                 <ContentTemplate>
                     <div style="overflow: auto !important; height: 300px;">
-                        <asp:GridView runat="server" ID="grvResultado" GridLines="None" ShowHeader="true" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false" CssClass="table">
+                        <asp:GridView runat="server" ID="grvResultado" GridLines="None" ShowHeader="true" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false" CssClass="table tb-result">
                             <Columns>
                             </Columns>
                             <EmptyDataTemplate>
@@ -189,6 +193,15 @@
                 $(document).on("click", ".btnFalse", function (e) {
                     $("#popupOverlay").hide();
                 });
+                window.ocultarHeader = function () {
+                    var $rows = $("table.tb-result thead tr");
+                    $rows.each(function (index) {
+                        $(this).find("th").each(function () {
+                            $(this).addClass("columna");
+                            $(this).attr("title", $(this).text());
+                        });
+                    });
+                }
             });
         });
     </script>
