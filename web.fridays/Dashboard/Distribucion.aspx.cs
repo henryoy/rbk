@@ -35,18 +35,18 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             ViewState["distribucion"] = value;
         }
     }
-    CondicionDistribucion oCondicionMemb
-    {
-        get
-        {
-            var temp = ViewState["tipoembresia"];
-            return temp == null ? null : (CondicionDistribucion)temp;
-        }
-        set
-        {
-            ViewState["tipoembresia"] = value;
-        }
-    }
+    //CondicionDistribucion oCondicionMemb
+    //{
+    //    get
+    //    {
+    //        var temp = ViewState["tipoembresia"];
+    //        return temp == null ? null : (CondicionDistribucion)temp;
+    //    }
+    //    set
+    //    {
+    //        ViewState["tipoembresia"] = value;
+    //    }
+    //}
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -93,7 +93,7 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
         cbxMembresia.DataTextField = "Nombre";
         cbxMembresia.DataValueField = "Membresiaid";
         cbxMembresia.DataBind();
-        cbxMembresia.Items.Insert(0, new ListItem { Text = "Todos", Value = "" });
+        cbxMembresia.Items.Insert(0, new ListItem { Text = "Todos", Value = "0" });
         GetDistribucion(id);
     }
 
@@ -113,24 +113,24 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             txtDescripcion.Text = oDistribucion.Descripcion;
             txtNombre.Text = oDistribucion.Nombre;
             var lsCondicones = oDistribucion.Condiciones;
-            oCondicionMemb = lsCondicones.FirstOrDefault(a => a.Campo == "TarjetaID");
+            //oCondicionMemb = lsCondicones.FirstOrDefault(a => a.Campo == "TarjetaID");
 
-            if (oCondicionMemb != null) lsCondicones.Remove(oCondicionMemb);
-            else
-            {
-                oCondicionMemb = new CondicionDistribucion
-                {
-                    Campo = "TarjetaID",
-                    DistribucionID = oDistribucion.DistribucionID,
-                    Distrubucion = oDistribucion,
-                    Nexo = "Y",
-                    Operador = "=",
-                    Tipo = "Entero",
-                    Valor = "0"
-                };
-            }
+            //if (oCondicionMemb != null) lsCondicones.Remove(oCondicionMemb);
+            //else
+            //{
+            //    oCondicionMemb = new CondicionDistribucion
+            //    {
+            //        Campo = "TarjetaID",
+            //        DistribucionID = oDistribucion.DistribucionID,
+            //        Distrubucion = oDistribucion,
+            //        Nexo = "Y",
+            //        Operador = "=",
+            //        Tipo = "Entero",
+            //        Valor = "0"
+            //    };
+            //}
 
-            cbxMembresia.SelectedIndex = cbxMembresia.Items.IndexOf(cbxMembresia.Items.FindByValue(oCondicionMemb.Valor));
+            cbxMembresia.SelectedIndex = cbxMembresia.Items.IndexOf(cbxMembresia.Items.FindByValue(oDistribucion.TipoMembresia.ToString()));
 
             BindGrid(grvCampos, new List<dynamic>(lsCampos));
             BindGrid(grvCondicion, new List<dynamic>(lsCondicones));
@@ -213,14 +213,17 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
                     return;
                 }
 
-                string membresia = cbxMembresia.SelectedValue;
-                if (!string.IsNullOrEmpty(membresia))
-                {
-                    oCondicionMemb.Campo = "TarjetaID";
-                    oCondicionMemb.Valor = membresia;
-                    oDistribucion.Condiciones.Add(oCondicionMemb);
-                }
+                //string membresia = cbxMembresia.SelectedValue;
+                //if (!string.IsNullOrEmpty(membresia))
+                //{
+                //    oCondicionMemb.Campo = "TarjetaID";
+                //    oCondicionMemb.Valor = membresia;
+                //    oDistribucion.Condiciones.Add(oCondicionMemb);
+                //}
+                int membresia;
+                int.TryParse(cbxMembresia.SelectedValue, out membresia);
 
+                oDistribucion.TipoMembresia = membresia;
                 oDistribucion.Campos = GetCampos();
                 oDistribucion.Descripcion = txtDescripcion.Text.Trim();
                 oDistribucion.Nombre = txtNombre.Text.Trim();
@@ -373,14 +376,14 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
         {
             UtileriaController cUtileria = new UtileriaController();
             oDistribucion.Campos = GetCampos();
-            string membresia = cbxMembresia.SelectedValue;
-            bool exite = false;
-            if (!string.IsNullOrEmpty(membresia))
-            {
-                oCondicionMemb.Valor = membresia;
-                oDistribucion.Condiciones.Add(oCondicionMemb);
-                exite = true;
-            }
+            //string membresia = cbxMembresia.SelectedValue;
+            //bool exite = false;
+            //if (!string.IsNullOrEmpty(membresia))
+            //{
+            //    oCondicionMemb.Valor = membresia;
+            //    oDistribucion.Condiciones.Add(oCondicionMemb);
+            //    exite = true;
+            //}
 
             if (!cUtileria.ProbarDistribucion(oDistribucion, grvResultado))
             {
@@ -392,11 +395,11 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "open", "$('#popupOverlay').show(); ocultarHeader();", true);
             }
 
-            if (exite)
-            {
-                oCondicionMemb.Campo = "TarjetaID";
-                oDistribucion.Condiciones.Remove(oCondicionMemb);
-            }
+            //if (exite)
+            //{
+            //    oCondicionMemb.Campo = "TarjetaID";
+            //    oDistribucion.Condiciones.Remove(oCondicionMemb);
+            //}
         }
         catch (Exception ex)
         {

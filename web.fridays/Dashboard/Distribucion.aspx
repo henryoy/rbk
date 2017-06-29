@@ -22,6 +22,12 @@
                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator3" ControlToValidate="txtDescripcion" Display="Dynamic" ErrorMessage="* Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
             </div>
         </li>
+        <li class="clear-fix editar">
+            <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Tipo Membresia:</div>
+            <div class="data_value">
+                <asp:DropDownList runat="server" ID="cbxMembresia" CssClass="regular" Style="width: 80%; height: 25px; border: none;"></asp:DropDownList>
+            </div>
+        </li>
     </ul>
     <div class="fila" style="padding-top: 1px;">
         <asp:UpdatePanel runat="server" ID="upGrid">
@@ -52,10 +58,10 @@
                 </asp:GridView>
                 <div class="fila" style="background: #fff; height: 30px; padding: 0px;">
                     <span style="display: table-cell; vertical-align: middle;" class="sub_title">Condiciones</span>
-                    <div style="display: table-cell; vertical-align: middle;">
+                    <%--<div style="display: table-cell; vertical-align: middle;">
                         <label for="cbxmembresia">Tarjeta:</label>
                         <asp:DropDownList runat="server" ID="cbxMembresia" Style="width: 75%; height: 25px; border: none;"></asp:DropDownList>
-                    </div>
+                    </div>--%>
                     <asp:Button runat="server" ID="btnAddCondicion" CssClass="add-option semi_bold" OnClick="btnAddCondicion_Click" Text="Agregar" UseSubmitBehavior="false" />
                     <asp:Button runat="server" ID="btnResultado" CssClass="add-option semi_bold" OnClick="btnResultado_Click" Text="Probar" UseSubmitBehavior="false" Style="margin-right: 10px;" />
                 </div>

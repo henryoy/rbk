@@ -16,6 +16,7 @@ namespace cm.mx.catalogo.Model
         public virtual string Estado { get; set; }
         public virtual int UsuarioBaja { get; set; }
         public virtual DateTime FechaBaja { get; set; }
+        public virtual int TipoMembresia { get; set; }
         public virtual IList<CondicionDistribucion> Condiciones { get; set; }
 
         public Distribucion()

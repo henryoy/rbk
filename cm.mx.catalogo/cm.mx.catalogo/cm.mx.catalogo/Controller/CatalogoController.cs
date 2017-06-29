@@ -3089,5 +3089,30 @@ namespace cm.mx.catalogo.Controller
             }
             return _exito;
         }
+
+        public List<Distribucion> GetAllDistribucion(int TipoMembresia)
+        {
+            _exito = false;
+            _errores = new List<string>();
+            _mensajes = new List<string>();
+            List<Distribucion> ls = new List<Distribucion>();
+            try
+            {
+                rDistribucion = new DistribucionRepository();
+                ls = rDistribucion.GetDistribucion(TipoMembresia);
+            }
+            catch (Exception ex)
+            {
+                if (rDistribucion._session.Transaction.IsActive) rDistribucion._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return ls;
+        }
     }
 }

@@ -49,5 +49,17 @@ namespace cm.mx.catalogo.Model
             _exito = true;
             return ls;
         }
+
+        public List<Distribucion> GetDistribucion(int TipoMembresia)
+        {
+            _exito = false;
+            List<Distribucion> ls = new List<Distribucion>();
+            var IQuery = _session.CreateCriteria<Distribucion>();
+            IQuery.Add(Restrictions.Eq("Estado", "ACTIVO"));
+            IQuery.Add(Restrictions.Eq("TipoMembresia", TipoMembresia));
+            ls = IQuery.List<Distribucion>().ToList();
+            _exito = true;
+            return ls;
+        }
     }
 }
