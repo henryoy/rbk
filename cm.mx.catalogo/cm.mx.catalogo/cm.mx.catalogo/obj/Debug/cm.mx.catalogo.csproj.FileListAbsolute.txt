@@ -15,3 +15,19 @@ c:\users\eeuan\documents\visual studio 2017\Projects\cm.mx.catalogo\cm.mx.catalo
 c:\users\eeuan\documents\visual studio 2017\Projects\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.xml
 c:\users\eeuan\documents\visual studio 2017\Projects\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.dll
 c:\users\eeuan\documents\visual studio 2017\Projects\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
+C:\Users\EEUAN\Documents\Visual Studio 2017\Projects\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.dll
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll.config
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.dll
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\cm.mx.catalogo.pdb
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\FluentNHibernate.dll
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.dll
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Newtonsoft.Json.dll
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.dll
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\FluentNHibernate.pdb
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\FluentNHibernate.xml
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.xml
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Newtonsoft.Json.xml
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.xml
