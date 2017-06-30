@@ -18,6 +18,7 @@ namespace cm.mx.catalogo.Model
             Map(x => x.Estado);
             Map(x => x.FechaBaja);
             Map(x => x.UsuarioBaja);
+            Map(x => x.TipoMembresia);
             HasMany(x => x.Condiciones).Table("CondicionDistribucion").KeyColumn("DistribucionID").Cascade.AllDeleteOrphan().Inverse();
         }
     }
