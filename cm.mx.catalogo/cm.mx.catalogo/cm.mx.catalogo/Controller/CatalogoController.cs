@@ -1963,7 +1963,6 @@ namespace cm.mx.catalogo.Controller
             return ls;
         }
 
-
         public Campana GetCampana(int CampanaId)
         {
             Mensajes.Clear();
@@ -2392,150 +2391,140 @@ namespace cm.mx.catalogo.Controller
                     {
                         rNotificacion = new NotificacionRepository();
                         rPromoUser = new PromocionUsuarioRepository();
+                        bool todoMembresia = true;
 
-                        lsUsuario.ForEach(d =>
-                                    {
-                                        decimal porcentaje = (d.oTarjeta.Porcientodescuento.HasValue ? (d.oTarjeta.Porcientodescuento.Value / 100) : 0);
-                                        double ImporteCompare = d.ImporteActual * (double)porcentaje;
+                        try
+                        {
+                            var tipoMembresia = oPromocion.Promocionmembresia.ToList();
+
+                            List<int> lsIntMembresia = new List<int>();
+
+                            if (tipoMembresia != null && tipoMembresia.Count > 0)
+                            {
+                                todoMembresia = false;
+
+                                foreach (var item_ in oPromocion.Promocionmembresia)
+                                {
+                                    lsIntMembresia.Add(item_.Membresiaid);
+                                }
+
+                                lsUsuario = lsUsuario.Where(f => lsIntMembresia.Contains(f.TarjetaID)).ToList();
+                            }
+
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+
+                        DateTime oDateNow = DateTime.Now;
+
+                        DateTime inicial = oPromocion.Vigenciainicial.Value;
+                        DateTime final = oPromocion.Vigenciafinal.Value;
+
+                        int result1 = DateTime.Compare(inicial, oDateNow);
+                        int result2 = DateTime.Compare(final, oDateNow);
 
 
-                                        if (oPromocion.Promociondetalle.Any(f => f.Condicion == "VISITA"))
+                        if (result1 <= 0 && result2 >= 0)
+                        {
+                            lsUsuario.ForEach(d =>
                                         {
-                                            if (oPromocion.Promociondetalle.Any(f => f.Condicion == "IMPORTE"))
+                                            decimal porcentaje = (d.oTarjeta.Porcientodescuento.HasValue ? (d.oTarjeta.Porcientodescuento.Value / 100) : 0);
+                                            double ImporteCompare = d.ImporteActual * (double)porcentaje;
+
+                                            if (oPromocion.Promociondetalle.Any(f => f.Condicion == "VISITA"))
                                             {
-                                                var ProImporte = oPromocion.Promociondetalle.Where(f => f.Condicion == "IMPORTE").ToList();
-                                                ProImporte.ForEach(f =>
+                                                if (oPromocion.Promociondetalle.Any(f => f.Condicion == "IMPORTE"))
                                                 {
-                                                    double Valor1 = 0;
-                                                    double Valor2 = 0;
-
-                                                    double.TryParse(f.Valor1, out Valor1);
-                                                    double.TryParse(f.Valor2, out Valor2);
-                                                    // 0 >= 12 || 0 <= 14
-                                                    //if (d.ImporteActual >= Valor1 && d.ImporteActual <= Valor2)
-                                                    if (ImporteCompare >= Valor1 && ImporteCompare <= Valor2)
+                                                    var ProImporte = oPromocion.Promociondetalle.Where(f => f.Condicion == "IMPORTE").ToList();
+                                                    ProImporte.ForEach(f =>
                                                     {
-                                                        Notificacion _oNotificacion = rNotificacion.GetNotificacion(d.Usuarioid, oPromocion.Promocionid);
-                                                        Notificacion oNotificacionProm = new Notificacion();
+                                                        double Valor1 = 0;
+                                                        double Valor2 = 0;
 
-                                                        if (_oNotificacion != null && _oNotificacion.NotificacionID > 0)
+                                                        double.TryParse(f.Valor1, out Valor1);
+                                                        double.TryParse(f.Valor2, out Valor2);
+                                                        // 0 >= 12 || 0 <= 14
+                                                        //if (d.ImporteActual >= Valor1 && d.ImporteActual <= Valor2)
+                                                        if (ImporteCompare >= Valor1 && ImporteCompare <= Valor2)
                                                         {
-                                                            oNotificacionProm.Estatus = "ACTIVO";
-                                                            oNotificacionProm.FechaRegistro = DateTime.Now;
-                                                            oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                                                            oNotificacionProm.NotificacionID = _oNotificacion.NotificacionID;
-                                                            oNotificacionProm.PromocionID = oPromocion.Promocionid;
-                                                            oNotificacionProm.Referencia = "";
-                                                            oNotificacionProm.Tipo = "PROMOCION";
-                                                            oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
-                                                            oNotificacionProm.UsuarioID = d.Usuarioid;
-                                                            oNotificacionProm.Vigencia = DateTime.Now;
+                                                            Notificacion _oNotificacion = rNotificacion.GetNotificacion(d.Usuarioid, oPromocion.Promocionid);
+                                                            Notificacion oNotificacionProm = new Notificacion();
+
+                                                            if (_oNotificacion != null && _oNotificacion.NotificacionID > 0)
+                                                            {
+                                                                oNotificacionProm.Estatus = "ACTIVO";
+                                                                oNotificacionProm.FechaRegistro = DateTime.Now;
+                                                                oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                                                                oNotificacionProm.NotificacionID = _oNotificacion.NotificacionID;
+                                                                oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                                                                oNotificacionProm.Referencia = "";
+                                                                oNotificacionProm.Tipo = "PROMOCION";
+                                                                oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
+                                                                oNotificacionProm.UsuarioID = d.Usuarioid;
+                                                                oNotificacionProm.Vigencia = DateTime.Now;
+                                                            }
+                                                            else
+                                                            {
+                                                                oNotificacionProm.Estatus = "ACTIVO";
+                                                                oNotificacionProm.FechaRegistro = DateTime.Now;
+                                                                oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                                                                oNotificacionProm.NotificacionID = 0;
+                                                                oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                                                                oNotificacionProm.Referencia = "";
+                                                                oNotificacionProm.Tipo = "PROMOCION";
+                                                                oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
+                                                                oNotificacionProm.UsuarioID = d.Usuarioid;
+                                                                oNotificacionProm.Vigencia = DateTime.Now;
+                                                            }
+
+                                                            Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
+                                                            _exito = true;
                                                         }
-                                                        else
-                                                        {
-                                                            oNotificacionProm.Estatus = "ACTIVO";
-                                                            oNotificacionProm.FechaRegistro = DateTime.Now;
-                                                            oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                                                            oNotificacionProm.NotificacionID = 0;
-                                                            oNotificacionProm.PromocionID = oPromocion.Promocionid;
-                                                            oNotificacionProm.Referencia = "";
-                                                            oNotificacionProm.Tipo = "PROMOCION";
-                                                            oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
-                                                            oNotificacionProm.UsuarioID = d.Usuarioid;
-                                                            oNotificacionProm.Vigencia = DateTime.Now;
-                                                        }
 
-                                                        Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
-                                                        _exito = true;
-                                                    }
-
-                                                });
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Notificacion _oNotificacion = rNotificacion.GetNotificacion(d.Usuarioid, oPromocion.Promocionid);
-                                            Notificacion oNotificacionProm = new Notificacion();
-
-                                            if (_oNotificacion != null && _oNotificacion.NotificacionID > 0)
-                                            {
-                                                oNotificacionProm.Estatus = "ACTIVO";
-                                                oNotificacionProm.FechaRegistro = DateTime.Now;
-                                                oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                                                oNotificacionProm.NotificacionID = _oNotificacion.NotificacionID;
-                                                oNotificacionProm.PromocionID = oPromocion.Promocionid;
-                                                oNotificacionProm.Referencia = "";
-                                                oNotificacionProm.Tipo = "PROMOCION";
-                                                oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
-                                                oNotificacionProm.UsuarioID = d.Usuarioid;
-                                                oNotificacionProm.Vigencia = DateTime.Now;
+                                                    });
+                                                }
                                             }
                                             else
                                             {
-                                                oNotificacionProm.Estatus = "ACTIVO";
-                                                oNotificacionProm.FechaRegistro = DateTime.Now;
-                                                oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                                                oNotificacionProm.NotificacionID = 0;
-                                                oNotificacionProm.PromocionID = oPromocion.Promocionid;
-                                                oNotificacionProm.Referencia = "";
-                                                oNotificacionProm.Tipo = "PROMOCION";
-                                                oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
-                                                oNotificacionProm.UsuarioID = d.Usuarioid;
-                                                oNotificacionProm.Vigencia = DateTime.Now;
+                                                Notificacion _oNotificacion = rNotificacion.GetNotificacion(d.Usuarioid, oPromocion.Promocionid);
+                                                Notificacion oNotificacionProm = new Notificacion();
+
+                                                if (_oNotificacion != null && _oNotificacion.NotificacionID > 0)
+                                                {
+                                                    oNotificacionProm.Estatus = "ACTIVO";
+                                                    oNotificacionProm.FechaRegistro = DateTime.Now;
+                                                    oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                                                    oNotificacionProm.NotificacionID = _oNotificacion.NotificacionID;
+                                                    oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                                                    oNotificacionProm.Referencia = "";
+                                                    oNotificacionProm.Tipo = "PROMOCION";
+                                                    oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
+                                                    oNotificacionProm.UsuarioID = d.Usuarioid;
+                                                    oNotificacionProm.Vigencia = DateTime.Now;
+                                                }
+                                                else
+                                                {
+                                                    oNotificacionProm.Estatus = "ACTIVO";
+                                                    oNotificacionProm.FechaRegistro = DateTime.Now;
+                                                    oNotificacionProm.Mensaje = oPromocion.Descripcion;
+                                                    oNotificacionProm.NotificacionID = 0;
+                                                    oNotificacionProm.PromocionID = oPromocion.Promocionid;
+                                                    oNotificacionProm.Referencia = "";
+                                                    oNotificacionProm.Tipo = "PROMOCION";
+                                                    oNotificacionProm.Usuario = new Usuario() { Usuarioid = d.Usuarioid };
+                                                    oNotificacionProm.UsuarioID = d.Usuarioid;
+                                                    oNotificacionProm.Vigencia = DateTime.Now;
+                                                }
+
+                                                Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
+                                                _exito = true;
                                             }
 
-                                            Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
-                                            _exito = true;
-                                        }
+                                        });
+                        }
 
-                                    });
-                        //--
-                        //foreach (Usuario oUser in lsUsuario)
-                        //{
-                        //    Notificacion _oNotificacion = rNotificacion.GetNotificacion(oUser.Usuarioid, oPromocion.Promocionid);
-                        //    Notificacion oNotificacionProm = new Notificacion();
-
-                        //    if (_oNotificacion != null && _oNotificacion.NotificacionID > 0)
-                        //    {                                
-                        //        oNotificacionProm.Estatus = "ACTIVO";
-                        //        oNotificacionProm.FechaRegistro = DateTime.Now;
-                        //        oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                        //        oNotificacionProm.NotificacionID = _oNotificacion.NotificacionID;
-                        //        oNotificacionProm.PromocionID = oPromocion.Promocionid;
-                        //        oNotificacionProm.Referencia = "";
-                        //        oNotificacionProm.Tipo = "PROMOCION";
-                        //        oNotificacionProm.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
-                        //        oNotificacionProm.UsuarioID = oUser.Usuarioid;
-                        //        oNotificacionProm.Vigencia = DateTime.Now;
-                        //    }
-                        //    else
-                        //    {                                
-                        //        oNotificacionProm.Estatus = "ACTIVO";
-                        //        oNotificacionProm.FechaRegistro = DateTime.Now;
-                        //        oNotificacionProm.Mensaje = oPromocion.Descripcion;
-                        //        oNotificacionProm.NotificacionID = 0;
-                        //        oNotificacionProm.PromocionID = oPromocion.Promocionid;
-                        //        oNotificacionProm.Referencia = "";
-                        //        oNotificacionProm.Tipo = "PROMOCION";
-                        //        oNotificacionProm.Usuario = new Usuario() { Usuarioid = oUser.Usuarioid };
-                        //        oNotificacionProm.UsuarioID = oUser.Usuarioid;
-                        //        oNotificacionProm.Vigencia = DateTime.Now;
-                        //    }                                                      
-
-                        //    Notificacion _oNotificacionProm = rNotificacion.GuardarNotificacion(oNotificacionProm);
-
-                        //bool _isContinue = false;
-
-                        //if (_oNotificacionProm != null && oNotificacionProm.NotifiacionID > 0)
-                        //{
-                        //    _isContinue = true;
-                        //}
-                        //if (_isContinue)
-                        //{                               
-
-                        //    this.GuardarUsuarioPromocion(oPromocion, oUser, rPromoUser);
-                        //}
-                        //}    
                     }
 
 

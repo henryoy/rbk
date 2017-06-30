@@ -125,7 +125,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             dpTarjeta.Items.Insert(0, new ListItem()
             {
                 Value = "0",
-                Text = "Selecciona tarjeta"
+                Text = "(TODAS)"
             });
 
             foreach (Tipomembresia oTarjeta in lsTipomembresia)
@@ -263,18 +263,18 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         _oPromocion.Promocionid = thePID;
         _oPromocion.Resumen = txtDescripcion.Text;
 
-        if (dpTarjeta.SelectedItem.Value == "0")
-        {
-            msj = "Seleccione tipo de membresia.";
+        //if (dpTarjeta.SelectedItem.Value == "0")
+        //{
+        //    msj = "Seleccione tipo de membresia.";
 
-            ScriptManager.RegisterStartupScript(this,
-                  this.GetType(),
-                  "StartupScript",
-                  "notification('" + msj + "','error')",
-                  true);
-            lnkGuardarPromocion.Enabled = true;
-            return; 
-        }
+        //    ScriptManager.RegisterStartupScript(this,
+        //          this.GetType(),
+        //          "StartupScript",
+        //          "notification('" + msj + "','error')",
+        //          true);
+        //    lnkGuardarPromocion.Enabled = true;
+        //    return; 
+        //}
         _oPromocion.Tipomembresia = dpTarjeta.SelectedItem.Text;
         _oPromocion.Tipocliente = _oPromocion.Tipomembresia;
         _oPromocion.TerminosCondiciones = txtCondiciones.Text;
@@ -350,11 +350,18 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             _oPromocion.AddDetalle(_oPromocionDetalle);
         }
 
-        _oPromocion.AddMembresia(new Promocionmembresia()
+        if (TarjetaId > 0)
         {
-            Membresiaid = TarjetaId,
-            Promocionid = _oPromocion.Promocionid
-        });
+            // aplica solo para una membresia
+            _oPromocion.AddMembresia(new Promocionmembresia()
+            {
+                Membresiaid = TarjetaId,
+                Promocionid = _oPromocion.Promocionid
+            });
+
+        }
+
+        
 
         if (!string.IsNullOrEmpty(txtFechaInicio.Text))
         {
@@ -377,6 +384,9 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
 
             _oPromocion.AddSucursal(_oPromoSucursal);
         }
+
+
+        
 
         Promocion __oPromocion = cCatalogo.GuardarPromocion(_oPromocion);
 

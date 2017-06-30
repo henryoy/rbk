@@ -4,6 +4,16 @@
     <link rel="stylesheet" type="text/css" href="../Content/css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="<%= ResolveClientUrl("~/Content/classicTheme/style.css") %>" media="screen">
     <link href="<%= ResolveClientUrl("~/Content/css/Distribucion.css") %>" rel="stylesheet" />
+    <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />--%>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css" />
+<%--    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/ripples.min.css" />--%>
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="<%= ResolveClientUrl("~/Content/plugin/css/bootstrap-material-datetimepicker.css") %>" rel="stylesheet" />
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <style>
@@ -83,21 +93,22 @@
             position: relative;
             font-family: Helvetica, Arial, "Lucida Grande", sans-serif !important;
         }
-         select.tipopromo {
-            box-shadow: 0px 0px 0px 1px #d8d8d8;
-            height: 45px;            
-            color: #23282d;
-            font-size: 12px;
-            border: 0px;
-            cursor: pointer;
-            z-index: 99;
-            display: block;
-            width: 100%;
-            clear: both;
-            border-radius: 0px;
-            position: relative;
-            font-family: Helvetica, Arial, "Lucida Grande", sans-serif !important;
-        }
+
+            select.tipopromo {
+                box-shadow: 0px 0px 0px 1px #d8d8d8;
+                height: 45px;
+                color: #23282d;
+                font-size: 12px;
+                border: 0px;
+                cursor: pointer;
+                z-index: 99;
+                display: block;
+                width: 100%;
+                clear: both;
+                border-radius: 0px;
+                position: relative;
+                font-family: Helvetica, Arial, "Lucida Grande", sans-serif !important;
+            }
 
             select:focus {
                 outline: none;
@@ -286,7 +297,7 @@
 
         .scheduleCampaignWrapperLeft {
             float: left;
-            width: 90%;
+            width: 70%;
             padding-right: 25px;
             box-sizing: border-box;
             -moz-box-sizing: border-box;
@@ -295,7 +306,7 @@
 
         .scheduleCampaignWrapperRight {
             float: left;
-            width: 10%;
+            width: 30%;
             height: 45px;
         }
 
@@ -466,17 +477,23 @@
                                 </asp:DropDownList>
                             </label>
                             <h4 class="semi_bold" style="padding-bottom: 18px!important; margin-top: 6px;">Configurar Fecha de promoción					
-							<div runat="server" id="switch" class="switch disabled" name="schedule_switch" style="right: -1px; top: -4px;">
-                                <div runat="server" id="switch_thumb" class="switch_thumb active" style="right: 19px;"></div>
+							<div runat="server" id="switch" class="switch" name="schedule_switch" style="right: -1px; top: -4px;">
+                                <div runat="server" id="switch_thumb" class="switch_thumb" style="right: 2px;"></div>
                                 <input runat="server" type="hidden" value="0" name="schedule" id="schedule_campaign">
                             </div>
                             </h4>
-                            <div class="scheduleCampaignWrapper clear-fix">
+                            <div class="scheduleCampaignWrapper clear-fix" style="display: block;">
+                                <h4 class="semi_bold">Fecha Inicio </h4>
+                                 <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="floating-label" placeholder="Fecha Inicio" ViewStateMode="Enabled"></asp:TextBox>
+                                <h4 class="semi_bold">Fecha Final</h4>
+                                <asp:TextBox runat="server" ID="txtFechaFinal" CssClass="floating-label" placeholder="Fecha Final"  ViewStateMode="Enabled"></asp:TextBox>                              
+                            </div>
+<%--                            <div class="scheduleCampaignWrapper clear-fix">
                                 <div class="scheduleCampaignWrapperLeft">
                                     <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_day_init" ViewStateMode="Enabled"></asp:TextBox>
                                 </div>
                                 <div class="scheduleCampaignWrapperRight">
-                                    <span class="send_schedule_campaign_day_init ui-icon-cenis ui-icon-cenis-calendar"></span>
+                                    <asp:TextBox runat="server" ID="txtTimeInicio" CssClass="send_schedule_campaign_time" />
                                 </div>
                             </div>
                             <div id="datepicker_init" class="ll-skin-melon clear-fix"></div>
@@ -485,11 +502,11 @@
                                     <asp:TextBox runat="server" ID="txtFechaFinal" CssClass="send_schedule_campaign_day" ViewStateMode="Enabled"></asp:TextBox>
                                 </div>
                                 <div class="scheduleCampaignWrapperRight">
-                                    <span class="send_schedule_campaign_day ui-icon-cenis ui-icon-cenis-calendar"></span>
-                                    <%--<asp:TextBox runat="server" ID="txtFechaInicio" CssClass="send_schedule_campaign_time"  />--%>
+                                    <asp:TextBox runat="server" ID="txtTimeFinal" CssClass="send_schedule_campaign_time" />
                                 </div>
                             </div>
-                            <div id="datepicker" class="ll-skin-melon clear-fix"></div>
+                            <!---->
+                            <div id="datepicker" class="ll-skin-melon clear-fix"></div>--%>
                         </div>
                         <div id="generateChecklist" class="semi_bold">
                             <asp:LinkButton runat="server" ID="lnkGuardarPromocion" CssClass="btnTrue generateChecklistName" OnClick="lnkGuardarPromocion_Click">Guardar promoción</asp:LinkButton>
@@ -612,8 +629,35 @@
     <script src="<%= ResolveClientUrl("~/Scripts/js/chartjs/waypoints.min.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/js/autoNumeric-min.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/js/ajaxupload-min.js") %>" type="text/javascript"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/ripples.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/material.min.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/FezVrasta/bootstrap-material-design/master/dist/js/material.min.js"></script>
+    <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <script src="<%= ResolveUrl("~/Content/plugin/js/bootstrap-material-datetimepicker.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $('#<%=txtFechaFinal.ClientID%>').bootstrapMaterialDatePicker
+                ({
+                    weekStart: 0, format: 'DD/MM/YYYY HH:mm'
+                });
+            $('#<%=txtFechaInicio.ClientID%>').bootstrapMaterialDatePicker
+                ({
+                    weekStart: 0, format: 'DD/MM/YYYY HH:mm', shortTime: true
+                }).on('change', function (e, date) {
+                    $('#<%=txtFechaFinal.ClientID%>').bootstrapMaterialDatePicker('setMinDate', date);
+                });
+
+            $('#min-date').bootstrapMaterialDatePicker({ format: 'DD/MM/YYYY HH:mm', minDate: new Date() });
+
+            $.material.init()
+        });
+
         function pageLoad(sender, args) {
+
+
 
             $(document).ready(function () {
 
@@ -740,6 +784,44 @@
             testFlag = false;
             isMouseDown = false;
 
+
+            showTime();
+
+            setInterval(function () {
+
+                showTime();
+
+            }, 1000);
+
+<%--            var dt = new Date();
+
+            dateMonth = dt.getMonth();
+            if (dt.getMonth() + 1 < 10) { dateMonth = '0' + (dt.getMonth() + 1) }
+
+            clientDate = dt.getFullYear() + "-" + (dateMonth) + "-" + dt.getDate();
+
+            $('#<%=txtTimeInicio.ClientID%>').val(clientDate)
+            $('#<%=txtTimeFinal.ClientID%>').val(clientDate)--%>
+
+            function showTime() {
+
+                dt = new Date();
+                h = dt.getHours(),
+                    m = dt.getMinutes();
+
+                console.log(dt);
+                console.log(h);
+                console.log(m);
+
+                if (m < 10) { m = '0' + m; }
+
+                _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM');
+
+               <%-- $('#<%=txtTimeInicio.ClientID%>').attr('placeholder', _time);
+                $('#<%=txtTimeFinal.ClientID%>').attr('placeholder', _time);--%>
+
+            }
+
             $(document).on('mousedown', '.switch', function () {
 
                 console.log("gjghjghghj-----");
@@ -819,7 +901,7 @@
 
             $('#datepicker_init').datepicker({
                 onSelect: function (date) {
-                    $("#<%=txtFechaInicio.ClientID%>").val(date);
+                   <%-- //$("#<%=txtFechaInicio.ClientID%>").val(date);--%>
                     $('#datepicker_init').hide();
 
                 },
@@ -830,72 +912,72 @@
             });
         });
 
-            function ActiveCalendar2() {
+        function ActiveCalendar2() {
 
-                the_switch = $('[name="schedule_switch"]');
-                switch_thumb = $('[name="schedule_switch"]').find('.switch_thumb');
+            the_switch = $('[name="schedule_switch"]');
+            switch_thumb = $('[name="schedule_switch"]').find('.switch_thumb');
 
+            $(the_switch).removeClass('disabled');
+            $(switch_thumb).removeClass('active');
+            $(switch_thumb).addClass('disabled');
+            $(switch_thumb).css('right', '2px;')
+            $(the_switch).addClass('active');
+            console.log(the_switch);
+            console.log(switch_thumb);
+
+            the_switch = $(this);
+            switch_thumb = $(this).find('.switch_thumb');
+
+            if ($(switch_thumb).hasClass('active')) {
+
+                $(switch_thumb).animate({ 'right': '2px' }, { duration: 100, easing: 'linear' });
                 $(the_switch).removeClass('disabled');
                 $(switch_thumb).removeClass('active');
-                $(switch_thumb).addClass('disabled');
-                $(switch_thumb).css('right', '2px;')
-                $(the_switch).addClass('active');
-                console.log(the_switch);
-                console.log(switch_thumb);
-
-                the_switch = $(this);
-                switch_thumb = $(this).find('.switch_thumb');
-
-                if ($(switch_thumb).hasClass('active')) {
-
-                    $(switch_thumb).animate({ 'right': '2px' }, { duration: 100, easing: 'linear' });
-                    $(the_switch).removeClass('disabled');
-                    $(switch_thumb).removeClass('active');
-                }
-                else {
-
-                    $(switch_thumb).animate({ 'right': '19px' }, { duration: 100, easing: 'linear' });
-                    $(the_switch).addClass('disabled');
-                    $(switch_thumb).addClass('active');
-                }
-                the_switch = $(this);
-                switch_thumb = $(this).find('.switch_thumb');
-
-                if ($(switch_thumb).hasClass('active')) {
-                    $('[name="schedule"]').val('0');
-                    $('#datepicker, .scheduleCampaignWrapper').hide();
-
-                }
-
-                else {
-                    $('[name="schedule"]').val('1');
-                    $('.scheduleCampaignWrapper').show();
-                }
-
-                $(document).on('click', '.send_schedule_campaign_day_init', function (e) {
-                    e.stopPropagation();
-                    console.log("click --->");
-
-                    $('#datepicker_init').show();
-                    $('#send_form .selected').removeClass('selected');
-                });
-
-
-                $(document).on('click', 'body', function () {
-                    $('#datepicker').hide();
-                    $('#datepicker_init').hide();
-                });
-                //if ($(switch_thumb).hasClass('active')) {
-                //    $('[name="schedule"]').val('0');
-                //    $('#datepicker, .scheduleCampaignWrapper').hide();
-                //    console.log("1132");
-                //}
-                //else {
-                //    $('[name="schedule"]').val('1');
-                //    $('.scheduleCampaignWrapper').show();
-                //    console.log("11");
-                //}
             }
+            else {
+
+                $(switch_thumb).animate({ 'right': '19px' }, { duration: 100, easing: 'linear' });
+                $(the_switch).addClass('disabled');
+                $(switch_thumb).addClass('active');
+            }
+            the_switch = $(this);
+            switch_thumb = $(this).find('.switch_thumb');
+
+            if ($(switch_thumb).hasClass('active')) {
+                $('[name="schedule"]').val('0');
+                $('#datepicker, .scheduleCampaignWrapper').hide();
+
+            }
+
+            else {
+                $('[name="schedule"]').val('1');
+                $('.scheduleCampaignWrapper').show();
+            }
+
+            $(document).on('click', '.send_schedule_campaign_day_init', function (e) {
+                e.stopPropagation();
+                console.log("click --->");
+
+                $('#datepicker_init').show();
+                $('#send_form .selected').removeClass('selected');
+            });
+
+
+            $(document).on('click', 'body', function () {
+                $('#datepicker').hide();
+                $('#datepicker_init').hide();
+            });
+            //if ($(switch_thumb).hasClass('active')) {
+            //    $('[name="schedule"]').val('0');
+            //    $('#datepicker, .scheduleCampaignWrapper').hide();
+            //    console.log("1132");
+            //}
+            //else {
+            //    $('[name="schedule"]').val('1');
+            //    $('.scheduleCampaignWrapper').show();
+            //    console.log("11");
+            //}
+        }
 
 
 

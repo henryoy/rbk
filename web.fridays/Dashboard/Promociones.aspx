@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.master" CodeFile="Promociones.aspx.cs" Inherits="Dashboard_Promociones" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.master" CodeFile="Promociones.aspx.cs" Inherits="Dashboard_Promociones" enableEventValidation="false" %>
 
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
 </asp:Content>

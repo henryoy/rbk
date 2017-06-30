@@ -444,42 +444,27 @@
                                         <asp:ListItem Value="PROMOCION">Promoción</asp:ListItem>
                                         <asp:ListItem Value="INFORMATIVO">Informativa</asp:ListItem>
                                     </asp:DropDownList>
-
                                 </label>
-
-
                                 <!-- Schedule Campaign -->
                                 <h4 class="semi_bold" style="padding-bottom: 18px!important; margin-top: 6px;">Campaña programada
-
 								<div class="switch disabled" name="schedule_switch" style="right: -1px; top: -4px;">
-
                                     <div class="switch_thumb active" style="right: 19px;"></div>
-
                                     <!-- Detect sig on/off -->
                                     <input type="hidden" value="0" name="schedule" id="schedule_campaign">
                                 </div>
-
                                 </h4>
-
                                 <!-- Schedule campaign -->
                                 <div class="scheduleCampaignWrapper clear-fix">
-
-                                    <div class="scheduleCampaignWrapperLeft">
-                                        
+                                    <div class="scheduleCampaignWrapperLeft">                                        
                                         <input type="text" runat="server" enableviewstate="true" placeholder="" name="send_schedule_campaign_day" id="send_schedule_campaign_day" value="" readonly="">
                                     </div>
                                     <div class="scheduleCampaignWrapperRight">
-
                                         <input runat="server" enableviewstate="true" type="text" placeholder="" name="send_schedule_campaign_day" id="send_schedule_campaign_time">
                                     </div>
-
                                 </div>
-
                                 <!-- Datepicker calendar -->
                                 <div id="datepicker" class="ll-skin-melon clear-fix"></div>
-
                             </div>
-
                         </div>
                         <div id="generateChecklist" class="semi_bold">
                             <asp:LinkButton runat="server" CssClass="generateChecklistName" ID="lnkGuardarCampana" OnClick="lnkGuardarCampana_Click">
