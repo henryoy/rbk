@@ -112,7 +112,7 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             if (oDistribucion == null) oDistribucion = new Distribucion();
             txtDescripcion.Text = oDistribucion.Descripcion;
             txtNombre.Text = oDistribucion.Nombre;
-            var lsCondicones = oDistribucion.Condiciones;
+            var lsCondicones = oDistribucion.Condiciones.Where(x=>x.Campo != "TarjetaID");
             //oCondicionMemb = lsCondicones.FirstOrDefault(a => a.Campo == "TarjetaID");
 
             //if (oCondicionMemb != null) lsCondicones.Remove(oCondicionMemb);
@@ -227,6 +227,49 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
                 oDistribucion.Campos = GetCampos();
                 oDistribucion.Descripcion = txtDescripcion.Text.Trim();
                 oDistribucion.Nombre = txtNombre.Text.Trim();
+
+                int indx=-1;
+
+                if (oDistribucion.DistribucionID > 0)
+                {
+                    for (int i = 0; i < oDistribucion.Condiciones.Count; i++)
+                    {
+                        if (oDistribucion.Condiciones[i].Campo == "TarjetaID")
+                            indx = i;
+                    }
+
+                    if (indx >= 0)
+                        oDistribucion.Condiciones.RemoveAt(indx);
+                }
+
+                if (cbxMembresia.SelectedValue != "0")
+                {
+                    oDistribucion.Add(new CondicionDistribucion() { });
+                    indx = oDistribucion.Condiciones.Count();
+
+                    var obj = oDistribucion.Condiciones.ElementAt(indx-1);
+                    obj.Campo = "TarjetaID";
+                    obj.Operador = "=";
+                    obj.Nexo = (oDistribucion.Condiciones.Count > 1) ? "Y" : "";
+                    obj.Valor = cbxMembresia.SelectedValue;
+                    obj.Tipo = "ENTERO";
+
+                    /*CondicionDistribucion oCondicion = new CondicionDistribucion();
+                    oCondicion.Campo = "TarjetaID";
+                    oCondicion.Valor = membresia.ToString();
+                    oCondicion.Operador = "=";
+                    oCondicion.Tipo = "Entero";
+                    oCondicion.Nexo = "";
+
+                    if (oDistribucion.Condiciones != null)
+                    {
+                        if (oDistribucion.Condiciones.Count > 0)
+                            oCondicion.Nexo = "Y";
+                    }
+
+                    oDistribucion.Condiciones.Add(oCondicion);*/
+                }
+
                 cCatalogo = new CatalogoController();
                 if (!cCatalogo.GuardarDistribucion(oDistribucion))
                 {

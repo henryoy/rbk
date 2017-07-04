@@ -147,6 +147,8 @@ namespace cm.mx.catalogo.Controller
 
                     if (rUsuario.Exito)
                     {
+
+                        Mensajes.Add("Se realizo el registro correctamente del usuario.");
                         bResult = true;
 
                         ConfiguracionRepository rConfig = new ConfiguracionRepository();
@@ -2350,8 +2352,8 @@ namespace cm.mx.catalogo.Controller
                 UtileriaController oUtileria = new UtileriaController();
                 Distribucion obj = this.GetDistribucion(oCampana.DistribucionId);
 
-
-                if (obj.Condiciones != null && obj.Condiciones.Count > 0)
+                //if (obj.Condiciones != null && obj.Condiciones.Count > 0)
+                if (obj.Condiciones != null)
                 {
                     var cond = oUtileria.CrearCondion(obj.Condiciones.ToList());
                     rUsuario = new UsuarioRepository();
@@ -3102,6 +3104,66 @@ namespace cm.mx.catalogo.Controller
                 _exito = false;
             }
             return ls;
+        }
+
+
+        public bool RecuperarPassword(string usuario)
+        {
+            bool bResult = false;
+
+            rUsuario = new UsuarioRepository();
+            int idUsuario = rUsuario.GetUsuarioID(usuario);
+
+            if(idUsuario == 0)
+            {
+                Errores.Add("No se encontró el usuario solicitado. Favor de verificarlo. Codigo 01X01");
+                return bResult;
+            }
+
+            Usuario oUsuario = rUsuario.GetById(idUsuario);
+
+            if(oUsuario != null)
+            {
+                if(oUsuario.Tipo == "MOBILE" && oUsuario.Origen == "MOBILE")
+                {
+                    string key = UtileriaController.doKeyActivation(usuario, "KeyPartStatic");
+                    Activacion oActivacion = new Activacion();
+                    oActivacion.Activado = false;
+                    oActivacion.Email = oUsuario.Email;
+                    oActivacion.FechaAlta = DateTime.Now;
+                    oActivacion.FechaVencimiento = oActivacion.FechaAlta.AddDays(5);
+                    oActivacion.Llave = key;
+                    oActivacion.UsuarioId = oUsuario.Usuarioid;
+                    rUsuario._session.SaveOrUpdate(oActivacion);
+
+                    List<string> para = new List<string>();
+                    para.Add(oUsuario.Email);
+
+                    rConfiguracion = new ConfiguracionRepository();
+                    Configuracion oConfig = rConfiguracion.GetByClave("RECUPERA_PLANTILLA");
+                    string mensaje = oConfig.Valor;
+
+                    oConfig = rConfiguracion.GetByClave("URL_RECUPERAR");
+
+                    mensaje = mensaje.Replace("[URL]", oConfig.Valor + key);
+                    mensaje = mensaje.Replace("[USUARIO]", oUsuario.Nombre + "(" + oUsuario.Email + ")");
+
+                    rUsuario.EnviarCorreo(para, "Recuperación de Contraseña - Friday's App", mensaje, true);
+                }
+                else
+                {
+                    Errores.Add("El proceso de recuperar contraseña no puede ser realizado para el usuario solicitado, ya que el tipo de acceso es por medio de " + oUsuario.Origen + ". Debe intentar acceder por el mismo medio. 01X02");
+                    return bResult;
+                }
+            }
+            else
+            {
+                Errores.Add("No se encontró el usuario solicitado. Favor de verificarlo. 01X03");
+                return bResult;
+            }
+
+
+            return bResult;
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -529,5 +530,33 @@ namespace cm.mx.catalogo.Controller
 
         }
 
+
+        public static string doKeyActivation(string key1, string key2)
+        {
+            string keyData = key1 + DateTime.Now.ToShortDateString() + "_" + DateTime.Now.TimeOfDay;
+            Cifrado oCifrado = new Cifrado();
+            string key = oCifrado.EncriptarSHA1(keyData, key2);
+            return key;
+        }
+
+    }
+
+    class Cifrado
+    {
+        public string Llave { get; set; }
+
+        /// <summary>
+        /// The Login and the password must be given as concat string
+        /// </summary>
+        /// <param name="CadenaOriginal">clave</param>
+        /// <returns>Base64</returns>
+        public string EncriptarSHA1(string login, string passw)
+        {
+            string CadenaOriginal = login + passw;
+            SHA1 _metodo = new SHA1CryptoServiceProvider();
+            byte[] inputBytes = (new UnicodeEncoding()).GetBytes(CadenaOriginal);
+            byte[] _hash = _metodo.ComputeHash(inputBytes);
+            return Convert.ToBase64String(_hash);
+        }
     }
 }

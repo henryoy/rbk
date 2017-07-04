@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web.fridays", "web.fridays\", "{9F7DE2C7-7C01-457E-B99E-F8645AFC8706}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -23,6 +23,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web.fridays", "web.fridays\
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "53496"
 		SlnRelativePath = "web.fridays\"
+		StartServerOnDebug = "true"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cm.mx.catalogo", "cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo.csproj", "{1072C61B-A642-439F-877D-CD7B47330803}"
