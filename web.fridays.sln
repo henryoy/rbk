@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web.fridays", "web.fridays\", "{9F7DE2C7-7C01-457E-B99E-F8645AFC8706}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6"
-		ProjectReferences = ""
+		ProjectReferences = "{1072c61b-a642-439f-877d-cd7b47330803}|cm.mx.catalogo.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_53496"
 		Debug.AspNetCompiler.PhysicalPath = "web.fridays\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53496\"

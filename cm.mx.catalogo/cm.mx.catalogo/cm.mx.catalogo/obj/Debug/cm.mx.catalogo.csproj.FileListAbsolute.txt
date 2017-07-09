@@ -49,3 +49,4 @@ C:\Users\VM-MAC\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalog
 C:\Users\VM-MAC\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.dll
 C:\Users\VM-MAC\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
 C:\Users\VM-MAC\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache
+C:\Users\EEUAN\Source\Repos\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache

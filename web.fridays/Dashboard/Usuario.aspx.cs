@@ -3,6 +3,7 @@ using cm.mx.catalogo.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -82,7 +83,7 @@ public partial class Dashboard_Usuario : System.Web.UI.Page
             }
             txtClave.Text = oUsuario.IdExterno;
             txtCorreo.Text = oUsuario.Email;
-            txtFechaNac.Text = String.Format("{0:dd/MM/yyyy}", oUsuario.FechaNacimiento);
+            txtFechaNac.Text = oUsuario.FechaNacimiento.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);//String.Format("{0:dd/MM/yyyy}", oUsuario.FechaNacimiento);
             txtNombre.Text = oUsuario.Nombre;
             txtPass.Attributes["value"] = oUsuario.Contrasena;
             txtPass2.Attributes["value"] = oUsuario.VerificacionContrasena;
