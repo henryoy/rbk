@@ -83,7 +83,7 @@ public partial class Dashboard_Usuario : System.Web.UI.Page
             }
             txtClave.Text = oUsuario.IdExterno;
             txtCorreo.Text = oUsuario.Email;
-            txtFechaNac.Text = oUsuario.FechaNacimiento.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);//String.Format("{0:dd/MM/yyyy}", oUsuario.FechaNacimiento);
+            txtFechaNac.Text = String.Format(CultureInfo.InvariantCulture, "{0:yyyy-MM-dd}", oUsuario.FechaNacimiento);
             txtNombre.Text = oUsuario.Nombre;
             txtPass.Attributes["value"] = oUsuario.Contrasena;
             txtPass2.Attributes["value"] = oUsuario.VerificacionContrasena;

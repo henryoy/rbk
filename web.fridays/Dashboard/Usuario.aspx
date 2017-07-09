@@ -50,6 +50,14 @@
             cursor: pointer;
             text-decoration: underline;
         }
+
+        input[type=text],
+        input[type=color],
+        input[type=email],
+        input[type=date] {
+            border: none !important;
+            width: 100% !important;
+        }
     </style>
     <asp:UpdatePanel runat="server" ID="upForm">
         <ContentTemplate>
@@ -117,7 +125,7 @@
                         <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_email@2x.png)">Correo:</div>
                             <div class="data_value">
-                                <asp:TextBox runat="server" ID="txtCorreo" CssClass="regular" MaxLength="200"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="txtCorreo" CssClass="regular" MaxLength="200" TextMode="Email"></asp:TextBox>
                                 <asp:RegularExpressionValidator ID="regexEmailValid" runat="server" ValidationExpression="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ControlToValidate="txtCorreo" Display="Dynamic" ErrorMessage="Correo no válido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RegularExpressionValidator>
                                 <%--<asp:RequiredFieldValidator runat="server" ID="rfvDireccion" ControlToValidate="txtCorreo" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>--%>
                             </div>
@@ -139,7 +147,7 @@
                         <li class="clear-fix editar">
                             <div class="data_name semi_bold" style="background-image: url(../images/icon/data_name_custom1@2x.png)">Fecha Nacimiento:</div>
                             <div class="data_value">
-                                <asp:TextBox runat="server" ID="txtFechaNac" CssClass="regular" MaxLength="200" TextMode="Date"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="txtFechaNac" CssClass="regular datePicker" MaxLength="200" TextMode="Date"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator3" ControlToValidate="txtFechaNac" Display="Dynamic" ErrorMessage="*Requerido" SetFocusOnError="true" ValidationGroup="guardar" CssClass="Validators"></asp:RequiredFieldValidator>
                             </div>
                         </li>
@@ -163,11 +171,13 @@
     <script src="<%= ResolveClientUrl("~/Scripts/js/chartjs/waypoints.min.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/js/autoNumeric-min.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/js/funciones-generales.js") %>" type="text/javascript"></script>
-    <%--<script>
+    <script>
         function pageLoad(sender, args) {
             $(document).ready(function () {
-
+                window.SetDate = function (Date) {
+                    $('.datePicker').val(Date);
+                }
             });
         }
-    </script>--%>
+    </script>
 </asp:Content>
