@@ -1,15 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-<<<<<<< HEAD
-VisualStudioVersion = 15.0.26430.12
-=======
 VisualStudioVersion = 15.0.26430.13
->>>>>>> 90fd440e4b7e506096bce1f8c785fdb90d48a1f2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web.fridays", "web.fridays\", "{9F7DE2C7-7C01-457E-B99E-F8645AFC8706}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6"
+		ProjectReferences = "{1072c61b-a642-439f-877d-cd7b47330803}|cm.mx.catalogo.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_53496"
 		Debug.AspNetCompiler.PhysicalPath = "web.fridays\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53496\"
@@ -26,6 +23,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web.fridays", "web.fridays\
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "53496"
 		SlnRelativePath = "web.fridays\"
+		StartServerOnDebug = "true"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cm.mx.catalogo", "cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo.csproj", "{1072C61B-A642-439F-877D-CD7B47330803}"

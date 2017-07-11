@@ -85,7 +85,7 @@ namespace cm.mx.catalogo.Rules
             _mensajes = new List<string>();
             DateTime ini = DateTime.Now.AddYears(-100);
             DateTime fin = DateTime.Now.AddYears(-13);
-            if (string.IsNullOrEmpty(oUser.Codigo)) _mensajes.Add("Ingrese el código.");
+            if (string.IsNullOrEmpty(oUser.Codigo) && oUser.Tipo != "WEB") _mensajes.Add("Ingrese el código.");
             if (string.IsNullOrEmpty(oUser.Contrasena)) _mensajes.Add("Ingrese la contraseña.");
             else if (!oUser.Contrasena.Equals(oUser.VerificacionContrasena)) _mensajes.Add("Las contraseña y la verifiación no coincide.");
             if (oUser.FechaNacimiento <= ini || oUser.FechaNacimiento >= fin) _mensajes.Add("Ingrese una fecha válida");

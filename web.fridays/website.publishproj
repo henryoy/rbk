@@ -19,7 +19,7 @@ Copyright (C) Microsoft Corporation. Todos los derechos reservados.
     <ProjectGuid>{5c5bc459-3e67-4bf8-bba4-131e77dcd013}</ProjectGuid>
     <SourceWebPhysicalPath>$(MSBuildThisFileDirectory)</SourceWebPhysicalPath>
     <SourceWebVirtualPath>/web.fridays</SourceWebVirtualPath>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <SourceWebProject>
     </SourceWebProject>
     <SourceWebMetabasePath>
@@ -45,7 +45,7 @@ Copyright (C) Microsoft Corporation. Todos los derechos reservados.
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo.csproj">
-      <Project>{A8017285-F678-43EE-9D46-9EA2C0D922C5}</Project>
+      <Project>{1072C61B-A642-439F-877D-CD7B47330803}</Project>
       <Name>cm.mx.catalogo</Name>
     </ProjectReference>
   </ItemGroup>
