@@ -78,6 +78,8 @@ namespace cm.mx.catalogo.Controller
         private DistribucionRepository rDistribucion;
         private UsuarioDispositivoRepository rUsuarioDispositivo;
         private ConfiguracionRepository rConfiguracion;
+        private PlantillaRepository rPlantilla;
+        private MailrelaylogRepository rMailLog; 
 
         private int UsuarioId
         {
@@ -3164,6 +3166,151 @@ namespace cm.mx.catalogo.Controller
 
 
             return bResult;
+        }
+        public List<Plantilla> GetAllPlantilla()
+        {
+            List<Plantilla> lsPlantilla = new List<Plantilla>();
+            _errores.Clear();
+            _mensajes.Clear();
+            _exito = false;
+
+            try {
+
+                rPlantilla = new PlantillaRepository();
+                lsPlantilla = rPlantilla.GetAllPlantilla();
+                _exito = true;
+
+            }
+            catch(Exception ex)
+            {
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return lsPlantilla;
+        }
+
+        public Plantilla GetPlantilla(int PlantillaId)
+        {
+            Plantilla oPlantilla = new Plantilla();
+            _errores.Clear();
+            _mensajes.Clear();
+            _exito = false;
+
+            try
+            {
+
+                rPlantilla = new PlantillaRepository();
+                oPlantilla = rPlantilla.GetById(PlantillaId);
+                _exito = true;
+
+            }
+            catch (Exception ex)
+            {
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return oPlantilla;
+        }
+
+        public Plantilla GuardarPlantilla(Plantilla objeto)
+        {
+            Plantilla oPlantilla = new Plantilla();
+            _errores.Clear();
+            _mensajes.Clear();
+            _exito = false;
+            rPlantilla = new PlantillaRepository();
+
+            try
+            {               
+                oPlantilla = rPlantilla.GuardarPlantilla(objeto);
+                _exito = true;
+
+            }
+            catch (Exception ex)
+            {
+                if (rPlantilla._session.Transaction.IsActive)
+                    rPlantilla._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return oPlantilla;
+        }
+
+        public Mailrelaylog GetMailLog(int MailLogId)
+        {
+
+            _errores.Clear();
+            _mensajes.Clear();
+            _exito = false;
+            rMailLog = new MailrelaylogRepository();
+            Mailrelaylog oMail = new Mailrelaylog();
+
+            try
+            {
+                oMail = rMailLog.GetById(MailLogId);
+                _exito = true;
+
+            }
+            catch (Exception ex)
+            {
+                if (rMailLog._session.Transaction.IsActive)
+                    rMailLog._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return oMail;
+        }
+        public Mailrelaylog GuardarMailLog(Mailrelaylog objeto)
+        {
+            
+            _errores.Clear();
+            _mensajes.Clear();
+            _exito = false;
+            rMailLog = new MailrelaylogRepository();
+            Mailrelaylog oMail = new Mailrelaylog();
+
+            try
+            {
+                oMail = rMailLog.GuardadrMailLog(objeto);
+                _exito = true;
+
+            }
+            catch (Exception ex)
+            {
+                if (rMailLog._session.Transaction.IsActive)
+                    rMailLog._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return oMail;
         }
     }
 }

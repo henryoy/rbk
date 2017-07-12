@@ -243,6 +243,12 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
                    "notification('" + msj + "','success')",
                    true);
 
+
+
+            string RedirectUrl = "~/Dashboard/Template/index.aspx?id=" + oCampana.CampanaId;
+            ////HttpContext.Current.Request.Url.AbsolutePath
+            //Response.Redirect(RedirectUrl);
+            Response.Redirect(RedirectUrl);
         }
         else
         {

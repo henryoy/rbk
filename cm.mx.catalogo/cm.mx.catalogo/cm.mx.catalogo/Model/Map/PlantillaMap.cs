@@ -14,6 +14,7 @@ namespace cm.mx.catalogo.Model.Map {
 			LazyLoad();
 			Id(x => x.PlantillaId).GeneratedBy.Identity().Column("PlantillaId");
 			Map(x => x.Nombre).Column("Nombre").Not.Nullable().Length(10);
+            Map(x => x.Html);
         }
     }
 }

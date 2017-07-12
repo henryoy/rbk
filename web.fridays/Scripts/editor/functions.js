@@ -1808,7 +1808,7 @@ function checkSpecificAttributes() {
 
 			// it exists
 			$('#info_bar').hide();
-			$('#style_options').append('<div id="select_module" class="semi_bold"><h5>Select a module to the right</h5></div>');
+			$('#style_options').append('<div id="select_module" class="semi_bold"><h5>Seleciona un modulo de la derecha</h5></div>');
 			closeColorpickers();
 
 		}
@@ -1816,7 +1816,7 @@ function checkSpecificAttributes() {
 		else {
 
 			$('#info_bar').hide();
-			$('#style_options').append('<div id="empty_stylings" class="semi_bold"><h5>You need to have at least one<br/>module present</h5></div>');
+			$('#style_options').append('<div id="empty_stylings" class="semi_bold"><h5>Necesitas tener seleccionado<br/> un modulo</h5></div>');
 			closeColorpickers();
 
 		}

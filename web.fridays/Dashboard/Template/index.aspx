@@ -1,331 +1,106 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Dashboard/Template/Editor.master" AutoEventWireup="true" CodeFile="index.aspx.cs" Inherits="Dashboard_Template_index" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Dashboard/Template/Editor.master" AutoEventWireup="true" CodeFile="index.aspx.cs" Inherits="Dashboard_Template_index" ValidateRequest="false" EnableEventValidation="false" Async="true"%>
+
 
 <asp:Content ID="Css" ContentPlaceHolderID="HeadContent" runat="Server">
 </asp:Content>
+<asp:Content ID="BodySidebar" ContentPlaceHolderID="SideBar" runat="Server">
+    <div id="modules" style="margin-left: 0px; display: block;" class="hidden">
+        <!-- Modules Widget -->
+        <ul id="modules_widgets" style="width: 366px;">
+            <div data-id="intro" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
+                <asp:Image runat="server" ImageUrl="~/Content/editor/img/intro.jpg" />
+            </div>
+        </ul>
+
+        <!-- Styling Options -->
+        <div id="style_options" class="hidden" style="opacity: 1;">
+            <div id="info_bar" style="opacity: 1;">
+                <h3 class="semi_bold">Effect All Modules</h3>
+                <!-- Switch  -->
+                <div id="switch" style="opacity: 1;">
+                    <!-- thumb -->
+                    <div id="switch_thumb" style="opacity: 1;"></div>
+                </div>
+            </div>
+            <!-- Colorpicker -->
+            <div id="colorpicker" class="hidden" style="opacity: 1;"></div>
+            <!-- Background Colorpicker-->
+            <div id="bg_colorpicker" class="hidden" style="opacity: 1;"></div>
+            <!-- Styling Attributes -->
+            <ul class="semi_bold">
+                <!-- Font Colors-->
+                <h4 class="semi_bold" style="display: none;">Color Fuente</h4>
+                <div id="colors" style="display: none; opacity: 1;"></div>
+                <!-- Background Colors -->
+                <h4 class="semi_bold" style="display: none;">Color de fondo</h4>
+                <div id="bg_colors" style="display: none; opacity: 1;"></div>
+                <!-- Appearances -->
+                <h4 class="semi_bold" style="display: none;">Apariencia</h4>
+                <div id="appearances" style="display: none; opacity: 1;"></div>
+                <!-- Background Images -->
+                <h4 class="semi_bold" style="display: none;">Imagen de fondo</h4>
+                <div id="background_settings" style="display: none; opacity: 1;"></div>
+            </ul>
+        </div>
+    </div>
+</asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="Server">
+    <asp:HiddenField runat="server" ID="htmlHidden" ValidateRequestMode="Disabled" ViewStateMode="Enabled" EnableViewState="true"  />
     <div id="canvas">
         <!-- Editor Holder -->
+        <asp:LinkButton runat="server" ID="btnGuardar" OnClick="btnGuardar_Click" CssClass="semi_bold de">Guardar test</asp:LinkButton>
         <div id="holder" style="margin-left: 352.5px; width: 700px;">
+
             <div id="titles_holders">
             </div>
             <div id="meta_holder">
                 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
             </div>
-            <div id="styles_holder">
-                <style type="text/css">
-                    /* Custom Font */
-                    @font-face {
-                        font-family: "Proxima N W15 Thin Reg";
-                        src: url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/e7c1fd50-6611-4b2b-86eb-03f6159100c3.eot?#iefix");
-                        src: url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/e7c1fd50-6611-4b2b-86eb-03f6159100c3.eot?#iefix") format("eot"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/cb1061dc-f26a-43a0-8dd8-bb0541873c3d.woff") format("woff"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/a2e9a37c-6342-4985-8053-a9b44d5d3524.ttf") format("truetype"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/602df5ad-7d3a-48e7-8f6a-867f5d482c77.svg#602df5ad-7d3a-48e7-8f6a-867f5d482c77") format("svg");
-                    }
-
-                    @font-face {
-                        font-family: "Proxima N W15 Light";
-                        src: url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/53f72e41-ffd4-47d4-b8bf-b1ab3cada2e5.eot?#iefix");
-                        src: url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/53f72e41-ffd4-47d4-b8bf-b1ab3cada2e5.eot?#iefix") format("eot"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/fb5639f2-f57b-487d-9610-3dc50820ab27.woff") format("woff"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/2eafe9b7-5a21-49c0-84ca-54c54f899019.ttf") format("truetype"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/0a2fe21c-cfdd-4f40-9dca-782e95c1fa90.svg#0a2fe21c-cfdd-4f40-9dca-782e95c1fa90") format("svg");
-                    }
-
-                    @font-face {
-                        font-family: "Proxima N W15 Reg";
-                        src: url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/ccd538c8-85a6-4215-9f3f-643c415bbb19.eot?#iefix");
-                        src: url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/ccd538c8-85a6-4215-9f3f-643c415bbb19.eot?#iefix") format("eot"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/e8e438df-9715-40ed-b1ae-58760b01a3c0.woff") format("woff"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/baf65064-a8a8-459d-96ad-d315581d5181.ttf") format("truetype"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/76bd19c9-c46a-4c27-b80e-f8bd0ecd6057.svg#76bd19c9-c46a-4c27-b80e-f8bd0ecd6057") format("svg");
-                    }
-
-                    @font-face {
-                        font-family: "Proxima N W15 Smbd";
-                        src: url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/f0900b9e-436e-4bb2-ba92-174617a6b4bc.eot?#iefix");
-                        src: url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/f0900b9e-436e-4bb2-ba92-174617a6b4bc.eot?#iefix") format("eot"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/91b14d48-ff2a-4a42-87df-b04c76cfb67f.woff") format("woff"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/65e3a762-7125-4d24-9247-fc73d4786cd0.ttf") format("truetype"),url("http://www.stampready.net/themeforest/dashboard/templates/nova/font/4b8633b5-6a28-45ea-afc0-1784363b823a.svg#4b8633b5-6a28-45ea-afc0-1784363b823a") format("svg");
-                    }
-
-                    /* Reset */
-                    * {
-                        margin-top: 0px;
-                        margin-bottom: 0px;
-                        padding: 0px;
-                        border: none;
-                        line-height: normal;
-                        outline: none;
-                        list-style: none;
-                        -webkit-text-size-adjust: none;
-                        -ms-text-size-adjust: none;
-                    }
-
-                    table {
-                        border-collapse: collapse !important;
-                        padding: 0px !important;
-                        border: none !important;
-                        border-bottom-width: 0px !important;
-                        mso-table-lspace: 0pt;
-                        mso-table-rspace: 0pt;
-                    }
-
-                        table td {
-                            border-collapse: collapse;
-                            text-decoration: none;
-                        }
-
-                    body {
-                        margin: 0px;
-                        padding: 0px;
-                        background-color: #FFFFFF;
-                    }
-
-                    .ExternalClass * {
-                        line-height: 100%;
-                    }
-
-                    /* Responsive */
-                    @media only screen and (max-width:600px) {
-
-                        /* Tables
-	parameters: width, alignment, padding */
-
-                        table[class=scale] {
-                            width: 100% !important;
-                        }
-
-                        /* Td */
-                        td[class=scale-left] {
-                            width: 100% !important;
-                            text-align: left !important;
-                        }
-
-                        td[class=scale-left-bottom] {
-                            width: 100% !important;
-                            text-align: left !important;
-                            padding-bottom: 24px !important;
-                        }
-
-                        td[class=scale-left-top] {
-                            width: 100% !important;
-                            text-align: left !important;
-                            padding-top: 24px !important;
-                        }
-
-                        td[class=scale-left-all] {
-                            width: 100% !important;
-                            text-align: left !important;
-                            padding-top: 24px !important;
-                            padding-bottom: 24px !important;
-                        }
-
-                        td[class=scale-center] {
-                            width: 100% !important;
-                            text-align: center !important;
-                        }
-
-                        td[class=scale-center-both] {
-                            width: 100% !important;
-                            text-align: center !important;
-                            padding-left: 20px !important;
-                            padding-right: 20px !important;
-                        }
-
-                        td[class=scale-center-bottom] {
-                            width: 100% !important;
-                            text-align: center !important;
-                            padding-bottom: 24px !important;
-                        }
-
-                        td[class=scale-center-top] {
-                            width: 100% !important;
-                            text-align: center !important;
-                            padding-top: 24px !important;
-                        }
-
-                        td[class=scale-center-all] {
-                            width: 100% !important;
-                            text-align: center !important;
-                            padding-top: 24px !important;
-                            padding-bottom: 24px !important;
-                            padding-left: 20px !important;
-                            padding-right: 20px !important;
-                        }
-
-                        td[class=scale-right] {
-                            width: 100% !important;
-                            text-align: right !important;
-                        }
-
-                        td[class=scale-right-bottom] {
-                            width: 100% !important;
-                            text-align: right !important;
-                            padding-bottom: 24px !important;
-                        }
-
-                        td[class=scale-right-top] {
-                            width: 100% !important;
-                            text-align: right !important;
-                            padding-top: 24px !important;
-                        }
-
-                        td[class=scale-right-all] {
-                            width: 100% !important;
-                            text-align: right !important;
-                            padding-top: 24px !important;
-                            padding-bottom: 24px !important;
-                        }
-
-                        td[class=scale-center-bottom-both] {
-                            width: 100% !important;
-                            text-align: center !important;
-                            padding-bottom: 24px !important;
-                            padding-left: 20px !important;
-                            padding-right: 20px !important;
-                        }
-
-                        td[class=scale-center-top-both] {
-                            width: 100% !important;
-                            text-align: center !important;
-                            padding-top: 24px !important;
-                            padding-left: 20px !important;
-                            padding-right: 20px !important;
-                        }
-
-                        td[class=reset] {
-                            height: 0px !important;
-                        }
-
-                        td[class=scale-center-topextra] {
-                            width: 100% !important;
-                            text-align: center !important;
-                            padding-top: 84px !important;
-                        }
-
-                        img[class="reset"] {
-                            display: inline !important;
-                        }
-
-                        a[class=pad-top] {
-                            padding-top: 50px;
-                            display: block;
-                        }
-
-                        span[class=mobile-hidden] {
-                            display: none;
-                        }
-                    }
-                </style>
-            </div>
             <div id="modules_holder" style="opacity: 0; display: none;">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" name="threecolumns" bgcolor="#FFFFFF" data-module="intro" data-thumb="http://www.stampready.net/dashboard/templates/epitome/thumbnails/intro.jpg" class="">
-                    <tbody>
-                        <tr>
-                            <td style="border-bottom: 1px solid #e0e0e0;" data-padding="">
-
-                                <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="scale" bgcolor="#FFFFFF">
-                                    <tbody>
-                                        <tr>
-                                            <td height="40"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-
-                                                <table width="171" border="0" cellspacing="0" cellpadding="0" align="left" style="font-family: 'Proxima N W15 Thin Reg', Helvetica, Arial, sans-serif; font-size: 15px; color: #9b9b9b;" class="scale" bgcolor="#FFFFFF">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="scale-center" align="center" height="100">
-
-                                                                <img runat="server" src="~/Content/editor/img/client-1.png" border="0" style="display: block; max-width: 171px" data-crop="false" class="reset">
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-
-                                                <table width="386" border="0" cellspacing="0" cellpadding="0" align="right" class="scale" bgcolor="#FFFFFF">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-
-                                                                <table width="171" border="0" cellspacing="0" cellpadding="0" align="left" style="font-family: 'Proxima N W15 Thin Reg', Helvetica, Arial, sans-serif; font-size: 15px; color: #9b9b9b;" class="scale">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td class="scale-center-top" height="100" align="center">
-
-                                                                                <img runat="server" src="~/Content/editor/img/client-2.png" border="0" style="display: block; max-width: 171px" data-crop="false" class="reset">
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-
-                                                                <table width="171" border="0" cellspacing="0" cellpadding="0" align="right" style="font-family: 'Proxima N W15 Thin Reg', Helvetica, Arial, sans-serif; font-size: 15px; color: #9b9b9b;" class="scale">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td class="scale-center-top" align="center" height="100">
-
-                                                                                <img runat="server" src="~/Content/editor/img/client-3.png" border="0" style="display: block; max-width: 171px" data-crop="false" class="reset">
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td height="40"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="font-family: 'Proxima N W15 Thin Reg', Helvetica, Arial, sans-serif; font-size: 16px; color: #9b9b9b;" class="scale">
-
-                                    <tbody>
-                                        <tr>
-                                            <td style="padding: 0px 0px 36px 0px; line-height: 34px;" class="scale-center-both" data-color="Paragraphs" data-size="Paragraphs" data-min="12" data-max="20">Tu quoque, Brute, fili mi, nihil timor populi, nihil! Vivamus sagittis lacus vel augue laoreet rutrum faucibus. <a href="http://www.stampready.net/dashboard/editor/index.php?campaign_id=180087#" style="color: #ce5f40; text-decoration: none;">Salutantibus</a> vitae elit libero, a pharetra augue. Curabitur est gravida et <a href="http://www.stampready.net/dashboard/editor/index.php?campaign_id=180087#" style="color: #ce5f40; text-decoration: none;">libero</a> vitae dictum.
-						
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td height="30"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <asp:Panel runat="server" ID="template">
+                    <asp:Literal runat="server" ID="ltTemplate">
+                    </asp:Literal>
+                </asp:Panel>
             </div>
 
             <!-- Editor Frame -->
             <div id="frame" class="ui-sortable empty" style="min-height: 250px;">
                 <div id="edit_link" class="hidden" style="display: none;">
                     <div class="close_link"></div>
-                    <input type="text" id="edit_link_value" class="createlink" placeholder="Your URL">
+                    <input type="text" id="edit_link_value" class="createlink" placeholder="Su URL">
                     <div id="change_image_wrapper">
                         <div id="change_image">
-                            <p id="change_image_button">Change &nbsp; <span class="pixel_result"></span></p>
+                            <p id="change_image_button">Cambiar &nbsp; <span class="pixel_result"></span></p>
                         </div>
                         <input type="button" value="" id="change_image_link">
                         <input type="button" value="" id="remove_image">
-                    </div>                    
+                    </div>
                     <div id="tip"></div>
                 </div>
             </div>
+
+
         </div>
         <span class="highlighter-container hidden" style="display: none; position: absolute;">
             <div id="template_actions">
-
                 <li style="padding-left: 12px!important;">
-                    <input type="button" value="" id="cmdBold"></li>
+                    <input type="button" value="" id="cmdBold">
+                </li>
                 <li style="width: 25px!important;">
-                    <input type="button" value="" id="cmdItalic" style="background-position: 6px center!important;"></li>
+                    <input type="button" value="" id="cmdItalic" style="background-position: 6px center!important;">
+                </li>
                 <li>
-                    <input type="button" value="" id="cmdLeftAlign"></li>
+                    <input type="button" value="" id="cmdLeftAlign">
+                </li>
                 <li>
-                    <input type="button" value="" id="cmdCenterAlign"></li>
+                    <input type="button" value="" id="cmdCenterAlign">
+                </li>
                 <li>
-                    <input type="button" value="" id="cmdRightAlign"></li>
+                    <input type="button" value="" id="cmdRightAlign">
+                </li>
                 <li style="width: 33px!important;">
-                    <input type="button" value="" id="cmdLink" onclick="createLink()"></li>
-
+                    <input type="button" value="" id="cmdLink" onclick="createLink()">
+                </li>
             </div>
 
             <!-- Link Value Wrapper -->
@@ -335,7 +110,7 @@
                 <div class="close_link"></div>
 
                 <!-- Link Value -->
-                <input type="text" id="link_value" class="createlink" placeholder="Your URL">
+                <input type="text" id="link_value" class="createlink" placeholder="Su URL">
             </div>
 
             <!-- Tool Tip Arrow -->
@@ -345,5 +120,522 @@
     </div>
 </asp:Content>
 <asp:Content runat="server" ID="ScriptsJS" ContentPlaceHolderID="ScriptsPages">
+    <script>
+
+        $(document).ready(function () {
+
+            test_email = 'hency.oy@gmail.com';
+            demo_id = '';
+
+            //detect if the customer is using an outdated computer
+            if (window.localStorage !== undefined) {
+
+                //works
+
+            }
+
+            else {
+
+                headline = 'You\'re browser feels a little old.';
+                paragraph = 'It seems you are using an outdated internet browser. Therefore it\'s impossible to render a few neat editing features!';
+
+                btnTrue = 'Download Chrome';
+                btnTrueId = 'downloadChrome';
+
+                btnFalse = 'I understand. Continue.';
+
+                setTimeout(function () {
+
+                    openPopup();
+
+                }, 2000);
+
+            }
+
+            //redirect to download chrome
+            $(document).on('click', '#downloadChrome', function () {
+
+                $(location).attr('href', 'https://www.google.nl/chrome/browser/desktop/');
+
+            });
+
+            $(document).ready(function () {
+
+                $('#font_colorpicker').farbtastic('#font_colorpicker_value');
+
+            });
+
+
+            $(document).on('mousedown', 'body', function () {
+
+                closeEditor();
+
+            });
+
+            $(document).on('mousedown', '.moduleCodeButton, .moduleCode', function (e) {
+
+                e.stopPropagation();
+
+            });
+
+            $(document).on('keypress', '.moduleCode', function (e) {
+
+                if (e.metaKey && (e.which === 13)) {
+                    closeEditor();
+                }
+            })
+
+            $(document).on('click', '.codeButton', function (e) {
+
+                e.stopPropagation();
+
+                theMod = $(this).closest('[data-module]');
+                $('.codeButton, .dragButton, .deleteButton, .duplicateButton').animate({
+                    width: '0%'
+                }, 200)
+
+                if ($('.moduleCode').length > 0) {
+
+                    // it exists
+                    $('.moduleCode').animate({
+
+                        height: '0px'
+
+                    }, 250, 'easeOutQuad', function () {
+
+                        openEditor();
+
+                    });
+                }
+
+                else {
+
+                    openEditor();
+
+                }
+
+            })
+
+            $('#frame').on('mouseenter', '[data-module]', function (e) {
+
+                if ($(this).next().is('.moduleCode')) {
+
+                    return false;
+
+                }
+
+                e.stopPropagation();
+
+                table = $(this);
+
+                mod_h = parseInt($(this).height()) / 2;
+
+                $(table).first('td').prepend('<div class="moduleCodeButton preventSelection" style="top: ' + mod_h + 'px"><div class="codeButton"></div></div><div class="moduleDuplicateButton preventSelection" style="top: ' + mod_h + 'px"><div class="duplicateButton"></div></div><div class="moduleDragButton preventSelection" style="top: ' + mod_h + 'px"><div class="dragButton"></div></div><div class="moduleDeleteButton preventSelection" style="top: ' + mod_h + 'px"><div class="deleteButton"></div></div>');
+
+                $("#frame").sortable('enable');
+                $('#frame').sortable({
+                    items: 'table[data-module]',
+                    axis: 'y',
+                    distance: 5,
+                    handle: '.dragButton',
+                    opacity: 0.85,
+                    cursor: '-webkit-grabbing',
+                    start: function (event, ui) {
+
+                        if ($('.ui-draggable.ui-draggable-dragging').length > 0) {
+
+
+
+                        }
+
+                        else {
+
+                            h_module = $('.dragButton').closest('table').height();
+
+                            $('.ui-sortable-placeholder').css('height', '3px');
+
+                        }
+
+                    },
+                    stop: function (event, ui) {
+
+                        $('#frame').css('-webkit-transform', 'scale(1)');
+
+                        allowSave();
+
+                    }
+                });
+
+                $('.codeButton, .dragButton, .deleteButton, .duplicateButton').delay(500).animate({
+
+                    width: '100%'
+
+                }, { duration: 400, easing: 'easeOutBack' });
+
+            }).on('mouseleave', '[data-module]', function (e) {
+
+                $('.moduleCodeButton, .moduleDragButton, .moduleDeleteButton, .moduleDuplicateButton').remove();
+
+            });
+
+            //Delete Module
+            $('#frame').on('click', '.deleteButton', function (ev) {
+
+                $(this).parent().parent('table[data-module]').remove();
+                $('.moduleCode').remove();
+
+                count = $('#frame table[data-module]').size();
+
+                if ($(count).length > 0) {
+
+                    $('#frame').removeClass('empty').css('min-height', '250px');
+
+                    if ($('#clear_template').length > 0) {
+
+
+                    }
+
+                    else {
+
+                        $('#frame').prepend('<input type="button" id="clear_template" class="semi_bold" value="Clear Template">');
+
+                    }
+
+                }
+
+                else {
+
+                    $('#frame').addClass('empty').css('min-height', '250px');
+                    $('#frame #clear_template').remove();
+
+                }
+
+                checkAttributes();
+                allowSave()
+
+            });
+
+
+
+            if (document.images) {
+                img1 = new Image();
+                img1.src = "img/framework/wheel.png";
+            }
+
+            $(document).on('mouseleave', '#sidebar', function () {
+
+                $('#menu_btn').removeClass('active').removeClass('closed');
+                $('#user_info').css('box-shadow', 'none');
+
+                $('#menu').slideUp({
+                    duration: 300,
+                    easing: "easeInBack"
+                });
+
+                $('#sidebar').animate({
+                    paddingTop: '81px',
+                }, { duration: 300, easing: 'easeInBack' });
+
+                $('#menu_btn .stroke_1').animate({
+                    transform: 'rotate(0deg)',
+                    top: '0px'
+                }, 200);
+
+                $('#menu_btn .stroke_3').animate({
+                    transform: 'rotate(0deg)',
+                    top: '8px'
+                }, 200);
+
+                $('#menu_btn .stroke_2').animate({
+                    opacity: 1
+                }, 200);
+
+            });
+
+            $(document).on('mouseup', '#menu_btn', function () {
+
+                el = (this);
+
+                if ($(this).hasClass('closed')) {
+
+                    $(el).removeClass('closed');
+
+                    $('#menu').slideUp({
+                        duration: 300,
+                        easing: "easeInBack"
+                    });
+
+                    $('#sidebar').animate({
+                        paddingTop: '45px',
+                    }, { duration: 300, easing: 'easeInBack' });
+
+                    $('#menu_btn .stroke_1').animate({
+                        transform: 'rotate(0deg)',
+                        top: '0px'
+                    }, 200);
+
+                    $('#menu_btn .stroke_3').animate({
+                        transform: 'rotate(0deg)',
+                        top: '8px'
+                    }, 200);
+
+                    $('#menu_btn .stroke_2').animate({
+                        opacity: 1
+                    }, 200);
+
+                }
+
+                else {
+
+                    $(el).addClass('closed');
+
+                    $('#menu_btn .stroke_1').animate({
+                        transform: 'rotate(45deg)',
+                        top: '4px'
+                    }, 200);
+
+                    $('#menu_btn .stroke_3').animate({
+                        transform: 'rotate(-45deg)',
+                        top: '4px'
+                    }, 200);
+
+                    $('#menu_btn .stroke_2').animate({
+                        opacity: 0
+                    }, 200);
+
+                    $('#menu').slideDown({
+                        duration: 300,
+                        easing: "easeOutBack"
+                    });
+
+                    $('#sidebar').animate({
+                        paddingTop: '368px',
+                    }, { duration: 300, easing: 'easeOutBack' });
+
+                }
+
+            });
+
+            $(document).on('click', '#mirror_mobile', function () {
+
+                customHtml = '<div id="mirror_mobile_popup"><h4 class="font-bold">See your changes live on mobile</h4><p class="regular" style="padding-bottom: 0px!important;">Open <a href="http://www.stampready.net/mirror/" class="regular" style="color: #69c0af;" target="_blank">stampready.net/mirror/</a> on your device and use the code below to see the changes reflect live.<br/><br/><span class="font-bold mirror_token">&nbsp;</span></p></div>';
+
+                btnFalse = 'Got it!';
+
+                invert = 'true';
+
+                openPopup();
+
+                $('#save').trigger('click');
+
+                createMirrorCode();
+
+            })
+
+            $(document).on('click', '#saveFromCodeEditor', function () {
+
+                editorGetHtml = editor.getValue();
+
+                $tmp = $('<div>' + editorGetHtml + '</div>');
+                $tmp.find('style').remove();
+                src = $tmp.html();
+
+                $('#frame').html(src);
+
+                $('#coderWrapper').css('transform', 'scale(0.9)').css('opacity', '0');
+
+                $('.stackSR').css('transform', 'scale(1)').css('opacity', '1');
+
+                $('#popupOverlay').css({
+                    'opacity': '0',
+                });
+
+                setTimeout(function () {
+
+                    $('html, body').css('overflow', '');
+                    $('#popupOverlay').remove();
+                    $('#coderWrapper').addClass('hidden');
+
+                    editor.setValue('');
+
+                }, 400);
+
+            });
+
+
+            $(document).on('click', '#<%=btnGuardar.ClientID%>', function () {
+
+                //variables
+                plain_text = '';
+
+                if ($(this).hasClass('de')) {
+
+                }
+
+                else {
+
+                    $(this).addClass('ani');
+
+                    $tmp = $("<div></div>").html($("#frame").html());
+                    $tmp.find('*[contenteditable]').each(function () { $(this).removeAttr('contenteditable') });
+                    $tmp.find('.editable').each(function () { $(this).removeClass('editable') });
+                    $tmp.find('.delete, .handle, .moduleDeleteButton, .moduleDragButton, .moduleCodeButton, .moduleDuplicateButton, .moduleCode').each(function () { $(this).remove(); });
+                    $tmp.find('.last-table').each(function () { $(this).removeClass('last-table'); });
+                    $tmp.find('.last-table').removeClass('last-table');
+                    $tmp.find('.image_target').removeClass('image_target');
+                    $tmp.find('tr').unwrap('<tbody></tbody>');
+                    $tmp.find('.elementIndicator').removeClass('elementIndicator');
+                    $tmp.find('.currentTable').each(function () { $(this).removeClass('currentTable'); });
+                    $tmp.find('#edit_link').each(function () { $(this).remove(); });
+                    $tmp.find('.parentOfBg').contents().unwrap();
+                    $tmp.find('.parentOfBg, .highlighter-container').remove();
+                    $tmp.find('#clear_template, grammarly-btn, grammarly').each(function () { $(this).remove(); });
+                    $tmp.find('[class=""]').each(function () { $(this).removeAttr('class') });
+                    campaign_html = $tmp.html().replace(/sr_name/g, '*|name|*').replace(/sr_first_name/g, '*|first_name|*').replace(/sr_email/g, '*|email|*').replace(/sr_unsubscribe/g, '*|unsubscribe|*').replace(/sr_date/g, '*|date|*').replace(/sr_view_online/g, '*|view_online|*').replace(/sr_country/g, '*|country|*').replace(/sr_browser/g, '*|browser|*').replace(/sr_os/g, '*|os|*').replace(/sr_referrer/g, '*|referrer|*').replace(/sr_custom_1/g, '*|custom_1|*').replace(/sr_custom_2/g, '*|custom_2|*').replace(/zip:uploads/g, 'zip_uploads');
+
+                    //create plain text version
+                    $('#frame').find('td').each(function () {
+
+                        var el = $(this);
+
+                        if ($(el).children('table').length) { }
+
+                        else {
+
+                            var text = $(el).text();
+                            var text = text.replace(/<br\/>/g, '').replace(/\n/g, '').replace(/	/g, '').replace(/  /g, '').replace(/VIEW ONLINE/g, '').replace(/view online/g, '');
+                            var count = text.split(' ').length;
+
+                            if ($.trim($(el).html()) == '' || $.trim($(el).html()) == ' ') { }
+
+                            else if ($(el).is(':empty')) { }
+
+                            else if (count == 1) { }
+
+                            else if (text == ' ') { }
+
+                            else {
+
+                                plain_text = plain_text + text;
+                                plain_text = plain_text + '\r';
+
+                            }
+
+                        }
+
+                    })
+
+                    campaign_id = "180087";
+
+                    /**
+                     * data: {
+                            campaign_id: campaign_id, campaign_html: campaign_html, plain_text: plain_text
+                        }
+                     */
+
+                    var urlLog = "/Dashboard/Template/index.aspx/GuardarLog";
+
+                    //var dataString = "{ 'campaignId': " + campaign_id + "}";
+                    //var dataString = "{campaignId: " + campaign_id + ", campaignHtml: " + campaign_html + ", plainText: " + plain_text  +"}";
+
+                    $("#<%=htmlHidden.ClientID%>").val(campaign_html);
+
+
+
+                }
+
+            });
+
+            $(document).on('click', '#confirmAccountSession', function () {
+
+                user_email = $('[data-useremail]').attr('data-useremail');
+                user_pass = $('#confirmAccountPassword').val();
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "html",
+                    url: "../scripts/calls.php?func=confirm_account_session",
+                    data: {
+                        user_email: user_email, user_pass: user_pass
+                    }
+                }).done(function (data) {
+
+                    if (data == '1') {
+
+                        closePopup();
+
+                        setTimeout(function () {
+
+                            $('#save').trigger('click');
+
+                        }, 500)
+
+                    }
+
+                    else {
+
+                        notificationContent = 'Wrong Password';
+                        notificationColor = "#ea5a5b";
+
+                        notification();
+
+                        $('##confirmAccountPassword').focus();
+
+                    }
+
+                });
+
+            });
+
+            $('#logo').each(function () {
+
+                //vars
+                email = $(this).attr('data-avatar');
+
+                //find data and add gravatar
+                $(this).append($.gravatar(email));
+
+                //fetch img src
+                a = $(this).find('img').attr('src');
+
+                //add stampready default icon
+                $(this).find('img').attr('src', a + 'd=http%3A%2F%2Fwww.stampready.net%2Fdashboard%2Fimg%2Fframework%2Favatar_default_ready.png');
+
+            });
+
+        });
+
+        //Generate Template
+        //function downloadTemplate() {
+
+        //    //Hide overlay
+        //    $('.overlay').fadeOut(200);
+
+        //    campaign_id = '180087';
+
+        //    $('#campaign_id').val(campaign_id);
+
+        //}
+
+        //function createMirrorCode() {
+
+        //    campaign_id = '180087';
+
+        //    $.ajax({
+        //        type: "POST",
+        //        dataType: "html",
+        //        url: "scripts/create_mirror_token.php",
+        //        data: {
+        //            campaign_id: campaign_id
+        //        }
+        //    }).done(function (data) {
+
+        //        $('.mirror_token').text(data);
+
+        //    });
+
+        //}
+
+</script>
 </asp:Content>
 

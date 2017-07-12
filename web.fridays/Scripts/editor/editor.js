@@ -866,7 +866,7 @@ $(document).ready(function() {
 
 			else {
 
-				$('#frame').prepend('<input type="button" id="clear_template" class="semi_bold" value="Clear Template">');
+				$('#frame').prepend('<input type="button" id="clear_template" class="semi_bold" value="Limpiar plantilla">');
 
 			}
 
@@ -1451,7 +1451,9 @@ $(document).ready(function() {
                   return;
             }
 
-           a = $(this).parent().attr('data-id');
+            a = $(this).parent().attr('data-id');
+
+            console.log(a);
 
            if(moduleFlag == 1){
 
@@ -1502,7 +1504,7 @@ $(document).ready(function() {
 
 							else {
 
-								$('#frame').prepend('<input type="button" id="clear_template" class="semi_bold" value="Clear Template">');
+								$('#frame').prepend('<input type="button" id="clear_template" class="semi_bold" value="Limpiar plantilla">');
 
 							}
 

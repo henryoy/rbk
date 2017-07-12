@@ -81,6 +81,7 @@
     <Compile Include="Model\Configuracion.cs" />
     <Compile Include="Model\Distribucion.cs" />
     <Compile Include="Model\Fechapublicacion.cs" />
+    <Compile Include="Model\Mailrelaylog.cs" />
     <Compile Include="Model\Map\ActivacionMap.cs" />
     <Compile Include="Model\Map\CampanaMap.cs" />
     <Compile Include="Model\Map\CamposDistribucionMap.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Model\Map\ConfiguracionMap.cs" />
     <Compile Include="Model\Map\DistribucionMap.cs" />
     <Compile Include="Model\Map\FechapublicacionMap.cs" />
+    <Compile Include="Model\Map\MailrelaylogMap.cs" />
     <Compile Include="Model\Map\NivelUsuarioMap.cs" />
     <Compile Include="Model\Map\NotificacionMap.cs" />
     <Compile Include="Model\Map\PlantillaMap.cs" />
@@ -128,8 +130,10 @@
     <Compile Include="Model\Repository\ConfiguracionRepository.cs" />
     <Compile Include="Model\Repository\DistribucionRepository.cs" />
     <Compile Include="Model\Repository\FechaPublicacionRepository.cs" />
+    <Compile Include="Model\Repository\MailrelaylogRepository.cs" />
     <Compile Include="Model\Repository\NivelUsuarioRepository.cs" />
     <Compile Include="Model\Repository\NotificacionRepository.cs" />
+    <Compile Include="Model\Repository\PlantillaRepository.cs" />
     <Compile Include="Model\Repository\ProductoVentaRepository.cs" />
     <Compile Include="Model\Repository\PromocionRedimirRepository.cs" />
     <Compile Include="Model\Repository\PromocionRepository.cs" />

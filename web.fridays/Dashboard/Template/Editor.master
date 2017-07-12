@@ -25,11 +25,11 @@
             -webkit-transform: translate3d(0, 0, 0);
         }
 
-        #save {
+        #save,#MainContent_btnGuardar {
             position: absolute;
-            bottom: 74px;
+            top: 14px;
             width: 206px;
-            left: 22px;
+            right: 62px;
             height: 55px;
             background-color: #68c0b0;
             line-height: 56px;
@@ -63,11 +63,11 @@
             transition: all 0.4 ease;
         }
 
-        #save.de:hover {
+        #save.de:hover,#MainContent_btnGuardar.de:hover {
             background-color: #b1b1b1 !important;
         }
 
-        #save:hover {
+        #save:hover, #MainContent_btnGuardar:hover {
             background-color: #5ca99a !important;
         }
 
@@ -537,66 +537,14 @@
         <asp:ScriptManager runat="server" ID="ScriptManager1" EnableScriptGlobalization="true" EnableScriptLocalization="true" EnableCdn="false"></asp:ScriptManager>
         <div class="popup-notification error font-semibold"></div>
         <div id="editor" class="stackSR" style="transition: all 0.4s ease; transform: scale(1);">
-            <div id="modules" style="margin-left: 0px; display: block;" class="hidden">
-                <!-- Modules Widget -->
-                <ul id="modules_widgets" style="width: 366px;">
-                    <p class="pre-message semi_bold" style="color: rgb(162, 162, 162); display: none;">Drag or click modules</p>
 
-                    <div data-id="header" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
-                        <img src="./Editing Donde esta Zoro__files/header.jpg"></div>
-                    <div data-id="intro" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
-                        <img src="./Editing Donde esta Zoro__files/intro.jpg"><img src="http://www.stampready.net/dashboard/templates/epitome/thumbnails/intro.jpg"></div>
-                    <div data-id="2 columns" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
-                        <img src="./Editing Donde esta Zoro__files/2_col.jpg"></div>
-                    <div data-id="call to action" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
-                        <img src="./Editing Donde esta Zoro__files/call_to_action.jpg"></div>
-                    <div data-id="2 columns 2" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
-                        <img src="./Editing Donde esta Zoro__files/2_col_round.jpg"></div>
-                    <div data-id="footer" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
-                        <img src="./Editing Donde esta Zoro__files/footer.jpg"></div>
-                    <div data-id="disclaimer" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
-                        <img src="./Editing Donde esta Zoro__files/terms.jpg"></div>
-                    <div data-id="intro" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
-                        <img src="http://www.stampready.net/dashboard/templates/epitome/thumbnails/intro.jpg"></div>
-                </ul>
-
-                <!-- Styling Options -->
-                <div id="style_options" class="hidden" style="opacity: 1;">
-                    <div id="info_bar" style="opacity: 1;">
-                        <h3 class="semi_bold">Effect All Modules</h3>
-                        <!-- Switch  -->
-                        <div id="switch" style="opacity: 1;">
-                            <!-- thumb -->
-                            <div id="switch_thumb" style="opacity: 1;"></div>
-                        </div>
-                    </div>
-                    <!-- Colorpicker -->
-                    <div id="colorpicker" class="hidden" style="opacity: 1;"></div>
-                    <!-- Background Colorpicker-->
-                    <div id="bg_colorpicker" class="hidden" style="opacity: 1;"></div>
-                    <!-- Styling Attributes -->
-                    <ul class="semi_bold">
-                        <!-- Font Colors-->
-                        <h4 class="semi_bold" style="display: none;">Font Colors</h4>
-                        <div id="colors" style="display: none; opacity: 1;"></div>
-                        <!-- Background Colors -->
-                        <h4 class="semi_bold" style="display: none;">Background Colors</h4>
-                        <div id="bg_colors" style="display: none; opacity: 1;"></div>
-                        <!-- Appearances -->
-                        <h4 class="semi_bold" style="display: none;">Appearances</h4>
-                        <div id="appearances" style="display: none; opacity: 1;"></div>
-                        <!-- Background Images -->
-                        <h4 class="semi_bold" style="display: none;">Background Images</h4>
-                        <div id="background_settings" style="display: none; opacity: 1;"></div>
-                    </ul>
-                </div>
-            </div>
+            <asp:ContentPlaceHolder runat="server" ID="SideBar"></asp:ContentPlaceHolder>
             <div id="sidebar" class="regular disable_selection" style="padding-bottom: 168px; padding-top: 81px;">
                 <!-- User Logo -->
                 <div id="user_info" class="clear-fix" data-useremail="hency.oy@gmail.com" style="box-shadow: none;">
                     <!-- Logo -->
                     <a href="~/">
-                         <!-- Logo -->
+                        <!-- Logo -->
                         <div id="logo" data-avatar="hency.oy@gmail.com">
                             <img runat="server" src="~/Content/editor/img/wheel.png">
                         </div>
@@ -629,22 +577,22 @@
                 <!-- Menu -->
                 <ul id="nav">
                     <li id="modules_link" class="active">
-                        <h2 class="semi_bold">Edit</h2>
+                        <h2 class="semi_bold">Editar</h2>
                         <ul>
 
-                            <li id="modules_widget" class="active">Modules</li>
-                            <li id="style_widget">Styles</li>
+                            <li id="modules_widget" class="active">Modulos</li>
+                            <li id="style_widget">Estilos</li>
 
 
                         </ul>
                     </li>
 
                     <li id="preview_link" class="">
-                        <h2 class="semi_bold">Preview</h2>
+                        <h2 class="semi_bold">Vista previs</h2>
                         <ul class="hidden">
 
-                            <li id="preview_fullscreen">Fullscreen</li>
-                            <li onclick="screen(this,event)" class="portrait">Mobile</li>
+                            <li id="preview_fullscreen">Pantalla completa</li>
+                            <li onclick="screen(this,event)" class="portrait">Mobil</li>
                             <li id="mirror_mobile">Mirror on mobile<div class="lock"></div>
                             </li>
 
@@ -652,7 +600,7 @@
                     </li>
 
                     <li id="options_link" class="">
-                        <h2 class="semi_bold">Export</h2>
+                        <h2 class="semi_bold">Exportar</h2>
                         <ul class="hidden">
 
                             <li>To Desktop<div class="lock"></div>
@@ -676,17 +624,9 @@
 
                 </ul>
 
-                <a class="semi_bold">Save Template</a>
+                <%--<a id="save" class="semi_bold de">Guardar plantilla</a>--%>
+                
                 <!-- Credits Status -->
-                <div id="credits">
-
-                    <div class="credits_or_plan semi_bold" id="">
-
-                        <span>250 Credits</span>
-                        <!-- Meter -->
-                        <div class="meter"></div>
-                    </div>
-                </div>
             </div>
             <asp:ContentPlaceHolder runat="server" ID="MainContent"></asp:ContentPlaceHolder>
         </div>
@@ -709,6 +649,22 @@
         <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/jquery.imgareaselect.pack.js") %>"></script>
         <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/jquery.transform2d.js") %>"></script>
         <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/cropper.js") %>"></script>
+
+
+        <!-- test -->
+
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/functions.js") %>"></script>
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/codemirror.js") %>"></script>
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/xml.js") %>"></script>
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/javascript.js") %>"></script>
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/css.js") %>"></script>
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/htmlmixed.js") %>"></script>
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/xml-fold.js") %>"></script>
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/matchtags.js") %>"></script>
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/jquery.htmlClean.js") %>"></script>
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/editor.js") %>"></script>
+        <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/shortcuts.js") %>"></script>
+        <!-- fin test -->
         <asp:ContentPlaceHolder runat="server" ID="ScriptsPages" />
     </form>
 </body>
