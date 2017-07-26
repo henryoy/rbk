@@ -1,5 +1,6 @@
 ﻿using cm.mx.catalogo.Model;
 using cm.mx.dbCore.Interfaces;
+using com.pakhee.common;
 using Newtonsoft.Json.Linq;
 using NHibernate;
 using NHibernate.Criterion;
@@ -537,6 +538,20 @@ namespace cm.mx.catalogo.Controller
             Cifrado oCifrado = new Cifrado();
             string key = oCifrado.EncriptarSHA1(keyData, key2);
             return key;
+        }
+
+        public static string EncryptAES(string plainText)
+        {
+            CryptLib _crypt = new CryptLib();
+            String iv = CryptLib.getHashSha256("FridaysApp.", 16); //16 bytes = 128 bits
+            string key = CryptLib.getHashSha256("Mx2017App.", 31); //32 bytes = 256 bits
+            String cypherText = _crypt.encrypt(plainText, key, iv);
+            Console.WriteLine("iv=" + iv);
+            Console.WriteLine("key=" + key);
+            Console.WriteLine("Cypher text=" + cypherText);
+            Console.WriteLine("Plain text =" + _crypt.decrypt(cypherText, key, iv));
+
+            return cypherText;
         }
 
     }

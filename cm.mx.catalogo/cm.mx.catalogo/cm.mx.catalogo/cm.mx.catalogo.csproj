@@ -72,6 +72,7 @@
     <Compile Include="Controller\UtileriaController.cs" />
     <Compile Include="Enums\CatalogoEnum.cs" />
     <Compile Include="Helper\CatalogoHelper.cs" />
+    <Compile Include="Helper\CryptLib.cs" />
     <Compile Include="Helper\GridViewHeaderTemplate.cs" />
     <Compile Include="Model\Activacion.cs" />
     <Compile Include="Model\Campana.cs" />

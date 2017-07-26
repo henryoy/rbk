@@ -14,6 +14,9 @@ namespace cm.mx.catalogo.Model
             Intereses = new List<TipoInteres>();
             Notificaciones = new List<Notificacion>();
             oTarjeta = new Tipomembresia();
+            UltimaPlataforma = "";
+            UltimaSerie = "";
+            UltimoInicio = DateTime.Now;
         }
 
         public virtual void Addinteres(TipoInteres oInteres)
@@ -76,6 +79,10 @@ namespace cm.mx.catalogo.Model
         public virtual IList<TipoInteres> Intereses { get; set; }
 
         public virtual IList<Notificacion> Notificaciones { get; set; }
+
+        public virtual string UltimaSerie { get; set; }
+        public virtual string UltimaPlataforma { get; set; }
+        public virtual DateTime UltimoInicio { get; set; }
         //public virtual string Correo { get; set; }
         //public virtual string Nombre { get; set; }
         //public virtual string Password { get; set; }

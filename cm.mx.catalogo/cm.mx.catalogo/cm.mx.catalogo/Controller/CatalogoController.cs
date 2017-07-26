@@ -121,6 +121,8 @@ namespace cm.mx.catalogo.Controller
                     if (oUsuarioSaved != null)
                     {
                         oUsuarioSaved.Nombre = oUsuario.Nombre;
+                        oUsuarioSaved.UltimaSerie = oUsuario.UltimaSerie;
+                        oUsuarioSaved.UltimaPlataforma = oUsuario.UltimaPlataforma;
                         NuevoUsuario = false;
                     }
                 }
@@ -153,18 +155,21 @@ namespace cm.mx.catalogo.Controller
                         Mensajes.Add("Se realizo el registro correctamente del usuario.");
                         bResult = true;
 
-                        ConfiguracionRepository rConfig = new ConfiguracionRepository();
-                        Configuracion oConfig = rConfig.GetByClave("URL_ACTIVACION");
-
-                        if (oConfig != null)
+                        if (oUsuario.Origen == "MOBILE")
                         {
-                            var baseUrl = oConfig.Valor;
-                            var link = baseUrl + "/Activar.aspx?val1=" + clave + "&val2=" + oUsuario.Usuarioid;
+                            ConfiguracionRepository rConfig = new ConfiguracionRepository();
+                            Configuracion oConfig = rConfig.GetByClave("URL_ACTIVACION");
 
-                            if (!rUsuario.EnviarCorreo(new List<string> { oUsuario.Email }, "Activar Cuenta", link, true))
+                            if (oConfig != null)
                             {
-                                List<string> msjs = rUsuario.Mensajes;
-                                Mensajes.AddRange(rUsuario.Errores);
+                                var baseUrl = oConfig.Valor;
+                                var link = baseUrl + "/Activar.aspx?val1=" + clave + "&val2=" + oUsuario.Usuarioid;
+
+                                if (!rUsuario.EnviarCorreo(new List<string> { oUsuario.Email }, "Activar Cuenta", link, true))
+                                {
+                                    List<string> msjs = rUsuario.Mensajes;
+                                    Mensajes.AddRange(rUsuario.Errores);
+                                }
                             }
 
                             if (oUsuario.Usuarioid > 0)
@@ -262,7 +267,7 @@ namespace cm.mx.catalogo.Controller
             return Resultado;
         }
 
-        public Usuario LoginMovil(string usuario, string password)
+        public Usuario LoginMovilAdmin(string usuario, string password)
         {
             UsuarioRepository rUsuario = new UsuarioRepository();
             ActivacionRepository rAcrivacion = new ActivacionRepository();
@@ -1850,21 +1855,21 @@ namespace cm.mx.catalogo.Controller
         }
 
         //<summary>Metodo que devuelve un objeto de tipo usuario</summary>
-        public Usuario LoginMovil(string usuario, string password, Origen origen = Origen.MOBILE, bool Login1 = false)
+        public Usuario LoginMovil(string usuario, string password, string serie, string plataforma, out bool logout, Origen origen = Origen.MOBILE, bool Login1 = false)
         {
             UsuarioRepository rUsuario = new UsuarioRepository();
             ActivacionRepository rAcrivacion = new ActivacionRepository();
             Usuario oUsuario = null;
+            logout = false;
 
             try
             {
-                if (Login1)
+                if (Login1 && origen == Origen.MOBILE)
                 {
                     if (!Funciones.ValidarCorreo(usuario))
                         throw new Exception("Ingrese un correo válido");
 
                     usuario = rUsuario.GetUsuarioID(usuario).ToString();
-                    //_errores.Add("Ingrese un correo válido");
                 }
 
                 oUsuario = rUsuario.LoginMovil(usuario, password, origen);
@@ -1872,6 +1877,37 @@ namespace cm.mx.catalogo.Controller
                 if (oUsuario == null)
                 {
                     Errores.AddRange(rUsuario.Errores);
+                }
+                else
+                {
+                    oUsuario.UltimoInicio = DateTime.Now;
+                    bool guardar = false;
+
+                    if (Login1)
+                    {
+                        oUsuario.UltimaSerie = serie;
+                        oUsuario.UltimaPlataforma = plataforma;
+                        guardar = true;
+                    }
+                    else
+                    {
+                        if (oUsuario.UltimaSerie != serie || oUsuario.UltimaPlataforma != plataforma)
+                        {
+                            oUsuario = null;
+                            Errores.Add("La sesión fue iniciada desde otro dispositivo. Favor de verificar. La sesión será cerrada en este dispositivo.");
+                            logout = true;
+                        }
+                        else
+                            guardar = true;
+
+                    }
+
+                    if (guardar)
+                        if (!rUsuario.Guardar(oUsuario))
+                        {
+                            Errores.AddRange(rUsuario.Errores);
+                            oUsuario = null;
+                        }
                 }
             }
             catch (Exception ex)
@@ -3113,60 +3149,70 @@ namespace cm.mx.catalogo.Controller
         {
             bool bResult = false;
 
-            rUsuario = new UsuarioRepository();
-            int idUsuario = rUsuario.GetUsuarioID(usuario);
-
-            if(idUsuario == 0)
+            try
             {
-                Errores.Add("No se encontró el usuario solicitado. Favor de verificarlo. Codigo 01X01");
-                return bResult;
-            }
+                rUsuario = new UsuarioRepository();
+                int idUsuario = rUsuario.GetUsuarioID(usuario);
 
-            Usuario oUsuario = rUsuario.GetById(idUsuario);
-
-            if(oUsuario != null)
-            {
-                if(oUsuario.Tipo == "MOBILE" && oUsuario.Origen == "MOBILE")
+                if (idUsuario == 0)
                 {
-                    string key = UtileriaController.doKeyActivation(usuario, "KeyPartStatic");
-                    Activacion oActivacion = new Activacion();
-                    oActivacion.Activado = false;
-                    oActivacion.Email = oUsuario.Email;
-                    oActivacion.FechaAlta = DateTime.Now;
-                    oActivacion.FechaVencimiento = oActivacion.FechaAlta.AddDays(5);
-                    oActivacion.Llave = key;
-                    oActivacion.UsuarioId = oUsuario.Usuarioid;
-                    rUsuario._session.SaveOrUpdate(oActivacion);
+                    Errores.Add("No se encontró el usuario solicitado. Favor de verificarlo. Codigo 01X01");
+                    return bResult;
+                }
 
-                    List<string> para = new List<string>();
-                    para.Add(oUsuario.Email);
+                Usuario oUsuario = rUsuario.GetById(idUsuario);
 
-                    rConfiguracion = new ConfiguracionRepository();
-                    Configuracion oConfig = rConfiguracion.GetByClave("RECUPERA_PLANTILLA");
-                    string mensaje = oConfig.Valor;
+                if (oUsuario != null)
+                {
+                    if (oUsuario.Tipo == "MOBILE" && oUsuario.Origen == "MOBILE")
+                    {
+                        string key = UtileriaController.doKeyActivation(usuario, "KeyPartStatic");
+                        Activacion oActivacion = new Activacion();
+                        oActivacion.Activado = false;
+                        oActivacion.Email = oUsuario.Email;
+                        oActivacion.FechaAlta = DateTime.Now;
+                        oActivacion.FechaVencimiento = oActivacion.FechaAlta.AddDays(5);
+                        oActivacion.Llave = key;
+                        oActivacion.UsuarioId = oUsuario.Usuarioid;
+                        rUsuario._session.SaveOrUpdate(oActivacion);
 
-                    oConfig = rConfiguracion.GetByClave("URL_RECUPERAR");
+                        List<string> para = new List<string>();
+                        para.Add(oUsuario.Email);
 
-                    mensaje = mensaje.Replace("[URL]", oConfig.Valor + key);
-                    mensaje = mensaje.Replace("[USUARIO]", oUsuario.Nombre + "(" + oUsuario.Email + ")");
+                        rConfiguracion = new ConfiguracionRepository();
+                        Configuracion oConfig = rConfiguracion.GetByClave("RECUPERA_PLANTILLA");
+                        string mensaje = oConfig.Valor;
 
-                    rUsuario.EnviarCorreo(para, "Recuperación de Contraseña - Friday's App", mensaje, true);
+                        oConfig = rConfiguracion.GetByClave("URL_RECUPERAR");
+
+                        mensaje = mensaje.Replace("[URL]", oConfig.Valor + key);
+                        mensaje = mensaje.Replace("[USUARIO]", oUsuario.Nombre + "(" + oUsuario.Email + ")");
+
+                        if (rUsuario.EnviarCorreo(para, "Recuperación de Contraseña - Friday's App", mensaje, true))
+                            bResult = true;
+                        else
+                            Errores.AddRange(rUsuario.Errores);
+                    }
+                    else
+                    {
+                        Errores.Add("El proceso de recuperar contraseña no puede ser realizado para el usuario solicitado, ya que el tipo de acceso es por medio de " + oUsuario.Origen + ". Debe intentar acceder por el mismo medio. 01X02");
+                        return bResult;
+                    }
                 }
                 else
                 {
-                    Errores.Add("El proceso de recuperar contraseña no puede ser realizado para el usuario solicitado, ya que el tipo de acceso es por medio de " + oUsuario.Origen + ". Debe intentar acceder por el mismo medio. 01X02");
+                    Errores.Add("No se encontró el usuario solicitado. Favor de verificarlo. 01X03");
                     return bResult;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Errores.Add("No se encontró el usuario solicitado. Favor de verificarlo. 01X03");
-                return bResult;
+                Mensajes.Add(ex.Message);
             }
-
 
             return bResult;
         }
+
         public List<Plantilla> GetAllPlantilla()
         {
             List<Plantilla> lsPlantilla = new List<Plantilla>();
@@ -3312,5 +3358,55 @@ namespace cm.mx.catalogo.Controller
 
             return oMail;
         }
+
+        public Usuario ValidaKeyRecuperarPassword(string key)
+        {
+            Usuario oUsuario = null;
+
+            try
+            {
+                ActivacionRepository rActivacion = new ActivacionRepository();
+                int iUsuario = rActivacion.GetUsuarioIDByLlaveActivacion(key);
+
+
+                if (iUsuario > 0)
+                {
+                    rUsuario = new UsuarioRepository();
+                    oUsuario = rUsuario.GetById(iUsuario);
+                    rUsuario._session.Clear();
+                }
+                else
+                {
+                    Mensajes.Add("La información proporcionada no es valida, verifique la información. Esto se puede deber a que ya ha cambiado su contraseña con esta solicitud o ya ha caducado. Para poder realizar el cambio debe de realizar la solicitud desde el dispositivo.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Mensajes.Add(ex.Message);
+            }
+
+            return oUsuario;
+        }
+
+        public bool DeleteKeyRecuperarPassword(string key)
+        {
+            bool bResult = false;
+
+            try
+            {
+                ActivacionRepository rAct = new ActivacionRepository();
+                Activacion oActivacion = rAct.GetKeyByLlave(key);
+                rAct.Delete(oActivacion);
+                bResult = true;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return bResult;
+        }
     }
+
+
 }
