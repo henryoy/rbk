@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NHibernate.Linq;
 
 namespace cm.mx.catalogo.Model
 {
@@ -12,6 +13,26 @@ namespace cm.mx.catalogo.Model
             List<Activacion> lsActivacion = new List<Activacion>();
             lsActivacion = _session.QueryOver<Activacion>().List().ToList();
             return lsActivacion;
+        }
+
+        public int GetUsuarioIDByLlaveActivacion(string key)
+        {
+            int iUsuario = 0;
+
+            Activacion oAct = _session.Query<Activacion>().Where(x => x.Llave == key).FirstOrDefault();
+
+            if (oAct != null)
+                iUsuario = oAct.UsuarioId;
+
+            return iUsuario;
+        }
+
+        public Activacion GetKeyByLlave(string key)
+        {
+
+            Activacion oAct = _session.Query<Activacion>().Where(x => x.Llave == key).FirstOrDefault();
+            _session.Clear();
+            return oAct;
         }
 
         public List<Activacion> GetAllActivacionActivadas()
