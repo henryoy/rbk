@@ -1156,8 +1156,8 @@ namespace cm.mx.catalogo.Controller
 
                             Mensajes.AddRange(rUsuario.Mensajes);
                         }
-                        List<Promocion> tskPromocion = new List<Promocion>();
-                        Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
+                        //List<Promocion> tskPromocion = new List<Promocion>();
+                        //Task<List<Promocion>> lsPromocion = this.CrearNotificacionPromocion(ClienteID);
                     }
                 }
             }
