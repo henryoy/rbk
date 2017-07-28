@@ -245,7 +245,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
     }
     protected void lnkGuardarPromocion_Click(object sender, EventArgs e)
     {
-        lnkGuardarPromocion.Enabled = false;
+        //lnkGuardarPromocion.Enabled = false;
         string Tipo = string.Empty;
         string msj = string.Empty;
 
@@ -303,7 +303,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                   "StartupScript",
                   "notification('" + msj + "','error')",
                   true);
-            lnkGuardarPromocion.Enabled = true;
+            //lnkGuardarPromocion.Enabled = true;
             return;
         }
 
@@ -320,7 +320,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                   "StartupScript",
                   "notification('" + msj + "','error')",
                   true);
-            lnkGuardarPromocion.Enabled = true;
+            //lnkGuardarPromocion.Enabled = true;
 
             return;
         }
@@ -400,6 +400,9 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
         {
             Tipo = "success";
             msj = "Se guardo correctamente la promoción";
+            imgTarjeta.ImageUrl = ConfigurationManager.AppSettings["RutaImagenes"] + oPromocion.ImagenUrl;
+            upPromocion.Update();
+            upSucursal.Update();
         }
         else
         {
@@ -417,7 +420,7 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
                    "notification('" + msj + "','" + Tipo + "')",
                    true);
 
-        lnkGuardarPromocion.Enabled = true;
+        //lnkGuardarPromocion.Enabled = true;
     }
     protected void btnEliminarSucursal_Click(object sender, EventArgs e)
     {

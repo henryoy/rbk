@@ -3549,7 +3549,7 @@ pre {
 
 #popup {
     background-color: #FFF;
-    width: 600px;
+    width: 90%;
     padding: 50px 50px 130px 50px;
     margin: auto;
     -webkit-transform: translateY(-50%) scale(0.8);
