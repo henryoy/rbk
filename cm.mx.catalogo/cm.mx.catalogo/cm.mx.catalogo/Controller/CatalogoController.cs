@@ -1541,6 +1541,8 @@ namespace cm.mx.catalogo.Controller
                                 {
                                     if (oPromocion.Promociondetalle.Any(f => f.Condicion == "VISITA"))
                                     {
+                                        Promociondetalle oPromoVisita = oPromocion.Promociondetalle.Where(x => x.Condicion == "VISITA" && int.Parse(x.Valor1) == oUsuario.VisitaActual).FirstOrDefault();
+
                                         if (oPromocion.Promociondetalle.Any(f => f.Condicion == "IMPORTE"))
                                         {
                                             var ProImporte = oPromocion.Promociondetalle.Where(f => f.Condicion == "IMPORTE").ToList();
@@ -1552,8 +1554,17 @@ namespace cm.mx.catalogo.Controller
                                                 double.TryParse(f.Valor1, out Valor1);
                                                 double.TryParse(f.Valor2, out Valor2);
 
+                                                decimal descuento = 0;
+
+                                                int nVisita = int.Parse(oPromoVisita.Valor1);
+
+                                                if (oUsuario.oTarjeta.Porcientodescuento.HasValue)
+                                                    descuento = oUsuario.oTarjeta.Porcientodescuento.Value/100;
+
+                                                double importe = ( double.Parse(descuento.ToString()) * oUsuario.ImporteActual);
+
                                                 //if (Valor2 < oUsuario.ImporteActual || Valor1 > oUsuario.ImporteActual)
-                                                if (oUsuario.ImporteActual >= Valor1 && oUsuario.ImporteActual <= Valor2)
+                                                if (importe >= Valor1 && importe <= Valor2 && nVisita == oUsuario.VisitaActual)
                                                 {
                                                     _lsPromocion.Add(oPromocion);
                                                     _exito = true;
