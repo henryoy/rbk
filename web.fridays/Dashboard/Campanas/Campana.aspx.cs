@@ -114,10 +114,7 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
                 {
                     if (oCampana.FechaProgramacion.HasValue)
                     {
-                        send_schedule_campaign_day.Value = oCampana.FechaProgramacion.Value.ToShortDateString();
-                        var src = oCampana.FechaProgramacion.Value;
-                        var hm = new DateTime(src.Year, src.Month, src.Day, src.Hour, src.Minute, 0);
-                        send_schedule_campaign_day.Value = src.ToShortDateString();
+                        txtFechaInicio.Text = String.Format("{0:yyyy-MM-dd}", oCampana.FechaProgramacion);
                         //send_schedule_campaign_time.Value = Convert.ToString(hm);
                         checkCalendar();
                     }
@@ -163,52 +160,15 @@ public partial class Dashboard_Campanas_Campana : System.Web.UI.Page
         oCampana.CampanaId = sCampanaId;
         oCampana.Nombre = txtTitulo.Text;
         oCampana.MensajePrevio = txtMsjPrevio.Text;
-        if (!string.IsNullOrEmpty(send_schedule_campaign_day.Value))
+
+        
+        if (!string.IsNullOrEmpty(txtFechaInicio.Text))
         {
-            if (!string.IsNullOrEmpty(send_schedule_campaign_time.Value))
-            {
-                oCampana.Programacion = true;
-                if (esvalida_la_hora(send_schedule_campaign_time.Value))
-                {
-                    oCampana.FechaProgramacion = Convert.ToDateTime(send_schedule_campaign_day.Value);
+            oCampana.Programacion = true;
+            DateTime oDateInit = new DateTime();
+            DateTime.TryParse(txtFechaInicio.Text, out oDateInit);
 
-                    string thetime = send_schedule_campaign_time.Value;
-
-                    if (thetime.Trim().Length < 5)
-                        thetime = thetime = "0" + thetime;
-
-                    string hh = thetime.Substring(0, 2);
-                    string mm = thetime.Substring(3, 2);
-                    double horas = 0;
-                    double minutos = 0;
-                    double.TryParse(hh, out horas);
-                    double.TryParse(mm, out minutos);
-
-                    DateTime oTime = oCampana.FechaProgramacion.Value;
-                    oTime = oTime.AddHours(horas);
-                    oTime = oTime.AddMinutes(minutos);
-
-                    oCampana.FechaProgramacion = oTime;
-                }
-                else
-                {
-                    msj = "El formato de la hora no es correcto";
-                    oCampana = _Result;
-                    ScriptManager.RegisterStartupScript(
-                           this,
-                           this.GetType(),
-                           "StartupScript",
-                           "notification('" + msj + "','error')",
-                           true);
-                    return;
-                }
-            }
-            else
-            {
-                oCampana.Programacion = true;
-                oCampana.FechaProgramacion = Convert.ToDateTime(send_schedule_campaign_day.Value);
-            }
-
+            oCampana.FechaProgramacion = oDateInit;
         }
         else oCampana.Programacion = false;
 

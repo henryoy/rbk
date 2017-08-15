@@ -2,10 +2,18 @@
 
 <asp:Content ID="HeaderContent" ContentPlaceHolderID="HeadContent" runat="Server">
     <link href="<%= ResolveClientUrl("~/Content/css/Distribucion.css") %>" rel="stylesheet" />
+    <style>
+        .generar_sucriptor{
+            margin-right:10px;
+        }
+        .btn-guardar{margin-left:30px !important; border:1px solid red;}
+    </style>
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="Server">
     <div class="fila" style="height: 30px; padding: 0px;">
-        <asp:Button runat="server" ID="btnGuardar" CssClass="add-option semi_bold" OnClick="btnGuardar_Click" Text="Guardar" CausesValidation="true" ValidationGroup="guardar" UseSubmitBehavior="false" />
+        <asp:Button runat="server" ID="btnVaciarGroup" CssClass="add-option semi_bold  generar_sucriptor" OnClick="btnVaciarGroup_Click" Text="Generar grupo"/>
+        
+        <asp:Button runat="server" ID="btnGuardar" CssClass="add-option semi_bold btn-guardar" OnClick="btnGuardar_Click" Text="Guardar" CausesValidation="true" ValidationGroup="guardar" UseSubmitBehavior="false" />
     </div>
     <ul class="data_change clear-fix">
         <li class="clear-fix editar">

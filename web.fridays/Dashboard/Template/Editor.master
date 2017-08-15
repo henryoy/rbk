@@ -552,7 +552,7 @@
                     <!-- User -->
                     <div id="user">
                         <!-- Username -->
-                        <span id="username" class="semi_bold">Live Preview</span>
+                        <span id="username" class="semi_bold">Vista previa</span>
                     </div>
 
                     <!-- Menu Button -->
@@ -565,13 +565,9 @@
                     </div>
 
                     <ul id="menu" class="hidden light" style="">
-                        <li class="regular"><a href="http://www.stampready.net/dashboard/index.php">Dashboard</a></li>
-                        <li class="regular"><a href="http://www.stampready.net/dashboard/new_campaign/index.php">Campaigns</a></li>
-                        <li class="regular"><a href="http://www.stampready.net/dashboard/subscribers/all/index.php">Subscriber Lists</a></li>
-                        <li class="regular"><a href="http://www.stampready.net/dashboard/analytics/campaign/index.php">Analytics</a></li>
-                        <li class="regular"><a href="http://www.stampready.net/dashboard/credits/index.php">Credits</a></li>
-                        <li class="regular"><a href="http://www.stampready.net/dashboard/account/settings/index.php">Account</a></li>
-                        <li class="regular"><a href="http://www.stampready.net/faq/index.php">Knowledge Base</a></li>
+                        <li class="regular"><a href="<%= ResolveUrl("~/Dashboard/index") %>">Escritorio</a></li>
+                        <li class="regular"><a href="<%= ResolveUrl("~/Dashboard/Campanas/campanas") %>">Campañas</a></li>
+                        <li class="regular"><a href="<%= ResolveUrl("~/Dashboard/Clientes") %>">Lista Clientes</a></li>
                     </ul>
                 </div>
                 <!-- Menu -->
@@ -588,7 +584,7 @@
                     </li>
 
                     <li id="preview_link" class="">
-                        <h2 class="semi_bold">Vista previs</h2>
+                        <h2 class="semi_bold">Vista previa</h2>
                         <ul class="hidden">
 
                             <li id="preview_fullscreen">Pantalla completa</li>
@@ -598,27 +594,19 @@
 
                         </ul>
                     </li>
-
-                    <li id="options_link" class="">
-                        <h2 class="semi_bold">Exportar</h2>
-                        <ul class="hidden">
-
-                            <li>To Desktop<div class="lock"></div>
-                            </li>
-                            <li id="export_to_account">Share Campaign<div class="lock"></div>
-                            </li>
-                        </ul>
-                    </li>
-
                     <li id="send_link" class="">
-                        <h2 class="semi_bold">Send</h2>
+                        <h2 class="semi_bold">Enviar</h2>
                         <ul class="hidden">
-
-                            <li id="send" class="preventExit" name="180087">Send Campaign<div class="lock"></div>
+                              <li class="">
+                                <asp:LinkButton runat="server" ID="lnkSincronizar" OnClick="lnkSincronizar_Click">Sincronizar correos</asp:LinkButton>                                                                
                             </li>
-                            <li id="send_test_email" class="">Send Test Email</li>
-
-
+                            <li class="">
+                                <asp:LinkButton runat="server" ID="lnkEnviarCampana" OnClick="lnkEnviarCampana_Click">Enviar Campaña</asp:LinkButton>                                
+                                
+                            </li>
+                            <li class="">                               
+                                <asp:LinkButton runat="server" ID="lnkEnviarTestCampana" OnClick="lnkEnviarTestCampana_Click"> Send Test Email</asp:LinkButton>
+                            </li>
                         </ul>
                     </li>
 
@@ -649,10 +637,7 @@
         <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/jquery.imgareaselect.pack.js") %>"></script>
         <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/jquery.transform2d.js") %>"></script>
         <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/cropper.js") %>"></script>
-
-
         <!-- test -->
-
         <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/functions.js") %>"></script>
         <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/codemirror.js") %>"></script>
         <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/editor/xml.js") %>"></script>

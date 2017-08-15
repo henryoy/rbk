@@ -35,6 +35,24 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             ViewState["distribucion"] = value;
         }
     }
+    private string codeApiRelay
+    {
+        get
+        {
+            string apiRelay = string.Empty;
+
+            if (ViewState["ApiRelay"] != null)
+            {
+                apiRelay = ViewState["ApiRelay"] as string;
+            }
+
+            return apiRelay;
+        }
+        set
+        {
+            ViewState["ApiRelay"] = value;
+        }
+    }
     //CondicionDistribucion oCondicionMemb
     //{
     //    get
@@ -52,6 +70,7 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
+            btnVaciarGroup.Visible = false;
             CargaInicial();
         }
     }
@@ -112,6 +131,11 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             if (oDistribucion == null) oDistribucion = new Distribucion();
             txtDescripcion.Text = oDistribucion.Descripcion;
             txtNombre.Text = oDistribucion.Nombre;
+            if(id > 0 && (oDistribucion.MRGroupId == null || oDistribucion.MRGroupId == 0))
+            {
+                btnVaciarGroup.Visible = true;
+            }
+
             var lsCondicones = oDistribucion.Condiciones.Where(x=>x.Campo != "TarjetaID");
             //oCondicionMemb = lsCondicones.FirstOrDefault(a => a.Campo == "TarjetaID");
 
@@ -281,7 +305,40 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
                 else
                 {
                     GetDistribucion(oDistribucion.DistribucionID);
-                    Funciones.MostarMensajes("success", new List<string> { "La operación se completo correctamente" });
+
+                    List<string> msj = new List<string>();
+                    msj.Add("La operación se completo correctamente.");
+                    if(oDistribucion.MRGroupId == null || oDistribucion.MRGroupId == 0)
+                    {
+                        int grupoId = 0;
+                        //guardar grupo en mail relay
+
+                        rbk.mailrelay.RbkMail oRbkMail = new rbk.mailrelay.RbkMail();
+                        rbk.mailrelay.Model.Group oGroup = new rbk.mailrelay.Model.Group();
+                        oGroup.apiKey = codeApiRelay;
+                        oGroup.description = oDistribucion.Descripcion;
+                        oGroup.name = oDistribucion.Nombre;
+                        oGroup.visible = true;
+                        oGroup.enable = true;
+
+                        int MRGroupId = oRbkMail.addGroup(oGroup);
+
+                        if (MRGroupId > 0)
+                        {
+                            grupoId = MRGroupId;
+                            bool isSaveGroup = cCatalogo.UpdateGroupId(oDistribucion.DistribucionID, MRGroupId);
+                            if (isSaveGroup)
+                                msj.Add("Se actualizo correctamente el grupo de mailrelay");
+                        }
+                        else
+                        {
+                            btnVaciarGroup.Visible = true;
+                            msj.Add("Ocurrio un error al crear el grupo de mailrelay");
+                        }
+
+                    } 
+
+                    Funciones.MostarMensajes("success", msj);
                 }
             }
         }
@@ -449,4 +506,45 @@ public partial class Dashboard_Distribucion : System.Web.UI.Page
             Funciones.MostarMensajes("error", new List<string> { ex.Message });
         }
     }
+
+    protected void btnVaciarGroup_Click(object sender, EventArgs e)
+    {
+        if (oDistribucion !=null && (oDistribucion.MRGroupId == null || oDistribucion.MRGroupId == 0))
+        {
+            int grupoId = 0;
+            List<string> msj = new List<string>();
+            //guardar grupo en mail relay
+
+            rbk.mailrelay.RbkMail oRbkMail = new rbk.mailrelay.RbkMail();
+            rbk.mailrelay.Model.Group oGroup = new rbk.mailrelay.Model.Group();
+            oGroup.apiKey = codeApiRelay;
+            oGroup.description = oDistribucion.Descripcion;
+            oGroup.name = oDistribucion.Nombre;
+            oGroup.visible = true;
+            oGroup.enable = true;
+
+            int MRGroupId = oRbkMail.addGroup(oGroup);
+
+            if (MRGroupId > 0)
+            {
+                grupoId = MRGroupId;
+                bool isSaveGroup = cCatalogo.UpdateGroupId(oDistribucion.DistribucionID, MRGroupId);
+                if (isSaveGroup)
+                    msj.Add("Se actualizo correctamente el grupo de mailrelay");
+
+                Funciones.MostarMensajes("success", msj);
+                btnVaciarGroup.Visible = false;
+            }
+            else
+            {
+                msj.Add("Ocurrio un error al crear el grupo de mailrelay");
+                Funciones.MostarMensajes("error", msj);
+                btnVaciarGroup.Visible = true;
+            }
+
+            
+        }
+    }
+
+    
 }

@@ -18,7 +18,7 @@ namespace cm.mx.catalogo.Model
         public virtual DateTime FechaBaja { get; set; }
         public virtual int TipoMembresia { get; set; }
         public virtual IList<CondicionDistribucion> Condiciones { get; set; }
-
+        public virtual int? MRGroupId { get; set; }
         public Distribucion()
         {
             Condiciones = new List<CondicionDistribucion>();

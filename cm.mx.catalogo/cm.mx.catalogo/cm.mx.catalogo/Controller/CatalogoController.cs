@@ -149,6 +149,16 @@ namespace cm.mx.catalogo.Controller
 
                     if (rUsuario.Exito)
                     {
+                        //Vaciar en mail relay al usuario - suscriber
+                        // hacerlo de manera asincrona void() - ya que no informara si se agrego o no
+                        // en caso de error se debera validar en el usuario si este a sido vaciado en mailrelay
+                        // debera haber un boton que permita el vaciado de manera manual
+
+                        if (NuevoUsuario)
+                            new Task(() => VaciarSuscriptor(oUsuario)).Start();
+                        else
+                            new Task(() => VaciarSuscriptor(oUsuarioSaved)).Start();
+                        
 
                         Mensajes.Add("Se realizo el registro correctamente del usuario.");
                         bResult = true;
@@ -2138,6 +2148,93 @@ namespace cm.mx.catalogo.Controller
             return lsCampana;
         }
 
+        public List<Vicampana> GetAllMrCampana()
+        {
+            List<Vicampana> lsCampana = new List<Vicampana>();
+            _exito = true;
+            Mensajes.Clear();
+            Errores.Clear();
+            rCampana = new CampanaRepository();
+            try
+            {
+
+                lsCampana = rCampana.GetAllMRCampana();
+                _exito = true;
+            }
+            catch (Exception innerException)
+            {
+                if (rCampana._session.Transaction.IsActive)
+                {
+                    rCampana._session.Transaction.Rollback();
+                }
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                this.Errores.Add(innerException.Message);
+                throw innerException;
+            }
+            return lsCampana;
+        }
+        public List<Vicampana> GetAllMrCampana(Paginacion oPaginacion)
+        {
+            List<Vicampana> lsCampana = new List<Vicampana>();
+            _exito = true;
+            Mensajes.Clear();
+            Errores.Clear();
+            rCampana = new CampanaRepository();
+            try
+            {
+
+                lsCampana = rCampana.GetAllMRCampana(oPaginacion);
+                _exito = true;
+            }
+            catch (Exception innerException)
+            {
+                if (rCampana._session.Transaction.IsActive)
+                {
+                    rCampana._session.Transaction.Rollback();
+                }
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                this.Errores.Add(innerException.Message);
+                throw innerException;
+            }
+            return lsCampana;
+        }
+
+
+        public List<Vicampana> GetAllMrCampana(FiltroVM oFiltro,Paginacion oPaginacion)
+        {
+            List<Vicampana> lsCampana = new List<Vicampana>();
+            _exito = true;
+            Mensajes.Clear();
+            Errores.Clear();
+            rCampana = new CampanaRepository();
+            try
+            {
+
+                lsCampana = rCampana.GetAllMRCampana(oFiltro,oPaginacion);
+                _exito = true;
+            }
+            catch (Exception innerException)
+            {
+                if (rCampana._session.Transaction.IsActive)
+                {
+                    rCampana._session.Transaction.Rollback();
+                }
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                this.Errores.Add(innerException.Message);
+                throw innerException;
+            }
+            return lsCampana;
+        }
+
         public Distribucion GetDistribucion(int DistribucionID)
         {
             _exito = false;
@@ -2360,6 +2457,43 @@ namespace cm.mx.catalogo.Controller
                     var cond = oUtileria.CrearCondion(obj.Condiciones.ToList());
                     rUsuario = new UsuarioRepository();
                     lsUsuario = rUsuario.GetUsuarios(cond);
+                }
+
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rUsuario._session.Transaction.IsActive)
+                {
+                    rUsuario._session.Transaction.Rollback();
+                }
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+            }
+            return lsUsuario;
+        }
+
+
+        public List<Usuario> GetEmailForDistribucionId(int DistribucionId)
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            List<Usuario> lsUsuario = new List<Usuario>();
+            try
+            {
+                UtileriaController oUtileria = new UtileriaController();
+                Distribucion obj = this.GetDistribucion(DistribucionId);
+
+                //if (obj.Condiciones != null && obj.Condiciones.Count > 0)
+                if (obj.Condiciones != null)
+                {
+                    var cond = oUtileria.CrearCondion(obj.Condiciones.ToList());
+                    rUsuario = new UsuarioRepository();
+                    lsUsuario = rUsuario.GetUsuarios(cond).Where(f=>f.Email != null || f.Email != "").ToList();
                 }
 
                 _exito = true;
@@ -3282,6 +3416,36 @@ namespace cm.mx.catalogo.Controller
 
             return oMail;
         }
+        public Mailrelaylog GetMailLogCampanaId(int CampanaId)
+        {
+
+            _errores.Clear();
+            _mensajes.Clear();
+            _exito = false;
+            rMailLog = new MailrelaylogRepository();
+            Mailrelaylog oMail = new Mailrelaylog();
+
+            try
+            {
+                oMail = rMailLog.GetByCampanaId(CampanaId);
+                _exito = true;
+
+            }
+            catch (Exception ex)
+            {
+                if (rMailLog._session.Transaction.IsActive)
+                    rMailLog._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return oMail;
+        }
         public Mailrelaylog GuardarMailLog(Mailrelaylog objeto)
         {
             
@@ -3311,6 +3475,226 @@ namespace cm.mx.catalogo.Controller
             }
 
             return oMail;
+        }
+
+        public List<Mailrelaylog> GetAllMailLog()
+        {
+
+            _errores.Clear();
+            _mensajes.Clear();
+            _exito = false;
+            rMailLog = new MailrelaylogRepository();
+            List<Mailrelaylog> oMail = new List<Mailrelaylog>();
+
+            try
+            {
+                oMail = rMailLog.GetByCampana();
+                _exito = true;
+
+            }
+            catch (Exception ex)
+            {
+                if (rMailLog._session.Transaction.IsActive)
+                    rMailLog._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return oMail;
+        }
+
+        public bool UpdateSuscriberId(int UsuarioId, int SuscriberId)
+        {
+
+            _errores.Clear();
+            _mensajes.Clear();
+            _exito = false;
+            rUsuario = new UsuarioRepository();
+            bool isUpdate = false;
+
+            try
+            {
+                isUpdate = rUsuario.UpdateSuscriberId(UsuarioId, SuscriberId);
+                _exito = true;
+
+            }
+            catch (Exception ex)
+            {
+                if (rUsuario._session.Transaction.IsActive)
+                    rUsuario._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return isUpdate;
+        }
+        public bool UpdateGroupId(int DistribucionId, int GroupId)
+        {
+
+            _errores.Clear();
+            _mensajes.Clear();
+            _exito = false;
+            rDistribucion = new DistribucionRepository();
+            bool isUpdate = false;
+
+            try
+            {
+                isUpdate = rDistribucion.UpdateGroupId(DistribucionId, GroupId);
+                _exito = true;
+
+            }
+            catch (Exception ex)
+            {
+                if (rDistribucion._session.Transaction.IsActive)
+                    rDistribucion._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return isUpdate;
+        }
+
+        private void VaciarSuscriptor(Usuario oUsuario)
+        {
+            rUsuario = new UsuarioRepository();
+            try
+            {
+                if (string.IsNullOrEmpty(oUsuario.Email))
+                    return;
+
+                if (oUsuario.MRSuscriberId == null || oUsuario.MRSuscriberId == 0)
+                {
+                    rbk.mailrelay.RbkMail oRbkMail = new rbk.mailrelay.RbkMail();
+                    rbk.mailrelay.Model.Suscriber oSuscriber = new rbk.mailrelay.Model.Suscriber();
+                    string codeApiRelay = rbk.mailrelay.RbkMail.Codigo;
+
+                    oSuscriber.apiKey = codeApiRelay;
+                    oSuscriber.email = oUsuario.Email;
+                    oSuscriber.name = oUsuario.Nombre;
+                    //suscriber grupo default
+                    oSuscriber.groups = new List<int>() { 1 };
+
+                    int SuscriberId = oRbkMail.addSuscriber(oSuscriber);
+                    if(SuscriberId > 0)
+                        rUsuario.UpdateSuscriberId(oUsuario.Usuarioid, SuscriberId);
+                }
+            }
+            catch (Exception ex)
+            {
+                if(rUsuario._session.Transaction.IsActive)
+                    rUsuario._session.Transaction.Rollback();
+
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+        }
+
+        public int GetSuscriber()
+        {
+            rUsuario = new UsuarioRepository();
+            int count = 0;
+
+            try
+            {
+                count = rUsuario.GetUserSuscriber();
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return count;
+        }
+
+
+        public int GetSuscriberNow()
+        {
+            rUsuario = new UsuarioRepository();
+            int count = 0;
+
+            try
+            {
+                count = rUsuario.GetUserSuscriberNow();
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return count;
+        }
+
+        public int GetSuscriberMonthNow()
+        {
+            rUsuario = new UsuarioRepository();
+            int count = 0;
+
+            try
+            {
+                count = rUsuario.GetUserSuscriberMonthNow();
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+            return count;
+        }
+
+        public int GetSuscriber(DateTime Inicio, DateTime Final)
+        {
+            rUsuario = new UsuarioRepository();
+            int count = 0;
+            try
+            {
+                count = rUsuario.GetUserSuscriber(Inicio,Final);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return count;
         }
     }
 }

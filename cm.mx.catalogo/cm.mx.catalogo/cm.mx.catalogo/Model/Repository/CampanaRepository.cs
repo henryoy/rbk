@@ -56,6 +56,64 @@ namespace cm.mx.catalogo.Model
 
             return lsCampana;
         }
+        public List<Vicampana> GetAllMRCampana()
+        {
+            List<Vicampana> lsCampana = new List<Vicampana>();
+
+             lsCampana = _session.CreateCriteria<Vicampana>().List<Vicampana>().ToList();
+
+            this._exito = true;
+
+            return lsCampana;
+        }
+        public List<Vicampana> GetAllMRCampana(Paginacion oPaginacion)
+        {
+            List<Vicampana> lsCampana = new List<Vicampana>();
+            if (oPaginacion == null)
+                oPaginacion = new Paginacion();
+
+            ICriteria criteria = _session.CreateCriteria<Vicampana>();
+            criteria.Add(Restrictions.IsNotNull("MRCampanaId"));   
+            criteria.SetProjection(Projections.RowCount());
+            int _Count = (int)criteria.UniqueResult();
+            oPaginacion.TotalRegistros = _Count;
+
+            lsCampana = _session.CreateCriteria<Vicampana>().List<Vicampana>().Skip(oPaginacion.Pagina * oPaginacion.Cantidad).Take(oPaginacion.Cantidad).ToList();
+
+            this._exito = true;
+
+            return lsCampana;
+        }
+
+        public List<Vicampana> GetAllMRCampana(FiltroVM oFiltro,Paginacion oPaginacion)
+        {
+            List<Vicampana> lsCampana = new List<Vicampana>();
+            if (oPaginacion == null)
+                oPaginacion = new Paginacion();
+
+            ICriteria criteria = _session.CreateCriteria<Vicampana>();
+            criteria.Add(Restrictions.IsNotNull("MRCampanaId"));
+
+            if(oFiltro != null)
+            {
+                if (!string.IsNullOrEmpty(oFiltro.Texto))
+                {
+                    criteria.Add(Restrictions.Like("Nombre",oFiltro.Texto,MatchMode.Anywhere));                    
+                }
+            }
+
+            criteria.SetProjection(Projections.RowCount());
+            int _Count = (int)criteria.UniqueResult();
+            oPaginacion.TotalRegistros = _Count;
+
+            lsCampana = _session.CreateCriteria<Vicampana>().List<Vicampana>().Skip(oPaginacion.Pagina * oPaginacion.Cantidad).Take(oPaginacion.Cantidad).ToList();
+
+            this._exito = true;
+
+            return lsCampana;
+        }
+
+
         public override bool Update(Campana modificado)
         {
             throw new NotImplementedException();

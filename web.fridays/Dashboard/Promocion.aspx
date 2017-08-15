@@ -6,10 +6,8 @@
     <link href="<%= ResolveClientUrl("~/Content/css/Distribucion.css") %>" rel="stylesheet" />
     <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />--%>
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css" />
-<%--    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/ripples.min.css" />--%>
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css" />
+
 
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -22,6 +20,7 @@
             height: 80px;
             background-color: #69c0af;
             color: #FFF;
+            margin-bottom: 40px;
         }
 
 
@@ -446,6 +445,11 @@
         .color-picker:hover {
             cursor: pointer;
         }
+        
+        .add-option{
+            margin:0 0 10px 0;
+        }
+
     </style>
     <asp:UpdatePanel runat="server" ID="upPromocion" UpdateMode="Conditional">
         <ContentTemplate>
@@ -548,7 +552,11 @@
                                         <%--<asp:Button runat="server" ID="btnResultado" CssClass="add-option semi_bold" OnClick="btnResultado_Click" Text="Probar" UseSubmitBehavior="false" Style="margin-right: 10px;" />--%>
                                     </div>
                                     <hr />
-                                    <asp:GridView runat="server" ID="grvDetalle" GridLines="None" ShowHeader="true" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false"
+                                    <asp:GridView runat="server" 
+                                        ID="grvDetalle" 
+                                        GridLines="None" 
+                                        ShowHeaderWhenEmpty="true" 
+                                        AutoGenerateColumns="false"
                                         CssClass="table"
                                         OnRowDataBound="grvDetalle_RowDataBound"
                                         OnRowCancelingEdit="grvDetalle_RowCancelingEdit"
@@ -556,19 +564,7 @@
                                         OnRowDeleting="grvDetalle_RowDeleting"
                                         OnRowUpdating="grvDetalle_RowUpdating">
                                         <Columns>
-                                            <%--<asp:TemplateField HeaderText="Tipo" HeaderStyle-CssClass="checkbox" ItemStyle-CssClass="checkbox">
-                                                <ItemTemplate>
-                                                    <%# Eval("Condicion") %>
-                                                </ItemTemplate>
-                                                <EditItemTemplate>
-                                                    <asp:DropDownList runat="server" ID="cbxUnion" CssClass="tipopromo">
-                                                        <asp:ListItem Value=""></asp:ListItem>
-                                                        <asp:ListItem Value="VISITA">VISITA</asp:ListItem>
-                                                        <asp:ListItem Value="EVENTO">EVENTO</asp:ListItem>
-                                                        <asp:ListItem Value="IMPORTE">IMPORTE</asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </EditItemTemplate>
-                                            </asp:TemplateField>--%>
+
                                             <asp:TemplateField HeaderText="Valor 1" HeaderStyle-CssClass="checkbox" ItemStyle-CssClass="checkbox">
                                                 <ItemTemplate>
                                                     <%# Eval("Valor1") %>

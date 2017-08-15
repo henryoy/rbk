@@ -62,6 +62,10 @@ C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.ca
 C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Iesi.Collections.xml
 C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\Newtonsoft.Json.xml
 C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\NHibernate.xml
-C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache
 C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.dll
 C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.pdb
+C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\obj\Debug\cm.mx.catalogo.csprojResolveAssemblyReference.cache
+C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\rbk.mailrelay.pdb
+C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\RestSharp.xml
+C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\rbk.mailrelay.dll
+C:\Users\DESARROLLO1\Documents\GitHub\rbk\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\bin\Debug\RestSharp.dll

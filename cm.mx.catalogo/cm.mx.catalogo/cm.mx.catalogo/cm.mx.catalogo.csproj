@@ -55,7 +55,14 @@
     <Reference Include="PushSharp.Google">
       <HintPath>..\..\..\..\..\Assemblies\PushSharp.Google.dll</HintPath>
     </Reference>
+    <Reference Include="rbk.mailrelay">
+      <HintPath>..\..\..\..\rbk-mailrelay\bin\Debug\rbk.mailrelay.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\..\..\rbk-mailrelay\bin\Debug\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -108,8 +115,11 @@
     <Compile Include="Model\Map\TipomembresiaMap.cs" />
     <Compile Include="Model\Map\UsuarioDipositivoMap.cs" />
     <Compile Include="Model\Map\UsuarioMap.cs" />
+    <Compile Include="Model\Map\VicampanaMap.cs" />
     <Compile Include="Model\NivelUsuario.cs" />
     <Compile Include="Model\Notificacion.cs" />
+    <Compile Include="Model\ObjectVM\CharData.cs" />
+    <Compile Include="Model\ObjectVM\Filtro.cs" />
     <Compile Include="Model\ObjectVM\NotificacionSucursalVM.cs" />
     <Compile Include="Model\ObjectVM\PromocionDetalleVM.cs" />
     <Compile Include="Model\ObjectVM\PromocionVM.cs" />
@@ -160,6 +170,7 @@
     <Compile Include="Model\Tipomembresia.cs" />
     <Compile Include="Model\Usuario.cs" />
     <Compile Include="Model\UsuarioDispositivo.cs" />
+    <Compile Include="Model\Vicampana.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Funciones.cs" />
   </ItemGroup>
