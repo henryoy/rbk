@@ -1,4 +1,5 @@
 ﻿using cm.mx.dbCore.Clases;
+using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,26 @@ namespace cm.mx.catalogo.Model
         public override bool Update(Activacion modificado)
         {
             throw new NotImplementedException();
+        }
+
+        public int GetUsuarioIDByLlaveActivacion(string key)
+        {
+            int iUsuario = 0;
+
+            Activacion oAct = _session.Query<Activacion>().Where(x => x.Llave == key).FirstOrDefault();
+
+            if (oAct != null)
+                iUsuario = oAct.UsuarioId;
+
+            return iUsuario;
+        }
+
+        public Activacion GetKeyByLlave(string key)
+        {
+
+            Activacion oAct = _session.Query<Activacion>().Where(x => x.Llave == key).FirstOrDefault();
+            _session.Clear();
+            return oAct;
         }
     }
 }

@@ -173,7 +173,7 @@
             </div>
             <asp:UpdatePanel runat="server" ID="upMpdal">
                 <ContentTemplate>
-                    <div style="overflow: auto !important; height: 300px;">
+                    <div id="overgrid" style="overflow: auto !important; height: 300px;">
                         <asp:GridView runat="server" ID="grvResultado" GridLines="None" ShowHeader="true" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false" CssClass="table tb-result">
                             <Columns>
                             </Columns>
@@ -201,6 +201,10 @@
     <script type="text/javascript">
         Sys.Application.add_load(function () {
             $(document).ready(function (e) {
+
+                $("#popup").css("height", $(window).height() - 200);
+                $("#overgrid").css("height", $(window).height() - 200);
+
                 $(document).on('click', '.back_btn', function () {
                     $(location).attr('href', '../Dashboard/Distribuciones');
                 });
