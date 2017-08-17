@@ -150,6 +150,7 @@ public partial class Dashboard_Template_index : System.Web.UI.Page
 
             }
         }
+        else Response.Redirect("~/Dashboard/index");
     }
 
     [WebMethod]
@@ -197,10 +198,36 @@ public partial class Dashboard_Template_index : System.Web.UI.Page
         cCatalogo = new CatalogoController();
 
         Mailrelaylog Mail = cCatalogo.GuardarMailLog(oMailrelaylog);
+        string msj = string.Empty;
+
+        if (!cCatalogo.Exito)
+        {
+            msj = "Ocurrio un problema al guardar el log de la campaña, por lo cual el proceso se truncara";
+            ScriptManager.RegisterStartupScript(
+                this,
+                this.GetType(),
+                "StartupScript",
+                "notification('" + msj + "','error');",
+                true);
+            return;
+        }
+
+
 
         if (string.IsNullOrEmpty(codeApiRelay))
         {
             codeApiRelay = rbk.mailrelay.RbkMail.Codigo;
+        }
+
+        if (string.IsNullOrEmpty(codeApiRelay))
+        {
+            msj = "No se asigno la key para la api, el proceso se truncará, intente de nuevo mas tarde";
+            ScriptManager.RegisterStartupScript(
+            this,
+            this.GetType(),
+            "StartupScript",
+            "notification('" + msj + "','error');",
+            true);
         }
 
         rbk.mailrelay.RbkMail oRbkMail = new rbk.mailrelay.RbkMail();
@@ -235,7 +262,28 @@ public partial class Dashboard_Template_index : System.Web.UI.Page
         {
             oMailrelaylog.MRCampanaId = oRbkCampana.id;
             Mailrelaylog _Mail = cCatalogo.GuardarMailLog(oMailrelaylog);
-            
+            if (cCatalogo.Exito)
+            {
+                msj = "Se genero de manera correcta la campaña en mailrelay";
+                ScriptManager.RegisterStartupScript(
+                this,
+                this.GetType(),
+                "StartupScript",
+                "notification('" + msj + "','exito');",
+                true);
+            }
+
+        }
+        else
+        {
+            msj = "No se pudo generar la campaña, ocurrio un error";
+            ScriptManager.RegisterStartupScript(
+                this,
+                this.GetType(),
+                "StartupScript",
+                "notification('" + msj + "','error');",
+                true);
+            return;
         }
     }
 }
