@@ -130,10 +130,18 @@ public partial class Dashboard_Promociones : System.Web.UI.Page
     protected void lnkVer_Click(object sender, EventArgs e)
     {
         LinkButton btn = (LinkButton)(sender);
-        string PromocionId = btn.CommandArgument;
+        string PromocionId = btn.CommandArgument;                
         if (!string.IsNullOrEmpty(PromocionId))
         {
-            Response.Redirect("~/Dashboard/Promocion?id=" + PromocionId);
+            cCatalogo = new CatalogoController();
+            Promocion oPromocion = cCatalogo.GetPromocion(Convert.ToInt32(PromocionId));
+            if(oPromocion != null)
+            {
+                if(oPromocion.PromociondetalleTetris != null && oPromocion.PromociondetalleTetris.Count > 0)
+                    Response.Redirect("~/Dashboard/Promociontetris?id=" + PromocionId);
+                else Response.Redirect("~/Dashboard/Promocion?id=" + PromocionId);
+            }
+            
         }
     }
 }

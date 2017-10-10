@@ -15,5 +15,6 @@ namespace cm.mx.catalogo.Model
         public string Condicion { get; set; }
         public bool Todos { get; set; }
         public string Cambio { get; set; }
+        public string Imagen { get; set; }
     }
 }

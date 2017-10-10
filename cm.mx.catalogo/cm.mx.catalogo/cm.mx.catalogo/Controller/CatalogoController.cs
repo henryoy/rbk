@@ -79,7 +79,8 @@ namespace cm.mx.catalogo.Controller
         private UsuarioDispositivoRepository rUsuarioDispositivo;
         private ConfiguracionRepository rConfiguracion;
         private PlantillaRepository rPlantilla;
-        private MailrelaylogRepository rMailLog; 
+        private MailrelaylogRepository rMailLog;
+        private ImagenTetrisRepository rImagenTetris;
 
         private int UsuarioId
         {
@@ -3695,6 +3696,111 @@ namespace cm.mx.catalogo.Controller
             }
 
             return count;
+        }
+        public Imagentetri GetImagenTetris(object id)
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            Imagentetri oImagen = new Imagentetri();
+            rImagenTetris = new ImagenTetrisRepository();
+            try
+            {
+                oImagen = rImagenTetris.GetById(id);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rImagenTetris._session.Transaction.IsActive)
+                    rImagenTetris._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return oImagen;
+        }
+        public Imagentetri GetImagenTetrisNombre(string Nombre)
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            Imagentetri oImagen = new Imagentetri();
+            rImagenTetris = new ImagenTetrisRepository();
+            try
+            {
+                oImagen = rImagenTetris.GetByName(Nombre);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rImagenTetris._session.Transaction.IsActive)
+                    rImagenTetris._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return oImagen;
+        }
+
+        public List<Imagentetri> GetAllImagenTetris()
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            List<Imagentetri> lsImagen = new List<Imagentetri>();
+            rImagenTetris = new ImagenTetrisRepository();
+            try
+            {
+                lsImagen = rImagenTetris.GetAllImagen();
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rImagenTetris._session.Transaction.IsActive)
+                    rImagenTetris._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return lsImagen;
+        }
+        public Imagentetri GuardarImagenTetris(Imagentetri objeto)
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            
+            rImagenTetris = new ImagenTetrisRepository();
+            try
+            {
+                objeto = rImagenTetris.GuardarImagen(objeto);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rImagenTetris._session.Transaction.IsActive)
+                    rImagenTetris._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return objeto;
         }
     }
 }
