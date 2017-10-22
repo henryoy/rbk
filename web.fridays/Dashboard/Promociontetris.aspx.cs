@@ -558,16 +558,6 @@ public partial class Dashboard_Promociontetris : System.Web.UI.Page
                 {
                     e.Row.Attributes["ondblclick"] = Page.ClientScript.GetPostBackClientHyperlink(grvDetalle, "Edit$" + e.Row.RowIndex);
                 }
-
-                //var camp = lsDetalle.FirstOrDefault(a => a.Promociondetalleid == obj.Promociondetalleid);
-                //if (camp == null) 
-                //    camp = new PromocionDetalleVM();
-
-
-                //e.Row.Cells[0].Text = camp.Condicion;
-                //e.Row.Cells[1].Text = camp.Valor1;
-                //e.Row.Cells[2].Text = camp.Valor2;
-                //e.Row.Cells[3].Text = camp.Cambio;
             }
             else
             {
