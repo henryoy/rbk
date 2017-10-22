@@ -3,6 +3,10 @@
 <asp:Content runat="server" ID="Css" ContentPlaceHolderID="HeadContent">
     <link rel="stylesheet" type="text/css" href="<%= ResolveClientUrl("/Content/css/jquery-ui.css")%>" />
     <link rel="stylesheet" type="text/css" href="<%= ResolveClientUrl("~/Content/classicTheme/style.css") %>" media="screen">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css" />
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="<%= ResolveClientUrl("~/Content/plugin/css/bootstrap-material-datetimepicker.css") %>" rel="stylesheet" />
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <style>
@@ -435,12 +439,12 @@
                                 <asp:TextBox runat="server" ID="txtTitulo" placeholder="Título"></asp:TextBox>
                                 <!-- Sender Email Address -->
                                 <h4 class="semi_bold">Mensaje previo <span class="errorSenderEmailAddress"></span></h4>
-                                <asp:TextBox runat="server" ID="txtMsjPrevio" placeholder="Título"></asp:TextBox>                                
+                                <asp:TextBox runat="server" ID="txtMsjPrevio" placeholder="Título"></asp:TextBox>
                                 <!-- List -->
                                 <h4 class="semi_bold">Tipo campaña<span class="errorSenderSubscriberList"></span></h4>
                                 <label id="subscriber_lists_ul">
                                     <asp:DropDownList runat="server" ID="dpTipoCampana" CssClass="subscriber_lists">
-                                        <asp:ListItem Value="0">Seleccione Tipo</asp:ListItem> 
+                                        <asp:ListItem Value="0">Seleccione Tipo</asp:ListItem>
                                         <asp:ListItem Value="PROMOCION">Promoción</asp:ListItem>
                                         <asp:ListItem Value="INFORMATIVO">Informativa</asp:ListItem>
                                     </asp:DropDownList>
@@ -455,11 +459,8 @@
                                 </h4>
                                 <!-- Schedule campaign -->
                                 <div class="scheduleCampaignWrapper clear-fix">
-                                    <div class="scheduleCampaignWrapperLeft">                                        
-                                        <input type="text" runat="server" enableviewstate="true" placeholder="" name="send_schedule_campaign_day" id="send_schedule_campaign_day" value="" readonly="">
-                                    </div>
-                                    <div class="scheduleCampaignWrapperRight">
-                                        <input runat="server" enableviewstate="true" type="text" placeholder="" name="send_schedule_campaign_day" id="send_schedule_campaign_time">
+                                    <div class="scheduleCampaignWrapperLeft">
+                                        <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="floating-label" placeholder="Fecha Inicio" ViewStateMode="Enabled"></asp:TextBox>                                        
                                     </div>
                                 </div>
                                 <!-- Datepicker calendar -->
@@ -499,20 +500,20 @@
                             <h4 class="semi_bold">Tipo distribucion <span class="errorSenderSubscriberList"></span></h4>
                             <label id="tipoDistribucion">
                                 <asp:DropDownList runat="server" ID="dpDistribucion">
-                                    <asp:ListItem Value ="1">Distribucion 1</asp:ListItem>
-                                    <asp:ListItem Value ="2">Distribucion 2</asp:ListItem>
-                                    <asp:ListItem Value ="3">Distribucion 3</asp:ListItem>
-                                    <asp:ListItem Value ="4">Distribucion 4</asp:ListItem>
+                                    <asp:ListItem Value="1">Distribucion 1</asp:ListItem>
+                                    <asp:ListItem Value="2">Distribucion 2</asp:ListItem>
+                                    <asp:ListItem Value="3">Distribucion 3</asp:ListItem>
+                                    <asp:ListItem Value="4">Distribucion 4</asp:ListItem>
                                 </asp:DropDownList>
                             </label>
                             <!--- plantilla -->
                             <h4 class="semi_bold">Plantilla <span class="errorSenderSubscriberList"></span></h4>
                             <label id="tipoPlantilla">
                                 <asp:DropDownList runat="server" ID="dpPlantilla">
-                                    <asp:ListItem Value ="1">Defecto</asp:ListItem>
-                                    <asp:ListItem Value ="2">Plantilla 2</asp:ListItem>
-                                    <asp:ListItem Value ="3">Plantilla 3</asp:ListItem>
-                                    <asp:ListItem Value ="4">Plantilla 4</asp:ListItem>
+                                    <asp:ListItem Value="1">Defecto</asp:ListItem>
+                                    <asp:ListItem Value="2">Plantilla 2</asp:ListItem>
+                                    <asp:ListItem Value="3">Plantilla 3</asp:ListItem>
+                                    <asp:ListItem Value="4">Plantilla 4</asp:ListItem>
                                 </asp:DropDownList>
                             </label>
                         </div>
@@ -537,8 +538,33 @@
     <script src="<%= ResolveClientUrl("~/Scripts/js/custom.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/js/chartjs/waypoints.min.js") %>" type="text/javascript"></script>
     <script src="<%= ResolveUrl("~/Scripts/js/autoNumeric-min.js") %>" type="text/javascript"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/ripples.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/js/material.min.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/FezVrasta/bootstrap-material-design/master/dist/js/material.min.js"></script>
+    <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <script src="<%= ResolveUrl("~/Content/plugin/js/bootstrap-material-datetimepicker.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
-        function pageLoad(sender, args) {            
+
+        $(document).ready(function () {
+            
+            $('#<%=txtFechaInicio.ClientID%>').bootstrapMaterialDatePicker({ format: 'DD/MM/YYYY HH:mm' });
+            <%--$('#<%=txtFechaFinal.ClientID%>').bootstrapMaterialDatePicker
+                ({
+                    weekStart: 0, format: 'DD/MM/YYYY HH:mm'
+                });
+            $('#<%=txtFechaInicio.ClientID%>').bootstrapMaterialDatePicker
+                ({
+                    weekStart: 0, format: 'DD/MM/YYYY HH:mm', shortTime: true
+                }).on('change', function (e, date) {
+                    $('#<%=txtFechaFinal.ClientID%>').bootstrapMaterialDatePicker('setMinDate', date);
+                });--%>
+
+            
+
+            $.material.init()
+        });
+        function pageLoad(sender, args) {
 
             $(document).ready(function () {
 
@@ -595,13 +621,13 @@
 
         function ActiveCalendar() {
 
-            the_switch = $('[name="schedule_switch"]');            
+            the_switch = $('[name="schedule_switch"]');
             switch_thumb = $('[name="schedule_switch"]').find('.switch_thumb');
 
             $(the_switch).removeClass('disabled');
             $(switch_thumb).removeClass('active');
             $(switch_thumb).addClass('disabled');
-            $(switch_thumb).css('right','2px;')
+            $(switch_thumb).css('right', '2px;')
             $(the_switch).addClass('active');
             console.log(the_switch);
             console.log(switch_thumb);
@@ -648,7 +674,7 @@
 
 
             $('#filter_sidebar').addClass('expanded');
-                        
+
 
             $('#filter_sidebar').animate({
 
@@ -672,7 +698,7 @@
             user_email = 'hency.oy@gmail.com';
             testFlag = false;
 
-                      
+
             isMouseDown = false;
 
             showTime();
@@ -690,8 +716,7 @@
 
             clientDate = dt.getFullYear() + "-" + (dateMonth) + "-" + dt.getDate();
 
-            $('#<%=send_schedule_campaign_day.ClientID%>').val(clientDate)
-
+     
             //auto focus name
             $('#send_from_name').focus();
 
@@ -790,12 +815,6 @@
 
             });
 
-            $(document).on('click', '#<%=send_schedule_campaign_day.ClientID%>', function (e) {
-
-                e.stopPropagation();
-                $('#datepicker').show();
-
-            });
 
             $(document).on('click', 'body', function () {
 
@@ -885,7 +904,7 @@
 
                 }
 
-            });         
+            });
 
         });
 
@@ -1429,8 +1448,6 @@
 
             _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM');
 
-            $('#<%=send_schedule_campaign_time.ClientID%>').attr('placeholder', _time);
-
         }
 
         function getResultFilter(array) {
@@ -1457,10 +1474,7 @@
         $(function () {
             $('#datepicker').datepicker({
                 onSelect: function (date) {
-
-                    $('#<%=send_schedule_campaign_day.ClientID%>').val(date);
                     $('#datepicker').hide();
-
                 },
                 minDate: clientDate,
                 selectWeek: true,

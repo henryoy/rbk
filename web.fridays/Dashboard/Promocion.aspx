@@ -6,10 +6,7 @@
     <link href="<%= ResolveClientUrl("~/Content/css/Distribucion.css") %>" rel="stylesheet" />
     <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />--%>
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css" />
-<%--    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/ripples.min.css" />--%>
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css" />
 
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -22,6 +19,7 @@
             height: 80px;
             background-color: #69c0af;
             color: #FFF;
+            margin-bottom: 40px;
         }
 
 
@@ -449,6 +447,11 @@
         .color-picker:hover {
             cursor: pointer;
         }
+        
+        .add-option{
+            margin:0 0 10px 0;
+        }
+
     </style>
     <asp:UpdatePanel runat="server" ID="upPromocion" UpdateMode="Conditional">
         <ContentTemplate>
@@ -555,7 +558,11 @@
                                         <%--<asp:Button runat="server" ID="btnResultado" CssClass="add-option semi_bold" OnClick="btnResultado_Click" Text="Probar" UseSubmitBehavior="false" Style="margin-right: 10px;" />--%>
                                     </div>
                                     <hr />
-                                    <asp:GridView runat="server" ID="grvDetalle" GridLines="None" ShowHeader="true" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false"
+                                    <asp:GridView runat="server" 
+                                    ID="grvDetalle" 
+                                        GridLines="None" 
+                                        ShowHeaderWhenEmpty="true" 
+                                        AutoGenerateColumns="false"
                                         CssClass="table"
                                         OnRowDataBound="grvDetalle_RowDataBound"
                                         OnRowCancelingEdit="grvDetalle_RowCancelingEdit"
@@ -630,9 +637,29 @@
     <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
     <script src="<%= ResolveUrl("~/Content/plugin/js/bootstrap-material-datetimepicker.js") %>" type="text/javascript"></script>
     <script type="text/javascript">
+        $(document).ready(function () {
 
+
+            $('#<%=txtFechaFinal.ClientID%>').bootstrapMaterialDatePicker
+                ({
+                    weekStart: 0, format: 'DD/MM/YYYY HH:mm'
+                });
+            $('#<%=txtFechaInicio.ClientID%>').bootstrapMaterialDatePicker
+                ({
+                    weekStart: 0, format: 'DD/MM/YYYY HH:mm', shortTime: true
+                }).on('change', function (e, date) {
+                    $('#<%=txtFechaFinal.ClientID%>').bootstrapMaterialDatePicker('setMinDate', date);
+                });
+
+            $('#min-date').bootstrapMaterialDatePicker({ format: 'DD/MM/YYYY HH:mm', minDate: new Date() });
+
+            $.material.init()
+        });
 
         function pageLoad(sender, args) {
+
+
+
             $(document).ready(function () {
                 var filePath = '<%= ConfigurationManager.AppSettings["RutaImagenes"]%>';
                 //var picker = new CP(document.querySelector('.color-picker'));
@@ -668,6 +695,11 @@
                     vMin: '0',
                     vMax: '999999999'
                 });
+
+                var filePath = '<%= Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "" + ConfigurationManager.AppSettings["RutaImagenes"]%>';
+
+
+                console.log(filePath);
 
                 $('#uploader_div').ajaxupload({
                     url: '../upload.aspx',
@@ -731,6 +763,8 @@
                 });
 
                 window.GudarDatos = function () {
+                    console.log("test");
+                    //document.getElementById("<%= lnkGuardarPromocion.ClientID %>").click();
 
                     console.log("GUARDAR");
                     document.getElementById("<%= btnSave.ClientID %>").click();
@@ -816,6 +850,10 @@
                 dt = new Date();
                 h = dt.getHours(),
                     m = dt.getMinutes();
+
+                console.log(dt);
+                console.log(h);
+                console.log(m);
 
                 if (m < 10) { m = '0' + m; }
 

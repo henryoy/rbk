@@ -61,5 +61,21 @@ namespace cm.mx.catalogo.Model
             _exito = true;
             return ls;
         }
+
+        public bool UpdateGroupId(int DistribucionID, int MRGroupId)
+        {
+            _exito = false;
+
+            String hqlUpdate = "update Distribucion c set c.MRGroupId =:MRGroupId where c.DistribucionID=:DistribucionID";
+            _session.Clear();
+            _session.Transaction.Begin();
+            int updatedEntities = _session.CreateQuery(hqlUpdate)
+                    .SetInt32("DistribucionID", DistribucionID)
+                    .SetInt32("MRGroupId", MRGroupId)
+                    .ExecuteUpdate();
+            _session.Transaction.Commit();
+            _exito = true;
+            return _exito;
+        }
     }
 }

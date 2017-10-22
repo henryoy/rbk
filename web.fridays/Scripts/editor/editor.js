@@ -260,7 +260,8 @@ $(document).ready(function() {
 		$('#save, #export').removeAttr('id');
 		$('#send').removeAttr('onclick');
 
-		$('#options_link li, #send_link li:not(#send_test_email), #mirror_mobile').each(function(){
+        $('#options_link li, #send_link li:not(#send_test_email), #mirror_mobile').each(function () {
+            console.log("test ->");
 
 			$(this).append('<div class="lock"></div>');
 
@@ -493,10 +494,10 @@ $(document).ready(function() {
 	//on change_image_link click
 	$('#frame').on('click', '#change_image_link', function(){
 
-
+        console.log("Cambiar imagen");
 		//if image parent contains a link
 		if ($('.image_target').parents('a').length) {
-
+            console.log("Cambiar imagen");
 			//give a flag
 			$('.image_target').parent('a').addClass('change_link');
 
@@ -516,7 +517,7 @@ $(document).ready(function() {
 
 		//else, add a link
 		else {
-
+            console.log("Cambiar imagen");
 			//wrap a link tag to the desired image
 			$('.image_target').wrap('<a href="" class="change_link"></a>');
 
@@ -708,7 +709,7 @@ $(document).ready(function() {
 	});
 
 	$(document).on('change', '#user-uploaded-file', function(event){
-
+        console.log("comprueba si puede subir imagen el usuario");
 		event.preventDefault()
 		uploadFile();
 
@@ -1904,7 +1905,9 @@ $(document).ready(function() {
 
 
 	//send test email and sign up
-	$(document).on('click', '#sign_up', function(){
+    $(document).on('click', '#sign_up', function () {
+
+        alert("tests--->");
 
 		if(busyFlag){
 
@@ -2014,10 +2017,12 @@ $(document).ready(function() {
 
 	})
 
-	$(document).on('click', '#send_test_email', function(){
+    $(document).on('click', '#send_test_email', function () {
+
+       
 
 		if($(this).hasClass('demo-only')){
-
+            alert("otro test 1");
 			icon = 'popup_send.png';
 
 			headline = 'Send test email and sign up'; // <span class="semi_bold">'+campaign_name+'</span>
@@ -2042,11 +2047,12 @@ $(document).ready(function() {
 		}
 
 		else {
-
+           
 			campaign_name = $('.send_campaign_name').text();
 
 			headline = 'Send an email for test purposes';
-			paragraph = 'Enter the email address of the recipient that should receive this newsletter. We send from <span>noreply@stampready.net</span>. Please, check your junk folder.';
+            paragraph = 'Enter the email address of the recipient that should receive this newsletter. ' +
+                'We send from <span>noreply@stampready.net</span>. Please, check your junk folder.';
 
 			btnTrue = 'Send Test Email';
 			btnTrueId = 'send_test_mail_send';
@@ -2054,7 +2060,9 @@ $(document).ready(function() {
 			btnFalse = 'Cancel';
 
 			inputField = 'john@do.com';
-			inputFieldId = 'send_test_mail_value';
+            inputFieldId = 'send_test_mail_value';
+
+            alert(inputFieldId);
 
 			openPopup();
 
@@ -2067,7 +2075,7 @@ $(document).ready(function() {
 
 	})
 
-
+    /*
 	$(document).on('click', '#send_test_mail_send[value="Send Test Email"]', function(){
 
 		content = $('#frame').html();
@@ -2144,7 +2152,7 @@ $(document).ready(function() {
 
 	});
 
-
+    */
 
 	//Change Background
 	$(document).on('click', '.change_background', function() {

@@ -7,9 +7,9 @@
     <div id="modules" style="margin-left: 0px; display: block;" class="hidden">
         <!-- Modules Widget -->
         <ul id="modules_widgets" style="width: 366px;">
-            <div data-id="intro" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
+            <!--<div data-id="intro" class="ui-draggable ui-draggable-handle" style="opacity: 1; display: block;">
                 <asp:Image runat="server" ImageUrl="~/Content/editor/img/intro.jpg" />
-            </div>
+            </div>-->
         </ul>
 
         <!-- Styling Options -->
@@ -65,6 +65,7 @@
 
             <!-- Editor Frame -->
             <div id="frame" class="ui-sortable empty" style="min-height: 250px;">
+                
                 <div id="edit_link" class="hidden" style="display: none;">
                     <div class="close_link"></div>
                     <input type="text" id="edit_link_value" class="createlink" placeholder="Su URL">
@@ -77,6 +78,9 @@
                     </div>
                     <div id="tip"></div>
                 </div>
+                <asp:Literal runat="server" ID="templateCode" >
+
+                </asp:Literal>
             </div>
 
 
@@ -589,18 +593,7 @@
 
             $('#logo').each(function () {
 
-                //vars
-                email = $(this).attr('data-avatar');
-
-                //find data and add gravatar
-                $(this).append($.gravatar(email));
-
-                //fetch img src
-                a = $(this).find('img').attr('src');
-
-                //add stampready default icon
-                $(this).find('img').attr('src', a + 'd=http%3A%2F%2Fwww.stampready.net%2Fdashboard%2Fimg%2Fframework%2Favatar_default_ready.png');
-
+              
             });
 
         });

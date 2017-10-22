@@ -624,7 +624,9 @@ function openPopup() {
 	else { $tmp.append(customHtml) }
 
 
-	content = $tmp.html();
+    content = $tmp.html();
+
+    //console.log('<div id="popupOverlay"><div id="popup">' + content + '<div class="closePopup"></div></div>');
 
 	$('body').prepend('<div id="popupOverlay"><div id="popup">'+content+'<div class="closePopup"></div></div>');
 
@@ -736,7 +738,7 @@ function closePopup() {
 function initialiseTemplate() {
 
 	//if it's a demo
-	if (demo.indexOf('demo') > -1) {
+	/*if (demo.indexOf('demo') > -1) {
 
 		//set target as the frame, as all the html is in there
 		target = $('#frame table[data-module]');
@@ -777,7 +779,7 @@ function initialiseTemplate() {
 
 	}
 
-	else {
+	else {*/
 
 		//set target as the modules holder, because the html is inside there
 		target = $('#modules_holder table[data-module]');
@@ -810,7 +812,7 @@ function initialiseTemplate() {
 
 		else { link_color = '#2b8df0'; }
 
-	}
+	/*}*/
 
 	//reset count to zero
 	count = 0;
@@ -2001,6 +2003,7 @@ function uploadFile(){
 	var formData = new FormData();
 	formData.append('user-uploaded-file', $('#user-uploaded-file')[0].files[0]);
 
+    console.log(demo_id);
 
 	//check if it's a demo or not
 	if(demo_id == ''){

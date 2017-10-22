@@ -557,5 +557,95 @@ namespace cm.mx.catalogo.Model
 
             return _exito;      
         }
+
+        public bool UpdateSuscriberId(int UsuarioId, int SuscriberId)
+        {
+            _exito = false;
+
+            String hqlUpdate = "update Usuario c set c.MRSuscriberId =:SuscriberId where c.Usuarioid=:Usuarioid";
+            _session.Clear();
+            _session.Transaction.Begin();
+            int updatedEntities = _session.CreateQuery(hqlUpdate)
+                    .SetInt32("Usuarioid", UsuarioId)
+                    .SetInt32("SuscriberId", SuscriberId)                    
+                    .ExecuteUpdate();
+            _session.Transaction.Commit();
+            _exito = true;
+            return _exito;
+        }
+
+
+        public int GetUserSuscriber(DateTime Inicio, DateTime Final)
+        {
+            int _Count = 0;
+
+            ICriteria criteria = _session.CreateCriteria<Usuario>();
+
+            criteria.Add(Restrictions.Ge("FechaAlta", Inicio))
+            .Add(Restrictions.Lt("FechaAlta", Final))
+            .Add(Restrictions.IsNotNull("MRSuscriberId"));
+            criteria.SetProjection(Projections.RowCount());
+
+            _Count = (int)criteria.UniqueResult();
+
+            return _Count;
+
+        }
+
+        public int GetUserSuscriber()
+        {
+            int _Count = 0;
+
+            ICriteria criteria = _session.CreateCriteria<Usuario>();
+
+            criteria
+            .Add(Restrictions.IsNotNull("MRSuscriberId"));
+            criteria.SetProjection(Projections.RowCount());
+
+            _Count = (int)criteria.UniqueResult();
+
+            return _Count;
+
+        }
+
+        public int GetUserSuscriberNow()
+        {
+            List<Usuario> lsUsuario = new List<Usuario>();
+            ICriteria criteria = _session.CreateCriteria<Usuario>();
+            DateTime oInit = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+            DateTime oEnd = oInit.AddDays(1);
+            criteria.Add(Restrictions.Ge("FechaAlta", oInit))
+            .Add(Restrictions.Lt("FechaAlta", oEnd))
+            .Add(Restrictions.IsNotNull("MRSuscriberId"));
+            criteria.SetProjection(Projections.RowCount());
+
+            int _Count = (int)criteria.UniqueResult();
+
+            return _Count;
+
+        }
+
+        public int GetUserSuscriberMonthNow()
+        {
+            List<Usuario> lsUsuario = new List<Usuario>();
+            ICriteria criteria = _session.CreateCriteria<Usuario>();
+            DateTime oInit = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+           
+            /*
+              var dateFromMonthProj = Projections.SqlFunction("month", NHibernateUtil.Int32, Projections.Property("PurchaseDuration.DateFrom"));
+            var dateFromYearProj = Projections.SqlFunction("year", NHibernateUtil.Int32, Projections.Property("PurchaseDuration.DateFrom"));
+
+             */
+            criteria
+            .Add(Restrictions.Eq(Projections.SqlFunction("year", NHibernateUtil.Int32, Projections.Property("FechaAlta")), oInit.Year))
+            .Add(Restrictions.Eq(Projections.SqlFunction("month", NHibernateUtil.Int32, Projections.Property("FechaAlta")), oInit.Month))
+            .Add(Restrictions.IsNotNull("MRSuscriberId"));
+            criteria.SetProjection(Projections.RowCount());
+
+            int _Count = (int)criteria.UniqueResult();
+
+            return _Count;
+
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +9,132 @@ using System.Web.UI.WebControls;
 
 namespace cm.mx.catalogo.Helper
 {
+    public static class Extension
+    {
+        public static bool IsNumeric(this string s)
+        {
+            float output;
+            return float.TryParse(s, out output);
+        }
+    }
     public static class CatalogoHelper
     {
+
+        private static List<string> _errores = new List<string>();
+        private static List<string> _mensajes = new List<string>();
+        private static string _mensaje = string.Empty;
+        private static bool _exito = false;
+
+        public static List<string> Errores
+        {
+            get { return _errores; }
+        }
+        public static bool Exito
+        {
+            get
+            {
+                return _exito;
+            }
+            set
+            {
+                _exito = value;
+            }
+        }
+        public static string Mensaje
+        {
+            get
+            {
+                return _mensaje;
+            }
+            set
+            {
+                _mensaje = value;
+            }
+        }
+        public static List<string> Mensajes
+        {
+            get { return _mensajes; }
+        }
+        public static int GetNumPag()
+        {
+            string _reportePath = string.Empty;
+            int numPagina = 10;
+
+            try
+            {
+                _reportePath = ConfigurationManager.AppSettings["NumPag"];
+
+                if (string.IsNullOrEmpty(_reportePath))
+                {
+                    _exito = false;
+                }
+
+                bool isNumeric = Extension.IsNumeric(_reportePath);
+                if (isNumeric)
+                {
+                    int numPag = 0;
+                    numPag = Convert.ToInt32(_reportePath);
+                    if (numPag > 50)
+                    {
+                        numPagina = 50;
+                        _mensajes.Add("La paginación no puede exeder de 50 elementos.");
+                    }
+                    else numPagina = numPag;
+                }
+
+
+            }
+            catch (Exception innerException)
+            {
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                Errores.Add(innerException.Message + ". Metodo: " + innerException.TargetSite.Name);
+                _exito = false;
+            }
+            return numPagina;
+        }
+        public static int GetNumPagModal()
+        {
+            string _reportePath = string.Empty;
+            int numPagina = 10;
+
+            try
+            {
+                _reportePath = ConfigurationManager.AppSettings["NumPagModal"];
+
+                if (string.IsNullOrEmpty(_reportePath))
+                {
+                    _exito = false;
+                }
+
+                bool isNumeric = Extension.IsNumeric(_reportePath);
+                if (isNumeric)
+                {
+                    int numPag = 0;
+                    numPag = Convert.ToInt32(_reportePath);
+                    if (numPag > 15)
+                    {
+                        numPagina = 15;
+                        _mensajes.Add("La paginación no puede exeder de 50 elementos.");
+                    }
+                    else numPagina = numPag;
+                }
+
+
+            }
+            catch (Exception innerException)
+            {
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                Errores.Add(innerException.Message + ". Metodo: " + innerException.TargetSite.Name);
+                _exito = false;
+            }
+            return numPagina;
+        }
         public static Control FindControlRecursive(Control root, string id)
         {
             if (root.ID == id)

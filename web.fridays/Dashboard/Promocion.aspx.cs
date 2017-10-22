@@ -147,9 +147,9 @@ public partial class Dashboard_Promocion : System.Web.UI.Page
             }
             txtTitulo.Text = oPromocion.Titulo;
             txtDescripcion.Text = oPromocion.Descripcion;
-            if (oPromocion.Vigenciainicial.HasValue)
+            if (oPromocion.Vigenciainicial.HasValue && (String.Format("{0:yyyy-MM-dd}", oPromocion.Vigenciainicial) != "1900-01-01"))
                 txtFechaInicio.Text = String.Format("{0:yyyy-MM-dd}", oPromocion.Vigenciainicial);//oPromocion.Vigenciainicial.ToString("yyyy-MM-dd");
-            if (oPromocion.Vigenciafinal.HasValue)
+            if (oPromocion.Vigenciafinal.HasValue && (String.Format("{0:yyyy-MM-dd}", oPromocion.Vigenciafinal) != "1900-01-01"))
                 txtFechaFinal.Text = String.Format("{0:yyyy-MM-dd}", oPromocion.Vigenciafinal);//oPromocion.Vigenciafinal.ToString("yyyy-MM-dd"); ;
 
             if (!string.IsNullOrEmpty(oPromocion.ImagenUrl))

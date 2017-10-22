@@ -72,6 +72,11 @@
                             <ul class="hidden" style="display: none;">
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Promociones") %>"><font><font>Promoción</font></font></a></li>
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Promocion") %>"><font><font>Nueva Promocion</font></font></a></li>
+                            </ul>
+                        </li>
+                         <li id="redimir_link">
+                            <h2 class="semi_bold">Redimir</h2>
+                            <ul class="hidden" style="display: none;">
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/GenerarVisita") %>"><font><font>Redimir</font></font></a></li>
                                 <li><a href="<%= ResolveUrl("~/Dashboard/Notificacion/RedimirPromocion") %>"><font><font>Redimir Promoción</font></font></a></li>
                             </ul>

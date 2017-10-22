@@ -17,6 +17,8 @@ namespace cm.mx.catalogo.Model.Map {
 			Map(x => x.Html).CustomType("StringClob").CustomSqlType("nvarchar(max)").Column("Html").Not.Nullable();
 			Map(x => x.MRGrupoId).Column("MRGrupoId");
 			Map(x => x.MRCampanaId).Column("MRCampanaId");
+            Map(x => x.NombreCampana).Column("NombreCampana");
+            Map(x => x.MRSendCampana).Column("MRSendCampana");
         }
     }
 }

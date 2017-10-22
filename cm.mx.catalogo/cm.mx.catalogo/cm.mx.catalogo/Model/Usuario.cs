@@ -73,6 +73,8 @@ namespace cm.mx.catalogo.Model
         public virtual double ImporteTotal { get; set; }
         public virtual double ImporteActual { get; set; }
 
+        public virtual int? MRSuscriberId { get; set; }
+
         Tipomembresia mebresia = new Tipomembresia();
         public virtual Tipomembresia oTarjeta { get { return mebresia; } set { mebresia = value; TarjetaID = mebresia.Membresiaid; } }
 
