@@ -79,7 +79,8 @@ namespace cm.mx.catalogo.Controller
         private UsuarioDispositivoRepository rUsuarioDispositivo;
         private ConfiguracionRepository rConfiguracion;
         private PlantillaRepository rPlantilla;
-        private MailrelaylogRepository rMailLog; 
+        private MailrelaylogRepository rMailLog;
+        private ImagenTetrisRepository rImagenTetris;
 
         private int UsuarioId
         {
@@ -167,19 +168,19 @@ namespace cm.mx.catalogo.Controller
 
                         if (oUsuario.Origen == "MOBILE")
                         {
-                            ConfiguracionRepository rConfig = new ConfiguracionRepository();
-                            Configuracion oConfig = rConfig.GetByClave("URL_ACTIVACION");
+                        ConfiguracionRepository rConfig = new ConfiguracionRepository();
+                        Configuracion oConfig = rConfig.GetByClave("URL_ACTIVACION");
 
-                            if (oConfig != null)
+                        if (oConfig != null)
+                        {
+                            var baseUrl = oConfig.Valor;
+                            var link = baseUrl + "/Activar.aspx?val1=" + clave + "&val2=" + oUsuario.Usuarioid;
+
+                            if (!rUsuario.EnviarCorreo(new List<string> { oUsuario.Email }, "Activar Cuenta", link, true))
                             {
-                                var baseUrl = oConfig.Valor;
-                                var link = baseUrl + "/Activar.aspx?val1=" + clave + "&val2=" + oUsuario.Usuarioid;
-
-                                if (!rUsuario.EnviarCorreo(new List<string> { oUsuario.Email }, "Activar Cuenta", link, true))
-                                {
-                                    List<string> msjs = rUsuario.Mensajes;
-                                    Mensajes.AddRange(rUsuario.Errores);
-                                }
+                                List<string> msjs = rUsuario.Mensajes;
+                                Mensajes.AddRange(rUsuario.Errores);
+                            }
                             }
 
                             if (oUsuario.Usuarioid > 0)
@@ -277,7 +278,7 @@ namespace cm.mx.catalogo.Controller
             return Resultado;
         }
 
-        public Usuario LoginMovilAdmin(string usuario, string password)
+        public Usuario LoginMovil(string usuario, string password)
         {
             UsuarioRepository rUsuario = new UsuarioRepository();
             ActivacionRepository rAcrivacion = new ActivacionRepository();
@@ -1891,6 +1892,7 @@ namespace cm.mx.catalogo.Controller
                         throw new Exception("Ingrese un correo válido");
 
                     usuario = rUsuario.GetUsuarioID(usuario).ToString();
+                    //_errores.Add("Ingrese un correo válido");
                 }
 
                 oUsuario = rUsuario.LoginMovil(usuario, password, origen);
@@ -1898,37 +1900,6 @@ namespace cm.mx.catalogo.Controller
                 if (oUsuario == null)
                 {
                     Errores.AddRange(rUsuario.Errores);
-                }
-                else
-                {
-                    oUsuario.UltimoInicio = DateTime.Now;
-                    bool guardar = false;
-
-                    if (Login1)
-                    {
-                        oUsuario.UltimaSerie = serie;
-                        oUsuario.UltimaPlataforma = plataforma;
-                        guardar = true;
-                    }
-                    else
-                    {
-                        if (oUsuario.UltimaSerie != serie || oUsuario.UltimaPlataforma != plataforma)
-                        {
-                            oUsuario = null;
-                            Errores.Add("La sesión fue iniciada desde otro dispositivo. Favor de verificar. La sesión será cerrada en este dispositivo.");
-                            logout = true;
-                        }
-                        else
-                            guardar = true;
-
-                    }
-
-                    if (guardar)
-                        if (!rUsuario.Guardar(oUsuario))
-                        {
-                            Errores.AddRange(rUsuario.Errores);
-                            oUsuario = null;
-                        }
                 }
             }
             catch (Exception ex)
@@ -3296,59 +3267,59 @@ namespace cm.mx.catalogo.Controller
 
             try
             {
-                rUsuario = new UsuarioRepository();
-                int idUsuario = rUsuario.GetUsuarioID(usuario);
+            rUsuario = new UsuarioRepository();
+            int idUsuario = rUsuario.GetUsuarioID(usuario);
 
-                if (idUsuario == 0)
+            if(idUsuario == 0)
+            {
+                Errores.Add("No se encontró el usuario solicitado. Favor de verificarlo. Codigo 01X01");
+                return bResult;
+            }
+
+            Usuario oUsuario = rUsuario.GetById(idUsuario);
+
+            if(oUsuario != null)
+            {
+                if(oUsuario.Tipo == "MOBILE" && oUsuario.Origen == "MOBILE")
                 {
-                    Errores.Add("No se encontró el usuario solicitado. Favor de verificarlo. Codigo 01X01");
-                    return bResult;
-                }
+                    string key = UtileriaController.doKeyActivation(usuario, "KeyPartStatic");
+                    Activacion oActivacion = new Activacion();
+                    oActivacion.Activado = false;
+                    oActivacion.Email = oUsuario.Email;
+                    oActivacion.FechaAlta = DateTime.Now;
+                    oActivacion.FechaVencimiento = oActivacion.FechaAlta.AddDays(5);
+                    oActivacion.Llave = key;
+                    oActivacion.UsuarioId = oUsuario.Usuarioid;
+                    rUsuario._session.SaveOrUpdate(oActivacion);
 
-                Usuario oUsuario = rUsuario.GetById(idUsuario);
+                    List<string> para = new List<string>();
+                    para.Add(oUsuario.Email);
 
-                if (oUsuario != null)
-                {
-                    if (oUsuario.Tipo == "MOBILE" && oUsuario.Origen == "MOBILE")
-                    {
-                        string key = UtileriaController.doKeyActivation(usuario, "KeyPartStatic");
-                        Activacion oActivacion = new Activacion();
-                        oActivacion.Activado = false;
-                        oActivacion.Email = oUsuario.Email;
-                        oActivacion.FechaAlta = DateTime.Now;
-                        oActivacion.FechaVencimiento = oActivacion.FechaAlta.AddDays(5);
-                        oActivacion.Llave = key;
-                        oActivacion.UsuarioId = oUsuario.Usuarioid;
-                        rUsuario._session.SaveOrUpdate(oActivacion);
+                    rConfiguracion = new ConfiguracionRepository();
+                    Configuracion oConfig = rConfiguracion.GetByClave("RECUPERA_PLANTILLA");
+                    string mensaje = oConfig.Valor;
 
-                        List<string> para = new List<string>();
-                        para.Add(oUsuario.Email);
+                    oConfig = rConfiguracion.GetByClave("URL_RECUPERAR");
 
-                        rConfiguracion = new ConfiguracionRepository();
-                        Configuracion oConfig = rConfiguracion.GetByClave("RECUPERA_PLANTILLA");
-                        string mensaje = oConfig.Valor;
+                    mensaje = mensaje.Replace("[URL]", oConfig.Valor + key);
+                    mensaje = mensaje.Replace("[USUARIO]", oUsuario.Nombre + "(" + oUsuario.Email + ")");
 
-                        oConfig = rConfiguracion.GetByClave("URL_RECUPERAR");
-
-                        mensaje = mensaje.Replace("[URL]", oConfig.Valor + key);
-                        mensaje = mensaje.Replace("[USUARIO]", oUsuario.Nombre + "(" + oUsuario.Email + ")");
-
-                        if (rUsuario.EnviarCorreo(para, "Recuperación de Contraseña - Friday's App", mensaje, true))
+                    rUsuario.EnviarCorreo(para, "Recuperación de Contraseña - Friday's App", mensaje, true);
                             bResult = true;
                         else
                             Errores.AddRange(rUsuario.Errores);
-                    }
-                    else
-                    {
-                        Errores.Add("El proceso de recuperar contraseña no puede ser realizado para el usuario solicitado, ya que el tipo de acceso es por medio de " + oUsuario.Origen + ". Debe intentar acceder por el mismo medio. 01X02");
-                        return bResult;
-                    }
                 }
                 else
                 {
-                    Errores.Add("No se encontró el usuario solicitado. Favor de verificarlo. 01X03");
+                    Errores.Add("El proceso de recuperar contraseña no puede ser realizado para el usuario solicitado, ya que el tipo de acceso es por medio de " + oUsuario.Origen + ". Debe intentar acceder por el mismo medio. 01X02");
                     return bResult;
                 }
+            }
+            else
+            {
+                Errores.Add("No se encontró el usuario solicitado. Favor de verificarlo. 01X03");
+                return bResult;
+            }
             }
             catch (Exception ex)
             {
@@ -3533,6 +3504,7 @@ namespace cm.mx.catalogo.Controller
 
             return oMail;
         }
+
 
         public Usuario ValidaKeyRecuperarPassword(string key)
         {
@@ -3800,6 +3772,112 @@ namespace cm.mx.catalogo.Controller
             }
 
             return count;
+        }
+
+        public Imagentetri GetImagenTetris(object id)
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            Imagentetri oImagen = new Imagentetri();
+            rImagenTetris = new ImagenTetrisRepository();
+            try
+            {
+                oImagen = rImagenTetris.GetById(id);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rImagenTetris._session.Transaction.IsActive)
+                    rImagenTetris._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return oImagen;
+        }
+        public Imagentetri GetImagenTetrisNombre(string Nombre)
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            Imagentetri oImagen = new Imagentetri();
+            rImagenTetris = new ImagenTetrisRepository();
+            try
+            {
+                oImagen = rImagenTetris.GetByName(Nombre);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rImagenTetris._session.Transaction.IsActive)
+                    rImagenTetris._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return oImagen;
+        }
+
+        public List<Imagentetri> GetAllImagenTetris()
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            List<Imagentetri> lsImagen = new List<Imagentetri>();
+            rImagenTetris = new ImagenTetrisRepository();
+            try
+            {
+                lsImagen = rImagenTetris.GetAllImagen();
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rImagenTetris._session.Transaction.IsActive)
+                    rImagenTetris._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return lsImagen;
+        }
+        public Imagentetri GuardarImagenTetris(Imagentetri objeto)
+        {
+            _exito = false;
+            _mensajes.Clear();
+            _errores.Clear();
+            
+            rImagenTetris = new ImagenTetrisRepository();
+            try
+            {
+                objeto = rImagenTetris.GuardarImagen(objeto);
+                _exito = true;
+            }
+            catch (Exception ex)
+            {
+                if (rImagenTetris._session.Transaction.IsActive)
+                    rImagenTetris._session.Transaction.Rollback();
+                while (ex != null)
+                {
+                    _errores.Add(ex.Message);
+                    ex = ex.InnerException;
+                }
+                _exito = false;
+            }
+
+            return objeto;
         }
     }
 }

@@ -89,6 +89,7 @@
     <Compile Include="Model\Configuracion.cs" />
     <Compile Include="Model\Distribucion.cs" />
     <Compile Include="Model\Fechapublicacion.cs" />
+    <Compile Include="Model\Imagentetri.cs" />
     <Compile Include="Model\Mailrelaylog.cs" />
     <Compile Include="Model\Map\ActivacionMap.cs" />
     <Compile Include="Model\Map\CampanaMap.cs" />
@@ -97,11 +98,13 @@
     <Compile Include="Model\Map\ConfiguracionMap.cs" />
     <Compile Include="Model\Map\DistribucionMap.cs" />
     <Compile Include="Model\Map\FechapublicacionMap.cs" />
+    <Compile Include="Model\Map\ImagentetriMap.cs" />
     <Compile Include="Model\Map\MailrelaylogMap.cs" />
     <Compile Include="Model\Map\NivelUsuarioMap.cs" />
     <Compile Include="Model\Map\NotificacionMap.cs" />
     <Compile Include="Model\Map\PlantillaMap.cs" />
     <Compile Include="Model\Map\ProductoVentaMap.cs" />
+    <Compile Include="Model\Map\PromociondetalleTetrisMap.cs" />
     <Compile Include="Model\Map\PromociondetalleMap.cs" />
     <Compile Include="Model\Map\PromocionMap.cs" />
     <Compile Include="Model\Map\PromocionmembresiaMap.cs" />
@@ -129,6 +132,7 @@
     <Compile Include="Model\Plantilla.cs" />
     <Compile Include="Model\ProductoVenta.cs" />
     <Compile Include="Model\Promocion.cs" />
+    <Compile Include="Model\PromociondetalleTetris.cs" />
     <Compile Include="Model\Promociondetalle.cs" />
     <Compile Include="Model\Promocionmembresia.cs" />
     <Compile Include="Model\Promocionnotificacion.cs" />
@@ -141,6 +145,7 @@
     <Compile Include="Model\Repository\ConfiguracionRepository.cs" />
     <Compile Include="Model\Repository\DistribucionRepository.cs" />
     <Compile Include="Model\Repository\FechaPublicacionRepository.cs" />
+    <Compile Include="Model\Repository\ImagenTetrisRepository.cs" />
     <Compile Include="Model\Repository\MailrelaylogRepository.cs" />
     <Compile Include="Model\Repository\NivelUsuarioRepository.cs" />
     <Compile Include="Model\Repository\NotificacionRepository.cs" />

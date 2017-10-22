@@ -538,6 +538,9 @@
                             <h4 class="semi_bold" runat="server">Imagen</h4>
                             <asp:Image runat="server" ID="imgTarjeta" CssClass="imgTarjeta" ToolTip="Click para seleccionar imagen" Height="36" Width="62" ImageUrl="~/Images/icon-gallery.svg" />
                             <asp:HiddenField runat="server" ID="hfTajeta" ClientIDMode="Static" Value="" />
+                            <%--<asp:LinkButton runat="server" ID="btnSave" CssClass="btn-save" OnClick="lnkGuardarPromocion_Click" CausesValidation="true" ValidationGroup="guardar" UseSubmitBehavior="false" Style="display: none"></asp:LinkButton>--%>
+                            <div id="uploader_div">
+                            </div>
                             <asp:UpdatePanel runat="server" ID="upSucursal" UpdateMode="Conditional">
                                 <ContentTemplate>
 
@@ -656,32 +659,27 @@
             $.material.init()
         });
 
+            $('#<%=txtFechaFinal.ClientID%>').bootstrapMaterialDatePicker
+                ({
+                    weekStart: 0, format: 'DD/MM/YYYY HH:mm'
+                });
+            $('#<%=txtFechaInicio.ClientID%>').bootstrapMaterialDatePicker
+                ({
+                    weekStart: 0, format: 'DD/MM/YYYY HH:mm', shortTime: true
+                }).on('change', function (e, date) {
+                    $('#<%=txtFechaFinal.ClientID%>').bootstrapMaterialDatePicker('setMinDate', date);
+                });
+
+            $('#min-date').bootstrapMaterialDatePicker({ format: 'DD/MM/YYYY HH:mm', minDate: new Date() });
+
+            $.material.init()
+        });
+
         function pageLoad(sender, args) {
 
 
 
             $(document).ready(function () {
-                var filePath = '<%= ConfigurationManager.AppSettings["RutaImagenes"]%>';
-                //var picker = new CP(document.querySelector('.color-picker'));
-                //picker.on("change", function (color) {
-                //    this.target.value = '#' + color;
-                //    document.body.style.backgroundColor = '#' + color;
-                //}, 'main-change');
-
-                //var colors = ['012', '123', '234', '345', '456', '567', '678', '789', '89a', '9ab'], box;
-
-                //for (var i = 0, len = colors.length; i < len; ++i) {
-                //    box = document.createElement('span');
-                //    box.className = 'color-picker-box';
-                //    box.title = '#' + colors[i];
-                //    box.style.backgroundColor = '#' + colors[i];
-                //    box.addEventListener("click", function (e) {
-                //        picker.set(this.title);
-                //        picker.trigger("change", [this.title.slice(1)], 'main-change');
-                //        e.stopPropagation();
-                //    }, false);
-                //    picker.picker.firstChild.appendChild(box);
-                //}
 
                 $('.decimal').autoNumeric('init', {
                     aForm: false,
@@ -721,7 +719,7 @@
                     onSelect: function (files) {
                         var ruta = filePath.replace("~", "");
                         console.log(ruta);
-                        var name = ruta + files[0].name;
+                        var name = filePath + files[0].name;
                         $("#hfTajeta").val(name);
                     },
                     finish: function (file) {
@@ -740,53 +738,35 @@
                     e.stopImmediatePropagation();
                 });
 
-                $(document).on("click", ".btnTrue", function (e) {
-                    var Archivos = $('.ax-file-list li');
-                    var seleccionado = $("#hfTajeta").val();
-                    var procesado = $(".imgTarjeta").attr("src");
+                //$(document).on("click", ".btnTrue", function (e) {
+                //    var Archivos = $('.ax-file-list li');
+                //    var seleccionado = $("#hfTajeta").val();
+                //    var procesado = $(".imgTarjeta").attr("src");
 
-                    console.log(seleccionado);
-                    console.log(procesado);
+                //    console.log(seleccionado);
+                //    console.log(procesado);
 
-                    if (seleccionado == procesado) {
-                        GudarDatos();
-                    }
-                    else if (Archivos.length == 0) {
-                        notification('Seleccione una imagen', 'error');
-                    }
-                    else {
-                        $(".ax-upload").click();
-                    }
-                    e.preventDefault();
-                    e.stopPropagation();
-                    e.stopImmediatePropagation();
-                });
+                //    if (seleccionado == procesado) {
+                //        GudarDatos();
+                //    }
+                //    else if (Archivos.length == 0) {
+                //        notification('Seleccione una imagen', 'error');
+                //    }
+                //    else {
+                //        $(".ax-upload").click();
+                //    }
+                //    e.preventDefault();
+                //    e.stopPropagation();
+                //    e.stopImmediatePropagation();
+                //});
 
                 window.GudarDatos = function () {
                     console.log("test");
                     //document.getElementById("<%= lnkGuardarPromocion.ClientID %>").click();
 
-                    console.log("GUARDAR");
-                    document.getElementById("<%= btnSave.ClientID %>").click();
                 }
             });
         }
-
-
-        $(document).ready(function () {
-            $('#<%=txtFechaFinal.ClientID%>').bootstrapMaterialDatePicker
-                ({
-                    weekStart: 0, format: 'DD/MM/YYYY HH:mm'
-                });
-            $('#<%=txtFechaInicio.ClientID%>').bootstrapMaterialDatePicker
-                ({
-                    weekStart: 0, format: 'DD/MM/YYYY HH:mm', shortTime: true
-                }).on('change', function (e, date) {
-                    $('#<%=txtFechaFinal.ClientID%>').bootstrapMaterialDatePicker('setMinDate', date);
-                });
-            $('#min-date').bootstrapMaterialDatePicker({ format: 'DD/MM/YYYY HH:mm', minDate: new Date() });
-            $.material.init()
-        });
     </script>
     <script type="text/javascript">
         function ActiveCalendar() {
@@ -1022,7 +1002,7 @@
         }
 
 
-        
+
     </script>
 </asp:Content>
 

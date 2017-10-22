@@ -6,7 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web.fridays", "web.fridays\", "{9F7DE2C7-7C01-457E-B99E-F8645AFC8706}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6"
-		ProjectReferences = "{1072c61b-a642-439f-877d-cd7b47330803}|cm.mx.catalogo.dll;{233da306-d4f2-4a8b-99b4-6a2a41d40b4c}|rbk.mailrelay.dll;"
+		ProjectReferences = "{1072c61b-a642-439f-877d-cd7b47330803}|cm.mx.catalogo.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_53496"
 		Debug.AspNetCompiler.PhysicalPath = "web.fridays\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53496\"
@@ -28,8 +28,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web.fridays", "web.fridays\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cm.mx.catalogo", "cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo\cm.mx.catalogo.csproj", "{1072C61B-A642-439F-877D-CD7B47330803}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rbk.mailrelay", "..\rbk-mailrelay\rbk.mailrelay.csproj", "{233DA306-D4F2-4A8B-99B4-6A2A41D40B4C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,10 +42,6 @@ Global
 		{1072C61B-A642-439F-877D-CD7B47330803}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1072C61B-A642-439F-877D-CD7B47330803}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1072C61B-A642-439F-877D-CD7B47330803}.Release|Any CPU.Build.0 = Release|Any CPU
-		{233DA306-D4F2-4A8B-99B4-6A2A41D40B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{233DA306-D4F2-4A8B-99B4-6A2A41D40B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{233DA306-D4F2-4A8B-99B4-6A2A41D40B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{233DA306-D4F2-4A8B-99B4-6A2A41D40B4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,6 +10,7 @@ namespace cm.mx.catalogo.Model
         {
             Fechapublicacion = new List<Fechapublicacion>();
             Promociondetalle = new List<Promociondetalle>();
+            PromociondetalleTetris = new List<PromociondetalleTetris>();
             Promocionmembresia = new List<Promocionmembresia>();
             Promocionusuario = new List<PromocionUsuario>();
             Promocionsucursal = new List<Promocionsucursal>();
@@ -20,6 +21,12 @@ namespace cm.mx.catalogo.Model
         public virtual void AddDetalle(Promociondetalle oDetalle)
         {
             Promociondetalle.Add(oDetalle);
+            oDetalle.Promocion = this;
+        }
+
+        public virtual void AddDetalleTetris(PromociondetalleTetris oDetalle)
+        {
+            PromociondetalleTetris.Add(oDetalle);
             oDetalle.Promocion = this;
         }
 
@@ -63,6 +70,7 @@ namespace cm.mx.catalogo.Model
         public virtual string TerminosCondiciones { get; set; }
         public virtual IList<Fechapublicacion> Fechapublicacion { get; set; }
         public virtual IList<Promociondetalle> Promociondetalle { get; set; }
+        public virtual IList<PromociondetalleTetris> PromociondetalleTetris { get; set; }
         public virtual IList<Promocionmembresia> Promocionmembresia { get; set; }
         public virtual IList<PromocionUsuario> Promocionusuario { get; set; }
         public virtual IList<Promocionsucursal> Promocionsucursal { get; set; }
